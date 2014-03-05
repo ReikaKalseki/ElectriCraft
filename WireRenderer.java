@@ -57,10 +57,10 @@ public class WireRenderer implements ISimpleBlockRenderingHandler {
 	}
 
 	private void renderFace(TileEntityWire tile, int x, int y, int z, ForgeDirection dir) {
-		double size = 0.333333;
+		double size = tile.insulated ? 0.5 : 0.333333;
 		Tessellator v5 = Tessellator.instance;
 		//Icon ico = Block.cloth.getIcon(0, 15);
-		Icon ico = Block.brick.getIcon(0, 0);
+		Icon ico = tile.insulated ? tile.getInsulatedCenterIcon() : tile.getCenterIcon();
 		float u = ico.getMinU();
 		float v = ico.getMinV();
 		float du = ico.getMaxU();
@@ -69,6 +69,11 @@ public class WireRenderer implements ISimpleBlockRenderingHandler {
 		v5.setColorOpaque(255, 255, 255);
 		v5.addTranslation(x, y, z);
 		if (tile.isInWorld() && tile.isConnectedOnSideAt(tile.worldObj, tile.xCoord, tile.yCoord, tile.zCoord, dir)) {
+			ico = tile.insulated ? tile.getInsulatedEndIcon() : tile.getEndIcon();
+			u = ico.getMinU();
+			v = ico.getMinV();
+			du = ico.getMaxU();
+			dv = ico.getMaxV();
 			switch(dir) {
 			case DOWN:
 				this.faceBrightness(ForgeDirection.SOUTH, v5);
@@ -94,6 +99,14 @@ public class WireRenderer implements ISimpleBlockRenderingHandler {
 				v5.addVertexWithUV(0.5+size/2, 0.5+size/2+size, 0.5-size/2, du, dv);
 				v5.addVertexWithUV(0.5+size/2, 0.5-size/2+size, 0.5-size/2, du, v);
 				v5.addVertexWithUV(0.5-size/2, 0.5-size/2+size, 0.5-size/2, u, v);
+
+				if (tile.insulated) {
+					this.faceBrightness(ForgeDirection.DOWN, v5);
+					v5.addVertexWithUV(0.5-size/2, 0.5+size/2+size, 0.5+size/2, du, dv);
+					v5.addVertexWithUV(0.5+size/2, 0.5+size/2+size, 0.5+size/2, u, dv);
+					v5.addVertexWithUV(0.5+size/2, 0.5+size/2+size, 0.5-size/2, u, v);
+					v5.addVertexWithUV(0.5-size/2, 0.5+size/2+size, 0.5-size/2, du, v);
+				}
 				break;
 			case EAST:
 				this.faceBrightness(ForgeDirection.DOWN, v5);
@@ -119,6 +132,14 @@ public class WireRenderer implements ISimpleBlockRenderingHandler {
 				v5.addVertexWithUV(0.5+size/2+size, 0.5+size/2, 0.5-size/2, du, dv);
 				v5.addVertexWithUV(0.5+size/2+size, 0.5-size/2, 0.5-size/2, du, v);
 				v5.addVertexWithUV(0.5-size/2+size, 0.5-size/2, 0.5-size/2, u, v);
+
+				if (tile.insulated) {
+					this.faceBrightness(ForgeDirection.EAST, v5);
+					v5.addVertexWithUV(0.5+size/2+size, 0.5+size/2, 0.5-size/2, du, dv);
+					v5.addVertexWithUV(0.5+size/2+size, 0.5+size/2, 0.5+size/2, u, dv);
+					v5.addVertexWithUV(0.5+size/2+size, 0.5-size/2, 0.5+size/2, u, v);
+					v5.addVertexWithUV(0.5+size/2+size, 0.5-size/2, 0.5-size/2, du, v);
+				}
 				break;
 			case NORTH:
 				this.faceBrightness(ForgeDirection.DOWN, v5);
@@ -144,6 +165,14 @@ public class WireRenderer implements ISimpleBlockRenderingHandler {
 				v5.addVertexWithUV(0.5+size/2, 0.5-size/2, 0.5-size/2+size, u, v);
 				v5.addVertexWithUV(0.5+size/2, 0.5-size/2, 0.5+size/2+size, u, dv);
 				v5.addVertexWithUV(0.5-size/2, 0.5-size/2, 0.5+size/2+size, du, dv);
+
+				if (tile.insulated) {
+					this.faceBrightness(ForgeDirection.SOUTH, v5);
+					v5.addVertexWithUV(0.5-size/2, 0.5-size/2, 0.5+size/2+size, du, v);
+					v5.addVertexWithUV(0.5+size/2, 0.5-size/2, 0.5+size/2+size, u, v);
+					v5.addVertexWithUV(0.5+size/2, 0.5+size/2, 0.5+size/2+size, u, dv);
+					v5.addVertexWithUV(0.5-size/2, 0.5+size/2, 0.5+size/2+size, du, dv);
+				}
 				break;
 			case SOUTH:
 				this.faceBrightness(ForgeDirection.DOWN, v5);
@@ -169,6 +198,14 @@ public class WireRenderer implements ISimpleBlockRenderingHandler {
 				v5.addVertexWithUV(0.5+size/2, 0.5-size/2, 0.5-size/2-size, u, v);
 				v5.addVertexWithUV(0.5+size/2, 0.5-size/2, 0.5+size/2-size, u, dv);
 				v5.addVertexWithUV(0.5-size/2, 0.5-size/2, 0.5+size/2-size, du, dv);
+
+				if (tile.insulated) {
+					this.faceBrightness(ForgeDirection.SOUTH, v5);
+					v5.addVertexWithUV(0.5-size/2, 0.5+size/2, 0.5-size/2-size, du, dv);
+					v5.addVertexWithUV(0.5+size/2, 0.5+size/2, 0.5-size/2-size, u, dv);
+					v5.addVertexWithUV(0.5+size/2, 0.5-size/2, 0.5-size/2-size, u, v);
+					v5.addVertexWithUV(0.5-size/2, 0.5-size/2, 0.5-size/2-size, du, v);
+				}
 				break;
 			case UP:
 				this.faceBrightness(ForgeDirection.SOUTH, v5);
@@ -194,6 +231,14 @@ public class WireRenderer implements ISimpleBlockRenderingHandler {
 				v5.addVertexWithUV(0.5+size/2, 0.5+size/2-size, 0.5-size/2, du, dv);
 				v5.addVertexWithUV(0.5+size/2, 0.5-size/2-size, 0.5-size/2, du, v);
 				v5.addVertexWithUV(0.5-size/2, 0.5-size/2-size, 0.5-size/2, u, v);
+
+				if (tile.insulated) {
+					this.faceBrightness(ForgeDirection.UP, v5);
+					v5.addVertexWithUV(0.5-size/2, 0.5-size/2-size, 0.5-size/2, du, v);
+					v5.addVertexWithUV(0.5+size/2, 0.5-size/2-size, 0.5-size/2, u, v);
+					v5.addVertexWithUV(0.5+size/2, 0.5-size/2-size, 0.5+size/2, u, dv);
+					v5.addVertexWithUV(0.5-size/2, 0.5-size/2-size, 0.5+size/2, du, dv);
+				}
 				break;
 			case WEST:
 				this.faceBrightness(ForgeDirection.DOWN, v5);
@@ -219,6 +264,14 @@ public class WireRenderer implements ISimpleBlockRenderingHandler {
 				v5.addVertexWithUV(0.5+size/2-size, 0.5+size/2, 0.5-size/2, du, dv);
 				v5.addVertexWithUV(0.5+size/2-size, 0.5-size/2, 0.5-size/2, du, v);
 				v5.addVertexWithUV(0.5-size/2-size, 0.5-size/2, 0.5-size/2, u, v);
+
+				if (tile.insulated) {
+					this.faceBrightness(ForgeDirection.WEST, v5);
+					v5.addVertexWithUV(0.5-size/2-size, 0.5-size/2, 0.5-size/2, du, v);
+					v5.addVertexWithUV(0.5-size/2-size, 0.5-size/2, 0.5+size/2, u, v);
+					v5.addVertexWithUV(0.5-size/2-size, 0.5+size/2, 0.5+size/2, u, dv);
+					v5.addVertexWithUV(0.5-size/2-size, 0.5+size/2, 0.5-size/2, du, dv);
+				}
 				break;
 			default:
 				break;
@@ -295,7 +348,6 @@ public class WireRenderer implements ISimpleBlockRenderingHandler {
 		default:
 			break;
 		}
-		f*= 0.2;
 		v5.setColorOpaque_F(f, f, f);
 	}
 

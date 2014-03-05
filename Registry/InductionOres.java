@@ -23,30 +23,33 @@ import Reika.DragonAPI.ModInteract.ReikaTwilightHelper;
 
 public enum InductionOres {
 
-	EMPTY(		32, 60, 8, 	12, 0, 	0,	0.4F,	"ore.empty", true);
+	COPPER(		32, 64, 	6, 	6, 	0, 	0.5F,	1,	"ore.copper"),
+	TIN(		48, 72, 	8, 	12,	0, 	0.2F,	1,	"ore.tin"),
+	SILVER(		0, 32, 		6, 	4, 	0, 	0.8F,	2,	"ore.silver"),
+	NICKEL(		16, 48, 	8, 	8, 	0, 	0.3F,	1,	"ore.nickel"),
+	ALUMINUM(	60, 128, 	8, 	10,	0, 	0.4F,	1,	"ore.aluminum"),
+	PLATINUM(	0, 16, 		4, 	2, 	0, 	1F,		2,	"ore.platinum");
 
 	public final int minY;
 	public final int maxY;
 	public final int veinSize;
 	public final int perChunk;
-	public final boolean shouldGen;
 	public final int dimensionID;
 	public final String oreName;
-	public final float xpDropped;
 	public final int harvestLevel;
+	public final float xpDropped;
 
 	public static final InductionOres[] oreList = values();
 
-	private InductionOres(int min, int max, int size, int count, int dim, int level, float xp, String name, boolean gen) {
+	private InductionOres(int min, int max, int size, int count, int dim, float xp, int level, String name) {
 		minY = min;
 		maxY = max;
 		veinSize = size;
 		perChunk = count;
-		shouldGen = gen;
 		dimensionID = dim;
 		oreName = StatCollector.translateToLocal(name);
-		xpDropped = xp;
 		harvestLevel = level;
+		xpDropped = xp;
 	}
 
 	@Override
@@ -69,7 +72,7 @@ public enum InductionOres {
 	}
 
 	public String getTextureName() {
-		return "InductionCraft:"+this.name().toLowerCase();
+		return "RotationalInduction:ore"+ReikaStringParser.capFirstChar(this.name());
 	}
 
 	public String getDictionaryName() {
@@ -155,11 +158,15 @@ public enum InductionOres {
 
 	public boolean canGenerateInChunk(World world, int chunkX, int chunkZ) {
 		int id = world.provider.dimensionId;
-		if (!shouldGen)
+		if (!this.shouldGen())
 			return false;
 		if (!this.isValidDimension(id))
 			return false;
 		return this.isValidBiome(world.getBiomeGenForCoords(chunkX, chunkZ)) || id == ReikaTwilightHelper.getDimensionID();
+	}
+
+	private boolean shouldGen() {
+		return true;
 	}
 
 	public boolean canGenAt(World world, int x, int y, int z) {

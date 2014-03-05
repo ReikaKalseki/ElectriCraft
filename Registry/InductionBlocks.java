@@ -18,11 +18,12 @@ import Reika.RotationalInduction.Induction;
 import Reika.RotationalInduction.Blocks.BlockConverter;
 import Reika.RotationalInduction.Blocks.BlockInductionOre;
 import Reika.RotationalInduction.Blocks.BlockWire;
+import Reika.RotationalInduction.Items.ItemBlockInductionOre;
 
 public enum InductionBlocks implements RegistryEnum {
 	WIRE(BlockWire.class, "Wire", false),
 	CONVERTER(BlockConverter.class, "Converter", false),
-	ORE(BlockInductionOre.class, "Ore", true);
+	ORE(BlockInductionOre.class, ItemBlockInductionOre.class, "InductionOre", true);
 
 	private Class blockClass;
 	private String blockName;
@@ -51,7 +52,7 @@ public enum InductionBlocks implements RegistryEnum {
 	}
 
 	public Material getBlockMaterial() {
-		return Material.iron;
+		return this == ORE ? Material.rock : Material.iron;
 	}
 
 	@Override

@@ -32,9 +32,9 @@ import cpw.mods.fml.common.registry.GameRegistry;
 
 public enum InductionTiles {
 
-	WIRE("machine.wire", InductionBlocks.WIRE,	TileEntityWire.class, 0),
-	GENERATOR("machine.generator", InductionBlocks.CONVERTER, TileEntityGenerator.class, 0),
-	MOTOR("machine.motor", InductionBlocks.CONVERTER, TileEntityMotor.class, 1);
+	WIRE("induction.wire", InductionBlocks.WIRE,	TileEntityWire.class, 0, "RenderWire"),
+	GENERATOR("induction.generator", InductionBlocks.CONVERTER, TileEntityGenerator.class, 0),
+	MOTOR("induction.motor", InductionBlocks.CONVERTER, TileEntityMotor.class, 1);
 
 	private String name;
 	private final Class teClass;
@@ -76,6 +76,8 @@ public enum InductionTiles {
 	}
 
 	public static TileEntity createTEFromIDAndMetadata(int id, int meta) {
+		if (id == InductionBlocks.WIRE.getBlockID())
+			return new TileEntityWire();
 		InductionTiles index = getMachineFromIDandMetadata(id, meta);
 		if (index == null) {
 			Induction.logger.logError("ID "+id+" and metadata "+meta+" are not a valid machine identification pair!");
@@ -103,8 +105,14 @@ public enum InductionTiles {
 		return true;
 	}
 
+	public boolean hasCustomItem() {
+		return this == WIRE;
+	}
+
 	public static InductionTiles getTE(IBlockAccess iba, int x, int y, int z) {
 		int id = iba.getBlockId(x, y, z);
+		if (id == InductionBlocks.WIRE.getBlockID())
+			return WIRE;
 		int meta = iba.getBlockMetadata(x, y, z);
 		return getMachineFromIDandMetadata(id, meta);
 	}
@@ -134,7 +142,7 @@ public enum InductionTiles {
 	public String getRenderer() {
 		if (!this.hasRender())
 			throw new RuntimeException("Machine "+name+" has no render to call!");
-		return "Reika.Induction.Renders."+render;
+		return "Reika.RotationalInduction.Renders."+render;
 	}
 
 	public int getBlockID() {

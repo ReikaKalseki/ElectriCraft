@@ -62,12 +62,14 @@ public class InductionClient extends InductionCommon
 		}
 
 		MinecraftForgeClient.registerItemRenderer(InductionItems.PLACER.getShiftedID(), machineItems);
+		MinecraftForgeClient.registerItemRenderer(InductionItems.WIRE.getShiftedID(), machineItems);
 	}
 
 	private void registerSpriteSheets() {
 		for (int i = 0; i < InductionItems.itemList.length; i++) {
-			//ReikaJavaLibrary.pConsole("Registering Item Spritesheet for "+ItemRegistry.itemList[i].name()+" at ID "+(ItemRegistry.itemList[i].getShiftedID()+256)+" with sheet "+ItemRegistry.itemList[i].getTextureSheet());
-			MinecraftForgeClient.registerItemRenderer(InductionItems.itemList[i].getShiftedID(), items);
+			InductionItems ii = InductionItems.itemList[i];
+			if (!ii.isPlacerItem())
+				MinecraftForgeClient.registerItemRenderer(InductionItems.itemList[i].getShiftedID(), items);
 		}
 	}
 

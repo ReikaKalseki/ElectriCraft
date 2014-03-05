@@ -19,17 +19,19 @@ import Reika.DragonAPI.Exception.RegistrationException;
 import Reika.DragonAPI.Interfaces.RegistryEnum;
 import Reika.DragonAPI.Libraries.ReikaRecipeHelper;
 import Reika.DragonAPI.Libraries.Java.ReikaStringParser;
+import Reika.DragonAPI.Libraries.MathSci.ReikaMathLibrary;
 import Reika.RotaryCraft.Auxiliary.WorktableRecipes;
 import Reika.RotationalInduction.Induction;
 import Reika.RotationalInduction.Base.InductionItemBase;
 import Reika.RotationalInduction.Items.ItemInductionPlacer;
+import Reika.RotationalInduction.Items.ItemWirePlacer;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public enum InductionItems implements RegistryEnum {
 
 	PLACER(0, false, "item.placer", ItemInductionPlacer.class),
-	CRAFTING(128, true, "item.inductioncrafting", InductionItemBase.class),
-	INGOTS(16, true, "item.inductioningots", InductionItemBase.class);
+	INGOTS(16, true, "item.inductioningots", InductionItemBase.class),
+	WIRE(32, true, "item.inductionwire", ItemWirePlacer.class);
 
 	private int index;
 	private boolean hasSubtypes;
@@ -102,6 +104,8 @@ public enum InductionItems implements RegistryEnum {
 	public String getMultiValuedName(int dmg) {
 		if (!this.hasMultiValuedName())
 			throw new RuntimeException("Item "+name+" was called for a multi-name, yet does not have one!");
+		if (this == INGOTS)
+			return StatCollector.translateToLocal("ingot."+InductionOres.oreList[dmg].name().toLowerCase());
 		throw new RuntimeException("Item "+name+" was called for a multi-name, but it was not registered!");
 	}
 
@@ -122,7 +126,7 @@ public enum InductionItems implements RegistryEnum {
 	}
 
 	public boolean hasMultiValuedName() {
-		return name.startsWith("#");
+		return this == INGOTS;
 	}
 
 	public boolean isCreativeOnly() {
@@ -133,10 +137,10 @@ public enum InductionItems implements RegistryEnum {
 		if (!hasSubtypes)
 			return 1;
 		switch(this) {
-		case CRAFTING:
-			return InductionCrafting.partList.length;
 		case INGOTS:
 			return InductionOres.oreList.length;
+		case WIRE:
+			return 64;
 		default:
 			throw new RegistrationException(Induction.instance, "Item "+name+" has subtypes but the number was not specified!");
 		}
@@ -266,15 +270,29 @@ public enum InductionItems implements RegistryEnum {
 		return true;
 	}
 
+	public boolean isAvailableInCreative(ItemStack item) {
+		switch(this) {
+		case WIRE:
+			if (item.getItemDamage() < WireType.wireList.length)
+				return true;
+			return ReikaMathLibrary.isValueInsideBoundsIncl(16, 16+WireType.wireList.length-1, item.getItemDamage());
+		default:
+			return true;
+		}
+	}
+
 	@Override
 	public boolean overwritingItem() {
 		return false;
 	}
 
-	public boolean isContinuousCreativeMetadatas() {
+	public boolean isPlacerItem() {
 		switch(this) {
-		default:
+		case WIRE:
+		case PLACER:
 			return true;
+		default:
+			return false;
 		}
 	}
 }

@@ -54,7 +54,8 @@ public class InductionItemBase extends Item implements IndexedItemSprites {
 		InductionItems ri = InductionItems.getEntryByID(ID);
 		for (int i = 0; i < this.getDataValues(); i++) {
 			ItemStack item = new ItemStack(ID, 1, i);
-			li.add(item);
+			if (ri.isAvailableInCreative(item))
+				li.add(item);
 		}
 	}
 

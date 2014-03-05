@@ -11,15 +11,19 @@ package Reika.RotationalInduction.TileEntities;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.ForgeDirection;
 import Reika.RotationalInduction.Base.NetworkTileEntity;
+import Reika.RotationalInduction.Blocks.BlockWire;
 import Reika.RotationalInduction.Registry.InductionTiles;
+import Reika.RotationalInduction.Registry.WireType;
 
 public class TileEntityWire extends NetworkTileEntity {
 
 	private boolean[] connections = new boolean[6];
+	public boolean insulated;
 
 	@Override
 	public void updateEntity(World world, int x, int y, int z, int meta) {
@@ -43,9 +47,14 @@ public class TileEntityWire extends NetworkTileEntity {
 		int dz = z+dir.offsetZ;
 		int id = world.getBlockId(dx, dy, dz);
 		int meta = world.getBlockMetadata(dx, dy, dz);
-		if (id == this.getTileEntityBlockID() && meta == InductionTiles.WIRE.getBlockMetadata())
+		if (id == this.getTileEntityBlockID())
 			return true;
 		return false;
+	}
+
+	public WireType getWireType() {
+		int meta = this.isInWorld() ? worldObj.getBlockMetadata(xCoord, yCoord, zCoord) : this.getBlockMetadata();
+		return WireType.wireList[meta];
 	}
 
 	@Override
@@ -56,6 +65,8 @@ public class TileEntityWire extends NetworkTileEntity {
 		for (int i = 0; i < 6; i++) {
 			connections[i] = NBT.getBoolean("conn"+i);
 		}
+
+		insulated = NBT.getBoolean("insul");
 	}
 
 	@Override
@@ -66,6 +77,8 @@ public class TileEntityWire extends NetworkTileEntity {
 		for (int i = 0; i < 6; i++) {
 			NBT.setBoolean("conn"+i, connections[i]);
 		}
+
+		NBT.setBoolean("insul", insulated);
 	}
 
 	/** Direction is relative to the piping block (so DOWN means the block is below the pipe) */
@@ -153,5 +166,21 @@ public class TileEntityWire extends NetworkTileEntity {
 	@Override
 	public void overVoltage() {
 
+	}
+
+	public Icon getEndIcon() {
+		return BlockWire.getEndTexture(this.getWireType());
+	}
+
+	public Icon getCenterIcon() {
+		return BlockWire.getTexture(this.getWireType());
+	}
+
+	public Icon getInsulatedCenterIcon() {
+		return BlockWire.getInsulatedTexture(this.getWireType());
+	}
+
+	public Icon getInsulatedEndIcon() {
+		return BlockWire.getInsulatedEndTexture(this.getWireType());
 	}
 }

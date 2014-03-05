@@ -1,12 +1,3 @@
-/*******************************************************************************
- * @author Reika Kalseki
- * 
- * Copyright 2014
- * 
- * All rights reserved.
- * Distribution of the software in any form is only allowed with
- * explicit, prior permission from the owner.
- ******************************************************************************/
 package Reika.RotationalInduction.Items;
 
 import java.util.List;
@@ -21,17 +12,18 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import Reika.DragonAPI.Libraries.World.ReikaWorldHelper;
-import Reika.RotaryCraft.API.ShaftMachine;
 import Reika.RotationalInduction.Induction;
-import Reika.RotationalInduction.Base.InductionTileEntity;
+import Reika.RotationalInduction.Registry.InductionItems;
 import Reika.RotationalInduction.Registry.InductionTiles;
+import Reika.RotationalInduction.Registry.WireType;
+import Reika.RotationalInduction.TileEntities.TileEntityWire;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemInductionPlacer extends Item {
+public class ItemWirePlacer extends Item {
 
-	public ItemInductionPlacer(int ID, int tex) {
-		super(ID);
+	public ItemWirePlacer(int par1, int tex) {
+		super(par1);
 		this.setHasSubtypes(true);
 		this.setMaxDamage(0);
 		maxStackSize = 64;
@@ -56,47 +48,33 @@ public class ItemInductionPlacer extends Item {
 			if (!ReikaWorldHelper.softBlocks(world, x, y, z) && world.getBlockMaterial(x, y, z) != Material.water && world.getBlockMaterial(x, y, z) != Material.lava)
 				return false;
 		}
-		if (!this.checkValidBounds(is, ep, world, x, y, z))
-			return false;
 		AxisAlignedBB box = AxisAlignedBB.getBoundingBox(x, y, z, x+1, y+1, z+1);
 		List inblock = world.getEntitiesWithinAABB(EntityLivingBase.class, box);
 		if (inblock.size() > 0)
 			return false;
-		InductionTiles m = InductionTiles.TEList[is.getItemDamage()];
 		if (!ep.canPlayerEdit(x, y, z, 0, is))
 			return false;
 		else
 		{
 			if (!ep.capabilities.isCreativeMode)
 				--is.stackSize;
-			world.setBlock(x, y, z, m.getBlockID(), m.getBlockMetadata(), 3);
+			int meta = is.getItemDamage()%WireType.INS_OFFSET;
+			world.setBlock(x, y, z, InductionTiles.WIRE.getBlockID(), meta, 3);
 		}
-		world.playSoundEffect(x+0.5, y+0.5, z+0.5, m.getPlaceSound(), 1F, 1.5F);
-		InductionTileEntity te = (InductionTileEntity)world.getBlockTileEntity(x, y, z);
-		//te.placer = ep.getEntityName();
-		//te.setBlockMetadata(RotaryAux.get4SidedMetadataFromPlayerLook(ep));
-		if (te instanceof ShaftMachine) {
-			ShaftMachine sm = (ShaftMachine)te;
-			sm.setIORenderAlpha(512);
-		}
-
+		world.playSoundEffect(x+0.5, y+0.5, z+0.5, InductionTiles.WIRE.getPlaceSound(), 1F, 1.5F);
+		TileEntityWire te = (TileEntityWire)world.getBlockTileEntity(x, y, z);
+		te.insulated = is.getItemDamage() >= WireType.INS_OFFSET;
 		return true;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List) {
-		for (int i = 0; i < InductionTiles.TEList.length; i++) {
-			InductionTiles t = InductionTiles.TEList[i];
-			if (!t.hasCustomItem() && t.isAvailableInCreativeInventory()) {
-				ItemStack item = new ItemStack(par1, 1, i);
+		for (int i = 0; i < 32; i++) {
+			ItemStack item = new ItemStack(par1, 1, i);
+			if (InductionItems.WIRE.isAvailableInCreative(item))
 				par3List.add(item);
-			}
 		}
-	}
-
-	protected boolean checkValidBounds(ItemStack is, EntityPlayer ep, World world, int x, int y, int z) {
-		return true;
 	}
 
 	@Override

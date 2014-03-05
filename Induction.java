@@ -20,6 +20,7 @@ import Reika.DragonAPI.Auxiliary.IntegrityChecker;
 import Reika.DragonAPI.Base.DragonAPIMod;
 import Reika.DragonAPI.Instantiable.IO.ControlledConfig;
 import Reika.DragonAPI.Instantiable.IO.ModLogger;
+import Reika.DragonAPI.Libraries.ReikaRecipeHelper;
 import Reika.DragonAPI.Libraries.ReikaRegistryHelper;
 import Reika.DragonAPI.Libraries.Java.ReikaJavaLibrary;
 import Reika.ReactorCraft.ReactorRecipes;
@@ -27,7 +28,9 @@ import Reika.RotationalInduction.Auxiliary.InductionTab;
 import Reika.RotationalInduction.Registry.InductionBlocks;
 import Reika.RotationalInduction.Registry.InductionItems;
 import Reika.RotationalInduction.Registry.InductionOptions;
+import Reika.RotationalInduction.Registry.InductionOres;
 import Reika.RotationalInduction.Registry.InductionTiles;
+import Reika.RotationalInduction.Registry.WireType;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -100,6 +103,15 @@ public class Induction extends DragonAPIMod {
 		//TickRegistry.registerTickHandler(new VolcanicGasController(), Side.SERVER);
 
 		IntegrityChecker.instance.addMod(instance, InductionBlocks.blockList, InductionItems.itemList);
+
+		for (int i = 0; i < WireType.wireList.length; i++) {
+			WireType wire = WireType.wireList[i];
+			wire.addCrafting();
+		}
+		for (int i = 0; i < InductionOres.oreList.length; i++) {
+			InductionOres ore = InductionOres.oreList[i];
+			ReikaRecipeHelper.addSmelting(ore.getOreBlock(), ore.getProduct(), ore.xpDropped);
+		}
 	}
 
 	@Override
