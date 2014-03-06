@@ -49,6 +49,15 @@ public class TileEntityWire extends NetworkTileEntity {
 		int meta = world.getBlockMetadata(dx, dy, dz);
 		if (id == this.getTileEntityBlockID())
 			return true;
+		InductionTiles m = InductionTiles.getTE(world, dx, dy, dz);
+		if (m == InductionTiles.GENERATOR) {
+			TileEntityGenerator te = (TileEntityGenerator)world.getBlockTileEntity(dx, dy, dz);
+			return dir == te.getFacing();
+		}
+		if (m == InductionTiles.MOTOR) {
+			TileEntityMotor te = (TileEntityMotor)world.getBlockTileEntity(dx, dy, dz);
+			return dir == te.getFacing().getOpposite();
+		}
 		return false;
 	}
 

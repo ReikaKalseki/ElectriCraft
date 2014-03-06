@@ -22,6 +22,8 @@ public class WireNetwork {
 	private ArrayList<TileEntityMotor> sinks = new ArrayList();
 	private ArrayList<TileEntityGenerator> sources = new ArrayList();
 
+	public static final int TORQUE_PER_AMP = 8;
+
 	public WireNetwork() {
 
 	}

@@ -41,7 +41,7 @@ public abstract class NetworkTileEntity extends InductionTileEntity {
 					if (n.canNetworkOnSide(dir.getOpposite())) {
 						WireNetwork w = n.network;
 						if (w != null) {
-							//ReikaJavaLibrary.pConsole(w);
+							//ReikaJavaLibrary.pConsole(dir+":"+te, Side.SERVER);
 							w.merge(network);
 						}
 					}

@@ -12,16 +12,11 @@ package Reika.RotationalInduction.TileEntities;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import Reika.RotaryCraft.API.ShaftPowerReceiver;
-import Reika.RotationalInduction.Base.NetworkTileEntity;
+import Reika.RotationalInduction.Auxiliary.WireNetwork;
+import Reika.RotationalInduction.Base.ConverterTile;
 import Reika.RotationalInduction.Registry.InductionTiles;
 
-public class TileEntityGenerator extends NetworkTileEntity implements ShaftPowerReceiver {
-
-	private int omega;
-	private int torque;
-	private long power;
-
-	private int iotick;
+public class TileEntityGenerator extends ConverterTile implements ShaftPowerReceiver {
 
 	@Override
 	public void updateEntity(World world, int x, int y, int z, int meta) {
@@ -39,61 +34,16 @@ public class TileEntityGenerator extends NetworkTileEntity implements ShaftPower
 	}
 
 	public int getGenVoltage() {
-		return torque;
+		return omega*WireNetwork.TORQUE_PER_AMP;
 	}
 
 	public int getGenCurrent() {
-		return omega;
+		return torque/WireNetwork.TORQUE_PER_AMP;
 	}
 
 	@Override
 	public boolean canNetworkOnSide(ForgeDirection dir) {
-		return true;
-	}
-
-	@Override
-	public int getVoltageLimit() {
-		return 0;
-	}
-
-	@Override
-	public int getCurrentLimit() {
-		return 0;
-	}
-
-	@Override
-	public void overCurrent() {
-
-	}
-
-	@Override
-	public void overVoltage() {
-
-	}
-
-	@Override
-	public int getOmega() {
-		return omega;
-	}
-
-	@Override
-	public int getTorque() {
-		return torque;
-	}
-
-	@Override
-	public long getPower() {
-		return power;
-	}
-
-	@Override
-	public int getIORenderAlpha() {
-		return iotick;
-	}
-
-	@Override
-	public void setIORenderAlpha(int io) {
-		iotick = io;
+		return dir == this.getFacing().getOpposite();
 	}
 
 	@Override
@@ -113,7 +63,8 @@ public class TileEntityGenerator extends NetworkTileEntity implements ShaftPower
 
 	@Override
 	public boolean canReadFromBlock(int x, int y, int z) {
-		return Math.abs(x-xCoord) + Math.abs(y-yCoord) + Math.abs(z-zCoord) == 1;
+		ForgeDirection dir = this.getFacing();
+		return x == xCoord+dir.offsetX && y == yCoord && z == zCoord+dir.offsetZ;
 	}
 
 	@Override

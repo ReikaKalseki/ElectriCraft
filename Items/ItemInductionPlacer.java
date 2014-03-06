@@ -20,9 +20,12 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeDirection;
+import Reika.DragonAPI.Libraries.ReikaPlayerAPI;
 import Reika.DragonAPI.Libraries.World.ReikaWorldHelper;
 import Reika.RotaryCraft.API.ShaftMachine;
 import Reika.RotationalInduction.Induction;
+import Reika.RotationalInduction.Base.ConverterTile;
 import Reika.RotationalInduction.Base.InductionTileEntity;
 import Reika.RotationalInduction.Registry.InductionTiles;
 import cpw.mods.fml.relauncher.Side;
@@ -78,6 +81,11 @@ public class ItemInductionPlacer extends Item {
 		if (te instanceof ShaftMachine) {
 			ShaftMachine sm = (ShaftMachine)te;
 			sm.setIORenderAlpha(512);
+		}
+		if (te instanceof ConverterTile) {
+			ForgeDirection dir = ReikaPlayerAPI.getDirectionFromPlayerLook(ep, false);
+			//ReikaJavaLibrary.pConsole(dir+":"+te, Side.SERVER);
+			((ConverterTile)te).setFacing(dir);
 		}
 
 		return true;

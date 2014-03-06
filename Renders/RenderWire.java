@@ -1,6 +1,5 @@
 package Reika.RotationalInduction.Renders;
 
-import net.minecraft.block.Block;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
@@ -34,11 +33,14 @@ public class RenderWire extends InductionTERenderer {
 				double s = 1.2;
 				double d = 2.375;
 				double dy = -0.25;
-				GL11.glTranslated(0, dy, 0);
+				double dx = -0.5;
+				GL11.glRotated(90, 0, 1, 0);
+				GL11.glTranslated(dx, dy, 0);
 				GL11.glScaled(s, d, s);
-				this.renderBlock(te, par2, par4+0.1, par6, Block.cloth.getIcon(0, 7));
+				this.renderBlock(te, par2, par4+0.1, par6, te.getInsulatedCenterIcon());
 				GL11.glScaled(1/s, 1/d, 1/s);
-				GL11.glTranslated(0, -dy, 0);
+				GL11.glTranslated(-dx, -dy, 0);
+				GL11.glRotated(-90, 0, 1, 0);
 			}
 		}
 	}
