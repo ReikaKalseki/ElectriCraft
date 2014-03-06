@@ -12,8 +12,8 @@ package Reika.RotationalInduction.TileEntities;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import Reika.RotaryCraft.API.ShaftPowerEmitter;
-import Reika.RotationalInduction.Auxiliary.WireNetwork;
 import Reika.RotationalInduction.Base.ConverterTile;
+import Reika.RotationalInduction.Network.WireNetwork;
 import Reika.RotationalInduction.Registry.InductionTiles;
 
 public class TileEntityMotor extends ConverterTile implements ShaftPowerEmitter {

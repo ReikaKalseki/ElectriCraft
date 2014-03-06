@@ -7,10 +7,14 @@
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
  ******************************************************************************/
-package Reika.RotationalInduction.Auxiliary;
+package Reika.RotationalInduction.Network;
 
 import java.util.ArrayList;
 
+import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.event.ForgeSubscribe;
+import Reika.RotationalInduction.Auxiliary.InductionNetworkTickEvent;
 import Reika.RotationalInduction.Base.NetworkTileEntity;
 import Reika.RotationalInduction.TileEntities.TileEntityGenerator;
 import Reika.RotationalInduction.TileEntities.TileEntityMotor;
@@ -21,6 +25,7 @@ public class WireNetwork {
 	private ArrayList<TileEntityWire> wires = new ArrayList();
 	private ArrayList<TileEntityMotor> sinks = new ArrayList();
 	private ArrayList<TileEntityGenerator> sources = new ArrayList();
+	private ArrayList<NetworkNode> nodes = new ArrayList();
 
 	public static final int TORQUE_PER_AMP = 8;
 
@@ -61,7 +66,8 @@ public class WireNetwork {
 		return this.getInputCurrent()/this.getNumberMotors();
 	}
 
-	public void tick() {
+	@ForgeSubscribe
+	public void tick(InductionNetworkTickEvent evt) {
 		int v = this.getNetworkVoltage();
 		int a = this.getInputCurrent();
 		for (int i = 0; i < wires.size(); i++) {
@@ -125,8 +131,32 @@ public class WireNetwork {
 			sources.add((TileEntityGenerator)te);
 		else if (te instanceof TileEntityMotor)
 			sinks.add((TileEntityMotor)te);
-		else
-			wires.add((TileEntityWire)te);
+		else {
+			TileEntityWire wire = (TileEntityWire)te;
+			wires.add(wire);
+			int count = 0;
+			for (int i = 0; i < 6; i++) {
+				ForgeDirection dir = ForgeDirection.VALID_DIRECTIONS[i];
+				TileEntity adj = te.getAdjacentTileEntity(dir);
+				if (adj instanceof NetworkTileEntity) {
+					NetworkTileEntity nw = (NetworkTileEntity)adj;
+					if (((NetworkTileEntity) adj).canNetworkOnSide(dir.getOpposite()))
+						count++;
+				}
+			}
+			if (count > 2 && !this.hasNode(te.xCoord, te.yCoord, te.zCoord)) {
+				nodes.add(new NetworkNode(this, te.xCoord, te.yCoord, te.zCoord));
+			}
+		}
+	}
+
+	public boolean hasNode(int x, int y, int z) {
+		for (int i = 0; i < nodes.size(); i++) {
+			NetworkNode node = nodes.get(i);
+			if (x == node.x && y == node.y && z == node.z)
+				return true;
+		}
+		return false;
 	}
 
 	@Override

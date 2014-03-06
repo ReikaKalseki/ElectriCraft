@@ -13,7 +13,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import Reika.DragonAPI.Libraries.Java.ReikaJavaLibrary;
-import Reika.RotationalInduction.Auxiliary.WireNetwork;
+import Reika.RotationalInduction.Network.WireNetwork;
 import cpw.mods.fml.relauncher.Side;
 
 public abstract class NetworkTileEntity extends InductionTileEntity {
