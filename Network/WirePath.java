@@ -11,26 +11,31 @@ package Reika.RotationalInduction.Network;
 
 import java.util.LinkedList;
 
-import net.minecraft.world.World;
+import Reika.RotationalInduction.TileEntities.TileEntityWire;
 
 public final class WirePath {
 
-	private final LinkedList nodes = new LinkedList();
+	private final LinkedList<TileEntityWire> nodes = new LinkedList();
 
 	public WirePath() {
 
 	}
 
-	public void addNode(NetworkNode n) {
-
+	void addNode(TileEntityWire n) {
+		nodes.add(n);
 	}
 
 	public int getLength() {
-		return 0;
+		return nodes.size();
 	}
 
-	public int getResistance(World world) {
-		return 0;
+	public int getResistance() {
+		int r = 0;
+		for (int i = 0; i < nodes.size(); i++) {
+			TileEntityWire wire = nodes.get(i);
+			r += wire.getWireType().resistance;
+		}
+		return r;
 	}
 
 }

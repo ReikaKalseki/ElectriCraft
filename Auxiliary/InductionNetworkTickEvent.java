@@ -26,6 +26,7 @@ public class InductionNetworkTickEvent extends Event {
 		tickIndex = currentIndex;
 		worldTime = world.getTotalWorldTime();
 		systemTime = System.currentTimeMillis();
+		currentIndex++;
 	}
 
 }

@@ -48,7 +48,7 @@ public final class WireNetwork {
 	public int getNetworkVoltage() {
 		return this.getMaxInputVoltage();
 	}
-
+	/*
 	public int getInputCurrent() {
 		int max = this.getMaxInputVoltage();
 		int current = 0;
@@ -60,13 +60,9 @@ public final class WireNetwork {
 		}
 		return current;
 	}
-
+	 */
 	public int getNumberMotors() {
 		return sinks.size();
-	}
-
-	public int getCurrentPerOutput() {
-		return this.getInputCurrent()/this.getNumberMotors();
 	}
 
 	@ForgeSubscribe
