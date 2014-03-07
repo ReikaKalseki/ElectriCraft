@@ -28,7 +28,7 @@ public final class WireNetwork {
 	private ArrayList<TileEntityGenerator> sources = new ArrayList();
 	private ArrayList<NetworkNode> nodes = new ArrayList();
 
-	static ForgeDirection[] dirs = ForgeDirection.values();
+	static final ForgeDirection[] dirs = ForgeDirection.values();
 
 	public static final int TORQUE_PER_AMP = 8;
 
