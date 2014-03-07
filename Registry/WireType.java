@@ -25,25 +25,28 @@ import cpw.mods.fml.common.registry.GameRegistry;
 
 public enum WireType {
 
-	STEEL(ItemStacks.steelingot),
-	TIN(InductorStacks.tinIngot, ModOreList.TIN, ModOreList.NETHERTIN),
-	NICKEL(InductorStacks.nickelIngot, ModOreList.NICKEL, ModOreList.NETHERNICKEL),
-	ALUMINUM(InductorStacks.aluminumIngot, ModOreList.ALUMINUM),
-	COPPER(InductorStacks.copperIngot, ModOreList.COPPER, ModOreList.NETHERCOPPER),
-	SILVER(InductorStacks.silverIngot, ModOreList.SILVER, ModOreList.NETHERSILVER),
-	GOLD(new ItemStack(Item.ingotGold)),
-	PLATINUM(InductorStacks.platinumIngot, ModOreList.PLATINUM, ModOreList.NETHERPLATINUM),
-	SUPERCONDUCTOR(InductorStacks.superconductor);
+	STEEL(0, ItemStacks.steelingot),
+	TIN(0, InductorStacks.tinIngot, ModOreList.TIN, ModOreList.NETHERTIN),
+	NICKEL(0, InductorStacks.nickelIngot, ModOreList.NICKEL, ModOreList.NETHERNICKEL),
+	ALUMINUM(0, InductorStacks.aluminumIngot, ModOreList.ALUMINUM),
+	COPPER(0, InductorStacks.copperIngot, ModOreList.COPPER, ModOreList.NETHERCOPPER),
+	SILVER(0, InductorStacks.silverIngot, ModOreList.SILVER, ModOreList.NETHERSILVER),
+	GOLD(0, new ItemStack(Item.ingotGold)),
+	PLATINUM(0, InductorStacks.platinumIngot, ModOreList.PLATINUM, ModOreList.NETHERPLATINUM),
+	SUPERCONDUCTOR(Integer.MAX_VALUE, InductorStacks.superconductor);
 
 	private final ItemStack material;
 	private final String[] oreTypes;
+
+	public final int maxCurrent;
 
 	public static final int INS_OFFSET = 16;
 
 	public static final WireType[] wireList = values();
 
-	private WireType(ItemStack mat, ModOreList... ores) {
+	private WireType(int max, ItemStack mat, ModOreList... ores) {
 		material = mat;
+		maxCurrent = max;
 		ArrayList<String> li = new ArrayList();
 		if (ores != null) {
 			for (int i = 0; i < ores.length; i++) {

@@ -69,12 +69,8 @@ public abstract class NetworkTileEntity extends InductionTileEntity {
 		network = null;
 	}
 
-	public abstract int getVoltageLimit();
-
 	public abstract int getCurrentLimit();
 
 	public abstract void overCurrent();
-
-	public abstract void overVoltage();
 
 }

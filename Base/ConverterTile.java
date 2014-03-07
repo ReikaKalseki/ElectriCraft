@@ -1,3 +1,12 @@
+/*******************************************************************************
+ * @author Reika Kalseki
+ * 
+ * Copyright 2014
+ * 
+ * All rights reserved.
+ * Distribution of the software in any form is only allowed with
+ * explicit, prior permission from the owner.
+ ******************************************************************************/
 package Reika.RotationalInduction.Base;
 
 import net.minecraft.nbt.NBTTagCompound;
@@ -48,22 +57,12 @@ public abstract class ConverterTile extends NetworkTileEntity implements ShaftMa
 	}
 
 	@Override
-	public int getVoltageLimit() {
-		return 0;
-	}
-
-	@Override
 	public int getCurrentLimit() {
 		return 0;
 	}
 
 	@Override
 	public void overCurrent() {
-
-	}
-
-	@Override
-	public void overVoltage() {
 
 	}
 

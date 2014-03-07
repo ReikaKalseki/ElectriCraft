@@ -158,23 +158,13 @@ public class TileEntityWire extends NetworkTileEntity {
 	}
 
 	@Override
-	public int getVoltageLimit() {
-		return 0;
-	}
-
-	@Override
 	public int getCurrentLimit() {
-		return 0;
+		return this.getWireType().maxCurrent;
 	}
 
 	@Override
 	public void overCurrent() {
-
-	}
-
-	@Override
-	public void overVoltage() {
-
+		//ReikaJavaLibrary.pConsole(this, Side.SERVER);
 	}
 
 	public Icon getEndIcon() {

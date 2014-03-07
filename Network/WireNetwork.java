@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeSubscribe;
 import Reika.RotationalInduction.Auxiliary.InductionNetworkTickEvent;
 import Reika.RotationalInduction.Base.NetworkTileEntity;
@@ -20,17 +21,19 @@ import Reika.RotationalInduction.TileEntities.TileEntityGenerator;
 import Reika.RotationalInduction.TileEntities.TileEntityMotor;
 import Reika.RotationalInduction.TileEntities.TileEntityWire;
 
-public class WireNetwork {
+public final class WireNetwork {
 
 	private ArrayList<TileEntityWire> wires = new ArrayList();
 	private ArrayList<TileEntityMotor> sinks = new ArrayList();
 	private ArrayList<TileEntityGenerator> sources = new ArrayList();
 	private ArrayList<NetworkNode> nodes = new ArrayList();
 
+	static ForgeDirection[] dirs = ForgeDirection.values();
+
 	public static final int TORQUE_PER_AMP = 8;
 
 	public WireNetwork() {
-
+		MinecraftForge.EVENT_BUS.register(this);
 	}
 
 	private int getMaxInputVoltage() {
@@ -74,22 +77,16 @@ public class WireNetwork {
 			TileEntityWire wire = wires.get(i);
 			if (a > wire.getCurrentLimit())
 				wire.overCurrent();
-			if (v > wire.getVoltageLimit())
-				wire.overVoltage();
 		}
 		for (int i = 0; i < sinks.size(); i++) {
 			TileEntityMotor sink = sinks.get(i);
 			if (a > sink.getCurrentLimit())
 				sink.overCurrent();
-			if (v > sink.getVoltageLimit())
-				sink.overVoltage();
 		}
 		for (int i = 0; i < sources.size(); i++) {
 			TileEntityGenerator source = sources.get(i);
 			if (a > source.getCurrentLimit())
 				source.overCurrent();
-			if (v > source.getVoltageLimit())
-				source.overVoltage();
 		}
 	}
 
@@ -124,6 +121,8 @@ public class WireNetwork {
 		wires.clear();
 		sinks.clear();
 		sources.clear();
+
+		MinecraftForge.EVENT_BUS.unregister(this);
 	}
 
 	public void addElement(NetworkTileEntity te) {
@@ -134,18 +133,25 @@ public class WireNetwork {
 		else {
 			TileEntityWire wire = (TileEntityWire)te;
 			wires.add(wire);
-			int count = 0;
-			for (int i = 0; i < 6; i++) {
-				ForgeDirection dir = ForgeDirection.VALID_DIRECTIONS[i];
-				TileEntity adj = te.getAdjacentTileEntity(dir);
-				if (adj instanceof NetworkTileEntity) {
-					NetworkTileEntity nw = (NetworkTileEntity)adj;
-					if (((NetworkTileEntity) adj).canNetworkOnSide(dir.getOpposite()))
-						count++;
+			for (int k = 0; k < 6; k++) {
+				ForgeDirection side = dirs[k];
+				TileEntity adj2 = wire.getAdjacentTileEntity(side);
+				if (adj2 instanceof TileEntityWire) {
+					TileEntityWire wire2 = (TileEntityWire)adj2;
+					ArrayList<ForgeDirection> sides = new ArrayList();
+					for (int i = 0; i < 6; i++) {
+						ForgeDirection dir = dirs[i];
+						TileEntity adj = wire2.getAdjacentTileEntity(dir);
+						if (adj instanceof NetworkTileEntity) {
+							NetworkTileEntity nw = (NetworkTileEntity)adj;
+							if (((NetworkTileEntity) adj).canNetworkOnSide(dir.getOpposite()))
+								sides.add(dir);
+						}
+					}
+					if (sides.size() > 2 && !this.hasNode(adj2.xCoord, adj2.yCoord, adj2.zCoord)) {
+						nodes.add(new NetworkNode(this, wire2, sides));
+					}
 				}
-			}
-			if (count > 2 && !this.hasNode(te.xCoord, te.yCoord, te.zCoord)) {
-				nodes.add(new NetworkNode(this, te.xCoord, te.yCoord, te.zCoord));
 			}
 		}
 	}
@@ -162,9 +168,10 @@ public class WireNetwork {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(this.getInputCurrent()+"A @ "+this.getNetworkVoltage()+"V");
-		sb.append(" ");
-		sb.append(wires.size()+" wires, "+sinks.size()+" emitters, "+sources.size()+" generators");
+		//sb.append(this.getInputCurrent()+"A @ "+this.getNetworkVoltage()+"V");
+		//sb.append(" ");
+		//sb.append(wires.size()+" wires, "+sinks.size()+" emitters, "+sources.size()+" generators");
+		sb.append(nodes);
 		sb.append("["+this.hashCode()+"]");
 		return sb.toString();
 	}
