@@ -22,7 +22,7 @@ public class TileEntityMotor extends ConverterTile implements ShaftPowerEmitter 
 	public void updateEntity(World world, int x, int y, int z, int meta) {
 		super.updateEntity(world, x, y, z, meta);
 
-		torque = network.getCurrentPerOutput()*WireNetwork.TORQUE_PER_AMP;
+		torque = 0;//network.getCurrentPerOutput()*WireNetwork.TORQUE_PER_AMP;
 		omega = network.getNetworkVoltage()/WireNetwork.TORQUE_PER_AMP;
 	}
 

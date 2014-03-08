@@ -68,7 +68,7 @@ public final class WireNetwork {
 	@ForgeSubscribe
 	public void tick(InductionNetworkTickEvent evt) {
 		int v = this.getNetworkVoltage();
-		int a = this.getInputCurrent();
+		int a = 0;//this.getInputCurrent();
 		for (int i = 0; i < wires.size(); i++) {
 			TileEntityWire wire = wires.get(i);
 			if (a > wire.getCurrentLimit())
