@@ -45,4 +45,19 @@ public final class NetworkNode {
 		return "<"+x+":"+y+":"+z+">";
 	}
 
+	@Override
+	public boolean equals(Object o) {
+		if (o instanceof NetworkNode) {
+			NetworkNode n = (NetworkNode)o;
+			return n.wire == wire && n.network == network && n.connections.equals(connections);
+		}
+		return false;
+	}
+
+	public ArrayList<ForgeDirection> getDirections() {
+		ArrayList<ForgeDirection> li = new ArrayList();
+		li.addAll(connections);
+		return li;
+	}
+
 }

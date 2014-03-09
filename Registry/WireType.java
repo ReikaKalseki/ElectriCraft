@@ -25,9 +25,9 @@ import cpw.mods.fml.common.registry.GameRegistry;
 
 public enum WireType {
 
-	STEEL(			0, 					0, 	ItemStacks.steelingot),
-	TIN(			0, 					0, 	InductorStacks.tinIngot, ModOreList.TIN, ModOreList.NETHERTIN),
-	NICKEL(			0, 					0, 	InductorStacks.nickelIngot, ModOreList.NICKEL, ModOreList.NETHERNICKEL),
+	STEEL(			2, 					0, 	ItemStacks.steelingot),
+	TIN(			8, 					0, 	InductorStacks.tinIngot, ModOreList.TIN, ModOreList.NETHERTIN),
+	NICKEL(			32, 				0, 	InductorStacks.nickelIngot, ModOreList.NICKEL, ModOreList.NETHERNICKEL),
 	ALUMINUM(		0, 					0, 	InductorStacks.aluminumIngot, ModOreList.ALUMINUM),
 	COPPER(			0, 					0, 	InductorStacks.copperIngot, ModOreList.COPPER, ModOreList.NETHERCOPPER),
 	SILVER(			0, 					0, 	InductorStacks.silverIngot, ModOreList.SILVER, ModOreList.NETHERSILVER),

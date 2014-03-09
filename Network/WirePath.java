@@ -29,6 +29,10 @@ public final class WirePath {
 		return nodes.size();
 	}
 
+	public boolean isEmpty() {
+		return nodes.isEmpty();
+	}
+
 	public int getResistance() {
 		int r = 0;
 		for (int i = 0; i < nodes.size(); i++) {
@@ -36,6 +40,41 @@ public final class WirePath {
 			r += wire.getWireType().resistance;
 		}
 		return r;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("<");
+		for (int i = 0; i < nodes.size(); i++) {
+			TileEntityWire w = nodes.get(i);
+			sb.append("[");
+			sb.append(w.xCoord);
+			sb.append(":");
+			sb.append(w.yCoord);
+			sb.append(":");
+			sb.append(w.zCoord);
+			sb.append("]");
+		}
+		sb.append(">");
+		return sb.toString();
+	}
+
+	public boolean containsBlock(int x, int y, int z) {
+		for (int i = 0; i < nodes.size(); i++) {
+			TileEntityWire w = nodes.get(i);
+			if (x == w.xCoord && y == w.yCoord && z == w.zCoord)
+				return true;
+		}
+		return false;
+	}
+
+	public boolean isValid() {
+		return !this.isEmpty() && this.hasEndPoints();
+	}
+
+	private boolean hasEndPoints() {
+		return false;
 	}
 
 }

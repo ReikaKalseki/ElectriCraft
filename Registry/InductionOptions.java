@@ -106,4 +106,9 @@ public enum InductionOptions implements ConfigList {
 		return enforcing;
 	}
 
+	@Override
+	public boolean shouldLoad() {
+		return true;
+	}
+
 }

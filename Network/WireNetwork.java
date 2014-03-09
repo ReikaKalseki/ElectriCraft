@@ -10,6 +10,9 @@
 package Reika.RotationalInduction.Network;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
@@ -26,7 +29,8 @@ public final class WireNetwork {
 	private ArrayList<TileEntityWire> wires = new ArrayList();
 	private ArrayList<TileEntityMotor> sinks = new ArrayList();
 	private ArrayList<TileEntityGenerator> sources = new ArrayList();
-	private ArrayList<NetworkNode> nodes = new ArrayList();
+	private HashMap<List<Integer>, NetworkNode> nodes = new HashMap();
+	private ArrayList<WirePath> paths = new ArrayList();
 
 	static final ForgeDirection[] dirs = ForgeDirection.values();
 
@@ -117,6 +121,8 @@ public final class WireNetwork {
 		wires.clear();
 		sinks.clear();
 		sources.clear();
+		nodes.clear();
+		paths.clear();
 
 		MinecraftForge.EVENT_BUS.unregister(this);
 	}
@@ -144,21 +150,32 @@ public final class WireNetwork {
 								sides.add(dir);
 						}
 					}
-					if (sides.size() > 2 && !this.hasNode(adj2.xCoord, adj2.yCoord, adj2.zCoord)) {
-						nodes.add(new NetworkNode(this, wire2, sides));
+					if (sides.size() > 2 && !this.hasNode(wire2.xCoord, wire2.yCoord, wire2.zCoord)) {
+						nodes.put(Arrays.asList(wire2.xCoord, wire2.yCoord, wire2.zCoord), new NetworkNode(this, wire2, sides));
 					}
 				}
+			}
+		}
+		this.recalculatePaths();
+	}
+
+	private void recalculatePaths() {
+		paths.clear();
+		for (int i = 0; i < sources.size(); i++) {
+			for (int k = 0; k < sinks.size(); k++) {
+				PathCalculator pc = new PathCalculator(sources.get(i), sinks.get(k), this);
+				pc.calculatePaths();
+				paths.addAll(pc.getCalculatedPaths());
 			}
 		}
 	}
 
 	public boolean hasNode(int x, int y, int z) {
-		for (int i = 0; i < nodes.size(); i++) {
-			NetworkNode node = nodes.get(i);
-			if (x == node.x && y == node.y && z == node.z)
-				return true;
-		}
-		return false;
+		return nodes.containsKey(Arrays.asList(x, y, z));
+	}
+
+	NetworkNode getNodeAt(int x, int y, int z) {
+		return nodes.get(Arrays.asList(x, y, z));
 	}
 
 	@Override
@@ -167,8 +184,8 @@ public final class WireNetwork {
 		//sb.append(this.getInputCurrent()+"A @ "+this.getNetworkVoltage()+"V");
 		//sb.append(" ");
 		//sb.append(wires.size()+" wires, "+sinks.size()+" emitters, "+sources.size()+" generators");
-		sb.append(nodes);
-		sb.append("["+this.hashCode()+"]");
+		sb.append(paths);
+		sb.append(";{"+this.hashCode()+"}");
 		return sb.toString();
 	}
 
