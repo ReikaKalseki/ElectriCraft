@@ -25,14 +25,14 @@ import cpw.mods.fml.common.registry.GameRegistry;
 
 public enum WireType {
 
-	STEEL(			2, 					0, 	ItemStacks.steelingot),
-	TIN(			8, 					0, 	InductorStacks.tinIngot, ModOreList.TIN, ModOreList.NETHERTIN),
-	NICKEL(			32, 				0, 	InductorStacks.nickelIngot, ModOreList.NICKEL, ModOreList.NETHERNICKEL),
-	ALUMINUM(		0, 					0, 	InductorStacks.aluminumIngot, ModOreList.ALUMINUM),
-	COPPER(			0, 					0, 	InductorStacks.copperIngot, ModOreList.COPPER, ModOreList.NETHERCOPPER),
-	SILVER(			0, 					0, 	InductorStacks.silverIngot, ModOreList.SILVER, ModOreList.NETHERSILVER),
-	GOLD(			0, 					0, 	new ItemStack(Item.ingotGold)),
-	PLATINUM(		0, 					0, 	InductorStacks.platinumIngot, ModOreList.PLATINUM, ModOreList.NETHERPLATINUM),
+	STEEL(			16, 				64, ItemStacks.steelingot),
+	TIN(			64, 				32, InductorStacks.tinIngot, ModOreList.TIN, ModOreList.NETHERTIN),
+	NICKEL(			256, 				16, InductorStacks.nickelIngot, ModOreList.NICKEL, ModOreList.NETHERNICKEL),
+	ALUMINUM(		1024, 				8, 	InductorStacks.aluminumIngot, ModOreList.ALUMINUM),
+	COPPER(			4096, 				2, 	InductorStacks.copperIngot, ModOreList.COPPER, ModOreList.NETHERCOPPER),
+	SILVER(			32768, 				1, 	InductorStacks.silverIngot, ModOreList.SILVER, ModOreList.NETHERSILVER),
+	GOLD(			65536, 				4, 	new ItemStack(Item.ingotGold)),
+	PLATINUM(		131072, 			16, InductorStacks.platinumIngot, ModOreList.PLATINUM, ModOreList.NETHERPLATINUM),
 	SUPERCONDUCTOR(	Integer.MAX_VALUE, 	0, 	InductorStacks.superconductor);
 
 	private final ItemStack material;

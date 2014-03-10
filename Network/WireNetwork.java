@@ -18,6 +18,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeSubscribe;
+import net.minecraftforge.event.world.WorldEvent;
 import Reika.RotationalInduction.Auxiliary.InductionNetworkTickEvent;
 import Reika.RotationalInduction.Base.NetworkTileEntity;
 import Reika.RotationalInduction.TileEntities.TileEntityGenerator;
@@ -31,6 +32,8 @@ public final class WireNetwork {
 	private ArrayList<TileEntityGenerator> sources = new ArrayList();
 	private HashMap<List<Integer>, NetworkNode> nodes = new HashMap();
 	private ArrayList<WirePath> paths = new ArrayList();
+
+	private boolean shorted = false;
 
 	static final ForgeDirection[] dirs = ForgeDirection.values();
 
@@ -49,45 +52,37 @@ public final class WireNetwork {
 		return max;
 	}
 
-	public int getNetworkVoltage() {
-		return this.getMaxInputVoltage();
+	public boolean isLive() {
+		return this.getMaxInputVoltage() > 0;
 	}
-	/*
-	public int getInputCurrent() {
-		int max = this.getMaxInputVoltage();
-		int current = 0;
-		for (int i = 0; i < sources.size(); i++) {
-			TileEntityGenerator e = sources.get(i);
-			if (max == e.getGenVoltage()) {
-				current += e.getGenCurrent();
-			}
-		}
-		return current;
-	}
-	 */
+
 	public int getNumberMotors() {
 		return sinks.size();
 	}
 
 	@ForgeSubscribe
 	public void tick(InductionNetworkTickEvent evt) {
-		int v = this.getNetworkVoltage();
-		int a = 0;//this.getInputCurrent();
-		for (int i = 0; i < wires.size(); i++) {
-			TileEntityWire wire = wires.get(i);
-			if (a > wire.getCurrentLimit())
-				wire.overCurrent();
+		for (int i = 0; i < paths.size(); i++) {
+			WirePath path = paths.get(i);
+			path.tick(evt, i);
 		}
-		for (int i = 0; i < sinks.size(); i++) {
-			TileEntityMotor sink = sinks.get(i);
-			if (a > sink.getCurrentLimit())
-				sink.overCurrent();
-		}
-		for (int i = 0; i < sources.size(); i++) {
-			TileEntityGenerator source = sources.get(i);
-			if (a > source.getCurrentLimit())
-				source.overCurrent();
-		}
+		if (this.isEmpty())
+			this.clear(true);
+
+		shorted = false;
+	}
+
+	@ForgeSubscribe
+	public void onRemoveWorld(WorldEvent.Unload evt) {
+		this.clear(true);
+	}
+
+	public boolean isEmpty() {
+		return wires.isEmpty() && sinks.isEmpty() && sources.isEmpty();
+	}
+
+	public int tickRate() {
+		return 1;
 	}
 
 	public void merge(WireNetwork n) {
@@ -104,18 +99,25 @@ public final class WireNetwork {
 				TileEntityGenerator source = n.sources.get(i);
 				source.setNetwork(this);
 			}
+			for (List<Integer> key : n.nodes.keySet()) {
+				NetworkNode node = n.nodes.get(key);
+				nodes.put(key, node);
+			}
+			n.clear(false);
 		}
 	}
 
-	private void clear() {
-		for (int i = 0; i < wires.size(); i++) {
-			wires.get(i).resetNetwork();
-		}
-		for (int i = 0; i < sinks.size(); i++) {
-			sinks.get(i).resetNetwork();
-		}
-		for (int i = 0; i < sources.size(); i++) {
-			sources.get(i).resetNetwork();
+	private void clear(boolean clearTiles) {
+		if (clearTiles) {
+			for (int i = 0; i < wires.size(); i++) {
+				wires.get(i).resetNetwork();
+			}
+			for (int i = 0; i < sinks.size(); i++) {
+				sinks.get(i).resetNetwork();
+			}
+			for (int i = 0; i < sources.size(); i++) {
+				sources.get(i).resetNetwork();
+			}
 		}
 
 		wires.clear();
@@ -170,12 +172,52 @@ public final class WireNetwork {
 		}
 	}
 
+	public int getMotorCurrent(TileEntityMotor te) {
+		if (shorted)
+			return 0;
+		int a = 0;
+		for (int i = 0; i < paths.size(); i++) {
+			WirePath path = paths.get(i);
+			if (path.endsAt(te.xCoord, te.yCoord, te.zCoord)) {
+				int pa = path.getPathCurrent();
+				a += pa;
+			}
+		}
+		return a;
+	}
+
+	public int getMotorVoltage(TileEntityMotor te) {
+		return shorted ? 0 : this.getAverageVoltageOfPaths(te);
+	}
+
+	public int getNumberPaths() {
+		return paths.size();
+	}
+
+	private int getAverageVoltageOfPaths(TileEntityMotor te) {
+		int v = 0;
+		if (this.isEmpty())
+			return 0;
+		for (int i = 0; i < paths.size(); i++) {
+			WirePath path = paths.get(i);
+			if (path.endsAt(te.xCoord, te.yCoord, te.zCoord)) {
+				int pv = path.getTerminalVoltage();
+				v += pv;
+			}
+		}
+		return v/paths.size();
+	}
+
 	public boolean hasNode(int x, int y, int z) {
 		return nodes.containsKey(Arrays.asList(x, y, z));
 	}
 
 	NetworkNode getNodeAt(int x, int y, int z) {
 		return nodes.get(Arrays.asList(x, y, z));
+	}
+
+	public void shortNetwork() {
+		shorted = true;
 	}
 
 	@Override
@@ -210,7 +252,7 @@ public final class WireNetwork {
 		for (int i = 0; i < sources.size(); i++) {
 			li.add(sources.get(i));
 		}
-		this.clear();
+		this.clear(true);
 
 		for (int i = 0; i < li.size(); i++) {
 			NetworkTileEntity te = li.get(i);

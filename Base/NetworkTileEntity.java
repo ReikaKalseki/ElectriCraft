@@ -12,9 +12,7 @@ package Reika.RotationalInduction.Base;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
-import Reika.DragonAPI.Libraries.Java.ReikaJavaLibrary;
 import Reika.RotationalInduction.Network.WireNetwork;
-import cpw.mods.fml.relauncher.Side;
 
 public abstract class NetworkTileEntity extends InductionTileEntity {
 
@@ -22,9 +20,9 @@ public abstract class NetworkTileEntity extends InductionTileEntity {
 
 	@Override
 	public void updateEntity(World world, int x, int y, int z, int meta) {
-		if (this.getTicksExisted() == 0) {
+		if (this.getTicksExisted() == 0 && !world.isRemote) {
 			this.findAndJoinNetwork(world, x, y, z);
-			ReikaJavaLibrary.pConsole(network, Side.SERVER);
+			//ReikaJavaLibrary.pConsole(network, Side.SERVER);
 		}
 	}
 

@@ -18,9 +18,13 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 import Reika.DragonAPI.Libraries.World.ReikaWorldHelper;
+import Reika.RotaryCraft.API.Fillable;
 import Reika.RotationalInduction.Induction;
 import Reika.RotationalInduction.Registry.InductionItems;
 import Reika.RotationalInduction.Registry.InductionTiles;
@@ -29,7 +33,7 @@ import Reika.RotationalInduction.TileEntities.TileEntityWire;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemWirePlacer extends Item {
+public class ItemWirePlacer extends Item implements Fillable {
 
 	public ItemWirePlacer(int par1, int tex) {
 		super(par1);
@@ -63,6 +67,8 @@ public class ItemWirePlacer extends Item {
 			return false;
 		if (!ep.canPlayerEdit(x, y, z, 0, is))
 			return false;
+		if (!this.canBePlaced(is))
+			return false;
 		else
 		{
 			if (!ep.capabilities.isCreativeMode)
@@ -76,13 +82,37 @@ public class ItemWirePlacer extends Item {
 		return true;
 	}
 
+	private boolean canBePlaced(ItemStack is) {
+		if (is.getItemDamage()%WireType.INS_OFFSET == WireType.SUPERCONDUCTOR.ordinal()) {
+			return is.stackTagCompound != null && is.stackTagCompound.getBoolean("fluid");
+		}
+		return true;
+	}
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List) {
 		for (int i = 0; i < 32; i++) {
 			ItemStack item = new ItemStack(par1, 1, i);
-			if (InductionItems.WIRE.isAvailableInCreative(item))
+			if (InductionItems.WIRE.isAvailableInCreative(item)) {
 				par3List.add(item);
+				if (i%WireType.INS_OFFSET == WireType.SUPERCONDUCTOR.ordinal()) {
+					ItemStack item2 = item.copy();
+					item2.stackTagCompound = new NBTTagCompound();
+					item2.stackTagCompound.setBoolean("fluid", true);
+					item2.stackTagCompound.setInteger("lvl", this.getCapacity(item2));
+					par3List.add(item2);
+				}
+			}
+		}
+	}
+
+	@Override
+	public void addInformation(ItemStack is, EntityPlayer ep, List li, boolean par4) {
+		if (is.getItemDamage()%WireType.INS_OFFSET == WireType.SUPERCONDUCTOR.ordinal()) {
+			if (is.stackTagCompound != null && is.stackTagCompound.getBoolean("fluid")) {
+				li.add("Filled with Coolant");
+			}
 		}
 	}
 
@@ -100,5 +130,57 @@ public class ItemWirePlacer extends Item {
 
 	@Override
 	public final void registerIcons(IconRegister ico) {}
+
+	@Override
+	public boolean isValidFluid(Fluid f, ItemStack is) {
+		return this.canFill(is) ? this.isColdFluid(f) : false;
+	}
+
+	private boolean isColdFluid(Fluid f) {
+		if (f.equals(FluidRegistry.getFluid("liquid nitrogen")))
+			return true;
+		if (f.equals(FluidRegistry.getFluid("cryotheum")))
+			return true;
+		return false;
+	}
+
+	@Override
+	public int getCapacity(ItemStack is) {
+		return 25;
+	}
+
+	@Override
+	public int getCurrentFillLevel(ItemStack is) {
+		return is.stackTagCompound != null ? is.stackTagCompound.getInteger("lvl") : 0;
+	}
+
+	@Override
+	public int addFluid(ItemStack is, Fluid f, int amt) {
+		if (this.canFill(is)) {
+			if (is.stackTagCompound == null)
+				is.stackTagCompound = new NBTTagCompound();
+			int liq = this.getCurrentFillLevel(is);
+			int added = Math.min(amt, this.getCapacity(is)-liq);
+			is.stackTagCompound.setInteger("lvl", added+liq);
+			if (this.isFull(is))
+				is.stackTagCompound.setBoolean("fluid", true);
+			return added;
+		}
+		return 0;
+	}
+
+	@Override
+	public boolean isFull(ItemStack is) {
+		return is.stackTagCompound != null && this.getCurrentFillLevel(is) >= this.getCapacity(is);
+	}
+
+	private boolean canFill(ItemStack is) {
+		if (is.getItemDamage()%WireType.INS_OFFSET == WireType.SUPERCONDUCTOR.ordinal()) {
+			if (!this.isFull(is)) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 }

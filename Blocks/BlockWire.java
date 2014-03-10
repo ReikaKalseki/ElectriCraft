@@ -14,14 +14,22 @@ import java.util.Random;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import Reika.DragonAPI.Libraries.ReikaAABBHelper;
 import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
+import Reika.RotaryCraft.RotaryCraft;
+import Reika.RotaryCraft.API.Fillable;
+import Reika.RotaryCraft.Entities.EntityDischarge;
+import Reika.RotaryCraft.Registry.SoundRegistry;
 import Reika.RotationalInduction.Induction;
 import Reika.RotationalInduction.Base.InductionBlock;
 import Reika.RotationalInduction.Registry.WireType;
@@ -77,7 +85,13 @@ public class BlockWire extends InductionBlock {
 	public ArrayList<ItemStack> getBlockDropped(World world, int x, int y, int z, int meta, int fortune) {
 		ArrayList li = new ArrayList();
 		TileEntityWire te = (TileEntityWire)world.getBlockTileEntity(x, y, z);
-		li.add(te.insulated ? te.getWireType().getCraftedInsulatedProduct() : te.getWireType().getCraftedProduct());
+		ItemStack is = te.insulated ? te.getWireType().getCraftedInsulatedProduct() : te.getWireType().getCraftedProduct();
+		if (is.getItemDamage()%WireType.INS_OFFSET == WireType.SUPERCONDUCTOR.ordinal()) {
+			is.stackTagCompound = new NBTTagCompound();
+			is.stackTagCompound.setBoolean("fluid", true);
+			is.stackTagCompound.setInteger("lvl", ((Fillable)is.getItem()).getCapacity(is));
+		}
+		li.add(is);
 		return li;
 	}
 
@@ -88,8 +102,8 @@ public class BlockWire extends InductionBlock {
 			textures[i] = ico.registerIcon("rotationalinduction:"+wire.getIconTexture());
 			insulTextures[i] = ico.registerIcon("rotationalinduction:"+wire.getIconTexture()+"_ins");
 
-			texturesEnd[i] = ico.registerIcon("rotationalinduction:"+wire.getIconTexture()+"");//_end
-			insulTexturesEnd[i] = ico.registerIcon("rotationalinduction:"+wire.getIconTexture()+"_ins");//_end
+			texturesEnd[i] = ico.registerIcon("rotationalinduction:"+wire.getIconTexture()+"_end");
+			insulTexturesEnd[i] = ico.registerIcon("rotationalinduction:"+wire.getIconTexture()+"_ins_end");
 		}
 	}
 
@@ -159,6 +173,30 @@ public class BlockWire extends InductionBlock {
 	public final AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
 		double d = 0.25;
 		return ReikaAABBHelper.getBlockAABB(x, y, z).contract(d, d, d);
+	}
+
+	@Override
+	public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity e) {
+		if (!world.isRemote) {
+			if (!(e instanceof EntityPlayer) || (e instanceof EntityPlayer && !((EntityPlayer)e).capabilities.isCreativeMode)) {
+				TileEntityWire te = (TileEntityWire)world.getBlockTileEntity(x, y, z);
+				if (!te.insulated && te.getNetwork() != null) {
+					if (te.getNetwork().isLive()) {
+						EntityDischarge ed = new EntityDischarge(world, x+0.5, y+0.5, z+0.5, 3600, e.posX, e.posY, e.posZ);
+						world.spawnEntityInWorld(ed);
+						e.attackEntityFrom(RotaryCraft.shock, 5);
+						if (e instanceof EntityCreeper) {
+							world.createExplosion(e, e.posX, e.posY, e.posZ, 3F, true);
+							e.attackEntityFrom(DamageSource.magic, Integer.MAX_VALUE);
+						}
+						e.addVelocity((e.posX-x)/4D, 0.33, (e.posZ-z)/4D);
+						e.velocityChanged = true;
+						SoundRegistry.SPARK.playSoundAtBlock(world, x, y, z, 1.5F, 1F);
+						te.getNetwork().shortNetwork();
+					}
+				}
+			}
+		}
 	}
 
 }

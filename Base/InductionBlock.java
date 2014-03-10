@@ -47,7 +47,8 @@ public abstract class InductionBlock extends Block {
 	@Override
 	public void breakBlock(World world, int x, int y, int z, int oldid, int oldmeta) {
 		NetworkTileEntity te = (NetworkTileEntity)world.getBlockTileEntity(x, y, z);
-		te.removeFromNetwork();
+		if (!world.isRemote)
+			te.removeFromNetwork();
 		super.breakBlock(world, x, y, z, oldid, oldmeta);
 	}
 

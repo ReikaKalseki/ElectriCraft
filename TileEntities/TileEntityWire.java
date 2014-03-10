@@ -164,7 +164,7 @@ public class TileEntityWire extends NetworkTileEntity {
 
 	@Override
 	public void overCurrent() {
-		//ReikaJavaLibrary.pConsole(this, Side.SERVER);
+		//ReikaJavaLibrary.pConsole(this.getCurrentLimit(), Side.SERVER);
 	}
 
 	public Icon getEndIcon() {

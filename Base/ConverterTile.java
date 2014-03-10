@@ -71,6 +71,10 @@ public abstract class ConverterTile extends NetworkTileEntity implements ShaftMa
 		super.readSyncTag(NBT);
 
 		facing = dirs[NBT.getInteger("face")];
+
+		omega = NBT.getInteger("omg");
+		torque = NBT.getInteger("tq");
+		power = NBT.getLong("pwr");
 	}
 
 	@Override
@@ -78,6 +82,10 @@ public abstract class ConverterTile extends NetworkTileEntity implements ShaftMa
 		super.writeSyncTag(NBT);
 
 		NBT.setInteger("face", this.getFacing().ordinal());
+
+		NBT.setInteger("omg", omega);
+		NBT.setInteger("tq", torque);
+		NBT.setLong("pwr", power);
 	}
 
 }

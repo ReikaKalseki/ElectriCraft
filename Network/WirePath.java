@@ -10,19 +10,37 @@
 package Reika.RotationalInduction.Network;
 
 import java.util.LinkedList;
+import java.util.List;
 
+import net.minecraft.world.World;
+import Reika.RotationalInduction.Auxiliary.InductionNetworkTickEvent;
+import Reika.RotationalInduction.TileEntities.TileEntityGenerator;
+import Reika.RotationalInduction.TileEntities.TileEntityMotor;
 import Reika.RotationalInduction.TileEntities.TileEntityWire;
 
 public final class WirePath {
 
 	private final LinkedList<TileEntityWire> nodes = new LinkedList();
+	private final TileEntityGenerator start;
+	private final TileEntityMotor end;
+	private final WireNetwork net;
 
-	public WirePath() {
+	public final int resistance;
 
-	}
-
-	void addNode(TileEntityWire n) {
-		nodes.add(n);
+	public WirePath(World world, LinkedList<List<Integer>> points, TileEntityGenerator start, TileEntityMotor end, WireNetwork net) {
+		for (int i = 0; i < points.size(); i++) {
+			List<Integer> li = points.get(i);
+			int x = li.get(0);
+			int y = li.get(1);
+			int z = li.get(2);
+			TileEntityWire te = (TileEntityWire)world.getBlockTileEntity(x, y, z);
+			nodes.addLast(te);
+		}
+		this.start = start;
+		this.end = end;
+		this.net = net;
+		resistance = this.calculateResistance();
+		//ReikaJavaLibrary.pConsole(points, Side.SERVER);
 	}
 
 	public int getLength() {
@@ -33,7 +51,7 @@ public final class WirePath {
 		return nodes.isEmpty();
 	}
 
-	public int getResistance() {
+	private int calculateResistance() {
 		int r = 0;
 		for (int i = 0; i < nodes.size(); i++) {
 			TileEntityWire wire = nodes.get(i);
@@ -69,12 +87,35 @@ public final class WirePath {
 		return false;
 	}
 
-	public boolean isValid() {
-		return !this.isEmpty() && this.hasEndPoints();
+	void tick(InductionNetworkTickEvent evt, int index) {
+		int current = this.getPathCurrent();
+		World world = evt.networkWorld;
+		for (int i = 0; i < nodes.size(); i++) {
+			TileEntityWire w = nodes.get(i);
+			if (current > w.getCurrentLimit()) {
+				w.overCurrent();
+			}
+		}
 	}
 
-	private boolean hasEndPoints() {
-		return false;
+	public boolean startsAt(int x, int y, int z) {
+		return start.xCoord == x && y == start.yCoord && z == start.zCoord;
+	}
+
+	public boolean endsAt(int x, int y, int z) {
+		return end.xCoord == x && y == end.yCoord && z == end.zCoord;
+	}
+
+	public int getTerminalVoltage() {
+		return start.getGenVoltage()-this.getVoltageLoss();
+	}
+
+	public int getVoltageLoss() {
+		return this.calculateResistance();
+	}
+
+	public int getPathCurrent() {
+		return start.getGenCurrent()/net.getNumberPaths();
 	}
 
 }

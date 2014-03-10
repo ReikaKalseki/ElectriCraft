@@ -241,10 +241,10 @@ public class WireRenderer implements ISimpleBlockRenderingHandler {
 				v5.addVertexWithUV(0.5+size/2, 0.5+size/2, 0.5-size/2-size, du, v);
 				v5.addVertexWithUV(0.5-size/2, 0.5+size/2, 0.5-size/2-size, u, v);
 
-				v5.addVertexWithUV(0.5-size/2, 0.5+size/2, 0.5-size/2-size, u, dv);
-				v5.addVertexWithUV(0.5+size/2, 0.5+size/2, 0.5-size/2-size, du, dv);
-				v5.addVertexWithUV(0.5+size/2, 0.5+size/2, 0.5-size/2-size*2, du, v);
-				v5.addVertexWithUV(0.5-size/2, 0.5+size/2, 0.5-size/2-size*2, u, v);
+				v5.addVertexWithUV(0.5-size/2, 0.5+size/1.99, 0.5-size/2-size, u, dv);
+				v5.addVertexWithUV(0.5+size/2, 0.5+size/1.99, 0.5-size/2-size, du, dv);
+				v5.addVertexWithUV(0.5+size/2, 0.5+size/1.99, 0.5-size/2-size*2, du, v);
+				v5.addVertexWithUV(0.5-size/2, 0.5+size/1.99, 0.5-size/2-size*2, u, v);
 
 				this.faceBrightness(ForgeDirection.EAST, v5);
 				v5.addVertexWithUV(0.5+size/2, 0.5+size/2, 0.5-size/2-size, u, dv);
@@ -252,10 +252,10 @@ public class WireRenderer implements ISimpleBlockRenderingHandler {
 				v5.addVertexWithUV(0.5+size/2, 0.5-size/2, 0.5+size/2-size, du, v);
 				v5.addVertexWithUV(0.5+size/2, 0.5-size/2, 0.5-size/2-size, u, v);
 
-				v5.addVertexWithUV(0.5+size/2, 0.5+size/2, 0.5-size/2-size*2, u, dv);
-				v5.addVertexWithUV(0.5+size/2, 0.5+size/2, 0.5-size/2-size, du, dv);
-				v5.addVertexWithUV(0.5+size/2, 0.5-size/2, 0.5-size/2-size, du, v);
-				v5.addVertexWithUV(0.5+size/2, 0.5-size/2, 0.5-size/2-size*2, u, v);
+				v5.addVertexWithUV(0.5+size/1.99, 0.5+size/2, 0.5-size/2-size*2, u, dv);
+				v5.addVertexWithUV(0.5+size/1.99, 0.5+size/2, 0.5-size/2-size, du, dv);
+				v5.addVertexWithUV(0.5+size/1.99, 0.5-size/2, 0.5-size/2-size, du, v);
+				v5.addVertexWithUV(0.5+size/1.99, 0.5-size/2, 0.5-size/2-size*2, u, v);
 
 				this.faceBrightness(ForgeDirection.WEST, v5);
 				v5.addVertexWithUV(0.5-size/2, 0.5-size/2, 0.5-size/2-size, du, v);
@@ -263,10 +263,10 @@ public class WireRenderer implements ISimpleBlockRenderingHandler {
 				v5.addVertexWithUV(0.5-size/2, 0.5+size/2, 0.5+size/2-size, u, dv);
 				v5.addVertexWithUV(0.5-size/2, 0.5+size/2, 0.5-size/2-size, du, dv);
 
-				v5.addVertexWithUV(0.5-size/2, 0.5-size/2, 0.5-size/2-size*2, du, v);
-				v5.addVertexWithUV(0.5-size/2, 0.5-size/2, 0.5-size/2-size, u, v);
-				v5.addVertexWithUV(0.5-size/2, 0.5+size/2, 0.5-size/2-size, u, dv);
-				v5.addVertexWithUV(0.5-size/2, 0.5+size/2, 0.5-size/2-size*2, du, dv);
+				v5.addVertexWithUV(0.5-size/1.99, 0.5-size/2, 0.5-size/2-size*2, du, v);
+				v5.addVertexWithUV(0.5-size/1.99, 0.5-size/2, 0.5-size/2-size, u, v);
+				v5.addVertexWithUV(0.5-size/1.99, 0.5+size/2, 0.5-size/2-size, u, dv);
+				v5.addVertexWithUV(0.5-size/1.99, 0.5+size/2, 0.5-size/2-size*2, du, dv);
 
 				this.faceBrightness(ForgeDirection.UP, v5);
 				v5.addVertexWithUV(0.5-size/2, 0.5-size/2, 0.5-size/2-size, du, v);
@@ -274,10 +274,10 @@ public class WireRenderer implements ISimpleBlockRenderingHandler {
 				v5.addVertexWithUV(0.5+size/2, 0.5-size/2, 0.5+size/2-size, u, dv);
 				v5.addVertexWithUV(0.5-size/2, 0.5-size/2, 0.5+size/2-size, du, dv);
 
-				v5.addVertexWithUV(0.5-size/2, 0.5-size/2, 0.5-size/2-size*2, du, v);
-				v5.addVertexWithUV(0.5+size/2, 0.5-size/2, 0.5-size/2-size*2, u, v);
-				v5.addVertexWithUV(0.5+size/2, 0.5-size/2, 0.5-size/2-size, u, dv);
-				v5.addVertexWithUV(0.5-size/2, 0.5-size/2, 0.5-size/2-size, du, dv);
+				v5.addVertexWithUV(0.5-size/2, 0.5-size/1.99, 0.5-size/2-size*2, du, v);
+				v5.addVertexWithUV(0.5+size/2, 0.5-size/1.99, 0.5-size/2-size*2, u, v);
+				v5.addVertexWithUV(0.5+size/2, 0.5-size/1.99, 0.5-size/2-size, u, dv);
+				v5.addVertexWithUV(0.5-size/2, 0.5-size/1.99, 0.5-size/2-size, du, dv);
 
 				if (tile.insulated) {
 					this.faceBrightness(ForgeDirection.SOUTH, v5);
@@ -294,10 +294,10 @@ public class WireRenderer implements ISimpleBlockRenderingHandler {
 				v5.addVertexWithUV(0.5+size/2, 0.5+size/2-size, 0.5+size/2, u, dv);
 				v5.addVertexWithUV(0.5-size/2, 0.5+size/2-size, 0.5+size/2, du, dv);
 
-				v5.addVertexWithUV(0.5-size/2, 0.5-size/2-size*2, 0.5+size/2, du, v);
-				v5.addVertexWithUV(0.5+size/2, 0.5-size/2-size*2, 0.5+size/2, u, v);
-				v5.addVertexWithUV(0.5+size/2, 0.5-size/2-size, 0.5+size/2, u, dv);
-				v5.addVertexWithUV(0.5-size/2, 0.5-size/2-size, 0.5+size/2, du, dv);
+				v5.addVertexWithUV(0.5-size/2, 0.5-size/2-size*2, 0.5+size/1.99, du, v);
+				v5.addVertexWithUV(0.5+size/2, 0.5-size/2-size*2, 0.5+size/1.99, u, v);
+				v5.addVertexWithUV(0.5+size/2, 0.5-size/2-size, 0.5+size/1.99, u, dv);
+				v5.addVertexWithUV(0.5-size/2, 0.5-size/2-size, 0.5+size/1.99, du, dv);
 
 				this.faceBrightness(ForgeDirection.EAST, v5);
 				v5.addVertexWithUV(0.5+size/2, 0.5+size/2-size, 0.5-size/2, u, dv);
@@ -305,10 +305,10 @@ public class WireRenderer implements ISimpleBlockRenderingHandler {
 				v5.addVertexWithUV(0.5+size/2, 0.5-size/2-size, 0.5+size/2, du, v);
 				v5.addVertexWithUV(0.5+size/2, 0.5-size/2-size, 0.5-size/2, u, v);
 
-				v5.addVertexWithUV(0.5+size/2, 0.5-size/2-size, 0.5-size/2, u, dv);
-				v5.addVertexWithUV(0.5+size/2, 0.5-size/2-size, 0.5+size/2, du, dv);
-				v5.addVertexWithUV(0.5+size/2, 0.5-size/2-size*2, 0.5+size/2, du, v);
-				v5.addVertexWithUV(0.5+size/2, 0.5-size/2-size*2, 0.5-size/2, u, v);
+				v5.addVertexWithUV(0.5+size/1.99, 0.5-size/2-size, 0.5-size/2, u, dv);
+				v5.addVertexWithUV(0.5+size/1.99, 0.5-size/2-size, 0.5+size/2, du, dv);
+				v5.addVertexWithUV(0.5+size/1.99, 0.5-size/2-size*2, 0.5+size/2, du, v);
+				v5.addVertexWithUV(0.5+size/1.99, 0.5-size/2-size*2, 0.5-size/2, u, v);
 
 				this.faceBrightness(ForgeDirection.WEST, v5);
 				v5.addVertexWithUV(0.5-size/2, 0.5-size/2-size, 0.5-size/2, du, v);
@@ -316,10 +316,10 @@ public class WireRenderer implements ISimpleBlockRenderingHandler {
 				v5.addVertexWithUV(0.5-size/2, 0.5+size/2-size, 0.5+size/2, u, dv);
 				v5.addVertexWithUV(0.5-size/2, 0.5+size/2-size, 0.5-size/2, du, dv);
 
-				v5.addVertexWithUV(0.5-size/2, 0.5-size/2-size*2, 0.5-size/2, du, v);
-				v5.addVertexWithUV(0.5-size/2, 0.5-size/2-size*2, 0.5+size/2, u, v);
-				v5.addVertexWithUV(0.5-size/2, 0.5-size/2-size, 0.5+size/2, u, dv);
-				v5.addVertexWithUV(0.5-size/2, 0.5-size/2-size, 0.5-size/2, du, dv);
+				v5.addVertexWithUV(0.5-size/1.99, 0.5-size/2-size*2, 0.5-size/2, du, v);
+				v5.addVertexWithUV(0.5-size/1.99, 0.5-size/2-size*2, 0.5+size/2, u, v);
+				v5.addVertexWithUV(0.5-size/1.99, 0.5-size/2-size, 0.5+size/2, u, dv);
+				v5.addVertexWithUV(0.5-size/1.99, 0.5-size/2-size, 0.5-size/2, du, dv);
 
 				this.faceBrightness(ForgeDirection.NORTH, v5);
 				v5.addVertexWithUV(0.5-size/2, 0.5+size/2-size, 0.5-size/2, u, dv);
@@ -327,10 +327,10 @@ public class WireRenderer implements ISimpleBlockRenderingHandler {
 				v5.addVertexWithUV(0.5+size/2, 0.5-size/2-size, 0.5-size/2, du, v);
 				v5.addVertexWithUV(0.5-size/2, 0.5-size/2-size, 0.5-size/2, u, v);
 
-				v5.addVertexWithUV(0.5-size/2, 0.5-size/2-size, 0.5-size/2, u, dv);
-				v5.addVertexWithUV(0.5+size/2, 0.5-size/2-size, 0.5-size/2, du, dv);
-				v5.addVertexWithUV(0.5+size/2, 0.5-size/2-size*2, 0.5-size/2, du, v);
-				v5.addVertexWithUV(0.5-size/2, 0.5-size/2-size*2, 0.5-size/2, u, v);
+				v5.addVertexWithUV(0.5-size/2, 0.5-size/2-size, 0.5-size/1.99, u, dv);
+				v5.addVertexWithUV(0.5+size/2, 0.5-size/2-size, 0.5-size/1.99, du, dv);
+				v5.addVertexWithUV(0.5+size/2, 0.5-size/2-size*2, 0.5-size/1.99, du, v);
+				v5.addVertexWithUV(0.5-size/2, 0.5-size/2-size*2, 0.5-size/1.99, u, v);
 
 				if (tile.insulated) {
 					this.faceBrightness(ForgeDirection.UP, v5);
@@ -347,10 +347,10 @@ public class WireRenderer implements ISimpleBlockRenderingHandler {
 				v5.addVertexWithUV(0.5+size/2-size, 0.5+size/2, 0.5-size/2, du, v);
 				v5.addVertexWithUV(0.5-size/2-size, 0.5+size/2, 0.5-size/2, u, v);
 
-				v5.addVertexWithUV(0.5-size/2-size*2, 0.5+size/2, 0.5+size/2, u, dv);
-				v5.addVertexWithUV(0.5-size/2-size, 0.5+size/2, 0.5+size/2, du, dv);
-				v5.addVertexWithUV(0.5-size/2-size, 0.5+size/2, 0.5-size/2, du, v);
-				v5.addVertexWithUV(0.5-size/2-size*2, 0.5+size/2, 0.5-size/2, u, v);
+				v5.addVertexWithUV(0.5-size/2-size*2, 0.5+size/1.99, 0.5+size/2, u, dv);
+				v5.addVertexWithUV(0.5-size/2-size, 0.5+size/1.99, 0.5+size/2, du, dv);
+				v5.addVertexWithUV(0.5-size/2-size, 0.5+size/1.99, 0.5-size/2, du, v);
+				v5.addVertexWithUV(0.5-size/2-size*2, 0.5+size/1.99, 0.5-size/2, u, v);
 
 				this.faceBrightness(ForgeDirection.SOUTH, v5);
 				v5.addVertexWithUV(0.5-size/2-size, 0.5-size/2, 0.5+size/2, du, v);
@@ -358,10 +358,10 @@ public class WireRenderer implements ISimpleBlockRenderingHandler {
 				v5.addVertexWithUV(0.5+size/2-size, 0.5+size/2, 0.5+size/2, u, dv);
 				v5.addVertexWithUV(0.5-size/2-size, 0.5+size/2, 0.5+size/2, du, dv);
 
-				v5.addVertexWithUV(0.5-size/2-size*2, 0.5-size/2, 0.5+size/2, du, v);
-				v5.addVertexWithUV(0.5-size/2-size, 0.5-size/2, 0.5+size/2, u, v);
-				v5.addVertexWithUV(0.5-size/2-size, 0.5+size/2, 0.5+size/2, u, dv);
-				v5.addVertexWithUV(0.5-size/2-size*2, 0.5+size/2, 0.5+size/2, du, dv);
+				v5.addVertexWithUV(0.5-size/2-size*2, 0.5-size/2, 0.5+size/1.99, du, v);
+				v5.addVertexWithUV(0.5-size/2-size, 0.5-size/2, 0.5+size/1.99, u, v);
+				v5.addVertexWithUV(0.5-size/2-size, 0.5+size/2, 0.5+size/1.99, u, dv);
+				v5.addVertexWithUV(0.5-size/2-size*2, 0.5+size/2, 0.5+size/1.99, du, dv);
 
 				this.faceBrightness(ForgeDirection.UP, v5);
 				v5.addVertexWithUV(0.5-size/2-size, 0.5-size/2, 0.5-size/2, du, v);
@@ -369,10 +369,10 @@ public class WireRenderer implements ISimpleBlockRenderingHandler {
 				v5.addVertexWithUV(0.5+size/2-size, 0.5-size/2, 0.5+size/2, u, dv);
 				v5.addVertexWithUV(0.5-size/2-size, 0.5-size/2, 0.5+size/2, du, dv);
 
-				v5.addVertexWithUV(0.5-size/2-size*2, 0.5-size/2, 0.5-size/2, du, v);
-				v5.addVertexWithUV(0.5-size/2-size, 0.5-size/2, 0.5-size/2, u, v);
-				v5.addVertexWithUV(0.5-size/2-size, 0.5-size/2, 0.5+size/2, u, dv);
-				v5.addVertexWithUV(0.5-size/2-size*2, 0.5-size/2, 0.5+size/2, du, dv);
+				v5.addVertexWithUV(0.5-size/2-size*2, 0.5-size/1.99, 0.5-size/2, du, v);
+				v5.addVertexWithUV(0.5-size/2-size, 0.5-size/1.99, 0.5-size/2, u, v);
+				v5.addVertexWithUV(0.5-size/2-size, 0.5-size/1.99, 0.5+size/2, u, dv);
+				v5.addVertexWithUV(0.5-size/2-size*2, 0.5-size/1.99, 0.5+size/2, du, dv);
 
 				this.faceBrightness(ForgeDirection.NORTH, v5);
 				v5.addVertexWithUV(0.5-size/2-size, 0.5+size/2, 0.5-size/2, u, dv);
@@ -380,10 +380,10 @@ public class WireRenderer implements ISimpleBlockRenderingHandler {
 				v5.addVertexWithUV(0.5+size/2-size, 0.5-size/2, 0.5-size/2, du, v);
 				v5.addVertexWithUV(0.5-size/2-size, 0.5-size/2, 0.5-size/2, u, v);
 
-				v5.addVertexWithUV(0.5-size/2-size*2, 0.5+size/2, 0.5-size/2, u, dv);
-				v5.addVertexWithUV(0.5-size/2-size, 0.5+size/2, 0.5-size/2, du, dv);
-				v5.addVertexWithUV(0.5-size/2-size, 0.5-size/2, 0.5-size/2, du, v);
-				v5.addVertexWithUV(0.5-size/2-size*2, 0.5-size/2, 0.5-size/2, u, v);
+				v5.addVertexWithUV(0.5-size/2-size*2, 0.5+size/2, 0.5-size/1.99, u, dv);
+				v5.addVertexWithUV(0.5-size/2-size, 0.5+size/2, 0.5-size/1.99, du, dv);
+				v5.addVertexWithUV(0.5-size/2-size, 0.5-size/2, 0.5-size/1.99, du, v);
+				v5.addVertexWithUV(0.5-size/2-size*2, 0.5-size/2, 0.5-size/1.99, u, v);
 
 				if (tile.insulated) {
 					this.faceBrightness(ForgeDirection.WEST, v5);
