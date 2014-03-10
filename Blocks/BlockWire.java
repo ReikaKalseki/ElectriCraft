@@ -10,8 +10,12 @@
 package Reika.RotationalInduction.Blocks;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
+import mcp.mobius.waila.api.IWailaBlock;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
@@ -23,6 +27,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.Icon;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import Reika.DragonAPI.Libraries.ReikaAABBHelper;
 import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
@@ -32,10 +37,11 @@ import Reika.RotaryCraft.Entities.EntityDischarge;
 import Reika.RotaryCraft.Registry.SoundRegistry;
 import Reika.RotationalInduction.Induction;
 import Reika.RotationalInduction.Base.InductionBlock;
+import Reika.RotationalInduction.Network.WireNetwork;
 import Reika.RotationalInduction.Registry.WireType;
 import Reika.RotationalInduction.TileEntities.TileEntityWire;
 
-public class BlockWire extends InductionBlock {
+public class BlockWire extends InductionBlock implements IWailaBlock {
 
 	private static final Icon[] textures = new Icon[WireType.wireList.length];
 	private static final Icon[] insulTextures = new Icon[WireType.wireList.length];
@@ -180,23 +186,57 @@ public class BlockWire extends InductionBlock {
 		if (!world.isRemote) {
 			if (!(e instanceof EntityPlayer) || (e instanceof EntityPlayer && !((EntityPlayer)e).capabilities.isCreativeMode)) {
 				TileEntityWire te = (TileEntityWire)world.getBlockTileEntity(x, y, z);
-				if (!te.insulated && te.getNetwork() != null) {
-					if (te.getNetwork().isLive()) {
-						EntityDischarge ed = new EntityDischarge(world, x+0.5, y+0.5, z+0.5, 3600, e.posX, e.posY, e.posZ);
+				WireNetwork net = te.getNetwork();
+				if (!te.insulated && net != null) {
+					if (net.isLive()) {
+						int v = net.getPointVoltage(te);
+						EntityDischarge ed = new EntityDischarge(world, x+0.5, y+0.5, z+0.5, v, e.posX, e.posY, e.posZ);
 						world.spawnEntityInWorld(ed);
-						e.attackEntityFrom(RotaryCraft.shock, 5);
+						e.attackEntityFrom(RotaryCraft.shock, v > 10000 ? 20 : v > 1000 ? 10 : v > 100 ? 5 : v > 10 ? 1 : 0);
 						if (e instanceof EntityCreeper) {
 							world.createExplosion(e, e.posX, e.posY, e.posZ, 3F, true);
 							e.attackEntityFrom(DamageSource.magic, Integer.MAX_VALUE);
 						}
-						e.addVelocity((e.posX-x)/4D, 0.33, (e.posZ-z)/4D);
-						e.velocityChanged = true;
+						if (v > 100) {
+							e.addVelocity((e.posX-x)/4D, 0.33, (e.posZ-z)/4D);
+							e.velocityChanged = true;
+						}
 						SoundRegistry.SPARK.playSoundAtBlock(world, x, y, z, 1.5F, 1F);
 						te.getNetwork().shortNetwork();
 					}
 				}
 			}
 		}
+	}
+
+	@Override
+	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
+	{
+		TileEntityWire te = (TileEntityWire)world.getBlockTileEntity(x, y, z);
+		return te.insulated ? te.getWireType().getCraftedInsulatedProduct() : te.getWireType().getCraftedProduct();
+	}
+
+	@Override
+	public ItemStack getWailaStack(IWailaDataAccessor accessor, IWailaConfigHandler config) {
+		return null;
+	}
+
+	@Override
+	public List<String> getWailaHead(ItemStack is, List<String> tip, IWailaDataAccessor acc, IWailaConfigHandler config) {
+		return tip;
+	}
+
+	@Override
+	public List<String> getWailaBody(ItemStack is, List<String> tip, IWailaDataAccessor acc, IWailaConfigHandler config) {
+		TileEntityWire te = (TileEntityWire)acc.getTileEntity();
+		tip.add(String.format("Point Voltage: %dV", te.getWireVoltage()));
+		tip.add(String.format("Point Current: %dA", te.getWireCurrent()));
+		return tip;
+	}
+
+	@Override
+	public List<String> getWailaTail(ItemStack is, List<String> tip, IWailaDataAccessor acc, IWailaConfigHandler config) {
+		return tip;
 	}
 
 }

@@ -9,12 +9,14 @@
  ******************************************************************************/
 package Reika.RotationalInduction.TileEntities;
 
+import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.ForgeDirection;
+import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
 import Reika.RotationalInduction.Base.NetworkTileEntity;
 import Reika.RotationalInduction.Blocks.BlockWire;
 import Reika.RotationalInduction.Registry.InductionTiles;
@@ -25,9 +27,24 @@ public class TileEntityWire extends NetworkTileEntity {
 	private boolean[] connections = new boolean[6];
 	public boolean insulated;
 
+	private int voltage;
+	private int current;
+
 	@Override
 	public void updateEntity(World world, int x, int y, int z, int meta) {
 		super.updateEntity(world, x, y, z, meta);
+	}
+
+	@Override
+	public void findAndJoinNetwork(World world, int x, int y, int z) {
+		super.findAndJoinNetwork(world, x, y, z);
+		current = network.getPointCurrent(this);
+		voltage = network.getPointVoltage(this);
+	}
+
+	public void onNetworkChanged() {
+		current = network.getPointCurrent(this);
+		voltage = network.getPointVoltage(this);
 	}
 
 	@Override
@@ -76,6 +93,9 @@ public class TileEntityWire extends NetworkTileEntity {
 		}
 
 		insulated = NBT.getBoolean("insul");
+
+		voltage = NBT.getInteger("v");
+		current = NBT.getInteger("a");
 	}
 
 	@Override
@@ -88,6 +108,9 @@ public class TileEntityWire extends NetworkTileEntity {
 		}
 
 		NBT.setBoolean("insul", insulated);
+
+		NBT.setInteger("a", current);
+		NBT.setInteger("v", voltage);
 	}
 
 	/** Direction is relative to the piping block (so DOWN means the block is below the pipe) */
@@ -165,6 +188,8 @@ public class TileEntityWire extends NetworkTileEntity {
 	@Override
 	public void overCurrent() {
 		//ReikaJavaLibrary.pConsole(this.getCurrentLimit(), Side.SERVER);
+		ReikaSoundHelper.playSoundAtBlock(worldObj, xCoord, yCoord, zCoord, "random.fizz");
+		worldObj.setBlock(xCoord, yCoord, zCoord, Block.lavaMoving.blockID);
 	}
 
 	public Icon getEndIcon() {
@@ -181,5 +206,13 @@ public class TileEntityWire extends NetworkTileEntity {
 
 	public Icon getInsulatedEndIcon() {
 		return BlockWire.getInsulatedEndTexture(this.getWireType());
+	}
+
+	public int getWireVoltage() {
+		return voltage;
+	}
+
+	public int getWireCurrent() {
+		return current;
 	}
 }

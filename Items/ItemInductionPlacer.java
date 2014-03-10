@@ -24,6 +24,7 @@ import net.minecraftforge.common.ForgeDirection;
 import Reika.DragonAPI.Libraries.ReikaPlayerAPI;
 import Reika.DragonAPI.Libraries.World.ReikaWorldHelper;
 import Reika.RotaryCraft.API.ShaftMachine;
+import Reika.RotaryCraft.Auxiliary.RotaryAux;
 import Reika.RotationalInduction.Induction;
 import Reika.RotationalInduction.Base.ConverterTile;
 import Reika.RotationalInduction.Base.InductionTileEntity;
@@ -77,7 +78,7 @@ public class ItemInductionPlacer extends Item {
 		world.playSoundEffect(x+0.5, y+0.5, z+0.5, m.getPlaceSound(), 1F, 1.5F);
 		InductionTileEntity te = (InductionTileEntity)world.getBlockTileEntity(x, y, z);
 		//te.placer = ep.getEntityName();
-		//te.setBlockMetadata(RotaryAux.get4SidedMetadataFromPlayerLook(ep));
+		te.setBlockMetadata(RotaryAux.get4SidedMetadataFromPlayerLook(ep));
 		if (te instanceof ShaftMachine) {
 			ShaftMachine sm = (ShaftMachine)te;
 			sm.setIORenderAlpha(512);
@@ -110,6 +111,11 @@ public class ItemInductionPlacer extends Item {
 	@Override
 	public int getMetadata(int meta) {
 		return meta;
+	}
+
+	@Override
+	public String getItemDisplayName(ItemStack is) {
+		return InductionTiles.TEList[is.getItemDamage()].getName();
 	}
 
 	@Override

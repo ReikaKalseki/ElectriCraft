@@ -28,7 +28,11 @@ import Reika.DragonAPI.Instantiable.IO.ModLogger;
 import Reika.DragonAPI.Libraries.ReikaRecipeHelper;
 import Reika.DragonAPI.Libraries.ReikaRegistryHelper;
 import Reika.DragonAPI.Libraries.Java.ReikaJavaLibrary;
+import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
 import Reika.DragonAPI.ModInteract.ThermalRecipeHelper;
+import Reika.RotaryCraft.Auxiliary.ItemStacks;
+import Reika.RotaryCraft.Auxiliary.WorktableRecipes;
+import Reika.RotaryCraft.Registry.ConfigRegistry;
 import Reika.RotationalInduction.Auxiliary.InductionTab;
 import Reika.RotationalInduction.Items.ItemWirePlacer;
 import Reika.RotationalInduction.Registry.InductionBlocks;
@@ -124,6 +128,17 @@ public class Induction extends DragonAPIMod {
 			ReikaRecipeHelper.addSmelting(ore.getOreBlock(), ore.getProduct(), ore.xpDropped);
 			OreDictionary.registerOre(ore.getDictionaryName(), ore.getOreBlock());
 			OreDictionary.registerOre(ore.getProductDictionaryName(), ore.getProduct());
+		}
+
+		ItemStack w = ReikaItemHelper.getSizedItemStack(WireType.SUPERCONDUCTOR.getCraftedProduct(), 8);
+		ItemStack w2 = ReikaItemHelper.getSizedItemStack(WireType.SUPERCONDUCTOR.getCraftedInsulatedProduct(), 8);
+		Object[] obj = {"IGI", "RLR", "IGI", 'I', ItemStacks.steelingot, 'G', Block.glass, 'R', Item.redstone, 'L', ReikaItemHelper.lapisDye};
+		Object[] obj2 = {"WWW", "www", "WWW", 'W', Block.cloth, 'w', w};
+		WorktableRecipes.getInstance().addRecipe(w, obj);
+		WorktableRecipes.getInstance().addRecipe(w2, obj2);
+		if (ConfigRegistry.TABLEMACHINES.getState()) {
+			GameRegistry.addRecipe(w, obj);
+			GameRegistry.addRecipe(w2, obj2);
 		}
 
 		if (ModList.THERMALEXPANSION.isLoaded()) {

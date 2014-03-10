@@ -64,12 +64,50 @@ public final class WireNetwork {
 	public void tick(InductionNetworkTickEvent evt) {
 		for (int i = 0; i < paths.size(); i++) {
 			WirePath path = paths.get(i);
-			path.tick(evt, i);
+			path.tick(evt);
 		}
+		for (int i = 0; i < wires.size(); i++) {
+			TileEntityWire w = wires.get(i);
+			int current = this.getPointCurrent(w);
+			if (current > w.getCurrentLimit()) {
+				w.overCurrent();
+			}
+		}
+
 		if (this.isEmpty())
 			this.clear(true);
 
 		shorted = false;
+	}
+
+	public int getPointVoltage(TileEntityWire te) {
+		if (shorted)
+			return 0;
+		int sv = 0;
+		int c = 0;
+		for (int i = 0; i < paths.size(); i++) {
+			WirePath path = paths.get(i);
+			if (path.containsBlock(te)) {
+				int v = path.getVoltageAt(te);
+				sv += v;
+				c++;
+			}
+		}
+		return c > 0 ? sv/c : 0;
+	}
+
+	public int getPointCurrent(TileEntityWire te) {
+		if (shorted)
+			return 0;
+		int sa = 0;
+		for (int i = 0; i < paths.size(); i++) {
+			WirePath path = paths.get(i);
+			if (path.containsBlock(te)) {
+				int a = path.getPathCurrent();
+				sa += a;
+			}
+		}
+		return sa;
 	}
 
 	@ForgeSubscribe
@@ -105,6 +143,7 @@ public final class WireNetwork {
 			}
 			n.clear(false);
 		}
+		this.updateWires();
 	}
 
 	private void clear(boolean clearTiles) {
@@ -159,6 +198,13 @@ public final class WireNetwork {
 			}
 		}
 		this.recalculatePaths();
+		this.updateWires();
+	}
+
+	private void updateWires() {
+		for (int i = 0; i < wires.size(); i++) {
+			wires.get(i).onNetworkChanged();
+		}
 	}
 
 	private void recalculatePaths() {
@@ -218,6 +264,7 @@ public final class WireNetwork {
 
 	public void shortNetwork() {
 		shorted = true;
+		this.updateWires();
 	}
 
 	@Override

@@ -42,8 +42,6 @@ public class ItemBlockInductionOre extends ItemBlock {
 
 	@Override
 	public String getUnlocalizedName(ItemStack is) {
-		if (this.getDataValues() <= 1)
-			return super.getUnlocalizedName(is);
 		int d = is.getItemDamage();
 		return super.getUnlocalizedName() + "." + d;
 	}

@@ -60,6 +60,23 @@ public final class WirePath {
 		return r;
 	}
 
+	public int getVoltageAt(TileEntityWire wire) {
+		return start.getGenVoltage() > 0 ? start.getGenVoltage()-this.getResistanceTo(wire) : 0;
+	}
+
+	private int getResistanceTo(TileEntityWire wire) {
+		return this.getResistanceTo(nodes.indexOf(wire));
+	}
+
+	private int getResistanceTo(int index) {
+		int r = 0;
+		for (int i = 0; i < index; i++) {
+			TileEntityWire wire = nodes.get(i);
+			r += wire.getWireType().resistance;
+		}
+		return r;
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
@@ -78,24 +95,13 @@ public final class WirePath {
 		return sb.toString();
 	}
 
-	public boolean containsBlock(int x, int y, int z) {
-		for (int i = 0; i < nodes.size(); i++) {
-			TileEntityWire w = nodes.get(i);
-			if (x == w.xCoord && y == w.yCoord && z == w.zCoord)
-				return true;
-		}
-		return false;
+	public boolean containsBlock(TileEntityWire te) {
+		return nodes.contains(te);
 	}
 
-	void tick(InductionNetworkTickEvent evt, int index) {
-		int current = this.getPathCurrent();
-		World world = evt.networkWorld;
-		for (int i = 0; i < nodes.size(); i++) {
-			TileEntityWire w = nodes.get(i);
-			if (current > w.getCurrentLimit()) {
-				w.overCurrent();
-			}
-		}
+	void tick(InductionNetworkTickEvent evt) {
+		//int current = this.getPathCurrent();
+
 	}
 
 	public boolean startsAt(int x, int y, int z) {
@@ -107,11 +113,11 @@ public final class WirePath {
 	}
 
 	public int getTerminalVoltage() {
-		return start.getGenVoltage()-this.getVoltageLoss();
+		return start.getGenVoltage() > 0 ? start.getGenVoltage()-this.getVoltageLoss() : 0;
 	}
 
 	public int getVoltageLoss() {
-		return this.calculateResistance();
+		return resistance;
 	}
 
 	public int getPathCurrent() {

@@ -31,7 +31,7 @@ public enum InductionItems implements RegistryEnum {
 
 	PLACER(0, false, "item.placer", ItemInductionPlacer.class),
 	INGOTS(16, true, "item.inductioningots", InductionItemBase.class),
-	WIRE(32, true, "item.inductionwire", ItemWirePlacer.class);
+	WIRE(32, true, "machine.wire", ItemWirePlacer.class);
 
 	private int index;
 	private boolean hasSubtypes;
@@ -106,6 +106,11 @@ public enum InductionItems implements RegistryEnum {
 			throw new RuntimeException("Item "+name+" was called for a multi-name, yet does not have one!");
 		if (this == INGOTS)
 			return StatCollector.translateToLocal("ingot."+InductionOres.oreList[dmg].name().toLowerCase());
+		if (this == WIRE) {
+			int d = dmg%WireType.INS_OFFSET;
+			String s = dmg >= WireType.INS_OFFSET ? "wire.insulated." : "wire.";
+			return d < WireType.wireList.length ? StatCollector.translateToLocal(s+WireType.wireList[d].name().toLowerCase()) : "";
+		}
 		throw new RuntimeException("Item "+name+" was called for a multi-name, but it was not registered!");
 	}
 
@@ -126,7 +131,7 @@ public enum InductionItems implements RegistryEnum {
 	}
 
 	public boolean hasMultiValuedName() {
-		return this == INGOTS;
+		return this == INGOTS || this == WIRE;
 	}
 
 	public boolean isCreativeOnly() {
@@ -140,7 +145,7 @@ public enum InductionItems implements RegistryEnum {
 		case INGOTS:
 			return InductionOres.oreList.length;
 		case WIRE:
-			return 64;
+			return WireType.INS_OFFSET*2;
 		default:
 			throw new RegistrationException(Induction.instance, "Item "+name+" has subtypes but the number was not specified!");
 		}

@@ -39,6 +39,11 @@ public abstract class InductionBlock extends Block {
 	}
 
 	@Override
+	public int getRenderType() {
+		return -1;
+	}
+
+	@Override
 	public final AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int x, int y, int z)
 	{
 		return this.getCollisionBoundingBoxFromPool(world, x, y, z);

@@ -102,7 +102,7 @@ public enum InductionOres {
 	public ItemStack getProduct() {
 		switch(this) {
 		default:
-			return InductionItems.INGOTS.getStackOfMetadata(this.getProductMetadata());
+			return InductionItems.INGOTS.getStackOfMetadata(this.ordinal());
 		}
 	}
 
@@ -111,10 +111,6 @@ public enum InductionOres {
 		default:
 			return ReikaJavaLibrary.makeListFrom(new ItemStack(InductionBlocks.ORE.getBlockID(), 1, meta));
 		}
-	}
-
-	public int getProductMetadata() {
-		return this.ordinal()-1;
 	}
 
 	public String getProductName() {

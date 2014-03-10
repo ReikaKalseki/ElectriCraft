@@ -33,7 +33,7 @@ public enum WireType {
 	SILVER(			32768, 				1, 	InductorStacks.silverIngot, ModOreList.SILVER, ModOreList.NETHERSILVER),
 	GOLD(			65536, 				4, 	new ItemStack(Item.ingotGold)),
 	PLATINUM(		131072, 			16, InductorStacks.platinumIngot, ModOreList.PLATINUM, ModOreList.NETHERPLATINUM),
-	SUPERCONDUCTOR(	Integer.MAX_VALUE, 	0, 	InductorStacks.superconductor);
+	SUPERCONDUCTOR(	Integer.MAX_VALUE, 	0, 	null);
 
 	private final ItemStack material;
 	private final String[] oreTypes;
@@ -87,6 +87,8 @@ public enum WireType {
 	}
 
 	public void addCrafting() {
+		if (material == null)
+			return;
 		ItemStack is = ReikaItemHelper.getSizedItemStack(this.getCraftedProduct(), 8);
 		ItemStack is2 = ReikaItemHelper.getSizedItemStack(this.getCraftedInsulatedProduct(), 8);
 		ArrayList<ItemStack> li = this.getAllValidCraftingIngots();

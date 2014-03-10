@@ -33,8 +33,8 @@ import cpw.mods.fml.common.registry.GameRegistry;
 public enum InductionTiles {
 
 	WIRE("induction.wire", InductionBlocks.WIRE,	TileEntityWire.class, 0, "RenderWire"),
-	GENERATOR("induction.generator", InductionBlocks.CONVERTER, TileEntityGenerator.class, 0),
-	MOTOR("induction.motor", InductionBlocks.CONVERTER, TileEntityMotor.class, 1);
+	GENERATOR("machine.inductiongenerator", InductionBlocks.CONVERTER, TileEntityGenerator.class, 0, "RenderGenerator"),
+	MOTOR("machine.inductionmotor", InductionBlocks.CONVERTER, TileEntityMotor.class, 1, "RenderMotor");
 
 	private String name;
 	private final Class teClass;

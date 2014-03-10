@@ -10,6 +10,7 @@
 package Reika.RotationalInduction.Base;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import Reika.RotaryCraft.API.ShaftMachine;
 
@@ -20,6 +21,14 @@ public abstract class ConverterTile extends NetworkTileEntity implements ShaftMa
 	protected long power;
 
 	protected int iotick;
+
+	@Override
+	public void updateEntity(World world, int x, int y, int z, int meta) {
+		super.updateEntity(world, x, y, z, meta);
+
+		if (iotick > 0)
+			iotick -= 8;
+	}
 
 	private ForgeDirection facing;
 
