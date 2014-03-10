@@ -25,7 +25,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public class InductionClient extends InductionCommon
 {
-	public static final ItemSpriteSheetRenderer items = new ItemSpriteSheetRenderer(Induction.instance, Induction.class, "Textures/Items/items.png");
+	public static final ItemSpriteSheetRenderer items = new ItemSpriteSheetRenderer(Induction.instance, Induction.class, "Textures/items.png");
 
 	public static final InductionItemRenderer machineItems = new InductionItemRenderer();
 

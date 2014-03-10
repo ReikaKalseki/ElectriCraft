@@ -14,8 +14,13 @@ import java.net.URL;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.OreDictionary;
 import Reika.DragonAPI.DragonAPICore;
+import Reika.DragonAPI.ModList;
 import Reika.DragonAPI.Auxiliary.IntegrityChecker;
 import Reika.DragonAPI.Base.DragonAPIMod;
 import Reika.DragonAPI.Instantiable.IO.ControlledConfig;
@@ -23,8 +28,9 @@ import Reika.DragonAPI.Instantiable.IO.ModLogger;
 import Reika.DragonAPI.Libraries.ReikaRecipeHelper;
 import Reika.DragonAPI.Libraries.ReikaRegistryHelper;
 import Reika.DragonAPI.Libraries.Java.ReikaJavaLibrary;
-import Reika.ReactorCraft.ReactorRecipes;
+import Reika.DragonAPI.ModInteract.ThermalRecipeHelper;
 import Reika.RotationalInduction.Auxiliary.InductionTab;
+import Reika.RotationalInduction.Items.ItemWirePlacer;
 import Reika.RotationalInduction.Registry.InductionBlocks;
 import Reika.RotationalInduction.Registry.InductionItems;
 import Reika.RotationalInduction.Registry.InductionOptions;
@@ -99,13 +105,16 @@ public class Induction extends DragonAPIMod {
 	@EventHandler
 	public void load(FMLInitializationEvent event) {
 		proxy.registerRenderers();
-		ReactorRecipes.addRecipes();
 		GameRegistry.registerWorldGenerator(new InductionOreGenerator());
 
 		TickRegistry.registerTickHandler(new NetworkTicker(), Side.SERVER);
 
 		IntegrityChecker.instance.addMod(instance, InductionBlocks.blockList, InductionItems.itemList);
 
+		this.addRecipes();
+	}
+
+	private void addRecipes() {
 		for (int i = 0; i < WireType.wireList.length; i++) {
 			WireType wire = WireType.wireList[i];
 			wire.addCrafting();
@@ -113,6 +122,20 @@ public class Induction extends DragonAPIMod {
 		for (int i = 0; i < InductionOres.oreList.length; i++) {
 			InductionOres ore = InductionOres.oreList[i];
 			ReikaRecipeHelper.addSmelting(ore.getOreBlock(), ore.getProduct(), ore.xpDropped);
+			OreDictionary.registerOre(ore.getDictionaryName(), ore.getOreBlock());
+			OreDictionary.registerOre(ore.getProductDictionaryName(), ore.getProduct());
+		}
+
+		if (ModList.THERMALEXPANSION.isLoaded()) {
+			ItemStack is = WireType.SUPERCONDUCTOR.getCraftedProduct();
+			ItemStack is2 = WireType.SUPERCONDUCTOR.getCraftedInsulatedProduct();
+			ItemWirePlacer item = (ItemWirePlacer)InductionItems.WIRE.getItemInstance();
+			FluidStack f1 = new FluidStack(FluidRegistry.getFluid("liquid nitrogen"), item.getCapacity(is));
+			FluidStack f2 = new FluidStack(FluidRegistry.getFluid("cryotheum"), item.getCapacity(is));
+			ThermalRecipeHelper.addFluidTransposerFill(is, item.getFilledSuperconductor(false), 200, f1);
+			ThermalRecipeHelper.addFluidTransposerFill(is, item.getFilledSuperconductor(false), 200, f2);
+			ThermalRecipeHelper.addFluidTransposerFill(is2, item.getFilledSuperconductor(true), 200, f1);
+			ThermalRecipeHelper.addFluidTransposerFill(is2, item.getFilledSuperconductor(true), 200, f2);
 		}
 	}
 

@@ -196,7 +196,7 @@ public final class WireNetwork {
 
 	private int getAverageVoltageOfPaths(TileEntityMotor te) {
 		int v = 0;
-		if (this.isEmpty())
+		if (paths.isEmpty())
 			return 0;
 		for (int i = 0; i < paths.size(); i++) {
 			WirePath path = paths.get(i);

@@ -107,6 +107,14 @@ public class ItemWirePlacer extends Item implements Fillable {
 		}
 	}
 
+	public ItemStack getFilledSuperconductor(boolean insulated) {
+		ItemStack item2 = insulated ? WireType.SUPERCONDUCTOR.getCraftedInsulatedProduct() : WireType.SUPERCONDUCTOR.getCraftedProduct();
+		item2.stackTagCompound = new NBTTagCompound();
+		item2.stackTagCompound.setBoolean("fluid", true);
+		item2.stackTagCompound.setInteger("lvl", this.getCapacity(item2));
+		return item2;
+	}
+
 	@Override
 	public void addInformation(ItemStack is, EntityPlayer ep, List li, boolean par4) {
 		if (is.getItemDamage()%WireType.INS_OFFSET == WireType.SUPERCONDUCTOR.ordinal()) {
