@@ -7,15 +7,15 @@
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
  ******************************************************************************/
-package Reika.ElectroCraft.TileEntities;
+package Reika.ElectriCraft.TileEntities;
 
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import Reika.DragonAPI.Libraries.MathSci.ReikaMathLibrary;
 import Reika.RotaryCraft.API.ShaftPowerReceiver;
-import Reika.ElectroCraft.Base.ConverterTile;
-import Reika.ElectroCraft.Network.WireNetwork;
-import Reika.ElectroCraft.Registry.ElectroTiles;
+import Reika.ElectriCraft.Base.ConverterTile;
+import Reika.ElectriCraft.Network.WireNetwork;
+import Reika.ElectriCraft.Registry.ElectriTiles;
 
 public class TileEntityGenerator extends ConverterTile implements ShaftPowerReceiver {
 
@@ -45,7 +45,7 @@ public class TileEntityGenerator extends ConverterTile implements ShaftPowerRece
 
 	@Override
 	public int getIndex() {
-		return ElectroTiles.GENERATOR.ordinal();
+		return ElectriTiles.GENERATOR.ordinal();
 	}
 
 	public int getGenVoltage() {

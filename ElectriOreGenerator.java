@@ -7,29 +7,29 @@
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
  ******************************************************************************/
-package Reika.ElectroCraft;
+package Reika.ElectriCraft;
 
 import java.util.Random;
 
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.feature.WorldGenMinable;
-import Reika.ElectroCraft.Registry.ElectroOres;
+import Reika.ElectriCraft.Registry.ElectriOres;
 import cpw.mods.fml.common.IWorldGenerator;
 
-public class ElectroOreGenerator implements IWorldGenerator {
+public class ElectriOreGenerator implements IWorldGenerator {
 
 	@Override
 	public void generate(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkgen, IChunkProvider provider) {
-		for (int i = 0; i < ElectroOres.oreList.length; i++) {
-			ElectroOres ore = ElectroOres.oreList[i];
+		for (int i = 0; i < ElectriOres.oreList.length; i++) {
+			ElectriOres ore = ElectriOres.oreList[i];
 			if (ore.canGenerateInChunk(world, chunkX, chunkZ)) {
 				this.generate(ore, world, random, chunkX*16, chunkZ*16);
 			}
 		}
 	}
 
-	public static void generate(ElectroOres ore, World world, Random random, int chunkX, int chunkZ) {
+	public static void generate(ElectriOres ore, World world, Random random, int chunkX, int chunkZ) {
 		//ReikaJavaLibrary.pConsole("Generating "+ore);
 		//ReikaJavaLibrary.pConsole(chunkX+", "+chunkZ);
 		int id = ore.getBlockID();
@@ -43,7 +43,7 @@ public class ElectroOreGenerator implements IWorldGenerator {
 
 			if (ore.canGenAt(world, posX, posY, posZ)) {
 				if ((new WorldGenMinable(id, meta, ore.veinSize, ore.getReplaceableBlock())).generate(world, random, posX, posY, posZ))
-					;//ReikaJavaLibrary.pConsole(ore+" @ "+posX+", "+posY+", "+posZ, ore == ElectroOres.MAGNETITE);
+					;//ReikaJavaLibrary.pConsole(ore+" @ "+posX+", "+posY+", "+posZ, ore == ElectriOres.MAGNETITE);
 			}
 		}
 	}

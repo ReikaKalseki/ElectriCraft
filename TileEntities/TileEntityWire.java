@@ -7,7 +7,7 @@
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
  ******************************************************************************/
-package Reika.ElectroCraft.TileEntities;
+package Reika.ElectriCraft.TileEntities;
 
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
@@ -18,10 +18,10 @@ import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.ForgeDirection;
 import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
 import Reika.DragonAPI.Libraries.Registry.ReikaParticleHelper;
-import Reika.ElectroCraft.Base.NetworkTileEntity;
-import Reika.ElectroCraft.Blocks.BlockWire;
-import Reika.ElectroCraft.Registry.ElectroTiles;
-import Reika.ElectroCraft.Registry.WireType;
+import Reika.ElectriCraft.Base.NetworkTileEntity;
+import Reika.ElectriCraft.Blocks.BlockWire;
+import Reika.ElectriCraft.Registry.ElectriTiles;
+import Reika.ElectriCraft.Registry.WireType;
 
 public class TileEntityWire extends NetworkTileEntity {
 
@@ -60,7 +60,7 @@ public class TileEntityWire extends NetworkTileEntity {
 
 	@Override
 	public int getIndex() {
-		return ElectroTiles.WIRE.ordinal();
+		return ElectriTiles.WIRE.ordinal();
 	}
 
 	public boolean isConnectedOnSideAt(World world, int x, int y, int z, ForgeDirection dir) {
@@ -72,12 +72,12 @@ public class TileEntityWire extends NetworkTileEntity {
 		int meta = world.getBlockMetadata(dx, dy, dz);
 		if (id == this.getTileEntityBlockID())
 			return true;
-		ElectroTiles m = ElectroTiles.getTE(world, dx, dy, dz);
-		if (m == ElectroTiles.GENERATOR) {
+		ElectriTiles m = ElectriTiles.getTE(world, dx, dy, dz);
+		if (m == ElectriTiles.GENERATOR) {
 			TileEntityGenerator te = (TileEntityGenerator)world.getBlockTileEntity(dx, dy, dz);
 			return dir == te.getFacing();
 		}
-		if (m == ElectroTiles.MOTOR) {
+		if (m == ElectriTiles.MOTOR) {
 			TileEntityMotor te = (TileEntityMotor)world.getBlockTileEntity(dx, dy, dz);
 			return dir == te.getFacing().getOpposite();
 		}
@@ -149,7 +149,7 @@ public class TileEntityWire extends NetworkTileEntity {
 			int dx = x+dir.offsetX;
 			int dy = x+dir.offsetY;
 			int dz = x+dir.offsetZ;
-			ElectroTiles m = ElectroTiles.getTE(world, dx, dy, dz);
+			ElectriTiles m = ElectriTiles.getTE(world, dx, dy, dz);
 			if (m == this.getMachine()) {
 				TileEntityWire te = (TileEntityWire)world.getBlockTileEntity(dx, dy, dz);
 				te.connections[dir.getOpposite().ordinal()] = false;
@@ -164,7 +164,7 @@ public class TileEntityWire extends NetworkTileEntity {
 			int dx = x+dir.offsetX;
 			int dy = x+dir.offsetY;
 			int dz = x+dir.offsetZ;
-			ElectroTiles m = ElectroTiles.getTE(world, dx, dy, dz);
+			ElectriTiles m = ElectriTiles.getTE(world, dx, dy, dz);
 			if (m == this.getMachine()) {
 				TileEntityWire te = (TileEntityWire)world.getBlockTileEntity(dx, dy, dz);
 				te.connections[dir.getOpposite().ordinal()] = true;
@@ -177,8 +177,8 @@ public class TileEntityWire extends NetworkTileEntity {
 		int x = xCoord+dir.offsetX;
 		int y = yCoord+dir.offsetY;
 		int z = zCoord+dir.offsetZ;
-		ElectroTiles m = this.getMachine();
-		ElectroTiles m2 = ElectroTiles.getTE(worldObj, x, y, z);
+		ElectriTiles m = this.getMachine();
+		ElectriTiles m2 = ElectriTiles.getTE(worldObj, x, y, z);
 		if (m == m2)
 			return true;
 		//certain TEs

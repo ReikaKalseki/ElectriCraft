@@ -7,7 +7,7 @@
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
  ******************************************************************************/
-package Reika.ElectroCraft.TileEntities;
+package Reika.ElectriCraft.TileEntities;
 
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
@@ -16,9 +16,9 @@ import Reika.DragonAPI.Libraries.MathSci.ReikaMathLibrary;
 import Reika.RotaryCraft.API.ShaftPowerEmitter;
 import Reika.RotaryCraft.Registry.EngineType;
 import Reika.RotaryCraft.Registry.SoundRegistry;
-import Reika.ElectroCraft.Base.ConverterTile;
-import Reika.ElectroCraft.Network.WireNetwork;
-import Reika.ElectroCraft.Registry.ElectroTiles;
+import Reika.ElectriCraft.Base.ConverterTile;
+import Reika.ElectriCraft.Network.WireNetwork;
+import Reika.ElectriCraft.Registry.ElectriTiles;
 
 public class TileEntityMotor extends ConverterTile implements ShaftPowerEmitter {
 
@@ -51,7 +51,7 @@ public class TileEntityMotor extends ConverterTile implements ShaftPowerEmitter 
 
 	@Override
 	public int getIndex() {
-		return ElectroTiles.MOTOR.ordinal();
+		return ElectriTiles.MOTOR.ordinal();
 	}
 
 	@Override

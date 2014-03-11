@@ -7,11 +7,11 @@
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
  ******************************************************************************/
-package Reika.ElectroCraft;
+package Reika.ElectriCraft;
 
 import net.minecraft.world.World;
 
-public class ElectroCommon
+public class ElectriCommon
 {
 	public static int wireRender;
 

@@ -7,7 +7,7 @@
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
  ******************************************************************************/
-package Reika.ElectroCraft;
+package Reika.ElectriCraft;
 
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
@@ -17,15 +17,15 @@ import net.minecraftforge.client.IItemRenderer;
 import org.lwjgl.opengl.GL11;
 
 import Reika.DragonAPI.Libraries.IO.ReikaTextureHelper;
-import Reika.ElectroCraft.Registry.ElectroItems;
-import Reika.ElectroCraft.Registry.ElectroTiles;
-import Reika.ElectroCraft.Registry.WireType;
-import Reika.ElectroCraft.TileEntities.TileEntityWire;
+import Reika.ElectriCraft.Registry.ElectriItems;
+import Reika.ElectriCraft.Registry.ElectriTiles;
+import Reika.ElectriCraft.Registry.WireType;
+import Reika.ElectriCraft.TileEntities.TileEntityWire;
 
-public class ElectroItemRenderer implements IItemRenderer {
+public class ElectriItemRenderer implements IItemRenderer {
 
 
-	public ElectroItemRenderer() {
+	public ElectriItemRenderer() {
 
 	}
 
@@ -49,14 +49,14 @@ public class ElectroItemRenderer implements IItemRenderer {
 			b = -0.5F;
 			GL11.glScalef(0.5F, 0.5F, 0.5F);
 		}
-		if (item.itemID == ElectroItems.WIRE.getShiftedID()) {
-			TileEntityWire wire = (TileEntityWire)ElectroTiles.WIRE.createTEInstanceForRender();
+		if (item.itemID == ElectriItems.WIRE.getShiftedID()) {
+			TileEntityWire wire = (TileEntityWire)ElectriTiles.WIRE.createTEInstanceForRender();
 			wire.insulated = item.getItemDamage() >= WireType.INS_OFFSET;
 			wire.setBlockMetadata(item.getItemDamage()%WireType.INS_OFFSET);
 			TileEntityRenderer.instance.renderTileEntityAt(wire, a, -0.1D, b, 0.0F);
 			return;
 		}
-		ElectroTiles machine = ElectroTiles.TEList[item.getItemDamage()];
+		ElectriTiles machine = ElectriTiles.TEList[item.getItemDamage()];
 		if (machine.hasRender())
 			TileEntityRenderer.instance.renderTileEntityAt(machine.createTEInstanceForRender(), a, -0.1D, b, 0.0F);
 		else {

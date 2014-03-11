@@ -7,7 +7,7 @@
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
  ******************************************************************************/
-package Reika.ElectroCraft;
+package Reika.ElectriCraft;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
@@ -20,7 +20,7 @@ import net.minecraftforge.common.ForgeDirection;
 import org.lwjgl.opengl.GL11;
 
 import Reika.DragonAPI.Instantiable.WorldPipingRenderer;
-import Reika.ElectroCraft.TileEntities.TileEntityWire;
+import Reika.ElectriCraft.TileEntities.TileEntityWire;
 
 public class WireRenderer extends WorldPipingRenderer {
 

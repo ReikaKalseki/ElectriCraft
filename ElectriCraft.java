@@ -7,7 +7,7 @@
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
  ******************************************************************************/
-package Reika.ElectroCraft;
+package Reika.ElectriCraft;
 
 import java.net.URL;
 
@@ -31,14 +31,14 @@ import Reika.DragonAPI.Libraries.ReikaRegistryHelper;
 import Reika.DragonAPI.Libraries.Java.ReikaJavaLibrary;
 import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
 import Reika.DragonAPI.ModInteract.ThermalRecipeHelper;
-import Reika.ElectroCraft.Auxiliary.ElectroTab;
-import Reika.ElectroCraft.Items.ItemWirePlacer;
-import Reika.ElectroCraft.Registry.ElectroBlocks;
-import Reika.ElectroCraft.Registry.ElectroItems;
-import Reika.ElectroCraft.Registry.ElectroOptions;
-import Reika.ElectroCraft.Registry.ElectroOres;
-import Reika.ElectroCraft.Registry.ElectroTiles;
-import Reika.ElectroCraft.Registry.WireType;
+import Reika.ElectriCraft.Auxiliary.ElectriTab;
+import Reika.ElectriCraft.Items.ItemWirePlacer;
+import Reika.ElectriCraft.Registry.ElectriBlocks;
+import Reika.ElectriCraft.Registry.ElectriItems;
+import Reika.ElectriCraft.Registry.ElectriOptions;
+import Reika.ElectriCraft.Registry.ElectriOres;
+import Reika.ElectriCraft.Registry.ElectriTiles;
+import Reika.ElectriCraft.Registry.WireType;
 import Reika.RotaryCraft.Auxiliary.ItemStacks;
 import Reika.RotaryCraft.Auxiliary.WorktableRecipes;
 import Reika.RotaryCraft.Registry.ConfigRegistry;
@@ -55,26 +55,26 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 
-@Mod( modid = "ElectroCraft", name="Rotational Electro", version="beta", certificateFingerprint = "@GET_FINGERPRINT@", dependencies="required-after:DragonAPI")
+@Mod( modid = "ElectriCraft", name="Rotational Electri", version="beta", certificateFingerprint = "@GET_FINGERPRINT@", dependencies="required-after:DragonAPI")
 @NetworkMod(clientSideRequired = true, serverSideRequired = true/*,
-clientPacketHandlerSpec = @SidedPacketHandler(channels = { "ElectroCraftData" }, packetHandler = ClientPackets.class),
-serverPacketHandlerSpec = @SidedPacketHandler(channels = { "ElectroCraftData" }, packetHandler = ServerPackets.class)*/)
+clientPacketHandlerSpec = @SidedPacketHandler(channels = { "ElectriCraftData" }, packetHandler = ClientPackets.class),
+serverPacketHandlerSpec = @SidedPacketHandler(channels = { "ElectriCraftData" }, packetHandler = ServerPackets.class)*/)
 
-public class ElectroCraft extends DragonAPIMod {
+public class ElectriCraft extends DragonAPIMod {
 
-	@Instance("ElectroCraft")
-	public static ElectroCraft instance = new ElectroCraft();
+	@Instance("ElectriCraft")
+	public static ElectriCraft instance = new ElectriCraft();
 
-	public static CreativeTabs tabElectro = new ElectroTab(CreativeTabs.getNextID(), "Rotational Electro");
+	public static CreativeTabs tabElectri = new ElectriTab(CreativeTabs.getNextID(), "Rotational Electri");
 
-	public static final Block[] blocks = new Block[ElectroBlocks.blockList.length];
-	public static final Item[] items = new Item[ElectroItems.itemList.length];
-	public static final ControlledConfig config = new ControlledConfig(instance, ElectroOptions.optionList, ElectroBlocks.blockList, ElectroItems.itemList, null, 0);
+	public static final Block[] blocks = new Block[ElectriBlocks.blockList.length];
+	public static final Item[] items = new Item[ElectriItems.itemList.length];
+	public static final ControlledConfig config = new ControlledConfig(instance, ElectriOptions.optionList, ElectriBlocks.blockList, ElectriItems.itemList, null, 0);
 
 	public static ModLogger logger;
 
-	@SidedProxy(clientSide="Reika.ElectroCraft.ElectroClient", serverSide="Reika.ElectroCraft.ElectroCommon")
-	public static ElectroCommon proxy;
+	@SidedProxy(clientSide="Reika.ElectriCraft.ElectriClient", serverSide="Reika.ElectriCraft.ElectriCommon")
+	public static ElectriCommon proxy;
 
 	@Override
 	@EventHandler
@@ -89,33 +89,33 @@ public class ElectroCraft extends DragonAPIMod {
 
 		this.addBlocks();
 		this.addItems();
-		ElectroTiles.loadMappings();
+		ElectriTiles.loadMappings();
 
 		ReikaRegistryHelper.setupModData(instance, evt);
 		ReikaRegistryHelper.setupVersionChecking(evt);
 	}
 
 	private static void addBlocks() {
-		ReikaRegistryHelper.instantiateAndRegisterBlocks(instance, ElectroBlocks.blockList, blocks);
-		for (int i = 0; i < ElectroTiles.TEList.length; i++) {
-			GameRegistry.registerTileEntity(ElectroTiles.TEList[i].getTEClass(), "Electro"+ElectroTiles.TEList[i].getName());
-			ReikaJavaLibrary.initClass(ElectroTiles.TEList[i].getTEClass());
+		ReikaRegistryHelper.instantiateAndRegisterBlocks(instance, ElectriBlocks.blockList, blocks);
+		for (int i = 0; i < ElectriTiles.TEList.length; i++) {
+			GameRegistry.registerTileEntity(ElectriTiles.TEList[i].getTEClass(), "Electri"+ElectriTiles.TEList[i].getName());
+			ReikaJavaLibrary.initClass(ElectriTiles.TEList[i].getTEClass());
 		}
 	}
 
 	private static void addItems() {
-		ReikaRegistryHelper.instantiateAndRegisterItems(instance, ElectroItems.itemList, items);
+		ReikaRegistryHelper.instantiateAndRegisterItems(instance, ElectriItems.itemList, items);
 	}
 
 	@Override
 	@EventHandler
 	public void load(FMLInitializationEvent event) {
 		proxy.registerRenderers();
-		GameRegistry.registerWorldGenerator(new ElectroOreGenerator());
+		GameRegistry.registerWorldGenerator(new ElectriOreGenerator());
 
 		TickRegistry.registerTickHandler(new NetworkTicker(), Side.SERVER);
 
-		IntegrityChecker.instance.addMod(instance, ElectroBlocks.blockList, ElectroItems.itemList);
+		IntegrityChecker.instance.addMod(instance, ElectriBlocks.blockList, ElectriItems.itemList);
 
 		this.addRecipes();
 	}
@@ -125,8 +125,8 @@ public class ElectroCraft extends DragonAPIMod {
 			WireType wire = WireType.wireList[i];
 			wire.addCrafting();
 		}
-		for (int i = 0; i < ElectroOres.oreList.length; i++) {
-			ElectroOres ore = ElectroOres.oreList[i];
+		for (int i = 0; i < ElectriOres.oreList.length; i++) {
+			ElectriOres ore = ElectriOres.oreList[i];
 			ReikaRecipeHelper.addSmelting(ore.getOreBlock(), ore.getProduct(), ore.xpDropped);
 			OreDictionary.registerOre(ore.getDictionaryName(), ore.getOreBlock());
 			OreDictionary.registerOre(ore.getProductDictionaryName(), ore.getProduct());
@@ -143,13 +143,13 @@ public class ElectroCraft extends DragonAPIMod {
 			GameRegistry.addRecipe(w2, obj2);
 		}
 
-		ElectroTiles.GENERATOR.addOreCrafting("gts", "iGn", "ppp", 'n', "ingotNickel", 't', "ingotTin", 'p', ItemStacks.basepanel, 'g', "ingotCopper", 's', ItemStacks.steelingot, 'G', ItemStacks.generator, 'i', ItemStacks.impeller);
-		ElectroTiles.MOTOR.addOreCrafting("scs", "gCg", "BcB", 'g', ItemStacks.goldcoil, 'c', "ingotCopper", 's', "ingotSilver", 'S', ItemStacks.steelingot, 'B', ItemStacks.basepanel, 'C', ItemStacks.shaftcore);
+		ElectriTiles.GENERATOR.addOreCrafting("gts", "iGn", "ppp", 'n', "ingotNickel", 't', "ingotTin", 'p', ItemStacks.basepanel, 'g', "ingotCopper", 's', ItemStacks.steelingot, 'G', ItemStacks.generator, 'i', ItemStacks.impeller);
+		ElectriTiles.MOTOR.addOreCrafting("scs", "gCg", "BcB", 'g', ItemStacks.goldcoil, 'c', "ingotCopper", 's', "ingotSilver", 'S', ItemStacks.steelingot, 'B', ItemStacks.basepanel, 'C', ItemStacks.shaftcore);
 
 		if (ModList.THERMALEXPANSION.isLoaded()) {
 			ItemStack is = WireType.SUPERCONDUCTOR.getCraftedProduct();
 			ItemStack is2 = WireType.SUPERCONDUCTOR.getCraftedInsulatedProduct();
-			ItemWirePlacer item = (ItemWirePlacer)ElectroItems.WIRE.getItemInstance();
+			ItemWirePlacer item = (ItemWirePlacer)ElectriItems.WIRE.getItemInstance();
 			FluidStack f1 = new FluidStack(FluidRegistry.getFluid("liquid nitrogen"), item.getCapacity(is));
 			FluidStack f2 = new FluidStack(FluidRegistry.getFluid("cryotheum"), item.getCapacity(is));
 			ThermalRecipeHelper.addFluidTransposerFill(is, item.getFilledSuperconductor(false), 200, f1);
@@ -167,7 +167,7 @@ public class ElectroCraft extends DragonAPIMod {
 
 	@Override
 	public String getDisplayName() {
-		return "ElectroCraft";
+		return "ElectriCraft";
 	}
 
 	@Override
