@@ -7,7 +7,6 @@
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
  ******************************************************************************/
-
 package Reika.ElectroCraft.Renders;
 
 import net.minecraft.tileentity.TileEntity;
