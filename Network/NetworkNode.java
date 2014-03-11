@@ -7,12 +7,12 @@
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
  ******************************************************************************/
-package Reika.ElectroCraft.Network;
+package Reika.ElectriCraft.Network;
 
 import java.util.ArrayList;
 
 import net.minecraftforge.common.ForgeDirection;
-import Reika.ElectroCraft.TileEntities.TileEntityWire;
+import Reika.ElectriCraft.TileEntities.TileEntityWire;
 
 public final class NetworkNode {
 

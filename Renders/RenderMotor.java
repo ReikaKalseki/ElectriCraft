@@ -7,7 +7,7 @@
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
  ******************************************************************************/
-package Reika.ElectroCraft.Renders;
+package Reika.ElectriCraft.Renders;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.client.MinecraftForgeClient;
@@ -18,10 +18,10 @@ import Reika.DragonAPI.Interfaces.RenderFetcher;
 import Reika.DragonAPI.Libraries.Java.ReikaJavaLibrary;
 import Reika.RotaryCraft.Auxiliary.IORenderer;
 import Reika.RotaryCraft.ModInterface.ModelElecMotor;
-import Reika.ElectroCraft.Base.ElectroTERenderer;
-import Reika.ElectroCraft.TileEntities.TileEntityMotor;
+import Reika.ElectriCraft.Base.ElectriTERenderer;
+import Reika.ElectriCraft.TileEntities.TileEntityMotor;
 
-public class RenderMotor extends ElectroTERenderer
+public class RenderMotor extends ElectriTERenderer
 {
 	private ModelElecMotor ElecMotorModel = new ModelElecMotor();
 
@@ -39,7 +39,7 @@ public class RenderMotor extends ElectroTERenderer
 
 		this.setupGL(tile, par2, par4, par6);
 
-		this.bindTextureByName("/Reika/ElectroCraft/Textures/elecmotortex.png");
+		this.bindTextureByName("/Reika/ElectriCraft/Textures/elecmotortex.png");
 
 		int var11 = 0;
 		float var13;

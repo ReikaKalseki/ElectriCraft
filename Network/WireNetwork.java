@@ -7,7 +7,7 @@
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
  ******************************************************************************/
-package Reika.ElectroCraft.Network;
+package Reika.ElectriCraft.Network;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,11 +19,11 @@ import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.world.WorldEvent;
-import Reika.ElectroCraft.Auxiliary.ElectroNetworkTickEvent;
-import Reika.ElectroCraft.Base.NetworkTileEntity;
-import Reika.ElectroCraft.TileEntities.TileEntityGenerator;
-import Reika.ElectroCraft.TileEntities.TileEntityMotor;
-import Reika.ElectroCraft.TileEntities.TileEntityWire;
+import Reika.ElectriCraft.Auxiliary.ElectriNetworkTickEvent;
+import Reika.ElectriCraft.Base.NetworkTileEntity;
+import Reika.ElectriCraft.TileEntities.TileEntityGenerator;
+import Reika.ElectriCraft.TileEntities.TileEntityMotor;
+import Reika.ElectriCraft.TileEntities.TileEntityWire;
 
 public final class WireNetwork {
 
@@ -63,7 +63,7 @@ public final class WireNetwork {
 	}
 
 	@ForgeSubscribe
-	public void tick(ElectroNetworkTickEvent evt) {
+	public void tick(ElectriNetworkTickEvent evt) {
 		for (int i = 0; i < paths.size(); i++) {
 			WirePath path = paths.get(i);
 			path.tick(evt);

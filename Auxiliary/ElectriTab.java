@@ -7,29 +7,29 @@
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
  ******************************************************************************/
-package Reika.ElectroCraft.Auxiliary;
+package Reika.ElectriCraft.Auxiliary;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
-import Reika.ElectroCraft.Registry.ElectroTiles;
+import Reika.ElectriCraft.Registry.ElectriTiles;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ElectroTab extends CreativeTabs {
+public class ElectriTab extends CreativeTabs {
 
-	public ElectroTab(int position, String tabID) {
+	public ElectriTab(int position, String tabID) {
 		super(position, tabID);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public ItemStack getIconItemStack() {
-		return ElectroTiles.WIRE.getCraftedProduct();
+		return ElectriTiles.WIRE.getCraftedProduct();
 	}
 
 	@Override
 	public String getTranslatedTabLabel() {
-		return "Rotational Electro";
+		return "Rotational Electri";
 	}
 
 }

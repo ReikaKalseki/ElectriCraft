@@ -7,12 +7,12 @@
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
  ******************************************************************************/
-package Reika.ElectroCraft.Registry;
+package Reika.ElectriCraft.Registry;
 
 import Reika.DragonAPI.Interfaces.ConfigList;
-import Reika.ElectroCraft.ElectroCraft;
+import Reika.ElectriCraft.ElectriCraft;
 
-public enum ElectroOptions implements ConfigList {
+public enum ElectriOptions implements ConfigList {
 
 	EMPTY("EMPTY", true);
 
@@ -23,28 +23,28 @@ public enum ElectroOptions implements ConfigList {
 	private Class type;
 	private boolean enforcing = false;
 
-	public static final ElectroOptions[] optionList = ElectroOptions.values();
+	public static final ElectriOptions[] optionList = ElectriOptions.values();
 
-	private ElectroOptions(String l, boolean d) {
+	private ElectriOptions(String l, boolean d) {
 		label = l;
 		defaultState = d;
 		type = boolean.class;
 	}
 
-	private ElectroOptions(String l, boolean d, boolean tag) {
+	private ElectriOptions(String l, boolean d, boolean tag) {
 		label = l;
 		defaultState = d;
 		type = boolean.class;
 		enforcing = true;
 	}
 
-	private ElectroOptions(String l, int d) {
+	private ElectriOptions(String l, int d) {
 		label = l;
 		defaultValue = d;
 		type = int.class;
 	}
 
-	private ElectroOptions(String l, float d) {
+	private ElectriOptions(String l, float d) {
 		label = l;
 		defaultFloat = d;
 		type = float.class;
@@ -71,15 +71,15 @@ public enum ElectroOptions implements ConfigList {
 	}
 
 	public boolean getState() {
-		return (Boolean)ElectroCraft.config.getControl(this.ordinal());
+		return (Boolean)ElectriCraft.config.getControl(this.ordinal());
 	}
 
 	public int getValue() {
-		return (Integer)ElectroCraft.config.getControl(this.ordinal());
+		return (Integer)ElectriCraft.config.getControl(this.ordinal());
 	}
 
 	public float getFloat() {
-		return (Float)ElectroCraft.config.getControl(this.ordinal());
+		return (Float)ElectriCraft.config.getControl(this.ordinal());
 	}
 
 	public boolean isDummiedOut() {

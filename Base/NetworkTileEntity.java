@@ -7,14 +7,14 @@
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
  ******************************************************************************/
-package Reika.ElectroCraft.Base;
+package Reika.ElectriCraft.Base;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
-import Reika.ElectroCraft.Network.WireNetwork;
+import Reika.ElectriCraft.Network.WireNetwork;
 
-public abstract class NetworkTileEntity extends ElectroTileEntity {
+public abstract class NetworkTileEntity extends ElectriTileEntity {
 
 	protected WireNetwork network;
 

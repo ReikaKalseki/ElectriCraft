@@ -7,50 +7,50 @@
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
  ******************************************************************************/
-package Reika.ElectroCraft.Auxiliary;
+package Reika.ElectriCraft.Auxiliary;
 
 import java.util.HashMap;
 
 import Reika.DragonAPI.Exception.RegistrationException;
 import Reika.DragonAPI.Interfaces.RenderFetcher;
 import Reika.DragonAPI.Libraries.Java.ReikaJavaLibrary;
-import Reika.ElectroCraft.ElectroCraft;
-import Reika.ElectroCraft.Base.ElectroTERenderer;
-import Reika.ElectroCraft.Registry.ElectroTiles;
+import Reika.ElectriCraft.ElectriCraft;
+import Reika.ElectriCraft.Base.ElectriTERenderer;
+import Reika.ElectriCraft.Registry.ElectriTiles;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class ElectroRenderList {
+public class ElectriRenderList {
 
-	private static HashMap<ElectroTiles, ElectroTERenderer> renders = new HashMap<ElectroTiles, ElectroTERenderer>();
-	private static HashMap<ElectroTiles, ElectroTiles> overrides = new HashMap<ElectroTiles, ElectroTiles>();
+	private static HashMap<ElectriTiles, ElectriTERenderer> renders = new HashMap<ElectriTiles, ElectriTERenderer>();
+	private static HashMap<ElectriTiles, ElectriTiles> overrides = new HashMap<ElectriTiles, ElectriTiles>();
 
-	public static boolean addRender(ElectroTiles m, ElectroTERenderer r) {
+	public static boolean addRender(ElectriTiles m, ElectriTERenderer r) {
 		if (!renders.containsValue(r)) {
 			renders.put(m, r);
 			return true;
 		}
 		else {
-			ElectroTiles parent = ReikaJavaLibrary.getHashMapKeyByValue(renders, r);
+			ElectriTiles parent = ReikaJavaLibrary.getHashMapKeyByValue(renders, r);
 			overrides.put(m, parent);
 			return false;
 		}
 	}
 
-	public static ElectroTERenderer getRenderForMachine(ElectroTiles m) {
+	public static ElectriTERenderer getRenderForMachine(ElectriTiles m) {
 		if (overrides.containsKey(m))
 			return renders.get(overrides.get(m));
 		return renders.get(m);
 	}
 
-	public static String getRenderTexture(ElectroTiles m, RenderFetcher te) {
+	public static String getRenderTexture(ElectriTiles m, RenderFetcher te) {
 		return getRenderForMachine(m).getImageFileName(te);
 	}
 
-	public static ElectroTERenderer instantiateRenderer(ElectroTiles m) {
+	public static ElectriTERenderer instantiateRenderer(ElectriTiles m) {
 		try {
-			ElectroTERenderer r = (ElectroTERenderer)Class.forName(m.getRenderer()).newInstance();
+			ElectriTERenderer r = (ElectriTERenderer)Class.forName(m.getRenderer()).newInstance();
 			if (addRender(m, r))
 				return r;
 			else
@@ -66,7 +66,7 @@ public class ElectroRenderList {
 		}
 		catch (ClassNotFoundException e) {
 			e.printStackTrace();
-			throw new RegistrationException(ElectroCraft.instance, "No class found for Renderer "+m.getRenderer()+"!");
+			throw new RegistrationException(ElectriCraft.instance, "No class found for Renderer "+m.getRenderer()+"!");
 		}
 	}
 

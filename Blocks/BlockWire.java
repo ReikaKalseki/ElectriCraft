@@ -7,7 +7,7 @@
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
  ******************************************************************************/
-package Reika.ElectroCraft.Blocks;
+package Reika.ElectriCraft.Blocks;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,13 +35,13 @@ import Reika.RotaryCraft.RotaryCraft;
 import Reika.RotaryCraft.API.Fillable;
 import Reika.RotaryCraft.Entities.EntityDischarge;
 import Reika.RotaryCraft.Registry.SoundRegistry;
-import Reika.ElectroCraft.ElectroCraft;
-import Reika.ElectroCraft.Base.ElectroBlock;
-import Reika.ElectroCraft.Network.WireNetwork;
-import Reika.ElectroCraft.Registry.WireType;
-import Reika.ElectroCraft.TileEntities.TileEntityWire;
+import Reika.ElectriCraft.ElectriCraft;
+import Reika.ElectriCraft.Base.ElectriBlock;
+import Reika.ElectriCraft.Network.WireNetwork;
+import Reika.ElectriCraft.Registry.WireType;
+import Reika.ElectriCraft.TileEntities.TileEntityWire;
 
-public class BlockWire extends ElectroBlock implements IWailaBlock {
+public class BlockWire extends ElectriBlock implements IWailaBlock {
 
 	private static final Icon[] textures = new Icon[WireType.wireList.length];
 	private static final Icon[] insulTextures = new Icon[WireType.wireList.length];
@@ -64,7 +64,7 @@ public class BlockWire extends ElectroBlock implements IWailaBlock {
 
 	@Override
 	public final int getRenderType() {
-		return ElectroCraft.proxy.wireRender;
+		return ElectriCraft.proxy.wireRender;
 	}
 
 	@Override
@@ -106,11 +106,11 @@ public class BlockWire extends ElectroBlock implements IWailaBlock {
 	public void registerIcons(IconRegister ico) {
 		for (int i = 0; i < WireType.wireList.length; i++) {
 			WireType wire = WireType.wireList[i];
-			textures[i] = ico.registerIcon("ElectroCraft:"+wire.getIconTexture());
-			insulTextures[i] = ico.registerIcon("ElectroCraft:"+wire.getIconTexture()+"_ins");
+			textures[i] = ico.registerIcon("ElectriCraft:"+wire.getIconTexture());
+			insulTextures[i] = ico.registerIcon("ElectriCraft:"+wire.getIconTexture()+"_ins");
 
-			texturesEnd[i] = ico.registerIcon("ElectroCraft:"+wire.getIconTexture()+"_end");
-			insulTexturesEnd[i] = ico.registerIcon("ElectroCraft:"+wire.getIconTexture()+"_ins_end");
+			texturesEnd[i] = ico.registerIcon("ElectriCraft:"+wire.getIconTexture()+"_end");
+			insulTexturesEnd[i] = ico.registerIcon("ElectriCraft:"+wire.getIconTexture()+"_ins_end");
 		}
 	}
 

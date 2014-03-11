@@ -7,7 +7,7 @@
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
  ******************************************************************************/
-package Reika.ElectroCraft.Base;
+package Reika.ElectriCraft.Base;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;

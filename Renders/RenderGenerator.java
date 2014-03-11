@@ -7,7 +7,7 @@
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
  ******************************************************************************/
-package Reika.ElectroCraft.Renders;
+package Reika.ElectriCraft.Renders;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.client.MinecraftForgeClient;
@@ -17,10 +17,10 @@ import org.lwjgl.opengl.GL11;
 import Reika.DragonAPI.Interfaces.RenderFetcher;
 import Reika.RotaryCraft.Auxiliary.IORenderer;
 import Reika.RotaryCraft.ModInterface.ModelGenerator;
-import Reika.ElectroCraft.Base.ElectroTERenderer;
-import Reika.ElectroCraft.TileEntities.TileEntityGenerator;
+import Reika.ElectriCraft.Base.ElectriTERenderer;
+import Reika.ElectriCraft.TileEntities.TileEntityGenerator;
 
-public class RenderGenerator extends ElectroTERenderer
+public class RenderGenerator extends ElectriTERenderer
 {
 
 	private ModelGenerator GeneratorModel = new ModelGenerator();
@@ -37,7 +37,7 @@ public class RenderGenerator extends ElectroTERenderer
 		ModelGenerator var14;
 		var14 = GeneratorModel;
 
-		this.bindTextureByName("/Reika/ElectroCraft/Textures/generatortex.png");
+		this.bindTextureByName("/Reika/ElectriCraft/Textures/generatortex.png");
 
 		this.setupGL(tile, par2, par4, par6);
 

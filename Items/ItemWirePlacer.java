@@ -7,7 +7,7 @@
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
  ******************************************************************************/
-package Reika.ElectroCraft.Items;
+package Reika.ElectriCraft.Items;
 
 import java.util.List;
 
@@ -25,11 +25,11 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import Reika.DragonAPI.Libraries.World.ReikaWorldHelper;
 import Reika.RotaryCraft.API.Fillable;
-import Reika.ElectroCraft.ElectroCraft;
-import Reika.ElectroCraft.Registry.ElectroItems;
-import Reika.ElectroCraft.Registry.ElectroTiles;
-import Reika.ElectroCraft.Registry.WireType;
-import Reika.ElectroCraft.TileEntities.TileEntityWire;
+import Reika.ElectriCraft.ElectriCraft;
+import Reika.ElectriCraft.Registry.ElectriItems;
+import Reika.ElectriCraft.Registry.ElectriTiles;
+import Reika.ElectriCraft.Registry.WireType;
+import Reika.ElectriCraft.TileEntities.TileEntityWire;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -40,7 +40,7 @@ public class ItemWirePlacer extends Item implements Fillable {
 		this.setHasSubtypes(true);
 		this.setMaxDamage(0);
 		maxStackSize = 64;
-		this.setCreativeTab(ElectroCraft.tabElectro);
+		this.setCreativeTab(ElectriCraft.tabElectri);
 	}
 
 	@Override
@@ -74,9 +74,9 @@ public class ItemWirePlacer extends Item implements Fillable {
 			if (!ep.capabilities.isCreativeMode)
 				--is.stackSize;
 			int meta = is.getItemDamage()%WireType.INS_OFFSET;
-			world.setBlock(x, y, z, ElectroTiles.WIRE.getBlockID(), meta, 3);
+			world.setBlock(x, y, z, ElectriTiles.WIRE.getBlockID(), meta, 3);
 		}
-		world.playSoundEffect(x+0.5, y+0.5, z+0.5, ElectroTiles.WIRE.getPlaceSound(), 1F, 1.5F);
+		world.playSoundEffect(x+0.5, y+0.5, z+0.5, ElectriTiles.WIRE.getPlaceSound(), 1F, 1.5F);
 		TileEntityWire te = (TileEntityWire)world.getBlockTileEntity(x, y, z);
 		te.insulated = is.getItemDamage() >= WireType.INS_OFFSET;
 		return true;
@@ -94,7 +94,7 @@ public class ItemWirePlacer extends Item implements Fillable {
 	public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List) {
 		for (int i = 0; i < 32; i++) {
 			ItemStack item = new ItemStack(par1, 1, i);
-			if (ElectroItems.WIRE.isAvailableInCreative(item)) {
+			if (ElectriItems.WIRE.isAvailableInCreative(item)) {
 				par3List.add(item);
 				if (i%WireType.INS_OFFSET == WireType.SUPERCONDUCTOR.ordinal()) {
 					ItemStack item2 = item.copy();

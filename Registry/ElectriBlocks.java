@@ -7,48 +7,48 @@
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
  ******************************************************************************/
-package Reika.ElectroCraft.Registry;
+package Reika.ElectriCraft.Registry;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemBlock;
 import Reika.DragonAPI.Interfaces.RegistryEnum;
 import Reika.DragonAPI.Libraries.Java.ReikaStringParser;
-import Reika.ElectroCraft.ElectroCraft;
-import Reika.ElectroCraft.Blocks.BlockConverter;
-import Reika.ElectroCraft.Blocks.BlockElectroOre;
-import Reika.ElectroCraft.Blocks.BlockWire;
-import Reika.ElectroCraft.Items.ItemBlockElectroOre;
+import Reika.ElectriCraft.ElectriCraft;
+import Reika.ElectriCraft.Blocks.BlockConverter;
+import Reika.ElectriCraft.Blocks.BlockElectriOre;
+import Reika.ElectriCraft.Blocks.BlockWire;
+import Reika.ElectriCraft.Items.ItemBlockElectriOre;
 
-public enum ElectroBlocks implements RegistryEnum {
+public enum ElectriBlocks implements RegistryEnum {
 	WIRE(BlockWire.class, "Wire", false),
 	CONVERTER(BlockConverter.class, "Converter", false),
-	ORE(BlockElectroOre.class, ItemBlockElectroOre.class, "ElectroOre", true);
+	ORE(BlockElectriOre.class, ItemBlockElectriOre.class, "ElectriOre", true);
 
 	private Class blockClass;
 	private String blockName;
 	private Class itemBlock;
 	private boolean model;
 
-	public static final ElectroBlocks[] blockList = values();
+	public static final ElectriBlocks[] blockList = values();
 
-	private ElectroBlocks(Class <? extends Block> cl, Class<? extends ItemBlock> ib, String n, boolean m) {
+	private ElectriBlocks(Class <? extends Block> cl, Class<? extends ItemBlock> ib, String n, boolean m) {
 		blockClass = cl;
 		blockName = n;
 		itemBlock = ib;
 		model = m;
 	}
 
-	private ElectroBlocks(Class <? extends Block> cl, String n) {
+	private ElectriBlocks(Class <? extends Block> cl, String n) {
 		this(cl, null, n, false);
 	}
 
-	private ElectroBlocks(Class <? extends Block> cl, String n, boolean m) {
+	private ElectriBlocks(Class <? extends Block> cl, String n, boolean m) {
 		this(cl, null, n, m);
 	}
 
 	public int getBlockID() {
-		return ElectroCraft.config.getBlockID(this.ordinal());
+		return ElectriCraft.config.getBlockID(this.ordinal());
 	}
 
 	public Material getBlockMaterial() {
@@ -133,7 +133,7 @@ public enum ElectroBlocks implements RegistryEnum {
 
 	@Override
 	public String getCategory() {
-		return "Electro Blocks";
+		return "Electri Blocks";
 	}
 
 	public boolean isDummiedOut() {
@@ -141,7 +141,7 @@ public enum ElectroBlocks implements RegistryEnum {
 	}
 
 	public Block getBlockVariable() {
-		return ElectroCraft.blocks[this.ordinal()];
+		return ElectriCraft.blocks[this.ordinal()];
 	}
 
 	public boolean isModelled() {

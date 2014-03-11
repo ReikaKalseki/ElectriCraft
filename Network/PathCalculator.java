@@ -7,7 +7,7 @@
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
  ******************************************************************************/
-package Reika.ElectroCraft.Network;
+package Reika.ElectriCraft.Network;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,9 +16,9 @@ import java.util.List;
 
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
-import Reika.ElectroCraft.Registry.ElectroTiles;
-import Reika.ElectroCraft.TileEntities.TileEntityGenerator;
-import Reika.ElectroCraft.TileEntities.TileEntityMotor;
+import Reika.ElectriCraft.Registry.ElectriTiles;
+import Reika.ElectriCraft.TileEntities.TileEntityGenerator;
+import Reika.ElectriCraft.TileEntities.TileEntityMotor;
 
 public class PathCalculator {
 
@@ -61,8 +61,8 @@ public class PathCalculator {
 					}
 				}
 				else {
-					ElectroTiles t = ElectroTiles.getTE(world, dx, dy, dz);
-					if (t == ElectroTiles.WIRE) {
+					ElectriTiles t = ElectriTiles.getTE(world, dx, dy, dz);
+					if (t == ElectriTiles.WIRE) {
 						this.recursiveCalculate(world, dx, dy, dz, li);
 					}
 				}
@@ -94,8 +94,8 @@ public class PathCalculator {
 				}
 			}
 			else {
-				ElectroTiles t = ElectroTiles.getTE(world, dx, dy, dz);
-				if (t == ElectroTiles.WIRE) {
+				ElectriTiles t = ElectriTiles.getTE(world, dx, dy, dz);
+				if (t == ElectriTiles.WIRE) {
 					this.recursiveCalculate(world, dx, dy, dz, li);
 					//ReikaJavaLibrary.pConsole(dir+"@"+x+","+y+","+z+" :"+li.size(), Side.SERVER);
 				}

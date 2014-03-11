@@ -7,7 +7,7 @@
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
  ******************************************************************************/
-package Reika.ElectroCraft.Registry;
+package Reika.ElectriCraft.Registry;
 
 import java.util.List;
 
@@ -21,7 +21,7 @@ import Reika.DragonAPI.Libraries.Java.ReikaJavaLibrary;
 import Reika.DragonAPI.Libraries.Java.ReikaStringParser;
 import Reika.DragonAPI.ModInteract.ReikaTwilightHelper;
 
-public enum ElectroOres {
+public enum ElectriOres {
 
 	COPPER(		32, 64, 	6, 	6, 	0, 	0.5F,	1,	"ore.copper"),
 	TIN(		48, 72, 	8, 	12,	0, 	0.2F,	1,	"ore.tin"),
@@ -39,9 +39,9 @@ public enum ElectroOres {
 	public final int harvestLevel;
 	public final float xpDropped;
 
-	public static final ElectroOres[] oreList = values();
+	public static final ElectriOres[] oreList = values();
 
-	private ElectroOres(int min, int max, int size, int count, int dim, float xp, int level, String name) {
+	private ElectriOres(int min, int max, int size, int count, int dim, float xp, int level, String name) {
 		minY = min;
 		maxY = max;
 		veinSize = size;
@@ -57,22 +57,22 @@ public enum ElectroOres {
 		return this.name()+" "+perChunk+"x"+veinSize+" between "+minY+" and "+maxY;
 	}
 
-	public static ElectroOres getOre(IBlockAccess iba, int x, int y, int z) {
+	public static ElectriOres getOre(IBlockAccess iba, int x, int y, int z) {
 		int id = iba.getBlockId(x, y, z);
 		int meta = iba.getBlockMetadata(x, y, z);
-		if (id != ElectroBlocks.ORE.getBlockID())
+		if (id != ElectriBlocks.ORE.getBlockID())
 			return null;
 		return oreList[meta];
 	}
 
-	public static ElectroOres getOre(int id, int meta) {
-		if (id != ElectroBlocks.ORE.getBlockID())
+	public static ElectriOres getOre(int id, int meta) {
+		if (id != ElectriBlocks.ORE.getBlockID())
 			return null;
 		return oreList[meta];
 	}
 
 	public String getTextureName() {
-		return "ElectroCraft:ore"+ReikaStringParser.capFirstChar(this.name());
+		return "ElectriCraft:ore"+ReikaStringParser.capFirstChar(this.name());
 	}
 
 	public String getDictionaryName() {
@@ -87,7 +87,7 @@ public enum ElectroOres {
 	}
 
 	public int getBlockID() {
-		return ElectroBlocks.ORE.getBlockID();
+		return ElectriBlocks.ORE.getBlockID();
 	}
 
 
@@ -102,14 +102,14 @@ public enum ElectroOres {
 	public ItemStack getProduct() {
 		switch(this) {
 		default:
-			return ElectroItems.INGOTS.getStackOfMetadata(this.ordinal());
+			return ElectriItems.INGOTS.getStackOfMetadata(this.ordinal());
 		}
 	}
 
 	public List<ItemStack> getOreDrop(int meta) {
 		switch(this) {
 		default:
-			return ReikaJavaLibrary.makeListFrom(new ItemStack(ElectroBlocks.ORE.getBlockID(), 1, meta));
+			return ReikaJavaLibrary.makeListFrom(new ItemStack(ElectriBlocks.ORE.getBlockID(), 1, meta));
 		}
 	}
 
@@ -171,6 +171,6 @@ public enum ElectroOres {
 
 	public boolean dropsSelf(int meta) {
 		List<ItemStack> li = this.getOreDrop(meta);
-		return li.size() == 1 && li.get(0).itemID == ElectroBlocks.ORE.getBlockID() && li.get(0).getItemDamage() == meta;
+		return li.size() == 1 && li.get(0).itemID == ElectriBlocks.ORE.getBlockID() && li.get(0).getItemDamage() == meta;
 	}
 }

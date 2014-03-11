@@ -7,31 +7,31 @@
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
  ******************************************************************************/
-package Reika.ElectroCraft.Base;
+package Reika.ElectriCraft.Base;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 import Reika.DragonAPI.Base.TileEntityRenderBase;
 import Reika.DragonAPI.Interfaces.TextureFetcher;
-import Reika.ElectroCraft.ElectroCraft;
+import Reika.ElectriCraft.ElectriCraft;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public abstract class ElectroTERenderer extends TileEntityRenderBase implements TextureFetcher {
+public abstract class ElectriTERenderer extends TileEntityRenderBase implements TextureFetcher {
 
 	@Override
 	public final String getTextureFolder() {
-		return "/Reika/ElectroCraft/Textures/TileEntityTex/";
+		return "/Reika/ElectriCraft/Textures/TileEntityTex/";
 	}
 
 	@Override
 	protected Class getModClass() {
-		return ElectroCraft.class;
+		return ElectriCraft.class;
 	}
 
-	protected void setupGL(ElectroTileEntity tile, double par2, double par4, double par6) {
+	protected void setupGL(ElectriTileEntity tile, double par2, double par4, double par6) {
 		GL11.glPushMatrix();
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -51,7 +51,7 @@ public abstract class ElectroTERenderer extends TileEntityRenderBase implements 
 		//}
 	}
 
-	protected void closeGL(ElectroTileEntity tile) {
+	protected void closeGL(ElectriTileEntity tile) {
 		if (tile.isInWorld())
 			GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 		GL11.glPopMatrix();

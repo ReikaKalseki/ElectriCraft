@@ -7,20 +7,20 @@
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
  ******************************************************************************/
-package Reika.ElectroCraft.Items;
+package Reika.ElectriCraft.Items;
 
 import java.util.List;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import Reika.ElectroCraft.Registry.ElectroOres;
+import Reika.ElectriCraft.Registry.ElectriOres;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemBlockElectroOre extends ItemBlock {
+public class ItemBlockElectriOre extends ItemBlock {
 
-	public ItemBlockElectroOre(int ID) {
+	public ItemBlockElectriOre(int ID) {
 		super(ID);
 		hasSubtypes = true;
 		this.setMaxDamage(0);
@@ -37,12 +37,12 @@ public class ItemBlockElectroOre extends ItemBlock {
 	}
 
 	private int getDataValues() {
-		return ElectroOres.oreList.length;
+		return ElectriOres.oreList.length;
 	}
 
 	@Override
 	public String getItemDisplayName(ItemStack is) {
-		ElectroOres ore = ElectroOres.oreList[is.getItemDamage()];
+		ElectriOres ore = ElectriOres.oreList[is.getItemDamage()];
 		return ore.oreName;
 	}
 

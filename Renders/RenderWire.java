@@ -7,7 +7,7 @@
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
  ******************************************************************************/
-package Reika.ElectroCraft.Renders;
+package Reika.ElectriCraft.Renders;
 
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.tileentity.TileEntity;
@@ -17,10 +17,10 @@ import org.lwjgl.opengl.GL11;
 
 import Reika.DragonAPI.Interfaces.RenderFetcher;
 import Reika.DragonAPI.Libraries.IO.ReikaTextureHelper;
-import Reika.ElectroCraft.Base.ElectroTERenderer;
-import Reika.ElectroCraft.TileEntities.TileEntityWire;
+import Reika.ElectriCraft.Base.ElectriTERenderer;
+import Reika.ElectriCraft.TileEntities.TileEntityWire;
 
-public class RenderWire extends ElectroTERenderer {
+public class RenderWire extends ElectriTERenderer {
 
 	@Override
 	public String getImageFileName(RenderFetcher te) {
