@@ -7,16 +7,16 @@
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
  ******************************************************************************/
-package Reika.RotationalInduction.Base;
+package Reika.ElectroCraft.Base;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 
-public abstract class InductionBlock extends Block {
+public abstract class ElectroBlock extends Block {
 
-	public InductionBlock(int par1, Material par2Material) {
+	public ElectroBlock(int par1, Material par2Material) {
 		super(par1, par2Material);
 		this.setHardness(2F);
 		this.setResistance(10F);

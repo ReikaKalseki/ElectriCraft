@@ -7,17 +7,18 @@
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
  ******************************************************************************/
-package Reika.RotationalInduction.TileEntities;
+package Reika.ElectroCraft.TileEntities;
 
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import Reika.DragonAPI.Instantiable.StepTimer;
+import Reika.DragonAPI.Libraries.MathSci.ReikaMathLibrary;
 import Reika.RotaryCraft.API.ShaftPowerEmitter;
 import Reika.RotaryCraft.Registry.EngineType;
 import Reika.RotaryCraft.Registry.SoundRegistry;
-import Reika.RotationalInduction.Base.ConverterTile;
-import Reika.RotationalInduction.Network.WireNetwork;
-import Reika.RotationalInduction.Registry.InductionTiles;
+import Reika.ElectroCraft.Base.ConverterTile;
+import Reika.ElectroCraft.Network.WireNetwork;
+import Reika.ElectroCraft.Registry.ElectroTiles;
 
 public class TileEntityMotor extends ConverterTile implements ShaftPowerEmitter {
 
@@ -41,12 +42,16 @@ public class TileEntityMotor extends ConverterTile implements ShaftPowerEmitter 
 
 	@Override
 	public void animateWithTick(World world, int x, int y, int z) {
-
+		if (!this.isInWorld()) {
+			phi = 0;
+			return;
+		}
+		phi += ReikaMathLibrary.doubpow(ReikaMathLibrary.logbase(omega+1, 2), 1.05);
 	}
 
 	@Override
 	public int getIndex() {
-		return InductionTiles.MOTOR.ordinal();
+		return ElectroTiles.MOTOR.ordinal();
 	}
 
 	@Override

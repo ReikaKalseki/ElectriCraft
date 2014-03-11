@@ -7,7 +7,7 @@
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
  ******************************************************************************/
-package Reika.RotationalInduction.Network;
+package Reika.ElectroCraft.Network;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,11 +19,11 @@ import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.world.WorldEvent;
-import Reika.RotationalInduction.Auxiliary.InductionNetworkTickEvent;
-import Reika.RotationalInduction.Base.NetworkTileEntity;
-import Reika.RotationalInduction.TileEntities.TileEntityGenerator;
-import Reika.RotationalInduction.TileEntities.TileEntityMotor;
-import Reika.RotationalInduction.TileEntities.TileEntityWire;
+import Reika.ElectroCraft.Auxiliary.ElectroNetworkTickEvent;
+import Reika.ElectroCraft.Base.NetworkTileEntity;
+import Reika.ElectroCraft.TileEntities.TileEntityGenerator;
+import Reika.ElectroCraft.TileEntities.TileEntityMotor;
+import Reika.ElectroCraft.TileEntities.TileEntityWire;
 
 public final class WireNetwork {
 
@@ -32,6 +32,8 @@ public final class WireNetwork {
 	private ArrayList<TileEntityGenerator> sources = new ArrayList();
 	private HashMap<List<Integer>, NetworkNode> nodes = new HashMap();
 	private ArrayList<WirePath> paths = new ArrayList();
+
+	private ArrayList<TileEntityWire> toMelt = new ArrayList();
 
 	private boolean shorted = false;
 
@@ -61,7 +63,7 @@ public final class WireNetwork {
 	}
 
 	@ForgeSubscribe
-	public void tick(InductionNetworkTickEvent evt) {
+	public void tick(ElectroNetworkTickEvent evt) {
 		for (int i = 0; i < paths.size(); i++) {
 			WirePath path = paths.get(i);
 			path.tick(evt);
@@ -84,16 +86,15 @@ public final class WireNetwork {
 		if (shorted)
 			return 0;
 		int sv = 0;
-		int c = 0;
 		for (int i = 0; i < paths.size(); i++) {
 			WirePath path = paths.get(i);
 			if (path.containsBlock(te)) {
 				int v = path.getVoltageAt(te);
-				sv += v;
-				c++;
+				if (v > sv)
+					sv = v;
 			}
 		}
-		return c > 0 ? sv/c : 0;
+		return sv;
 	}
 
 	public int getPointCurrent(TileEntityWire te) {
@@ -201,7 +202,7 @@ public final class WireNetwork {
 		this.updateWires();
 	}
 
-	private void updateWires() {
+	public void updateWires() {
 		for (int i = 0; i < wires.size(); i++) {
 			wires.get(i).onNetworkChanged();
 		}
@@ -213,7 +214,7 @@ public final class WireNetwork {
 			for (int k = 0; k < sinks.size(); k++) {
 				PathCalculator pc = new PathCalculator(sources.get(i), sinks.get(k), this);
 				pc.calculatePaths();
-				paths.addAll(pc.getCalculatedPaths());
+				paths.add(pc.getShortestPath());
 			}
 		}
 	}
@@ -233,14 +234,14 @@ public final class WireNetwork {
 	}
 
 	public int getMotorVoltage(TileEntityMotor te) {
-		return shorted ? 0 : this.getAverageVoltageOfPaths(te);
+		return shorted ? 0 : this.getHighestVoltageOfPaths(te);
 	}
 
 	public int getNumberPaths() {
 		return paths.size();
 	}
 
-	private int getAverageVoltageOfPaths(TileEntityMotor te) {
+	private int getHighestVoltageOfPaths(TileEntityMotor te) {
 		int v = 0;
 		if (paths.isEmpty())
 			return 0;
@@ -248,10 +249,27 @@ public final class WireNetwork {
 			WirePath path = paths.get(i);
 			if (path.endsAt(te.xCoord, te.yCoord, te.zCoord)) {
 				int pv = path.getTerminalVoltage();
-				v += pv;
+				if (pv > v)
+					v = pv;
 			}
 		}
-		return v/paths.size();
+		return v;
+	}
+
+	private int getAverageVoltageOfPaths(TileEntityMotor te) {
+		int v = 0;
+		int c = 0;
+		if (paths.isEmpty())
+			return 0;
+		for (int i = 0; i < paths.size(); i++) {
+			WirePath path = paths.get(i);
+			if (path.endsAt(te.xCoord, te.yCoord, te.zCoord)) {
+				int pv = path.getTerminalVoltage();
+				v += pv;
+				c++;
+			}
+		}
+		return c > 0 ? v/c : 0;
 	}
 
 	public boolean hasNode(int x, int y, int z) {
@@ -305,6 +323,17 @@ public final class WireNetwork {
 			NetworkTileEntity te = li.get(i);
 			te.findAndJoinNetwork(te.worldObj, te.xCoord, te.yCoord, te.zCoord);
 		}
+	}
+
+	public int getNumberPathsStartingAt(TileEntityGenerator start) {
+		int c = 0;
+		for (int i = 0; i < paths.size(); i++) {
+			WirePath path = paths.get(i);
+			if (path.startsAt(start.xCoord, start.yCoord, start.zCoord)) {
+				c++;
+			}
+		}
+		return c;
 	}
 
 }

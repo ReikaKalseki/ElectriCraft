@@ -8,7 +8,7 @@
  * explicit, prior permission from the owner.
  ******************************************************************************/
 
-package Reika.RotationalInduction.Renders;
+package Reika.ElectroCraft.Renders;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.client.MinecraftForgeClient;
@@ -19,10 +19,10 @@ import Reika.DragonAPI.Interfaces.RenderFetcher;
 import Reika.DragonAPI.Libraries.Java.ReikaJavaLibrary;
 import Reika.RotaryCraft.Auxiliary.IORenderer;
 import Reika.RotaryCraft.ModInterface.ModelElecMotor;
-import Reika.RotationalInduction.Base.InductionTERenderer;
-import Reika.RotationalInduction.TileEntities.TileEntityMotor;
+import Reika.ElectroCraft.Base.ElectroTERenderer;
+import Reika.ElectroCraft.TileEntities.TileEntityMotor;
 
-public class RenderMotor extends InductionTERenderer
+public class RenderMotor extends ElectroTERenderer
 {
 	private ModelElecMotor ElecMotorModel = new ModelElecMotor();
 
@@ -40,7 +40,7 @@ public class RenderMotor extends InductionTERenderer
 
 		this.setupGL(tile, par2, par4, par6);
 
-		this.bindTextureByName("/Reika/RotationalInduction/Textures/elecmotortex.png");
+		this.bindTextureByName("/Reika/ElectroCraft/Textures/elecmotortex.png");
 
 		int var11 = 0;
 		float var13;

@@ -7,7 +7,7 @@
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
  ******************************************************************************/
-package Reika.RotationalInduction.Blocks;
+package Reika.ElectroCraft.Blocks;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,13 +35,13 @@ import Reika.RotaryCraft.RotaryCraft;
 import Reika.RotaryCraft.API.Fillable;
 import Reika.RotaryCraft.Entities.EntityDischarge;
 import Reika.RotaryCraft.Registry.SoundRegistry;
-import Reika.RotationalInduction.Induction;
-import Reika.RotationalInduction.Base.InductionBlock;
-import Reika.RotationalInduction.Network.WireNetwork;
-import Reika.RotationalInduction.Registry.WireType;
-import Reika.RotationalInduction.TileEntities.TileEntityWire;
+import Reika.ElectroCraft.ElectroCraft;
+import Reika.ElectroCraft.Base.ElectroBlock;
+import Reika.ElectroCraft.Network.WireNetwork;
+import Reika.ElectroCraft.Registry.WireType;
+import Reika.ElectroCraft.TileEntities.TileEntityWire;
 
-public class BlockWire extends InductionBlock implements IWailaBlock {
+public class BlockWire extends ElectroBlock implements IWailaBlock {
 
 	private static final Icon[] textures = new Icon[WireType.wireList.length];
 	private static final Icon[] insulTextures = new Icon[WireType.wireList.length];
@@ -54,6 +54,7 @@ public class BlockWire extends InductionBlock implements IWailaBlock {
 		this.setStepSound(soundClothFootstep);
 		this.setHardness(0.5F);
 		this.setResistance(4F);
+		this.setBlockBounds(0.25F, 0.25F, 0.25F, 0.75F, 0.75F, 0.75F);
 	}
 
 	@Override
@@ -63,7 +64,7 @@ public class BlockWire extends InductionBlock implements IWailaBlock {
 
 	@Override
 	public final int getRenderType() {
-		return Induction.proxy.wireRender;
+		return ElectroCraft.proxy.wireRender;
 	}
 
 	@Override
@@ -105,11 +106,11 @@ public class BlockWire extends InductionBlock implements IWailaBlock {
 	public void registerIcons(IconRegister ico) {
 		for (int i = 0; i < WireType.wireList.length; i++) {
 			WireType wire = WireType.wireList[i];
-			textures[i] = ico.registerIcon("rotationalinduction:"+wire.getIconTexture());
-			insulTextures[i] = ico.registerIcon("rotationalinduction:"+wire.getIconTexture()+"_ins");
+			textures[i] = ico.registerIcon("ElectroCraft:"+wire.getIconTexture());
+			insulTextures[i] = ico.registerIcon("ElectroCraft:"+wire.getIconTexture()+"_ins");
 
-			texturesEnd[i] = ico.registerIcon("rotationalinduction:"+wire.getIconTexture()+"_end");
-			insulTexturesEnd[i] = ico.registerIcon("rotationalinduction:"+wire.getIconTexture()+"_ins_end");
+			texturesEnd[i] = ico.registerIcon("ElectroCraft:"+wire.getIconTexture()+"_end");
+			insulTexturesEnd[i] = ico.registerIcon("ElectroCraft:"+wire.getIconTexture()+"_ins_end");
 		}
 	}
 
@@ -181,6 +182,10 @@ public class BlockWire extends InductionBlock implements IWailaBlock {
 		return ReikaAABBHelper.getBlockAABB(x, y, z).contract(d, d, d);
 	}
 
+	public void getBlockRenderBounds() {
+
+	}
+
 	@Override
 	public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity e) {
 		if (!world.isRemote) {
@@ -213,7 +218,13 @@ public class BlockWire extends InductionBlock implements IWailaBlock {
 	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
 	{
 		TileEntityWire te = (TileEntityWire)world.getBlockTileEntity(x, y, z);
-		return te.insulated ? te.getWireType().getCraftedInsulatedProduct() : te.getWireType().getCraftedProduct();
+		ItemStack is = te.insulated ? te.getWireType().getCraftedInsulatedProduct() : te.getWireType().getCraftedProduct();
+		if (te.getWireType() == WireType.SUPERCONDUCTOR) {
+			is.stackTagCompound = new NBTTagCompound();
+			is.stackTagCompound.setBoolean("fluid", true);
+			is.stackTagCompound.setInteger("lvl", 25);
+		}
+		return is;
 	}
 
 	@Override

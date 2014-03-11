@@ -7,12 +7,12 @@
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
  ******************************************************************************/
-package Reika.RotationalInduction.Network;
+package Reika.ElectroCraft.Network;
 
 import java.util.ArrayList;
 
 import net.minecraftforge.common.ForgeDirection;
-import Reika.RotationalInduction.TileEntities.TileEntityWire;
+import Reika.ElectroCraft.TileEntities.TileEntityWire;
 
 public final class NetworkNode {
 

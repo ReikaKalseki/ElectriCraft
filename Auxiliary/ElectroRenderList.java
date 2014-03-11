@@ -7,50 +7,50 @@
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
  ******************************************************************************/
-package Reika.RotationalInduction.Auxiliary;
+package Reika.ElectroCraft.Auxiliary;
 
 import java.util.HashMap;
 
 import Reika.DragonAPI.Exception.RegistrationException;
 import Reika.DragonAPI.Interfaces.RenderFetcher;
 import Reika.DragonAPI.Libraries.Java.ReikaJavaLibrary;
-import Reika.RotationalInduction.Induction;
-import Reika.RotationalInduction.Base.InductionTERenderer;
-import Reika.RotationalInduction.Registry.InductionTiles;
+import Reika.ElectroCraft.ElectroCraft;
+import Reika.ElectroCraft.Base.ElectroTERenderer;
+import Reika.ElectroCraft.Registry.ElectroTiles;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class InductionRenderList {
+public class ElectroRenderList {
 
-	private static HashMap<InductionTiles, InductionTERenderer> renders = new HashMap<InductionTiles, InductionTERenderer>();
-	private static HashMap<InductionTiles, InductionTiles> overrides = new HashMap<InductionTiles, InductionTiles>();
+	private static HashMap<ElectroTiles, ElectroTERenderer> renders = new HashMap<ElectroTiles, ElectroTERenderer>();
+	private static HashMap<ElectroTiles, ElectroTiles> overrides = new HashMap<ElectroTiles, ElectroTiles>();
 
-	public static boolean addRender(InductionTiles m, InductionTERenderer r) {
+	public static boolean addRender(ElectroTiles m, ElectroTERenderer r) {
 		if (!renders.containsValue(r)) {
 			renders.put(m, r);
 			return true;
 		}
 		else {
-			InductionTiles parent = ReikaJavaLibrary.getHashMapKeyByValue(renders, r);
+			ElectroTiles parent = ReikaJavaLibrary.getHashMapKeyByValue(renders, r);
 			overrides.put(m, parent);
 			return false;
 		}
 	}
 
-	public static InductionTERenderer getRenderForMachine(InductionTiles m) {
+	public static ElectroTERenderer getRenderForMachine(ElectroTiles m) {
 		if (overrides.containsKey(m))
 			return renders.get(overrides.get(m));
 		return renders.get(m);
 	}
 
-	public static String getRenderTexture(InductionTiles m, RenderFetcher te) {
+	public static String getRenderTexture(ElectroTiles m, RenderFetcher te) {
 		return getRenderForMachine(m).getImageFileName(te);
 	}
 
-	public static InductionTERenderer instantiateRenderer(InductionTiles m) {
+	public static ElectroTERenderer instantiateRenderer(ElectroTiles m) {
 		try {
-			InductionTERenderer r = (InductionTERenderer)Class.forName(m.getRenderer()).newInstance();
+			ElectroTERenderer r = (ElectroTERenderer)Class.forName(m.getRenderer()).newInstance();
 			if (addRender(m, r))
 				return r;
 			else
@@ -66,7 +66,7 @@ public class InductionRenderList {
 		}
 		catch (ClassNotFoundException e) {
 			e.printStackTrace();
-			throw new RegistrationException(Induction.instance, "No class found for Renderer "+m.getRenderer()+"!");
+			throw new RegistrationException(ElectroCraft.instance, "No class found for Renderer "+m.getRenderer()+"!");
 		}
 	}
 

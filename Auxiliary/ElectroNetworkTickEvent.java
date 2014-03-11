@@ -7,12 +7,12 @@
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
  ******************************************************************************/
-package Reika.RotationalInduction.Auxiliary;
+package Reika.ElectroCraft.Auxiliary;
 
 import net.minecraft.world.World;
 import net.minecraftforge.event.Event;
 
-public class InductionNetworkTickEvent extends Event {
+public class ElectroNetworkTickEvent extends Event {
 
 	private static int currentIndex = 0;
 
@@ -21,7 +21,7 @@ public class InductionNetworkTickEvent extends Event {
 	public final long systemTime;
 	public final int tickIndex;
 
-	public InductionNetworkTickEvent(World world) {
+	public ElectroNetworkTickEvent(World world) {
 		networkWorld = world;
 		tickIndex = currentIndex;
 		worldTime = world.getTotalWorldTime();

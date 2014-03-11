@@ -7,12 +7,12 @@
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
  ******************************************************************************/
-package Reika.RotationalInduction.Registry;
+package Reika.ElectroCraft.Registry;
 
 import Reika.DragonAPI.Interfaces.ConfigList;
-import Reika.RotationalInduction.Induction;
+import Reika.ElectroCraft.ElectroCraft;
 
-public enum InductionOptions implements ConfigList {
+public enum ElectroOptions implements ConfigList {
 
 	EMPTY("EMPTY", true);
 
@@ -23,28 +23,28 @@ public enum InductionOptions implements ConfigList {
 	private Class type;
 	private boolean enforcing = false;
 
-	public static final InductionOptions[] optionList = InductionOptions.values();
+	public static final ElectroOptions[] optionList = ElectroOptions.values();
 
-	private InductionOptions(String l, boolean d) {
+	private ElectroOptions(String l, boolean d) {
 		label = l;
 		defaultState = d;
 		type = boolean.class;
 	}
 
-	private InductionOptions(String l, boolean d, boolean tag) {
+	private ElectroOptions(String l, boolean d, boolean tag) {
 		label = l;
 		defaultState = d;
 		type = boolean.class;
 		enforcing = true;
 	}
 
-	private InductionOptions(String l, int d) {
+	private ElectroOptions(String l, int d) {
 		label = l;
 		defaultValue = d;
 		type = int.class;
 	}
 
-	private InductionOptions(String l, float d) {
+	private ElectroOptions(String l, float d) {
 		label = l;
 		defaultFloat = d;
 		type = float.class;
@@ -71,15 +71,15 @@ public enum InductionOptions implements ConfigList {
 	}
 
 	public boolean getState() {
-		return (Boolean)Induction.config.getControl(this.ordinal());
+		return (Boolean)ElectroCraft.config.getControl(this.ordinal());
 	}
 
 	public int getValue() {
-		return (Integer)Induction.config.getControl(this.ordinal());
+		return (Integer)ElectroCraft.config.getControl(this.ordinal());
 	}
 
 	public float getFloat() {
-		return (Float)Induction.config.getControl(this.ordinal());
+		return (Float)ElectroCraft.config.getControl(this.ordinal());
 	}
 
 	public boolean isDummiedOut() {

@@ -7,7 +7,7 @@
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
  ******************************************************************************/
-package Reika.RotationalInduction.Base;
+package Reika.ElectroCraft.Base;
 
 import java.util.List;
 
@@ -16,19 +16,19 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import Reika.DragonAPI.Interfaces.IndexedItemSprites;
-import Reika.RotationalInduction.Induction;
-import Reika.RotationalInduction.Registry.InductionItems;
+import Reika.ElectroCraft.ElectroCraft;
+import Reika.ElectroCraft.Registry.ElectroItems;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class InductionItemBase extends Item implements IndexedItemSprites {
+public class ElectroItemBase extends Item implements IndexedItemSprites {
 
 	private int index;
 
-	public InductionItemBase(int ID, int tex) {
+	public ElectroItemBase(int ID, int tex) {
 		super(ID);
 		index = tex;
-		this.setCreativeTab(Induction.tabInduction);
+		this.setCreativeTab(ElectroCraft.tabElectro);
 		if (this.getDataValues() > 1) {
 			hasSubtypes = true;
 			this.setMaxDamage(0);
@@ -51,7 +51,7 @@ public class InductionItemBase extends Item implements IndexedItemSprites {
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(int ID, CreativeTabs cr, List li)
 	{
-		InductionItems ri = InductionItems.getEntryByID(ID);
+		ElectroItems ri = ElectroItems.getEntryByID(ID);
 		for (int i = 0; i < this.getDataValues(); i++) {
 			ItemStack item = new ItemStack(ID, 1, i);
 			if (ri.isAvailableInCreative(item))
@@ -60,7 +60,7 @@ public class InductionItemBase extends Item implements IndexedItemSprites {
 	}
 
 	public final int getDataValues() {
-		InductionItems i = InductionItems.getEntryByID(itemID);
+		ElectroItems i = ElectroItems.getEntryByID(itemID);
 		if (i == null)
 			return 0;
 		return i.getNumberMetadatas();
@@ -75,11 +75,11 @@ public class InductionItemBase extends Item implements IndexedItemSprites {
 	}
 
 	public Class getTextureReferenceClass() {
-		return Induction.class;
+		return ElectroCraft.class;
 	}
 
 	@Override
 	public String getTexture(ItemStack is) {
-		return "/Reika/RotationalInduction/Textures/Items/items1.png";
+		return "/Reika/ElectroCraft/Textures/Items/items1.png";
 	}
 }

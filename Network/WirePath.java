@@ -7,16 +7,16 @@
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
  ******************************************************************************/
-package Reika.RotationalInduction.Network;
+package Reika.ElectroCraft.Network;
 
 import java.util.LinkedList;
 import java.util.List;
 
 import net.minecraft.world.World;
-import Reika.RotationalInduction.Auxiliary.InductionNetworkTickEvent;
-import Reika.RotationalInduction.TileEntities.TileEntityGenerator;
-import Reika.RotationalInduction.TileEntities.TileEntityMotor;
-import Reika.RotationalInduction.TileEntities.TileEntityWire;
+import Reika.ElectroCraft.Auxiliary.ElectroNetworkTickEvent;
+import Reika.ElectroCraft.TileEntities.TileEntityGenerator;
+import Reika.ElectroCraft.TileEntities.TileEntityMotor;
+import Reika.ElectroCraft.TileEntities.TileEntityWire;
 
 public final class WirePath {
 
@@ -99,7 +99,7 @@ public final class WirePath {
 		return nodes.contains(te);
 	}
 
-	void tick(InductionNetworkTickEvent evt) {
+	void tick(ElectroNetworkTickEvent evt) {
 		//int current = this.getPathCurrent();
 
 	}
@@ -121,7 +121,7 @@ public final class WirePath {
 	}
 
 	public int getPathCurrent() {
-		return start.getGenCurrent()/net.getNumberPaths();
+		return start.getGenCurrent()/net.getNumberPathsStartingAt(start);
 	}
 
 }

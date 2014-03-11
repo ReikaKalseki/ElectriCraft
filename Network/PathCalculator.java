@@ -7,7 +7,7 @@
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
  ******************************************************************************/
-package Reika.RotationalInduction.Network;
+package Reika.ElectroCraft.Network;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,9 +16,9 @@ import java.util.List;
 
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
-import Reika.RotationalInduction.Registry.InductionTiles;
-import Reika.RotationalInduction.TileEntities.TileEntityGenerator;
-import Reika.RotationalInduction.TileEntities.TileEntityMotor;
+import Reika.ElectroCraft.Registry.ElectroTiles;
+import Reika.ElectroCraft.TileEntities.TileEntityGenerator;
+import Reika.ElectroCraft.TileEntities.TileEntityMotor;
 
 public class PathCalculator {
 
@@ -61,8 +61,8 @@ public class PathCalculator {
 					}
 				}
 				else {
-					InductionTiles t = InductionTiles.getTE(world, dx, dy, dz);
-					if (t == InductionTiles.WIRE) {
+					ElectroTiles t = ElectroTiles.getTE(world, dx, dy, dz);
+					if (t == ElectroTiles.WIRE) {
 						this.recursiveCalculate(world, dx, dy, dz, li);
 					}
 				}
@@ -94,8 +94,8 @@ public class PathCalculator {
 				}
 			}
 			else {
-				InductionTiles t = InductionTiles.getTE(world, dx, dy, dz);
-				if (t == InductionTiles.WIRE) {
+				ElectroTiles t = ElectroTiles.getTE(world, dx, dy, dz);
+				if (t == ElectroTiles.WIRE) {
 					this.recursiveCalculate(world, dx, dy, dz, li);
 					//ReikaJavaLibrary.pConsole(dir+"@"+x+","+y+","+z+" :"+li.size(), Side.SERVER);
 				}
@@ -109,8 +109,22 @@ public class PathCalculator {
 		return end.worldObj == world && x == end.xCoord && y == end.yCoord && z == end.zCoord;
 	}
 
-	public ArrayList<WirePath> getCalculatedPaths() {
+	ArrayList<WirePath> getCalculatedPaths() {
 		return paths;
+	}
+
+	public WirePath getShortestPath() {
+		int index = -1;
+		int length = Integer.MAX_VALUE;
+		for (int i = 0; i < paths.size(); i++) {
+			WirePath path = paths.get(i);
+			int l = path.getLength();
+			if (l < length) {
+				length = l;
+				index = i;
+			}
+		}
+		return paths.get(index);
 	}
 
 }

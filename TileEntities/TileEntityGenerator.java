@@ -7,30 +7,45 @@
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
  ******************************************************************************/
-package Reika.RotationalInduction.TileEntities;
+package Reika.ElectroCraft.TileEntities;
 
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
+import Reika.DragonAPI.Libraries.MathSci.ReikaMathLibrary;
 import Reika.RotaryCraft.API.ShaftPowerReceiver;
-import Reika.RotationalInduction.Base.ConverterTile;
-import Reika.RotationalInduction.Network.WireNetwork;
-import Reika.RotationalInduction.Registry.InductionTiles;
+import Reika.ElectroCraft.Base.ConverterTile;
+import Reika.ElectroCraft.Network.WireNetwork;
+import Reika.ElectroCraft.Registry.ElectroTiles;
 
 public class TileEntityGenerator extends ConverterTile implements ShaftPowerReceiver {
+
+	private int lastomega;
+	private int lasttorque;
 
 	@Override
 	public void updateEntity(World world, int x, int y, int z, int meta) {
 		super.updateEntity(world, x, y, z, meta);
+
+		if (!world.isRemote)
+			if (omega != lastomega || torque != lasttorque)
+				network.updateWires();
+
+		lastomega = omega;
+		lasttorque = torque;
 	}
 
 	@Override
 	public void animateWithTick(World world, int x, int y, int z) {
-
+		if (!this.isInWorld()) {
+			phi = 0;
+			return;
+		}
+		phi += ReikaMathLibrary.doubpow(ReikaMathLibrary.logbase(omega+1, 2), 1.05);
 	}
 
 	@Override
 	public int getIndex() {
-		return InductionTiles.GENERATOR.ordinal();
+		return ElectroTiles.GENERATOR.ordinal();
 	}
 
 	public int getGenVoltage() {
@@ -76,5 +91,6 @@ public class TileEntityGenerator extends ConverterTile implements ShaftPowerRece
 	public void noInputMachine() {
 		omega = torque = 0;
 		power = 0;
+		network.updateWires();
 	}
 }

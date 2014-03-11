@@ -7,15 +7,15 @@
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
  ******************************************************************************/
-package Reika.RotationalInduction;
+package Reika.ElectroCraft;
 
 import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
 import Reika.DragonAPI.Instantiable.Rendering.ItemSpriteSheetRenderer;
-import Reika.RotationalInduction.Auxiliary.InductionRenderList;
-import Reika.RotationalInduction.Base.InductionTERenderer;
-import Reika.RotationalInduction.Registry.InductionItems;
-import Reika.RotationalInduction.Registry.InductionTiles;
+import Reika.ElectroCraft.Auxiliary.ElectroRenderList;
+import Reika.ElectroCraft.Base.ElectroTERenderer;
+import Reika.ElectroCraft.Registry.ElectroItems;
+import Reika.ElectroCraft.Registry.ElectroTiles;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -23,11 +23,11 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
-public class InductionClient extends InductionCommon
+public class ElectroClient extends ElectroCommon
 {
-	public static final ItemSpriteSheetRenderer items = new ItemSpriteSheetRenderer(Induction.instance, Induction.class, "Textures/items.png");
+	private final ItemSpriteSheetRenderer items = new ItemSpriteSheetRenderer(ElectroCraft.instance, ElectroCraft.class, "Textures/Items/items.png");
 
-	public static final InductionItemRenderer machineItems = new InductionItemRenderer();
+	public static final ElectroItemRenderer machineItems = new ElectroItemRenderer();
 
 	public static WireRenderer wire;
 
@@ -53,23 +53,23 @@ public class InductionClient extends InductionCommon
 	}
 
 	public void loadModels() {
-		for (int i = 0; i < InductionTiles.TEList.length; i++) {
-			InductionTiles m = InductionTiles.TEList[i];
+		for (int i = 0; i < ElectroTiles.TEList.length; i++) {
+			ElectroTiles m = ElectroTiles.TEList[i];
 			if (m.hasRender()) {
-				InductionTERenderer render = InductionRenderList.instantiateRenderer(m);
+				ElectroTERenderer render = ElectroRenderList.instantiateRenderer(m);
 				ClientRegistry.bindTileEntitySpecialRenderer(m.getTEClass(), render);
 			}
 		}
 
-		MinecraftForgeClient.registerItemRenderer(InductionItems.PLACER.getShiftedID(), machineItems);
-		MinecraftForgeClient.registerItemRenderer(InductionItems.WIRE.getShiftedID(), machineItems);
+		MinecraftForgeClient.registerItemRenderer(ElectroItems.PLACER.getShiftedID(), machineItems);
+		MinecraftForgeClient.registerItemRenderer(ElectroItems.WIRE.getShiftedID(), machineItems);
 	}
 
 	private void registerSpriteSheets() {
-		for (int i = 0; i < InductionItems.itemList.length; i++) {
-			InductionItems ii = InductionItems.itemList[i];
+		for (int i = 0; i < ElectroItems.itemList.length; i++) {
+			ElectroItems ii = ElectroItems.itemList[i];
 			if (!ii.isPlacerItem())
-				MinecraftForgeClient.registerItemRenderer(InductionItems.itemList[i].getShiftedID(), items);
+				MinecraftForgeClient.registerItemRenderer(ElectroItems.itemList[i].getShiftedID(), items);
 		}
 	}
 

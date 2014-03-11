@@ -7,7 +7,7 @@
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
  ******************************************************************************/
-package Reika.RotationalInduction.Registry;
+package Reika.ElectroCraft.Registry;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -21,16 +21,16 @@ import Reika.DragonAPI.Libraries.ReikaRecipeHelper;
 import Reika.DragonAPI.Libraries.Java.ReikaStringParser;
 import Reika.DragonAPI.Libraries.MathSci.ReikaMathLibrary;
 import Reika.RotaryCraft.Auxiliary.WorktableRecipes;
-import Reika.RotationalInduction.Induction;
-import Reika.RotationalInduction.Base.InductionItemBase;
-import Reika.RotationalInduction.Items.ItemInductionPlacer;
-import Reika.RotationalInduction.Items.ItemWirePlacer;
+import Reika.ElectroCraft.ElectroCraft;
+import Reika.ElectroCraft.Base.ElectroItemBase;
+import Reika.ElectroCraft.Items.ItemElectroPlacer;
+import Reika.ElectroCraft.Items.ItemWirePlacer;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-public enum InductionItems implements RegistryEnum {
+public enum ElectroItems implements RegistryEnum {
 
-	PLACER(0, false, "item.placer", ItemInductionPlacer.class),
-	INGOTS(16, true, "item.inductioningots", InductionItemBase.class),
+	PLACER(0, false, "item.placer", ItemElectroPlacer.class),
+	INGOTS(16, true, "item.Electroingots", ElectroItemBase.class),
 	WIRE(32, true, "machine.wire", ItemWirePlacer.class);
 
 	private int index;
@@ -40,21 +40,21 @@ public enum InductionItems implements RegistryEnum {
 
 	private int maxindex;
 
-	private InductionItems(int tex, boolean sub, String n, Class <?extends Item> iCl) {
+	private ElectroItems(int tex, boolean sub, String n, Class <?extends Item> iCl) {
 		index = tex;
 		hasSubtypes = sub;
 		name = n;
 		itemClass = iCl;
 	}
 
-	public static final InductionItems[] itemList = values();
+	public static final ElectroItems[] itemList = values();
 
 	public Class[] getConstructorParamTypes() {
 		return new Class[]{int.class, int.class}; // ID, Sprite index
 	}
 
 	public Object[] getConstructorParams() {
-		return new Object[]{Induction.config.getItemID(this.ordinal()), this.getTextureIndex()};
+		return new Object[]{ElectroCraft.config.getItemID(this.ordinal()), this.getTextureIndex()};
 	}
 
 	public int getTextureIndex() {
@@ -73,16 +73,16 @@ public enum InductionItems implements RegistryEnum {
 		return false;
 	}
 
-	public static InductionItems getEntryByID(int id) {
+	public static ElectroItems getEntryByID(int id) {
 		for (int i = 0; i < itemList.length; i++) {
 			if (itemList[i].getShiftedID() == id)
 				return itemList[i];
 		}
-		//throw new RegistrationException(RotationalInduction.instance, "Item ID "+id+" was called to the item registry but does not exist there!");
+		//throw new RegistrationException(ElectroCraft.instance, "Item ID "+id+" was called to the item registry but does not exist there!");
 		return null;
 	}
 
-	public static InductionItems getEntry(ItemStack is) {
+	public static ElectroItems getEntry(ItemStack is) {
 		if (is == null)
 			return null;
 		return getEntryByID(is.itemID);
@@ -105,7 +105,7 @@ public enum InductionItems implements RegistryEnum {
 		if (!this.hasMultiValuedName())
 			throw new RuntimeException("Item "+name+" was called for a multi-name, yet does not have one!");
 		if (this == INGOTS)
-			return StatCollector.translateToLocal("ingot."+InductionOres.oreList[dmg].name().toLowerCase());
+			return StatCollector.translateToLocal("ingot."+ElectroOres.oreList[dmg].name().toLowerCase());
 		if (this == WIRE) {
 			int d = dmg%WireType.INS_OFFSET;
 			String s = dmg >= WireType.INS_OFFSET ? "wire.insulated." : "wire.";
@@ -119,15 +119,15 @@ public enum InductionItems implements RegistryEnum {
 	}
 
 	public int getID() {
-		return Induction.config.getItemID(this.ordinal());
+		return ElectroCraft.config.getItemID(this.ordinal());
 	}
 
 	public int getShiftedID() {
-		return Induction.config.getItemID(this.ordinal())+256;
+		return ElectroCraft.config.getItemID(this.ordinal())+256;
 	}
 
 	public Item getItemInstance() {
-		return Induction.items[this.ordinal()];
+		return ElectroCraft.items[this.ordinal()];
 	}
 
 	public boolean hasMultiValuedName() {
@@ -143,11 +143,11 @@ public enum InductionItems implements RegistryEnum {
 			return 1;
 		switch(this) {
 		case INGOTS:
-			return InductionOres.oreList.length;
+			return ElectroOres.oreList.length;
 		case WIRE:
 			return WireType.INS_OFFSET*2;
 		default:
-			throw new RegistrationException(Induction.instance, "Item "+name+" has subtypes but the number was not specified!");
+			throw new RegistrationException(ElectroCraft.instance, "Item "+name+" has subtypes but the number was not specified!");
 		}
 	}
 

@@ -7,7 +7,7 @@
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
  ******************************************************************************/
-package Reika.RotationalInduction.Items;
+package Reika.ElectroCraft.Items;
 
 import java.util.List;
 
@@ -25,11 +25,11 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import Reika.DragonAPI.Libraries.World.ReikaWorldHelper;
 import Reika.RotaryCraft.API.Fillable;
-import Reika.RotationalInduction.Induction;
-import Reika.RotationalInduction.Registry.InductionItems;
-import Reika.RotationalInduction.Registry.InductionTiles;
-import Reika.RotationalInduction.Registry.WireType;
-import Reika.RotationalInduction.TileEntities.TileEntityWire;
+import Reika.ElectroCraft.ElectroCraft;
+import Reika.ElectroCraft.Registry.ElectroItems;
+import Reika.ElectroCraft.Registry.ElectroTiles;
+import Reika.ElectroCraft.Registry.WireType;
+import Reika.ElectroCraft.TileEntities.TileEntityWire;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -40,7 +40,7 @@ public class ItemWirePlacer extends Item implements Fillable {
 		this.setHasSubtypes(true);
 		this.setMaxDamage(0);
 		maxStackSize = 64;
-		this.setCreativeTab(Induction.tabInduction);
+		this.setCreativeTab(ElectroCraft.tabElectro);
 	}
 
 	@Override
@@ -74,9 +74,9 @@ public class ItemWirePlacer extends Item implements Fillable {
 			if (!ep.capabilities.isCreativeMode)
 				--is.stackSize;
 			int meta = is.getItemDamage()%WireType.INS_OFFSET;
-			world.setBlock(x, y, z, InductionTiles.WIRE.getBlockID(), meta, 3);
+			world.setBlock(x, y, z, ElectroTiles.WIRE.getBlockID(), meta, 3);
 		}
-		world.playSoundEffect(x+0.5, y+0.5, z+0.5, InductionTiles.WIRE.getPlaceSound(), 1F, 1.5F);
+		world.playSoundEffect(x+0.5, y+0.5, z+0.5, ElectroTiles.WIRE.getPlaceSound(), 1F, 1.5F);
 		TileEntityWire te = (TileEntityWire)world.getBlockTileEntity(x, y, z);
 		te.insulated = is.getItemDamage() >= WireType.INS_OFFSET;
 		return true;
@@ -94,7 +94,7 @@ public class ItemWirePlacer extends Item implements Fillable {
 	public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List) {
 		for (int i = 0; i < 32; i++) {
 			ItemStack item = new ItemStack(par1, 1, i);
-			if (InductionItems.WIRE.isAvailableInCreative(item)) {
+			if (ElectroItems.WIRE.isAvailableInCreative(item)) {
 				par3List.add(item);
 				if (i%WireType.INS_OFFSET == WireType.SUPERCONDUCTOR.ordinal()) {
 					ItemStack item2 = item.copy();

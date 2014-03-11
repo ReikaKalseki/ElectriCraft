@@ -7,48 +7,48 @@
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
  ******************************************************************************/
-package Reika.RotationalInduction.Registry;
+package Reika.ElectroCraft.Registry;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.ItemBlock;
 import Reika.DragonAPI.Interfaces.RegistryEnum;
 import Reika.DragonAPI.Libraries.Java.ReikaStringParser;
-import Reika.RotationalInduction.Induction;
-import Reika.RotationalInduction.Blocks.BlockConverter;
-import Reika.RotationalInduction.Blocks.BlockInductionOre;
-import Reika.RotationalInduction.Blocks.BlockWire;
-import Reika.RotationalInduction.Items.ItemBlockInductionOre;
+import Reika.ElectroCraft.ElectroCraft;
+import Reika.ElectroCraft.Blocks.BlockConverter;
+import Reika.ElectroCraft.Blocks.BlockElectroOre;
+import Reika.ElectroCraft.Blocks.BlockWire;
+import Reika.ElectroCraft.Items.ItemBlockElectroOre;
 
-public enum InductionBlocks implements RegistryEnum {
+public enum ElectroBlocks implements RegistryEnum {
 	WIRE(BlockWire.class, "Wire", false),
 	CONVERTER(BlockConverter.class, "Converter", false),
-	ORE(BlockInductionOre.class, ItemBlockInductionOre.class, "InductionOre", true);
+	ORE(BlockElectroOre.class, ItemBlockElectroOre.class, "ElectroOre", true);
 
 	private Class blockClass;
 	private String blockName;
 	private Class itemBlock;
 	private boolean model;
 
-	public static final InductionBlocks[] blockList = values();
+	public static final ElectroBlocks[] blockList = values();
 
-	private InductionBlocks(Class <? extends Block> cl, Class<? extends ItemBlock> ib, String n, boolean m) {
+	private ElectroBlocks(Class <? extends Block> cl, Class<? extends ItemBlock> ib, String n, boolean m) {
 		blockClass = cl;
 		blockName = n;
 		itemBlock = ib;
 		model = m;
 	}
 
-	private InductionBlocks(Class <? extends Block> cl, String n) {
+	private ElectroBlocks(Class <? extends Block> cl, String n) {
 		this(cl, null, n, false);
 	}
 
-	private InductionBlocks(Class <? extends Block> cl, String n, boolean m) {
+	private ElectroBlocks(Class <? extends Block> cl, String n, boolean m) {
 		this(cl, null, n, m);
 	}
 
 	public int getBlockID() {
-		return Induction.config.getBlockID(this.ordinal());
+		return ElectroCraft.config.getBlockID(this.ordinal());
 	}
 
 	public Material getBlockMaterial() {
@@ -133,7 +133,7 @@ public enum InductionBlocks implements RegistryEnum {
 
 	@Override
 	public String getCategory() {
-		return "Induction Blocks";
+		return "Electro Blocks";
 	}
 
 	public boolean isDummiedOut() {
@@ -141,7 +141,7 @@ public enum InductionBlocks implements RegistryEnum {
 	}
 
 	public Block getBlockVariable() {
-		return Induction.blocks[this.ordinal()];
+		return ElectroCraft.blocks[this.ordinal()];
 	}
 
 	public boolean isModelled() {

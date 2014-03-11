@@ -7,14 +7,14 @@
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
  ******************************************************************************/
-package Reika.RotationalInduction.Base;
+package Reika.ElectroCraft.Base;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
-import Reika.RotationalInduction.Network.WireNetwork;
+import Reika.ElectroCraft.Network.WireNetwork;
 
-public abstract class NetworkTileEntity extends InductionTileEntity {
+public abstract class NetworkTileEntity extends ElectroTileEntity {
 
 	protected WireNetwork network;
 

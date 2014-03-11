@@ -7,7 +7,7 @@
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
  ******************************************************************************/
-package Reika.RotationalInduction.Registry;
+package Reika.ElectroCraft.Registry;
 
 import java.util.List;
 
@@ -21,7 +21,7 @@ import Reika.DragonAPI.Libraries.Java.ReikaJavaLibrary;
 import Reika.DragonAPI.Libraries.Java.ReikaStringParser;
 import Reika.DragonAPI.ModInteract.ReikaTwilightHelper;
 
-public enum InductionOres {
+public enum ElectroOres {
 
 	COPPER(		32, 64, 	6, 	6, 	0, 	0.5F,	1,	"ore.copper"),
 	TIN(		48, 72, 	8, 	12,	0, 	0.2F,	1,	"ore.tin"),
@@ -39,9 +39,9 @@ public enum InductionOres {
 	public final int harvestLevel;
 	public final float xpDropped;
 
-	public static final InductionOres[] oreList = values();
+	public static final ElectroOres[] oreList = values();
 
-	private InductionOres(int min, int max, int size, int count, int dim, float xp, int level, String name) {
+	private ElectroOres(int min, int max, int size, int count, int dim, float xp, int level, String name) {
 		minY = min;
 		maxY = max;
 		veinSize = size;
@@ -57,22 +57,22 @@ public enum InductionOres {
 		return this.name()+" "+perChunk+"x"+veinSize+" between "+minY+" and "+maxY;
 	}
 
-	public static InductionOres getOre(IBlockAccess iba, int x, int y, int z) {
+	public static ElectroOres getOre(IBlockAccess iba, int x, int y, int z) {
 		int id = iba.getBlockId(x, y, z);
 		int meta = iba.getBlockMetadata(x, y, z);
-		if (id != InductionBlocks.ORE.getBlockID())
+		if (id != ElectroBlocks.ORE.getBlockID())
 			return null;
 		return oreList[meta];
 	}
 
-	public static InductionOres getOre(int id, int meta) {
-		if (id != InductionBlocks.ORE.getBlockID())
+	public static ElectroOres getOre(int id, int meta) {
+		if (id != ElectroBlocks.ORE.getBlockID())
 			return null;
 		return oreList[meta];
 	}
 
 	public String getTextureName() {
-		return "RotationalInduction:ore"+ReikaStringParser.capFirstChar(this.name());
+		return "ElectroCraft:ore"+ReikaStringParser.capFirstChar(this.name());
 	}
 
 	public String getDictionaryName() {
@@ -87,7 +87,7 @@ public enum InductionOres {
 	}
 
 	public int getBlockID() {
-		return InductionBlocks.ORE.getBlockID();
+		return ElectroBlocks.ORE.getBlockID();
 	}
 
 
@@ -102,14 +102,14 @@ public enum InductionOres {
 	public ItemStack getProduct() {
 		switch(this) {
 		default:
-			return InductionItems.INGOTS.getStackOfMetadata(this.ordinal());
+			return ElectroItems.INGOTS.getStackOfMetadata(this.ordinal());
 		}
 	}
 
 	public List<ItemStack> getOreDrop(int meta) {
 		switch(this) {
 		default:
-			return ReikaJavaLibrary.makeListFrom(new ItemStack(InductionBlocks.ORE.getBlockID(), 1, meta));
+			return ReikaJavaLibrary.makeListFrom(new ItemStack(ElectroBlocks.ORE.getBlockID(), 1, meta));
 		}
 	}
 
@@ -171,6 +171,6 @@ public enum InductionOres {
 
 	public boolean dropsSelf(int meta) {
 		List<ItemStack> li = this.getOreDrop(meta);
-		return li.size() == 1 && li.get(0).itemID == InductionBlocks.ORE.getBlockID() && li.get(0).getItemDamage() == meta;
+		return li.size() == 1 && li.get(0).itemID == ElectroBlocks.ORE.getBlockID() && li.get(0).getItemDamage() == meta;
 	}
 }

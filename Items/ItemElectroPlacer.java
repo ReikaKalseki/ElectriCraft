@@ -7,7 +7,7 @@
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
  ******************************************************************************/
-package Reika.RotationalInduction.Items;
+package Reika.ElectroCraft.Items;
 
 import java.util.List;
 
@@ -25,21 +25,21 @@ import Reika.DragonAPI.Libraries.ReikaPlayerAPI;
 import Reika.DragonAPI.Libraries.World.ReikaWorldHelper;
 import Reika.RotaryCraft.API.ShaftMachine;
 import Reika.RotaryCraft.Auxiliary.RotaryAux;
-import Reika.RotationalInduction.Induction;
-import Reika.RotationalInduction.Base.ConverterTile;
-import Reika.RotationalInduction.Base.InductionTileEntity;
-import Reika.RotationalInduction.Registry.InductionTiles;
+import Reika.ElectroCraft.ElectroCraft;
+import Reika.ElectroCraft.Base.ConverterTile;
+import Reika.ElectroCraft.Base.ElectroTileEntity;
+import Reika.ElectroCraft.Registry.ElectroTiles;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemInductionPlacer extends Item {
+public class ItemElectroPlacer extends Item {
 
-	public ItemInductionPlacer(int ID, int tex) {
+	public ItemElectroPlacer(int ID, int tex) {
 		super(ID);
 		this.setHasSubtypes(true);
 		this.setMaxDamage(0);
 		maxStackSize = 64;
-		this.setCreativeTab(Induction.tabInduction);
+		this.setCreativeTab(ElectroCraft.tabElectro);
 	}
 
 	@Override
@@ -66,7 +66,7 @@ public class ItemInductionPlacer extends Item {
 		List inblock = world.getEntitiesWithinAABB(EntityLivingBase.class, box);
 		if (inblock.size() > 0)
 			return false;
-		InductionTiles m = InductionTiles.TEList[is.getItemDamage()];
+		ElectroTiles m = ElectroTiles.TEList[is.getItemDamage()];
 		if (!ep.canPlayerEdit(x, y, z, 0, is))
 			return false;
 		else
@@ -76,7 +76,7 @@ public class ItemInductionPlacer extends Item {
 			world.setBlock(x, y, z, m.getBlockID(), m.getBlockMetadata(), 3);
 		}
 		world.playSoundEffect(x+0.5, y+0.5, z+0.5, m.getPlaceSound(), 1F, 1.5F);
-		InductionTileEntity te = (InductionTileEntity)world.getBlockTileEntity(x, y, z);
+		ElectroTileEntity te = (ElectroTileEntity)world.getBlockTileEntity(x, y, z);
 		//te.placer = ep.getEntityName();
 		te.setBlockMetadata(RotaryAux.get4SidedMetadataFromPlayerLook(ep));
 		if (te instanceof ShaftMachine) {
@@ -95,8 +95,8 @@ public class ItemInductionPlacer extends Item {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List) {
-		for (int i = 0; i < InductionTiles.TEList.length; i++) {
-			InductionTiles t = InductionTiles.TEList[i];
+		for (int i = 0; i < ElectroTiles.TEList.length; i++) {
+			ElectroTiles t = ElectroTiles.TEList[i];
 			if (!t.hasCustomItem() && t.isAvailableInCreativeInventory()) {
 				ItemStack item = new ItemStack(par1, 1, i);
 				par3List.add(item);
@@ -115,7 +115,7 @@ public class ItemInductionPlacer extends Item {
 
 	@Override
 	public String getItemDisplayName(ItemStack is) {
-		return InductionTiles.TEList[is.getItemDamage()].getName();
+		return ElectroTiles.TEList[is.getItemDamage()].getName();
 	}
 
 	@Override

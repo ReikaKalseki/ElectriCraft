@@ -7,36 +7,30 @@
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
  ******************************************************************************/
-package Reika.RotationalInduction;
+package Reika.ElectroCraft;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
 
-import Reika.RotationalInduction.TileEntities.TileEntityWire;
-import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
+import Reika.DragonAPI.Instantiable.WorldPipingRenderer;
+import Reika.ElectroCraft.TileEntities.TileEntityWire;
 
-public class WireRenderer implements ISimpleBlockRenderingHandler {
-
-	public final int renderID;
-	private static final ForgeDirection[] dirs = ForgeDirection.values();
+public class WireRenderer extends WorldPipingRenderer {
 
 	public WireRenderer(int ID) {
-		renderID = ID;
-	}
-
-	@Override
-	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks rb) {
-
+		super(ID);
 	}
 
 	@Override
 	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
+		super.renderWorldBlock(world, x, y, z, block, modelId, renderer);
 		TileEntityWire tile = (TileEntityWire)world.getBlockTileEntity(x, y, z);
 		float size = tile.insulated ? 0.333333F : 0.25F;
 		GL11.glColor4f(1, 1, 1, 1);
@@ -49,16 +43,8 @@ public class WireRenderer implements ISimpleBlockRenderingHandler {
 	}
 
 	@Override
-	public boolean shouldRender3DInInventory() {
-		return true;
-	}
-
-	@Override
-	public int getRenderId() {
-		return renderID;
-	}
-
-	private void renderFace(TileEntityWire tile, float x, float y, float z, ForgeDirection dir, double size) {
+	protected void renderFace(TileEntity te, int x, int y, int z, ForgeDirection dir, double size) {
+		TileEntityWire tile = (TileEntityWire)te;
 		Tessellator v5 = Tessellator.instance;
 		Icon ico = tile.insulated ? tile.getInsulatedCenterIcon() : tile.getCenterIcon();
 		float u = ico.getMinU();
@@ -74,6 +60,7 @@ public class WireRenderer implements ISimpleBlockRenderingHandler {
 			v = ico.getMinV();
 			du = ico.getMaxU();
 			dv = ico.getMaxV();
+			v5.setNormal(dir.offsetX, dir.offsetY, dir.offsetZ);
 			switch(dir) {
 			case DOWN:
 				this.faceBrightness(ForgeDirection.SOUTH, v5);
@@ -443,32 +430,4 @@ public class WireRenderer implements ISimpleBlockRenderingHandler {
 		}
 		v5.addTranslation(-x, -y, -z);
 	}
-
-	private void faceBrightness(ForgeDirection dir, Tessellator v5) {
-		float f = 1;
-		switch(dir.getOpposite()) {
-		case DOWN:
-			f = 0.4F;
-			break;
-		case EAST:
-			f = 0.5F;
-			break;
-		case NORTH:
-			f = 0.65F;
-			break;
-		case SOUTH:
-			f = 0.65F;
-			break;
-		case UP:
-			f = 1F;
-			break;
-		case WEST:
-			f = 0.5F;
-			break;
-		default:
-			break;
-		}
-		v5.setColorOpaque_F(f, f, f);
-	}
-
 }

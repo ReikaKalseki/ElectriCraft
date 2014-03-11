@@ -7,7 +7,7 @@
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
  ******************************************************************************/
-package Reika.RotationalInduction.Registry;
+package Reika.ElectroCraft.Registry;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,37 +20,38 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 import Reika.DragonAPI.Exception.RegistrationException;
 import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
 import Reika.RotaryCraft.Auxiliary.WorktableRecipes;
 import Reika.RotaryCraft.Registry.ConfigRegistry;
-import Reika.RotationalInduction.Induction;
-import Reika.RotationalInduction.TileEntities.TileEntityGenerator;
-import Reika.RotationalInduction.TileEntities.TileEntityMotor;
-import Reika.RotationalInduction.TileEntities.TileEntityWire;
+import Reika.ElectroCraft.ElectroCraft;
+import Reika.ElectroCraft.TileEntities.TileEntityGenerator;
+import Reika.ElectroCraft.TileEntities.TileEntityMotor;
+import Reika.ElectroCraft.TileEntities.TileEntityWire;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-public enum InductionTiles {
+public enum ElectroTiles {
 
-	WIRE("induction.wire", InductionBlocks.WIRE,	TileEntityWire.class, 0, "RenderWire"),
-	GENERATOR("machine.inductiongenerator", InductionBlocks.CONVERTER, TileEntityGenerator.class, 0, "RenderGenerator"),
-	MOTOR("machine.inductionmotor", InductionBlocks.CONVERTER, TileEntityMotor.class, 1, "RenderMotor");
+	WIRE("Electro.wire", ElectroBlocks.WIRE,	TileEntityWire.class, 0, "RenderWire"),
+	GENERATOR("machine.Electrogenerator", ElectroBlocks.CONVERTER, TileEntityGenerator.class, 0, "RenderGenerator"),
+	MOTOR("machine.Electromotor", ElectroBlocks.CONVERTER, TileEntityMotor.class, 1, "RenderMotor");
 
 	private String name;
 	private final Class teClass;
 	private int meta;
 	private String render;
-	private final InductionBlocks blockInstance;
+	private final ElectroBlocks blockInstance;
 
-	private static final HashMap<List<Integer>, InductionTiles> machineMappings = new HashMap();
+	private static final HashMap<List<Integer>, ElectroTiles> machineMappings = new HashMap();
 
-	public static final InductionTiles[] TEList = values();
+	public static final ElectroTiles[] TEList = values();
 
-	private InductionTiles(String n, InductionBlocks block, Class<? extends TileEntity> tile, int m) {
+	private ElectroTiles(String n, ElectroBlocks block, Class<? extends TileEntity> tile, int m) {
 		this(n, block, tile, m, null);
 	}
 
-	private InductionTiles(String n, InductionBlocks block, Class<? extends TileEntity> tile, int m, String r) {
+	private ElectroTiles(String n, ElectroBlocks block, Class<? extends TileEntity> tile, int m, String r) {
 		teClass = tile;
 		name = n;
 		render = r;
@@ -66,7 +67,7 @@ public enum InductionTiles {
 		return teClass;
 	}
 
-	public static ArrayList<InductionTiles> getTilesOfBlock(InductionBlocks b) {
+	public static ArrayList<ElectroTiles> getTilesOfBlock(ElectroBlocks b) {
 		ArrayList li = new ArrayList();
 		for (int i = 0; i < TEList.length; i++) {
 			if (TEList[i].blockInstance == b)
@@ -76,11 +77,11 @@ public enum InductionTiles {
 	}
 
 	public static TileEntity createTEFromIDAndMetadata(int id, int meta) {
-		if (id == InductionBlocks.WIRE.getBlockID())
+		if (id == ElectroBlocks.WIRE.getBlockID())
 			return new TileEntityWire();
-		InductionTiles index = getMachineFromIDandMetadata(id, meta);
+		ElectroTiles index = getMachineFromIDandMetadata(id, meta);
 		if (index == null) {
-			Induction.logger.logError("ID "+id+" and metadata "+meta+" are not a valid machine identification pair!");
+			ElectroCraft.logger.logError("ID "+id+" and metadata "+meta+" are not a valid machine identification pair!");
 			return null;
 		}
 		Class TEClass = index.teClass;
@@ -89,15 +90,15 @@ public enum InductionTiles {
 		}
 		catch (InstantiationException e) {
 			e.printStackTrace();
-			throw new RegistrationException(Induction.instance, "ID "+id+" and Metadata "+meta+" failed to instantiate its TileEntity of "+TEClass);
+			throw new RegistrationException(ElectroCraft.instance, "ID "+id+" and Metadata "+meta+" failed to instantiate its TileEntity of "+TEClass);
 		}
 		catch (IllegalAccessException e) {
 			e.printStackTrace();
-			throw new RegistrationException(Induction.instance, "ID "+id+" and Metadata "+meta+" failed illegally accessed its TileEntity of "+TEClass);
+			throw new RegistrationException(ElectroCraft.instance, "ID "+id+" and Metadata "+meta+" failed illegally accessed its TileEntity of "+TEClass);
 		}
 	}
 
-	public static InductionTiles getMachineFromIDandMetadata(int id, int meta) {
+	public static ElectroTiles getMachineFromIDandMetadata(int id, int meta) {
 		return machineMappings.get(Arrays.asList(id, meta));
 	}
 
@@ -109,16 +110,16 @@ public enum InductionTiles {
 		return this == WIRE;
 	}
 
-	public static InductionTiles getTE(IBlockAccess iba, int x, int y, int z) {
+	public static ElectroTiles getTE(IBlockAccess iba, int x, int y, int z) {
 		int id = iba.getBlockId(x, y, z);
-		if (id == InductionBlocks.WIRE.getBlockID())
+		if (id == ElectroBlocks.WIRE.getBlockID())
 			return WIRE;
 		int meta = iba.getBlockMetadata(x, y, z);
 		return getMachineFromIDandMetadata(id, meta);
 	}
 
 	public ItemStack getCraftedProduct() {
-		return new ItemStack(InductionItems.PLACER.getShiftedID(), 1, this.ordinal());
+		return new ItemStack(ElectroItems.PLACER.getShiftedID(), 1, this.ordinal());
 	}
 
 	public TileEntity createTEInstanceForRender() {
@@ -127,11 +128,11 @@ public enum InductionTiles {
 		}
 		catch (InstantiationException e) {
 			e.printStackTrace();
-			throw new RegistrationException(Induction.instance, "Could not create TE instance to render "+this);
+			throw new RegistrationException(ElectroCraft.instance, "Could not create TE instance to render "+this);
 		}
 		catch (IllegalAccessException e) {
 			e.printStackTrace();
-			throw new RegistrationException(Induction.instance, "Could not create TE instance to render "+this);
+			throw new RegistrationException(ElectroCraft.instance, "Could not create TE instance to render "+this);
 		}
 	}
 
@@ -142,7 +143,7 @@ public enum InductionTiles {
 	public String getRenderer() {
 		if (!this.hasRender())
 			throw new RuntimeException("Machine "+name+" has no render to call!");
-		return "Reika.RotationalInduction.Renders."+render;
+		return "Reika.ElectroCraft.Renders."+render;
 	}
 
 	public int getBlockID() {
@@ -195,6 +196,17 @@ public enum InductionTiles {
 		}
 	}
 
+	public void addOreCrafting(Object... obj) {
+		ItemStack is = this.getCraftedProduct();
+		ShapedOreRecipe ir = new ShapedOreRecipe(is, obj);
+		if (!this.isDummiedOut()) {
+			WorktableRecipes.getInstance().addRecipe(ir);
+			if (ConfigRegistry.TABLEMACHINES.getState()) {
+				GameRegistry.addRecipe(ir);
+			}
+		}
+	}
+
 	public void addSizedCrafting(int num, Object... obj) {
 		if (!this.isDummiedOut()) {
 			WorktableRecipes.getInstance().addRecipe(ReikaItemHelper.getSizedItemStack(this.getCraftedProduct(), num), obj);
@@ -205,8 +217,8 @@ public enum InductionTiles {
 	}
 
 	public static void loadMappings() {
-		for (int i = 0; i < InductionTiles.TEList.length; i++) {
-			InductionTiles r = InductionTiles.TEList[i];
+		for (int i = 0; i < ElectroTiles.TEList.length; i++) {
+			ElectroTiles r = ElectroTiles.TEList[i];
 			int id = r.getBlockID();
 			int meta = r.getBlockMetadata();
 			List<Integer> li = Arrays.asList(id, meta);

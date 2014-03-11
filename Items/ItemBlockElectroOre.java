@@ -7,20 +7,20 @@
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
  ******************************************************************************/
-package Reika.RotationalInduction.Items;
+package Reika.ElectroCraft.Items;
 
 import java.util.List;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import Reika.RotationalInduction.Registry.InductionOres;
+import Reika.ElectroCraft.Registry.ElectroOres;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemBlockInductionOre extends ItemBlock {
+public class ItemBlockElectroOre extends ItemBlock {
 
-	public ItemBlockInductionOre(int ID) {
+	public ItemBlockElectroOre(int ID) {
 		super(ID);
 		hasSubtypes = true;
 		this.setMaxDamage(0);
@@ -37,7 +37,13 @@ public class ItemBlockInductionOre extends ItemBlock {
 	}
 
 	private int getDataValues() {
-		return InductionOres.oreList.length;
+		return ElectroOres.oreList.length;
+	}
+
+	@Override
+	public String getItemDisplayName(ItemStack is) {
+		ElectroOres ore = ElectroOres.oreList[is.getItemDamage()];
+		return ore.oreName;
 	}
 
 	@Override

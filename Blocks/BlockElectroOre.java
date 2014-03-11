@@ -7,7 +7,7 @@
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
  ******************************************************************************/
-package Reika.RotationalInduction.Blocks;
+package Reika.ElectroCraft.Blocks;
 
 import java.util.ArrayList;
 
@@ -21,19 +21,19 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import Reika.DragonAPI.Libraries.Java.ReikaRandomHelper;
 import Reika.DragonAPI.Libraries.World.ReikaWorldHelper;
-import Reika.RotationalInduction.Induction;
-import Reika.RotationalInduction.Registry.InductionBlocks;
-import Reika.RotationalInduction.Registry.InductionOres;
+import Reika.ElectroCraft.ElectroCraft;
+import Reika.ElectroCraft.Registry.ElectroBlocks;
+import Reika.ElectroCraft.Registry.ElectroOres;
 
-public class BlockInductionOre extends Block {
+public class BlockElectroOre extends Block {
 
-	private Icon[] icons = new Icon[InductionOres.oreList.length];
+	private Icon[] icons = new Icon[ElectroOres.oreList.length];
 
-	public BlockInductionOre(int par1, Material par2Material) {
+	public BlockElectroOre(int par1, Material par2Material) {
 		super(par1, par2Material);
 		this.setResistance(5);
 		this.setHardness(2);
-		this.setCreativeTab(Induction.tabInduction);
+		this.setCreativeTab(ElectroCraft.tabElectro);
 	}
 
 	@Override
@@ -45,36 +45,36 @@ public class BlockInductionOre extends Block {
 	public ArrayList<ItemStack> getBlockDropped(World world, int x, int y, int z, int metadata, int fortune)
 	{
 		ArrayList<ItemStack> li = new ArrayList<ItemStack>();
-		//ItemStack is = new ItemStack(InductionBlocks.ORE.getBlockID(), 1, metadata);
-		InductionOres ore = InductionOres.getOre(blockID, metadata);
+		//ItemStack is = new ItemStack(ElectroBlocks.ORE.getBlockID(), 1, metadata);
+		ElectroOres ore = ElectroOres.getOre(blockID, metadata);
 		li.addAll(ore.getOreDrop(metadata));
 		if (!ore.dropsSelf(metadata))
 			ReikaWorldHelper.splitAndSpawnXP(world, x+0.5F, y+0.5F, z+0.5F, this.droppedXP(ore));
 		return li;
 	}
 
-	private int droppedXP(InductionOres ore) {
+	private int droppedXP(ElectroOres ore) {
 		return ReikaRandomHelper.doWithChance(ore.xpDropped) ? 1 : 0;
 	}
 
 	@Override
 	public boolean removeBlockByPlayer(World world, EntityPlayer player, int x, int y, int z)
 	{
-		InductionOres ore = InductionOres.getOre(world, x, y, z);
+		ElectroOres ore = ElectroOres.getOre(world, x, y, z);
 		return super.removeBlockByPlayer(world, player, x, y, z);
 	}
 
 	@Override
 	public ItemStack getPickBlock(MovingObjectPosition tgt, World world, int x, int y, int z)
 	{
-		InductionOres ore = InductionOres.getOre(world, x, y, z);
-		return new ItemStack(InductionBlocks.ORE.getBlockID(), 1, ore.getBlockMetadata());
+		ElectroOres ore = ElectroOres.getOre(world, x, y, z);
+		return new ItemStack(ElectroBlocks.ORE.getBlockID(), 1, ore.getBlockMetadata());
 	}
 
 	@Override
 	public void registerIcons(IconRegister ico) {
-		for (int i = 0; i < InductionOres.oreList.length; i++) {
-			icons[i] = ico.registerIcon(InductionOres.oreList[i].getTextureName());
+		for (int i = 0; i < ElectroOres.oreList.length; i++) {
+			icons[i] = ico.registerIcon(ElectroOres.oreList[i].getTextureName());
 		}
 	}
 

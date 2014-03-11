@@ -7,7 +7,7 @@
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
  ******************************************************************************/
-package Reika.RotationalInduction;
+package Reika.ElectroCraft;
 
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
@@ -17,15 +17,15 @@ import net.minecraftforge.client.IItemRenderer;
 import org.lwjgl.opengl.GL11;
 
 import Reika.DragonAPI.Libraries.IO.ReikaTextureHelper;
-import Reika.RotationalInduction.Registry.InductionItems;
-import Reika.RotationalInduction.Registry.InductionTiles;
-import Reika.RotationalInduction.Registry.WireType;
-import Reika.RotationalInduction.TileEntities.TileEntityWire;
+import Reika.ElectroCraft.Registry.ElectroItems;
+import Reika.ElectroCraft.Registry.ElectroTiles;
+import Reika.ElectroCraft.Registry.WireType;
+import Reika.ElectroCraft.TileEntities.TileEntityWire;
 
-public class InductionItemRenderer implements IItemRenderer {
+public class ElectroItemRenderer implements IItemRenderer {
 
 
-	public InductionItemRenderer() {
+	public ElectroItemRenderer() {
 
 	}
 
@@ -49,14 +49,14 @@ public class InductionItemRenderer implements IItemRenderer {
 			b = -0.5F;
 			GL11.glScalef(0.5F, 0.5F, 0.5F);
 		}
-		if (item.itemID == InductionItems.WIRE.getShiftedID()) {
-			TileEntityWire wire = (TileEntityWire)InductionTiles.WIRE.createTEInstanceForRender();
+		if (item.itemID == ElectroItems.WIRE.getShiftedID()) {
+			TileEntityWire wire = (TileEntityWire)ElectroTiles.WIRE.createTEInstanceForRender();
 			wire.insulated = item.getItemDamage() >= WireType.INS_OFFSET;
 			wire.setBlockMetadata(item.getItemDamage()%WireType.INS_OFFSET);
 			TileEntityRenderer.instance.renderTileEntityAt(wire, a, -0.1D, b, 0.0F);
 			return;
 		}
-		InductionTiles machine = InductionTiles.TEList[item.getItemDamage()];
+		ElectroTiles machine = ElectroTiles.TEList[item.getItemDamage()];
 		if (machine.hasRender())
 			TileEntityRenderer.instance.renderTileEntityAt(machine.createTEInstanceForRender(), a, -0.1D, b, 0.0F);
 		else {

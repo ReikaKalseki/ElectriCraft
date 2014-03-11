@@ -7,7 +7,7 @@
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
  ******************************************************************************/
-package Reika.RotationalInduction.Registry;
+package Reika.ElectroCraft.Registry;
 
 import java.util.ArrayList;
 
@@ -20,19 +20,20 @@ import Reika.DragonAPI.ModRegistry.ModOreList;
 import Reika.RotaryCraft.Auxiliary.ItemStacks;
 import Reika.RotaryCraft.Auxiliary.WorktableRecipes;
 import Reika.RotaryCraft.Registry.ConfigRegistry;
-import Reika.RotationalInduction.Auxiliary.InductorStacks;
+import Reika.RotaryCraft.Registry.DifficultyEffects;
+import Reika.ElectroCraft.Auxiliary.ElectroStacks;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public enum WireType {
 
 	STEEL(			16, 				64, ItemStacks.steelingot),
-	TIN(			64, 				32, InductorStacks.tinIngot, ModOreList.TIN, ModOreList.NETHERTIN),
-	NICKEL(			256, 				16, InductorStacks.nickelIngot, ModOreList.NICKEL, ModOreList.NETHERNICKEL),
-	ALUMINUM(		1024, 				8, 	InductorStacks.aluminumIngot, ModOreList.ALUMINUM),
-	COPPER(			4096, 				2, 	InductorStacks.copperIngot, ModOreList.COPPER, ModOreList.NETHERCOPPER),
-	SILVER(			32768, 				1, 	InductorStacks.silverIngot, ModOreList.SILVER, ModOreList.NETHERSILVER),
+	TIN(			64, 				32, ElectroStacks.tinIngot, ModOreList.TIN, ModOreList.NETHERTIN),
+	NICKEL(			256, 				16, ElectroStacks.nickelIngot, ModOreList.NICKEL, ModOreList.NETHERNICKEL),
+	ALUMINUM(		1024, 				8, 	ElectroStacks.aluminumIngot, ModOreList.ALUMINUM),
+	COPPER(			4096, 				2, 	ElectroStacks.copperIngot, ModOreList.COPPER, ModOreList.NETHERCOPPER),
+	SILVER(			32768, 				1, 	ElectroStacks.silverIngot, ModOreList.SILVER, ModOreList.NETHERSILVER),
 	GOLD(			65536, 				4, 	new ItemStack(Item.ingotGold)),
-	PLATINUM(		131072, 			16, InductorStacks.platinumIngot, ModOreList.PLATINUM, ModOreList.NETHERPLATINUM),
+	PLATINUM(		131072, 			16, ElectroStacks.platinumIngot, ModOreList.PLATINUM, ModOreList.NETHERPLATINUM),
 	SUPERCONDUCTOR(	Integer.MAX_VALUE, 	0, 	null);
 
 	private final ItemStack material;
@@ -69,11 +70,11 @@ public enum WireType {
 	}
 
 	public ItemStack getCraftedProduct() {
-		return InductionItems.WIRE.getStackOfMetadata(this.ordinal());
+		return ElectroItems.WIRE.getStackOfMetadata(this.ordinal());
 	}
 
 	public ItemStack getCraftedInsulatedProduct() {
-		return InductionItems.WIRE.getStackOfMetadata(this.ordinal()+INS_OFFSET);
+		return ElectroItems.WIRE.getStackOfMetadata(this.ordinal()+INS_OFFSET);
 	}
 
 	private ArrayList<ItemStack> getAllValidCraftingIngots() {
@@ -89,8 +90,9 @@ public enum WireType {
 	public void addCrafting() {
 		if (material == null)
 			return;
-		ItemStack is = ReikaItemHelper.getSizedItemStack(this.getCraftedProduct(), 8);
-		ItemStack is2 = ReikaItemHelper.getSizedItemStack(this.getCraftedInsulatedProduct(), 8);
+		int amt = DifficultyEffects.PIPECRAFT.getInt();
+		ItemStack is = ReikaItemHelper.getSizedItemStack(this.getCraftedProduct(), amt);
+		ItemStack is2 = ReikaItemHelper.getSizedItemStack(this.getCraftedInsulatedProduct(), amt);
 		ArrayList<ItemStack> li = this.getAllValidCraftingIngots();
 		for (int i = 0; i < li.size(); i++) {
 			ItemStack in = li.get(i);

@@ -7,7 +7,7 @@
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
  ******************************************************************************/
-package Reika.RotationalInduction.TileEntities;
+package Reika.ElectroCraft.TileEntities;
 
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
@@ -17,10 +17,11 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.ForgeDirection;
 import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
-import Reika.RotationalInduction.Base.NetworkTileEntity;
-import Reika.RotationalInduction.Blocks.BlockWire;
-import Reika.RotationalInduction.Registry.InductionTiles;
-import Reika.RotationalInduction.Registry.WireType;
+import Reika.DragonAPI.Libraries.Registry.ReikaParticleHelper;
+import Reika.ElectroCraft.Base.NetworkTileEntity;
+import Reika.ElectroCraft.Blocks.BlockWire;
+import Reika.ElectroCraft.Registry.ElectroTiles;
+import Reika.ElectroCraft.Registry.WireType;
 
 public class TileEntityWire extends NetworkTileEntity {
 
@@ -30,9 +31,14 @@ public class TileEntityWire extends NetworkTileEntity {
 	private int voltage;
 	private int current;
 
+	private boolean shouldMelt;
+
 	@Override
 	public void updateEntity(World world, int x, int y, int z, int meta) {
 		super.updateEntity(world, x, y, z, meta);
+
+		if (shouldMelt)
+			this.melt(world, x, y, z);
 	}
 
 	@Override
@@ -54,7 +60,7 @@ public class TileEntityWire extends NetworkTileEntity {
 
 	@Override
 	public int getIndex() {
-		return InductionTiles.WIRE.ordinal();
+		return ElectroTiles.WIRE.ordinal();
 	}
 
 	public boolean isConnectedOnSideAt(World world, int x, int y, int z, ForgeDirection dir) {
@@ -66,12 +72,12 @@ public class TileEntityWire extends NetworkTileEntity {
 		int meta = world.getBlockMetadata(dx, dy, dz);
 		if (id == this.getTileEntityBlockID())
 			return true;
-		InductionTiles m = InductionTiles.getTE(world, dx, dy, dz);
-		if (m == InductionTiles.GENERATOR) {
+		ElectroTiles m = ElectroTiles.getTE(world, dx, dy, dz);
+		if (m == ElectroTiles.GENERATOR) {
 			TileEntityGenerator te = (TileEntityGenerator)world.getBlockTileEntity(dx, dy, dz);
 			return dir == te.getFacing();
 		}
-		if (m == InductionTiles.MOTOR) {
+		if (m == ElectroTiles.MOTOR) {
 			TileEntityMotor te = (TileEntityMotor)world.getBlockTileEntity(dx, dy, dz);
 			return dir == te.getFacing().getOpposite();
 		}
@@ -96,6 +102,8 @@ public class TileEntityWire extends NetworkTileEntity {
 
 		voltage = NBT.getInteger("v");
 		current = NBT.getInteger("a");
+
+		shouldMelt = NBT.getBoolean("melt");
 	}
 
 	@Override
@@ -111,6 +119,8 @@ public class TileEntityWire extends NetworkTileEntity {
 
 		NBT.setInteger("a", current);
 		NBT.setInteger("v", voltage);
+
+		NBT.setBoolean("melt", shouldMelt);
 	}
 
 	/** Direction is relative to the piping block (so DOWN means the block is below the pipe) */
@@ -139,7 +149,7 @@ public class TileEntityWire extends NetworkTileEntity {
 			int dx = x+dir.offsetX;
 			int dy = x+dir.offsetY;
 			int dz = x+dir.offsetZ;
-			InductionTiles m = InductionTiles.getTE(world, dx, dy, dz);
+			ElectroTiles m = ElectroTiles.getTE(world, dx, dy, dz);
 			if (m == this.getMachine()) {
 				TileEntityWire te = (TileEntityWire)world.getBlockTileEntity(dx, dy, dz);
 				te.connections[dir.getOpposite().ordinal()] = false;
@@ -154,7 +164,7 @@ public class TileEntityWire extends NetworkTileEntity {
 			int dx = x+dir.offsetX;
 			int dy = x+dir.offsetY;
 			int dz = x+dir.offsetZ;
-			InductionTiles m = InductionTiles.getTE(world, dx, dy, dz);
+			ElectroTiles m = ElectroTiles.getTE(world, dx, dy, dz);
 			if (m == this.getMachine()) {
 				TileEntityWire te = (TileEntityWire)world.getBlockTileEntity(dx, dy, dz);
 				te.connections[dir.getOpposite().ordinal()] = true;
@@ -167,8 +177,8 @@ public class TileEntityWire extends NetworkTileEntity {
 		int x = xCoord+dir.offsetX;
 		int y = yCoord+dir.offsetY;
 		int z = zCoord+dir.offsetZ;
-		InductionTiles m = this.getMachine();
-		InductionTiles m2 = InductionTiles.getTE(worldObj, x, y, z);
+		ElectroTiles m = this.getMachine();
+		ElectroTiles m2 = ElectroTiles.getTE(worldObj, x, y, z);
 		if (m == m2)
 			return true;
 		//certain TEs
@@ -185,11 +195,15 @@ public class TileEntityWire extends NetworkTileEntity {
 		return this.getWireType().maxCurrent;
 	}
 
+	public void melt(World world, int x, int y, int z) {
+		ReikaSoundHelper.playSoundAtBlock(world, x, y, z, "random.fizz");
+		ReikaParticleHelper.LAVA.spawnAroundBlock(world, x, y, z, 12);
+		world.setBlock(x, y, z, Block.lavaMoving.blockID);
+	}
+
 	@Override
 	public void overCurrent() {
-		//ReikaJavaLibrary.pConsole(this.getCurrentLimit(), Side.SERVER);
-		ReikaSoundHelper.playSoundAtBlock(worldObj, xCoord, yCoord, zCoord, "random.fizz");
-		worldObj.setBlock(xCoord, yCoord, zCoord, Block.lavaMoving.blockID);
+		shouldMelt = true;
 	}
 
 	public Icon getEndIcon() {

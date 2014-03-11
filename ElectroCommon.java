@@ -7,11 +7,11 @@
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
  ******************************************************************************/
-package Reika.RotationalInduction;
+package Reika.ElectroCraft;
 
 import net.minecraft.world.World;
 
-public class InductionCommon
+public class ElectroCommon
 {
 	public static int wireRender;
 
