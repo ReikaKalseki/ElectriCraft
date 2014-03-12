@@ -55,7 +55,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 
-@Mod( modid = "ElectriCraft", name="Rotational Electri", version="beta", certificateFingerprint = "@GET_FINGERPRINT@", dependencies="required-after:DragonAPI")
+@Mod( modid = "ElectriCraft", name="ElectriCraft", version="beta", certificateFingerprint = "@GET_FINGERPRINT@", dependencies="required-after:DragonAPI;required-after:RotaryCraft")
 @NetworkMod(clientSideRequired = true, serverSideRequired = true/*,
 clientPacketHandlerSpec = @SidedPacketHandler(channels = { "ElectriCraftData" }, packetHandler = ClientPackets.class),
 serverPacketHandlerSpec = @SidedPacketHandler(channels = { "ElectriCraftData" }, packetHandler = ServerPackets.class)*/)
