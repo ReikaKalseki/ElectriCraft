@@ -29,7 +29,7 @@ public class ElectriTab extends CreativeTabs {
 
 	@Override
 	public String getTranslatedTabLabel() {
-		return "Rotational Electri";
+		return "ElectriCraft";
 	}
 
 }

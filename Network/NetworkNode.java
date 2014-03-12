@@ -12,7 +12,7 @@ package Reika.ElectriCraft.Network;
 import java.util.ArrayList;
 
 import net.minecraftforge.common.ForgeDirection;
-import Reika.ElectriCraft.TileEntities.TileEntityWire;
+import Reika.ElectriCraft.Base.WiringTile;
 
 public final class NetworkNode {
 
@@ -20,13 +20,13 @@ public final class NetworkNode {
 	public final int y;
 	public final int z;
 
-	private final TileEntityWire wire;
+	private final WiringTile wire;
 
 	private final WireNetwork network;
 
 	private final ArrayList<ForgeDirection> connections = new ArrayList();
 
-	public NetworkNode(WireNetwork w, TileEntityWire te, ArrayList sides) {
+	public NetworkNode(WireNetwork w, WiringTile te, ArrayList sides) {
 		network = w;
 		x = te.xCoord;
 		y = te.yCoord;

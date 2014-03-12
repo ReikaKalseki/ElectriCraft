@@ -21,19 +21,18 @@ import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.world.WorldEvent;
 import Reika.ElectriCraft.Auxiliary.ElectriNetworkTickEvent;
 import Reika.ElectriCraft.Base.NetworkTileEntity;
+import Reika.ElectriCraft.Base.WiringTile;
 import Reika.ElectriCraft.TileEntities.TileEntityGenerator;
 import Reika.ElectriCraft.TileEntities.TileEntityMotor;
 import Reika.ElectriCraft.TileEntities.TileEntityWire;
 
 public final class WireNetwork {
 
-	private ArrayList<TileEntityWire> wires = new ArrayList();
+	private ArrayList<WiringTile> wires = new ArrayList();
 	private ArrayList<TileEntityMotor> sinks = new ArrayList();
 	private ArrayList<TileEntityGenerator> sources = new ArrayList();
 	private HashMap<List<Integer>, NetworkNode> nodes = new HashMap();
 	private ArrayList<WirePath> paths = new ArrayList();
-
-	private ArrayList<TileEntityWire> toMelt = new ArrayList();
 
 	private boolean shorted = false;
 
@@ -69,10 +68,12 @@ public final class WireNetwork {
 			path.tick(evt);
 		}
 		for (int i = 0; i < wires.size(); i++) {
-			TileEntityWire w = wires.get(i);
-			int current = this.getPointCurrent(w);
-			if (current > w.getCurrentLimit()) {
-				w.overCurrent();
+			WiringTile w = wires.get(i);
+			if (w instanceof TileEntityWire) {
+				int current = this.getPointCurrent((TileEntityWire)w);
+				if (current > w.getCurrentLimit()) {
+					w.overCurrent();
+				}
 			}
 		}
 
@@ -127,7 +128,7 @@ public final class WireNetwork {
 	public void merge(WireNetwork n) {
 		if (n != this) {
 			for (int i = 0; i < n.wires.size(); i++) {
-				TileEntityWire wire = n.wires.get(i);
+				WiringTile wire = n.wires.get(i);
 				wire.setNetwork(this);
 			}
 			for (int i = 0; i < n.sinks.size(); i++) {
@@ -175,13 +176,13 @@ public final class WireNetwork {
 		else if (te instanceof TileEntityMotor)
 			sinks.add((TileEntityMotor)te);
 		else {
-			TileEntityWire wire = (TileEntityWire)te;
+			WiringTile wire = (WiringTile)te;
 			wires.add(wire);
 			for (int k = 0; k < 6; k++) {
 				ForgeDirection side = dirs[k];
 				TileEntity adj2 = wire.getAdjacentTileEntity(side);
-				if (adj2 instanceof TileEntityWire) {
-					TileEntityWire wire2 = (TileEntityWire)adj2;
+				if (adj2 instanceof WiringTile) {
+					WiringTile wire2 = (WiringTile)adj2;
 					ArrayList<ForgeDirection> sides = new ArrayList();
 					for (int i = 0; i < 6; i++) {
 						ForgeDirection dir = dirs[i];
@@ -323,6 +324,17 @@ public final class WireNetwork {
 			NetworkTileEntity te = li.get(i);
 			te.findAndJoinNetwork(te.worldObj, te.xCoord, te.yCoord, te.zCoord);
 		}
+	}
+
+	ArrayList<WirePath> getPathsStartingAt(TileEntityGenerator start) {
+		ArrayList<WirePath> li = new ArrayList();
+		for (int i = 0; i < paths.size(); i++) {
+			WirePath path = paths.get(i);
+			if (path.startsAt(start.xCoord, start.yCoord, start.zCoord)) {
+				li.add(path);
+			}
+		}
+		return li;
 	}
 
 	public int getNumberPathsStartingAt(TileEntityGenerator start) {

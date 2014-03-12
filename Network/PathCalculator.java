@@ -16,6 +16,7 @@ import java.util.List;
 
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
+import Reika.ElectriCraft.Base.WiringTile;
 import Reika.ElectriCraft.Registry.ElectriTiles;
 import Reika.ElectriCraft.TileEntities.TileEntityGenerator;
 import Reika.ElectriCraft.TileEntities.TileEntityMotor;
@@ -62,42 +63,49 @@ public class PathCalculator {
 				}
 				else {
 					ElectriTiles t = ElectriTiles.getTE(world, dx, dy, dz);
-					if (t == ElectriTiles.WIRE) {
-						this.recursiveCalculate(world, dx, dy, dz, li);
+					if (t == ElectriTiles.WIRE || t == ElectriTiles.LIMITER) {
+						WiringTile tile = (WiringTile)world.getBlockTileEntity(dx, dy, dz);
+						if (tile.canNetworkOnSide(dir.getOpposite()))
+							this.recursiveCalculate(world, dx, dy, dz, li);
 					}
 				}
 			}
 		}
 		//ReikaJavaLibrary.pConsole(paths, Side.SERVER);
 	}
-
+	check direction code!!
 	private void recursiveCalculate(World world, int x, int y, int z, LinkedList li) {
 		if (li.contains(Arrays.asList(x, y, z))) {
 			return;
 		}
 		//ReikaJavaLibrary.pConsole(x+", "+y+", "+z, Side.SERVER);
 		li.addLast(Arrays.asList(x, y, z));
+		WiringTile te = (WiringTile)world.getBlockTileEntity(x, y, z);
 		//ReikaJavaLibrary.pConsole("<<"+li.size()+">>"+(x+0.5)+","+(y+0.5)+","+(z+0.5));
 		for (int i = 0; i < 6; i++) {
 			ForgeDirection dir = WireNetwork.dirs[i];
-			int dx = x+dir.offsetX;
-			int dy = y+dir.offsetY;
-			int dz = z+dir.offsetZ;
-			if (this.isEnd(world, dx, dy, dz)) {
-				if (end.canNetworkOnSide(dir.getOpposite())) {
-					//li.addLast(Arrays.asList(dx, dy, dz));
-					paths.add(new WirePath(world, li, start, end, net));
-					//ReikaJavaLibrary.pConsole(li.size(), Side.SERVER);
-					//ReikaJavaLibrary.pConsole("Create("+li.size()+")", Side.SERVER);
-					//li.removeLast();
-					return;
+			if (te.canNetworkOnSide(dir)) {
+				int dx = x+dir.offsetX;
+				int dy = y+dir.offsetY;
+				int dz = z+dir.offsetZ;
+				if (this.isEnd(world, dx, dy, dz)) {
+					if (end.canNetworkOnSide(dir.getOpposite())) {
+						//li.addLast(Arrays.asList(dx, dy, dz));
+						paths.add(new WirePath(world, li, start, end, net));
+						//ReikaJavaLibrary.pConsole(li.size(), Side.SERVER);
+						//ReikaJavaLibrary.pConsole("Create("+li.size()+")", Side.SERVER);
+						//li.removeLast();
+						return;
+					}
 				}
-			}
-			else {
-				ElectriTiles t = ElectriTiles.getTE(world, dx, dy, dz);
-				if (t == ElectriTiles.WIRE) {
-					this.recursiveCalculate(world, dx, dy, dz, li);
-					//ReikaJavaLibrary.pConsole(dir+"@"+x+","+y+","+z+" :"+li.size(), Side.SERVER);
+				else {
+					ElectriTiles t = ElectriTiles.getTE(world, dx, dy, dz);
+					if (t == ElectriTiles.WIRE || t == ElectriTiles.LIMITER) {
+						WiringTile tile = (WiringTile)world.getBlockTileEntity(dx, dy, dz);
+						if (tile.canNetworkOnSide(dir.getOpposite()))
+							this.recursiveCalculate(world, dx, dy, dz, li);
+						//ReikaJavaLibrary.pConsole(dir+"@"+x+","+y+","+z+" :"+li.size(), Side.SERVER);
+					}
 				}
 			}
 		}

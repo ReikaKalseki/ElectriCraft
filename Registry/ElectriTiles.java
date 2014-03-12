@@ -23,19 +23,21 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import Reika.DragonAPI.Exception.RegistrationException;
 import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
-import Reika.RotaryCraft.Auxiliary.WorktableRecipes;
-import Reika.RotaryCraft.Registry.ConfigRegistry;
 import Reika.ElectriCraft.ElectriCraft;
 import Reika.ElectriCraft.TileEntities.TileEntityGenerator;
 import Reika.ElectriCraft.TileEntities.TileEntityMotor;
+import Reika.ElectriCraft.TileEntities.TileEntityResistor;
 import Reika.ElectriCraft.TileEntities.TileEntityWire;
+import Reika.RotaryCraft.Auxiliary.WorktableRecipes;
+import Reika.RotaryCraft.Registry.ConfigRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public enum ElectriTiles {
 
-	WIRE("Electri.wire", ElectriBlocks.WIRE,	TileEntityWire.class, 0, "RenderWire"),
-	GENERATOR("machine.Electrigenerator", ElectriBlocks.CONVERTER, TileEntityGenerator.class, 0, "RenderGenerator"),
-	MOTOR("machine.Electrimotor", ElectriBlocks.CONVERTER, TileEntityMotor.class, 1, "RenderMotor");
+	WIRE("electri.wire", ElectriBlocks.WIRE,	TileEntityWire.class, 0, "RenderWire"),
+	GENERATOR("machine.electrigenerator", ElectriBlocks.MACHINE, TileEntityGenerator.class, 0, "RenderGenerator"),
+	MOTOR("machine.electrimotor", ElectriBlocks.MACHINE, TileEntityMotor.class, 1, "RenderMotor"),
+	LIMITER("machine.electriresistor", ElectriBlocks.MACHINE, TileEntityResistor.class, 2);
 
 	private String name;
 	private final Class teClass;

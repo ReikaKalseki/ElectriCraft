@@ -18,11 +18,12 @@ import Reika.DragonAPI.DragonAPICore;
 import Reika.DragonAPI.Base.TileEntityBase;
 import Reika.DragonAPI.Interfaces.RenderFetcher;
 import Reika.DragonAPI.Interfaces.TextureFetcher;
+import Reika.ElectriCraft.Auxiliary.ElectriRenderList;
+import Reika.ElectriCraft.Registry.ElectriTiles;
+import Reika.ElectriCraft.TileEntities.TileEntityWire;
 import Reika.RotaryCraft.API.ShaftMachine;
 import Reika.RotaryCraft.API.Transducerable;
 import Reika.RotaryCraft.Registry.ConfigRegistry;
-import Reika.ElectriCraft.Auxiliary.ElectriRenderList;
-import Reika.ElectriCraft.Registry.ElectriTiles;
 
 public abstract class ElectriTileEntity extends TileEntityBase implements RenderFetcher, Transducerable {
 
@@ -87,9 +88,13 @@ public abstract class ElectriTileEntity extends TileEntityBase implements Render
 		return pass == 0 || ((r.renderInPass1() || this instanceof ShaftMachine) && pass == 1);
 	}
 
-	public ArrayList<String> getMessages(World world, int x, int y, int z, int side) {
+	public final ArrayList<String> getMessages(World world, int x, int y, int z, int side) {
 		ArrayList<String> li = new ArrayList();
-
+		if (this instanceof TileEntityWire) {
+			TileEntityWire wire = (TileEntityWire)this;
+			li.add(String.format("Point Voltage: %dV", wire.getWireVoltage()));
+			li.add(String.format("Point Current: %dA", wire.getWireCurrent()));
+		}
 		return li;
 	}
 

@@ -11,6 +11,7 @@ package Reika.ElectriCraft.TileEntities;
 
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
@@ -18,12 +19,12 @@ import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.ForgeDirection;
 import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
 import Reika.DragonAPI.Libraries.Registry.ReikaParticleHelper;
-import Reika.ElectriCraft.Base.NetworkTileEntity;
+import Reika.ElectriCraft.Base.WiringTile;
 import Reika.ElectriCraft.Blocks.BlockWire;
 import Reika.ElectriCraft.Registry.ElectriTiles;
 import Reika.ElectriCraft.Registry.WireType;
 
-public class TileEntityWire extends NetworkTileEntity {
+public class TileEntityWire extends WiringTile {
 
 	private boolean[] connections = new boolean[6];
 	public boolean insulated;
@@ -48,6 +49,7 @@ public class TileEntityWire extends NetworkTileEntity {
 		voltage = network.getPointVoltage(this);
 	}
 
+	@Override
 	public void onNetworkChanged() {
 		current = network.getPointCurrent(this);
 		voltage = network.getPointVoltage(this);
@@ -81,7 +83,13 @@ public class TileEntityWire extends NetworkTileEntity {
 			TileEntityMotor te = (TileEntityMotor)world.getBlockTileEntity(dx, dy, dz);
 			return dir == te.getFacing().getOpposite();
 		}
-		return false;
+		TileEntity te = world.getBlockTileEntity(dx, dy, dz);
+		return te instanceof WiringTile;
+	}
+
+	@Override
+	public final boolean canNetworkOnSide(ForgeDirection dir) {
+		return true;
 	}
 
 	public WireType getWireType() {
@@ -186,11 +194,6 @@ public class TileEntityWire extends NetworkTileEntity {
 	}
 
 	@Override
-	public boolean canNetworkOnSide(ForgeDirection dir) {
-		return true;
-	}
-
-	@Override
 	public int getCurrentLimit() {
 		return this.getWireType().maxCurrent;
 	}
@@ -228,5 +231,10 @@ public class TileEntityWire extends NetworkTileEntity {
 
 	public int getWireCurrent() {
 		return current;
+	}
+
+	@Override
+	public int getResistance() {
+		return this.getWireType().resistance;
 	}
 }

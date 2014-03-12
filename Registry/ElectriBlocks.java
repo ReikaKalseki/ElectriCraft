@@ -22,7 +22,7 @@ import Reika.ElectriCraft.Items.ItemBlockElectriOre;
 
 public enum ElectriBlocks implements RegistryEnum {
 	WIRE(BlockWire.class, "Wire", false),
-	CONVERTER(BlockConverter.class, "Converter", false),
+	MACHINE(BlockConverter.class, "Converter", false),
 	ORE(BlockElectriOre.class, ItemBlockElectriOre.class, "ElectriOre", true);
 
 	private Class blockClass;
