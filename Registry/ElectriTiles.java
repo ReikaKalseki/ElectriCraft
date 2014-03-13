@@ -39,7 +39,7 @@ public enum ElectriTiles {
 	WIRE("electri.wire", ElectriBlocks.WIRE,	TileEntityWire.class, 0, "RenderWire"),
 	GENERATOR("machine.electrigenerator", ElectriBlocks.MACHINE, TileEntityGenerator.class, 0, "RenderGenerator"),
 	MOTOR("machine.electrimotor", ElectriBlocks.MACHINE, TileEntityMotor.class, 1, "RenderMotor"),
-	RESISTOR("machine.electriresistor", ElectriBlocks.MACHINE, TileEntityResistor.class, 2),
+	RESISTOR("machine.electriresistor", ElectriBlocks.MACHINE, TileEntityResistor.class, 2, "RenderResistor"),
 	RELAY("machine.electrirelay", ElectriBlocks.MACHINE, TileEntityRelay.class, 3);
 
 	private String name;

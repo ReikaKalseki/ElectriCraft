@@ -1,5 +1,6 @@
 package Reika.ElectriCraft.TileEntities;
 
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import Reika.DragonAPI.Libraries.Java.ReikaJavaLibrary;
@@ -17,7 +18,7 @@ public class TileEntityResistor extends TileEntityWireComponent {
 	private ColorBand b2 = ColorBand.BLACK;
 	private ColorBand b3 = ColorBand.BLACK;
 
-	public static enum ColorBand {
+	private static enum ColorBand {
 		BLACK(ReikaDyeHelper.BLACK),
 		BROWN(ReikaDyeHelper.BROWN),
 		RED(ReikaDyeHelper.RED),
@@ -34,6 +35,19 @@ public class TileEntityResistor extends TileEntityWireComponent {
 		private ColorBand(ReikaDyeHelper color) {
 			renderColor = color;
 		}
+
+		public static ColorBand getBandFromColor(ReikaDyeHelper color) {
+			for (int i = 0; i < bandList.length; i++) {
+				ColorBand b = bandList[i];
+				if (b.renderColor == color)
+					return b;
+			}
+			return null;
+		}
+	}
+
+	public ReikaDyeHelper[] getBandRenderColors() {
+		return new ReikaDyeHelper[]{b1.renderColor, b2.renderColor, b3.renderColor};
 	}
 
 	@Override
@@ -46,11 +60,22 @@ public class TileEntityResistor extends TileEntityWireComponent {
 		return selectedCurrent;
 	}
 
-	public void setColors(ColorBand b1, ColorBand b2, ColorBand b3) {
+	public void setColor(ItemStack is, int band) {
+		if (band == 1)
+			b1 = this.getBandFromDyeItem(is);
+		if (band == 2)
+			b2 = this.getBandFromDyeItem(is);
+		if (band == 3)
+			b3 = this.getBandFromDyeItem(is);
 		selectedCurrent = this.calculateCurrentLimit(b1, b2, b3);
 		ReikaJavaLibrary.pConsole(selectedCurrent);
 		if (!worldObj.isRemote)
 			network.updateWires();
+	}
+
+	private ColorBand getBandFromDyeItem(ItemStack is) {
+		ReikaDyeHelper color = ReikaDyeHelper.getColorFromItem(is);
+		return ColorBand.getBandFromColor(color);
 	}
 
 	private int calculateCurrentLimit(ColorBand b1, ColorBand b2, ColorBand b3) {

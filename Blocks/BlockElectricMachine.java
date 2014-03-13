@@ -11,6 +11,7 @@ package Reika.ElectriCraft.Blocks;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MovingObjectPosition;
@@ -18,7 +19,6 @@ import net.minecraft.world.World;
 import Reika.ElectriCraft.Base.ElectriBlock;
 import Reika.ElectriCraft.Registry.ElectriTiles;
 import Reika.ElectriCraft.TileEntities.TileEntityResistor;
-import Reika.ElectriCraft.TileEntities.TileEntityResistor.ColorBand;
 
 public class BlockElectricMachine extends ElectriBlock {
 
@@ -40,9 +40,11 @@ public class BlockElectricMachine extends ElectriBlock {
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer ep, int side, float a, float b, float c) {
 		ElectriTiles e = ElectriTiles.getTE(world, x, y, z);
-		if (e == ElectriTiles.RESISTOR) {
+		ItemStack is = ep.getCurrentEquippedItem();
+		if (e == ElectriTiles.RESISTOR && is != null && is.itemID == Item.dyePowder.itemID) {
 			TileEntityResistor te = (TileEntityResistor)world.getBlockTileEntity(x, y, z);
-			te.setColors(ColorBand.BLACK, ColorBand.BROWN, ColorBand.BROWN);
+
+			te.setColor(is, band);
 			return true;
 		}
 		return false;
