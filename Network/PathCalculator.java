@@ -63,7 +63,7 @@ public class PathCalculator {
 				}
 				else {
 					ElectriTiles t = ElectriTiles.getTE(world, dx, dy, dz);
-					if (t == ElectriTiles.WIRE || t == ElectriTiles.LIMITER) {
+					if (t != null && t.isWiringPiece()) {
 						WiringTile tile = (WiringTile)world.getBlockTileEntity(dx, dy, dz);
 						if (tile.canNetworkOnSide(dir.getOpposite()))
 							this.recursiveCalculate(world, dx, dy, dz, li);
@@ -73,7 +73,7 @@ public class PathCalculator {
 		}
 		//ReikaJavaLibrary.pConsole(paths, Side.SERVER);
 	}
-	check direction code!!
+	//check direction code!!
 	private void recursiveCalculate(World world, int x, int y, int z, LinkedList li) {
 		if (li.contains(Arrays.asList(x, y, z))) {
 			return;
@@ -100,7 +100,7 @@ public class PathCalculator {
 				}
 				else {
 					ElectriTiles t = ElectriTiles.getTE(world, dx, dy, dz);
-					if (t == ElectriTiles.WIRE || t == ElectriTiles.LIMITER) {
+					if (t != null && t.isWiringPiece()) {
 						WiringTile tile = (WiringTile)world.getBlockTileEntity(dx, dy, dz);
 						if (tile.canNetworkOnSide(dir.getOpposite()))
 							this.recursiveCalculate(world, dx, dy, dz, li);
@@ -132,7 +132,7 @@ public class PathCalculator {
 				index = i;
 			}
 		}
-		return paths.get(index);
+		return index >= 0 ? paths.get(index) : null;
 	}
 
 }

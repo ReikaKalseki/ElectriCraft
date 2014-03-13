@@ -116,7 +116,8 @@ public final class WirePath {
 	}
 
 	public int getTerminalVoltage() {
-		return start.getGenVoltage() > 0 ? start.getGenVoltage()-this.getVoltageLoss() : 0;
+		int v = start.getGenVoltage() > 0 ? start.getGenVoltage()-this.getVoltageLoss() : 0;
+		return v > 0 ? v : 0;
 	}
 
 	public int getVoltageLoss() {

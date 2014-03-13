@@ -204,6 +204,7 @@ public final class WireNetwork {
 	}
 
 	public void updateWires() {
+		this.recalculatePaths();
 		for (int i = 0; i < wires.size(); i++) {
 			wires.get(i).onNetworkChanged();
 		}
@@ -215,7 +216,9 @@ public final class WireNetwork {
 			for (int k = 0; k < sinks.size(); k++) {
 				PathCalculator pc = new PathCalculator(sources.get(i), sinks.get(k), this);
 				pc.calculatePaths();
-				paths.add(pc.getShortestPath());
+				WirePath path = pc.getShortestPath();
+				if (path != null)
+					paths.add(path);
 			}
 		}
 	}

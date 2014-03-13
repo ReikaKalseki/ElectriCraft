@@ -13,12 +13,12 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import Reika.DragonAPI.Instantiable.StepTimer;
 import Reika.DragonAPI.Libraries.MathSci.ReikaMathLibrary;
-import Reika.RotaryCraft.API.ShaftPowerEmitter;
-import Reika.RotaryCraft.Registry.EngineType;
-import Reika.RotaryCraft.Registry.SoundRegistry;
 import Reika.ElectriCraft.Base.ConverterTile;
 import Reika.ElectriCraft.Network.WireNetwork;
 import Reika.ElectriCraft.Registry.ElectriTiles;
+import Reika.RotaryCraft.API.ShaftPowerEmitter;
+import Reika.RotaryCraft.Registry.EngineType;
+import Reika.RotaryCraft.Registry.SoundRegistry;
 
 public class TileEntityMotor extends ConverterTile implements ShaftPowerEmitter {
 
@@ -37,6 +37,9 @@ public class TileEntityMotor extends ConverterTile implements ShaftPowerEmitter 
 			soundTimer.update();
 			if (soundTimer.checkCap())
 				SoundRegistry.ELECTRIC.playSoundAtBlock(world, x, y, z, 0.36F, 0.6666F);
+		}
+		else {
+			torque = omega = 0;
 		}
 	}
 

@@ -23,12 +23,13 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import Reika.DragonAPI.Libraries.ReikaPlayerAPI;
 import Reika.DragonAPI.Libraries.World.ReikaWorldHelper;
-import Reika.RotaryCraft.API.ShaftMachine;
-import Reika.RotaryCraft.Auxiliary.RotaryAux;
 import Reika.ElectriCraft.ElectriCraft;
 import Reika.ElectriCraft.Base.ConverterTile;
 import Reika.ElectriCraft.Base.ElectriTileEntity;
+import Reika.ElectriCraft.Base.TileEntityWireComponent;
 import Reika.ElectriCraft.Registry.ElectriTiles;
+import Reika.RotaryCraft.API.ShaftMachine;
+import Reika.RotaryCraft.Auxiliary.RotaryAux;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -82,6 +83,11 @@ public class ItemElectriPlacer extends Item {
 		if (te instanceof ShaftMachine) {
 			ShaftMachine sm = (ShaftMachine)te;
 			sm.setIORenderAlpha(512);
+		}
+		if (te instanceof TileEntityWireComponent) {
+			ForgeDirection dir = ReikaPlayerAPI.getDirectionFromPlayerLook(ep, false);
+			//ReikaJavaLibrary.pConsole(dir+":"+te, Side.SERVER);
+			((TileEntityWireComponent)te).setFacing(dir);
 		}
 		if (te instanceof ConverterTile) {
 			ForgeDirection dir = ReikaPlayerAPI.getDirectionFromPlayerLook(ep, false);

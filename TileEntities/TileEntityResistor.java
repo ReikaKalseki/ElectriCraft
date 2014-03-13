@@ -2,19 +2,20 @@ package Reika.ElectriCraft.TileEntities;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
+import Reika.DragonAPI.Libraries.Java.ReikaJavaLibrary;
+import Reika.DragonAPI.Libraries.MathSci.ReikaMathLibrary;
 import Reika.DragonAPI.Libraries.Registry.ReikaDyeHelper;
-import Reika.ElectriCraft.Base.WiringTile;
+import Reika.ElectriCraft.Base.TileEntityWireComponent;
 import Reika.ElectriCraft.Registry.ElectriTiles;
 
-public class TileEntityResistor extends WiringTile {
+public class TileEntityResistor extends TileEntityWireComponent {
 
 	private int selectedCurrent;
 
 	/** Use these to control current limits; change by right-clicking with dye */
-	private ColorBand b1;
-	private ColorBand b2;
-	private ColorBand multiplier;
+	private ColorBand b1 = ColorBand.BLACK;
+	private ColorBand b2 = ColorBand.BLACK;
+	private ColorBand b3 = ColorBand.BLACK;
 
 	public static enum ColorBand {
 		BLACK(ReikaDyeHelper.BLACK),
@@ -33,10 +34,6 @@ public class TileEntityResistor extends WiringTile {
 		private ColorBand(ReikaDyeHelper color) {
 			renderColor = color;
 		}
-
-		public final int getValue() {
-			return this.ordinal();
-		}
 	}
 
 	@Override
@@ -49,8 +46,19 @@ public class TileEntityResistor extends WiringTile {
 		return selectedCurrent;
 	}
 
-	public void setColors(ColorBand b1, ColorBand b2, ColorBand multiplier) {
-		network.updateWires();
+	public void setColors(ColorBand b1, ColorBand b2, ColorBand b3) {
+		selectedCurrent = this.calculateCurrentLimit(b1, b2, b3);
+		ReikaJavaLibrary.pConsole(selectedCurrent);
+		if (!worldObj.isRemote)
+			network.updateWires();
+	}
+
+	private int calculateCurrentLimit(ColorBand b1, ColorBand b2, ColorBand b3) {
+		int digit1 = b1.ordinal();
+		int digit2 = b2.ordinal();
+		int multiplier = b3.ordinal();
+		int base = Integer.parseInt(String.format("%d%d", digit1, digit2));
+		return base*ReikaMathLibrary.intpow2(10, multiplier);
 	}
 
 	@Override
@@ -60,7 +68,7 @@ public class TileEntityResistor extends WiringTile {
 
 	@Override
 	public int getIndex() {
-		return ElectriTiles.LIMITER.ordinal();
+		return ElectriTiles.RESISTOR.ordinal();
 	}
 
 	@Override
@@ -77,19 +85,18 @@ public class TileEntityResistor extends WiringTile {
 	public void readSyncTag(NBTTagCompound NBT) {
 		super.readSyncTag(NBT);
 
-		colors = NBT.getIntArray("color");
+		b1 = ColorBand.bandList[NBT.getInteger("band1")];
+		b2 = ColorBand.bandList[NBT.getInteger("band2")];
+		b3 = ColorBand.bandList[NBT.getInteger("band3")];
 	}
 
 	@Override
 	public void writeSyncTag(NBTTagCompound NBT) {
 		super.writeSyncTag(NBT);
 
-		NBT.setIntArray("color", colors);
-	}
-
-	@Override
-	public boolean canNetworkOnSide(ForgeDirection dir) {
-		return dir == this.getFacing() || dir == getFacing.getOpposite();
+		NBT.setInteger("band1", b1.ordinal());
+		NBT.setInteger("band2", b2.ordinal());
+		NBT.setInteger("band3", b3.ordinal());
 	}
 
 }

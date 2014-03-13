@@ -84,7 +84,10 @@ public class TileEntityWire extends WiringTile {
 			return dir == te.getFacing().getOpposite();
 		}
 		TileEntity te = world.getBlockTileEntity(dx, dy, dz);
-		return te instanceof WiringTile;
+		if (te instanceof WiringTile) {
+			return ((WiringTile) te).canNetworkOnSide(dir);
+		}
+		return false;
 	}
 
 	@Override

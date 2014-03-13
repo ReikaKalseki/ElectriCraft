@@ -15,14 +15,14 @@ import net.minecraft.item.ItemBlock;
 import Reika.DragonAPI.Interfaces.RegistryEnum;
 import Reika.DragonAPI.Libraries.Java.ReikaStringParser;
 import Reika.ElectriCraft.ElectriCraft;
-import Reika.ElectriCraft.Blocks.BlockConverter;
+import Reika.ElectriCraft.Blocks.BlockElectricMachine;
 import Reika.ElectriCraft.Blocks.BlockElectriOre;
 import Reika.ElectriCraft.Blocks.BlockWire;
 import Reika.ElectriCraft.Items.ItemBlockElectriOre;
 
 public enum ElectriBlocks implements RegistryEnum {
 	WIRE(BlockWire.class, "Wire", false),
-	MACHINE(BlockConverter.class, "Converter", false),
+	MACHINE(BlockElectricMachine.class, "Converter", false),
 	ORE(BlockElectriOre.class, ItemBlockElectriOre.class, "ElectriOre", true);
 
 	private Class blockClass;
