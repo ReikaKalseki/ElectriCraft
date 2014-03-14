@@ -66,6 +66,7 @@ build/
 *.rsp
 *.sbr
 *.tlb
+*.tcn
 *.tli
 *.tlh
 *.tmp
