@@ -24,6 +24,7 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 import Reika.DragonAPI.Exception.RegistrationException;
 import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
 import Reika.ElectriCraft.ElectriCraft;
+import Reika.ElectriCraft.Base.TileEntityWireComponent;
 import Reika.ElectriCraft.Base.WiringTile;
 import Reika.ElectriCraft.TileEntities.TileEntityGenerator;
 import Reika.ElectriCraft.TileEntities.TileEntityMotor;
@@ -40,7 +41,7 @@ public enum ElectriTiles {
 	GENERATOR("machine.electrigenerator", ElectriBlocks.MACHINE, TileEntityGenerator.class, 0, "RenderGenerator"),
 	MOTOR("machine.electrimotor", ElectriBlocks.MACHINE, TileEntityMotor.class, 1, "RenderMotor"),
 	RESISTOR("machine.electriresistor", ElectriBlocks.MACHINE, TileEntityResistor.class, 2, "RenderResistor"),
-	RELAY("machine.electrirelay", ElectriBlocks.MACHINE, TileEntityRelay.class, 3);
+	RELAY("machine.electrirelay", ElectriBlocks.MACHINE, TileEntityRelay.class, 3, "RenderRelay");
 
 	private String name;
 	private final Class teClass;
@@ -201,6 +202,17 @@ public enum ElectriTiles {
 		}
 	}
 
+	public void addSizedOreCrafting(int size, Object... obj) {
+		ItemStack is = this.getCraftedProduct();
+		ShapedOreRecipe ir = new ShapedOreRecipe(ReikaItemHelper.getSizedItemStack(is, size), obj);
+		if (!this.isDummiedOut()) {
+			WorktableRecipes.getInstance().addRecipe(ir);
+			if (ConfigRegistry.TABLEMACHINES.getState()) {
+				GameRegistry.addRecipe(ir);
+			}
+		}
+	}
+
 	public void addOreCrafting(Object... obj) {
 		ItemStack is = this.getCraftedProduct();
 		ShapedOreRecipe ir = new ShapedOreRecipe(is, obj);
@@ -238,6 +250,10 @@ public enum ElectriTiles {
 		default:
 			return "step.stone";
 		}
+	}
+
+	public boolean isSpecialWiringPiece() {
+		return TileEntityWireComponent.class.isAssignableFrom(teClass);
 	}
 
 	public boolean isWiringPiece() {

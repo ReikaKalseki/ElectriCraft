@@ -1,9 +1,17 @@
+/*******************************************************************************
+ * @author Reika Kalseki
+ * 
+ * Copyright 2014
+ * 
+ * All rights reserved.
+ * Distribution of the software in any form is only allowed with
+ * explicit, prior permission from the owner.
+ ******************************************************************************/
 package Reika.ElectriCraft.TileEntities;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import Reika.DragonAPI.Libraries.Java.ReikaJavaLibrary;
 import Reika.DragonAPI.Libraries.MathSci.ReikaMathLibrary;
 import Reika.DragonAPI.Libraries.Registry.ReikaDyeHelper;
 import Reika.ElectriCraft.Base.TileEntityWireComponent;
@@ -60,22 +68,25 @@ public class TileEntityResistor extends TileEntityWireComponent {
 		return selectedCurrent;
 	}
 
-	public void setColor(ItemStack is, int band) {
-		if (band == 1)
-			b1 = this.getBandFromDyeItem(is);
-		if (band == 2)
-			b2 = this.getBandFromDyeItem(is);
-		if (band == 3)
-			b3 = this.getBandFromDyeItem(is);
+	public void setColor(ItemStack is, int digit) {
+		ColorBand band = this.getBandFromDyeItem(is);
+		if (band == null)
+			return;
+		if (digit == 1)
+			b1 = band;
+		if (digit == 2)
+			b2 = band;
+		if (digit == 3)
+			b3 = band;
 		selectedCurrent = this.calculateCurrentLimit(b1, b2, b3);
-		ReikaJavaLibrary.pConsole(selectedCurrent);
 		if (!worldObj.isRemote)
 			network.updateWires();
 	}
 
 	private ColorBand getBandFromDyeItem(ItemStack is) {
 		ReikaDyeHelper color = ReikaDyeHelper.getColorFromItem(is);
-		return ColorBand.getBandFromColor(color);
+		ColorBand band = ColorBand.getBandFromColor(color);
+		return band;
 	}
 
 	private int calculateCurrentLimit(ColorBand b1, ColorBand b2, ColorBand b3) {
@@ -113,6 +124,8 @@ public class TileEntityResistor extends TileEntityWireComponent {
 		b1 = ColorBand.bandList[NBT.getInteger("band1")];
 		b2 = ColorBand.bandList[NBT.getInteger("band2")];
 		b3 = ColorBand.bandList[NBT.getInteger("band3")];
+
+		selectedCurrent = NBT.getInteger("sel");
 	}
 
 	@Override
@@ -122,6 +135,18 @@ public class TileEntityResistor extends TileEntityWireComponent {
 		NBT.setInteger("band1", b1.ordinal());
 		NBT.setInteger("band2", b2.ordinal());
 		NBT.setInteger("band3", b3.ordinal());
+
+		NBT.setInteger("sel", selectedCurrent);
+	}
+
+	@Override
+	public float getHeight() {
+		return 0.75F;
+	}
+
+	@Override
+	public float getWidth() {
+		return 0.5F;
 	}
 
 }

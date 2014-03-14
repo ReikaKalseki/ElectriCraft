@@ -15,10 +15,10 @@ import java.util.List;
 
 import net.minecraft.world.World;
 import Reika.ElectriCraft.Auxiliary.ElectriNetworkTickEvent;
+import Reika.ElectriCraft.Base.TileEntityWireComponent;
 import Reika.ElectriCraft.Base.WiringTile;
 import Reika.ElectriCraft.TileEntities.TileEntityGenerator;
 import Reika.ElectriCraft.TileEntities.TileEntityMotor;
-import Reika.ElectriCraft.TileEntities.TileEntityResistor;
 
 public final class WirePath {
 
@@ -41,7 +41,7 @@ public final class WirePath {
 			WiringTile te = (WiringTile)world.getBlockTileEntity(x, y, z);
 			nodes.addLast(te);
 			r += te.getResistance();
-			if (te instanceof TileEntityResistor) {
+			if (te instanceof TileEntityWireComponent) {
 				int max = te.getCurrentLimit();
 				if (max < maxcurrent)
 					maxcurrent = max;

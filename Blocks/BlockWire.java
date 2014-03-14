@@ -29,17 +29,17 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
-import Reika.DragonAPI.Libraries.ReikaAABBHelper;
+import net.minecraftforge.common.ForgeDirection;
 import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
-import Reika.RotaryCraft.RotaryCraft;
-import Reika.RotaryCraft.API.Fillable;
-import Reika.RotaryCraft.Entities.EntityDischarge;
-import Reika.RotaryCraft.Registry.SoundRegistry;
 import Reika.ElectriCraft.ElectriCraft;
 import Reika.ElectriCraft.Base.ElectriBlock;
 import Reika.ElectriCraft.Network.WireNetwork;
 import Reika.ElectriCraft.Registry.WireType;
 import Reika.ElectriCraft.TileEntities.TileEntityWire;
+import Reika.RotaryCraft.RotaryCraft;
+import Reika.RotaryCraft.API.Fillable;
+import Reika.RotaryCraft.Entities.EntityDischarge;
+import Reika.RotaryCraft.Registry.SoundRegistry;
 
 public class BlockWire extends ElectriBlock implements IWailaBlock {
 
@@ -179,7 +179,14 @@ public class BlockWire extends ElectriBlock implements IWailaBlock {
 	@Override
 	public final AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
 		double d = 0.25;
-		return ReikaAABBHelper.getBlockAABB(x, y, z).contract(d, d, d);
+		TileEntityWire te = (TileEntityWire)world.getBlockTileEntity(x, y, z);
+		float minx = te.isConnectedOnSideAt(world, x, y, z, ForgeDirection.WEST) ? 0 : 0.375F;
+		float maxx = te.isConnectedOnSideAt(world, x, y, z, ForgeDirection.EAST) ? 1 : 0.625F;
+		float minz = te.isConnectedOnSideAt(world, x, y, z, ForgeDirection.SOUTH) ? 0 : 0.375F;
+		float maxz = te.isConnectedOnSideAt(world, x, y, z, ForgeDirection.NORTH) ? 1 : 0.625F;
+		float miny = te.isConnectedOnSideAt(world, x, y, z, ForgeDirection.UP) ? 0 : 0.375F;
+		float maxy = te.isConnectedOnSideAt(world, x, y, z, ForgeDirection.DOWN) ? 1 : 0.625F;
+		return AxisAlignedBB.getAABBPool().getAABB(x+minx, y+miny, z+minz, x+maxx, y+maxy, z+maxz);
 	}
 
 	public void getBlockRenderBounds() {

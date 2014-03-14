@@ -86,6 +86,8 @@ public final class WireNetwork {
 	public int getPointVoltage(TileEntityWire te) {
 		if (shorted)
 			return 0;
+		if (paths.isEmpty())
+			return 0;
 		int sv = 0;
 		for (int i = 0; i < paths.size(); i++) {
 			WirePath path = paths.get(i);
@@ -100,6 +102,8 @@ public final class WireNetwork {
 
 	public int getPointCurrent(TileEntityWire te) {
 		if (shorted)
+			return 0;
+		if (paths.isEmpty())
 			return 0;
 		int sa = 0;
 		for (int i = 0; i < paths.size(); i++) {

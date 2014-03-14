@@ -1,3 +1,12 @@
+/*******************************************************************************
+ * @author Reika Kalseki
+ * 
+ * Copyright 2014
+ * 
+ * All rights reserved.
+ * Distribution of the software in any form is only allowed with
+ * explicit, prior permission from the owner.
+ ******************************************************************************/
 package Reika.ElectriCraft.TileEntities;
 
 import net.minecraft.world.World;
@@ -51,6 +60,16 @@ public class TileEntityRelay extends TileEntityWireComponent {
 
 	public boolean isEnabled() {
 		return worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord);
+	}
+
+	@Override
+	public float getHeight() {
+		return 0.75F;
+	}
+
+	@Override
+	public float getWidth() {
+		return 0.75F;
 	}
 
 }
