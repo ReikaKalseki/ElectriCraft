@@ -9,22 +9,35 @@
  ******************************************************************************/
 package Reika.ElectriCraft.TileEntities;
 
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import Reika.DragonAPI.Libraries.MathSci.ReikaMathLibrary;
-import Reika.RotaryCraft.API.ShaftPowerReceiver;
-import Reika.ElectriCraft.Base.ConverterTile;
+import Reika.ElectriCraft.Auxiliary.ConversionTile;
+import Reika.ElectriCraft.Base.ElectricalEmitter;
 import Reika.ElectriCraft.Network.WireNetwork;
 import Reika.ElectriCraft.Registry.ElectriTiles;
+import Reika.RotaryCraft.API.ShaftPowerReceiver;
 
-public class TileEntityGenerator extends ConverterTile implements ShaftPowerReceiver {
+public class TileEntityGenerator extends ElectricalEmitter implements ShaftPowerReceiver, ConversionTile {
 
 	private int lastomega;
 	private int lasttorque;
 
+	protected int omega;
+	protected int torque;
+	protected long power;
+
+	protected int iotick;
+
+	private ForgeDirection facing;
+
 	@Override
 	public void updateEntity(World world, int x, int y, int z, int meta) {
 		super.updateEntity(world, x, y, z, meta);
+
+		if (iotick > 0)
+			iotick -= 8;
 
 		if (!world.isRemote)
 			if (omega != lastomega || torque != lasttorque)
@@ -32,6 +45,71 @@ public class TileEntityGenerator extends ConverterTile implements ShaftPowerRece
 
 		lastomega = omega;
 		lasttorque = torque;
+	}
+
+	public final ForgeDirection getFacing() {
+		return facing != null ? facing : ForgeDirection.EAST;
+	}
+
+	public void setFacing(ForgeDirection dir) {
+		facing = dir;
+	}
+
+	@Override
+	public final int getOmega() {
+		return omega;
+	}
+
+	@Override
+	public final int getTorque() {
+		return torque;
+	}
+
+	@Override
+	public final long getPower() {
+		return power;
+	}
+
+	@Override
+	public final int getIORenderAlpha() {
+		return iotick;
+	}
+
+	@Override
+	public final void setIORenderAlpha(int io) {
+		iotick = io;
+	}
+
+	@Override
+	public int getCurrentLimit() {
+		return 0;
+	}
+
+	@Override
+	public void overCurrent() {
+
+	}
+
+	@Override
+	public void readSyncTag(NBTTagCompound NBT) {
+		super.readSyncTag(NBT);
+
+		facing = dirs[NBT.getInteger("face")];
+
+		omega = NBT.getInteger("omg");
+		torque = NBT.getInteger("tq");
+		power = NBT.getLong("pwr");
+	}
+
+	@Override
+	public void writeSyncTag(NBTTagCompound NBT) {
+		super.writeSyncTag(NBT);
+
+		NBT.setInteger("face", this.getFacing().ordinal());
+
+		NBT.setInteger("omg", omega);
+		NBT.setInteger("tq", torque);
+		NBT.setLong("pwr", power);
 	}
 
 	@Override
@@ -44,14 +122,16 @@ public class TileEntityGenerator extends ConverterTile implements ShaftPowerRece
 	}
 
 	@Override
-	public int getIndex() {
-		return ElectriTiles.GENERATOR.ordinal();
+	public ElectriTiles getMachine() {
+		return ElectriTiles.GENERATOR;
 	}
 
+	@Override
 	public int getGenVoltage() {
 		return omega*WireNetwork.TORQUE_PER_AMP;
 	}
 
+	@Override
 	public int getGenCurrent() {
 		return torque/WireNetwork.TORQUE_PER_AMP;
 	}
@@ -92,5 +172,15 @@ public class TileEntityGenerator extends ConverterTile implements ShaftPowerRece
 		omega = torque = 0;
 		power = 0;
 		network.updateWires();
+	}
+
+	@Override
+	public boolean canEmitPowerToSide(ForgeDirection dir) {
+		return this.canNetworkOnSide(dir);
+	}
+
+	@Override
+	public boolean canEmitPower() {
+		return true;
 	}
 }

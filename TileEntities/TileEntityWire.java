@@ -19,6 +19,8 @@ import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.ForgeDirection;
 import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
 import Reika.DragonAPI.Libraries.Registry.ReikaParticleHelper;
+import Reika.ElectriCraft.Auxiliary.WireEmitter;
+import Reika.ElectriCraft.Auxiliary.WireReceiver;
 import Reika.ElectriCraft.Base.WiringTile;
 import Reika.ElectriCraft.Blocks.BlockWire;
 import Reika.ElectriCraft.Registry.ElectriTiles;
@@ -43,8 +45,7 @@ public class TileEntityWire extends WiringTile {
 	}
 
 	@Override
-	public void findAndJoinNetwork(World world, int x, int y, int z) {
-		super.findAndJoinNetwork(world, x, y, z);
+	protected void onJoinNetwork() {
 		current = network.getPointCurrent(this);
 		voltage = network.getPointVoltage(this);
 	}
@@ -61,8 +62,8 @@ public class TileEntityWire extends WiringTile {
 	}
 
 	@Override
-	public int getIndex() {
-		return ElectriTiles.WIRE.ordinal();
+	public ElectriTiles getMachine() {
+		return ElectriTiles.WIRE;
 	}
 
 	public boolean isConnectedOnSideAt(World world, int x, int y, int z, ForgeDirection dir) {
@@ -74,20 +75,18 @@ public class TileEntityWire extends WiringTile {
 		int meta = world.getBlockMetadata(dx, dy, dz);
 		if (id == this.getTileEntityBlockID())
 			return true;
-		ElectriTiles m = ElectriTiles.getTE(world, dx, dy, dz);
-		if (m == ElectriTiles.GENERATOR) {
-			TileEntityGenerator te = (TileEntityGenerator)world.getBlockTileEntity(dx, dy, dz);
-			return dir == te.getFacing();
-		}
-		if (m == ElectriTiles.MOTOR) {
-			TileEntityMotor te = (TileEntityMotor)world.getBlockTileEntity(dx, dy, dz);
-			return dir == te.getFacing().getOpposite();
-		}
 		TileEntity te = world.getBlockTileEntity(dx, dy, dz);
+		boolean flag = false;
 		if (te instanceof WiringTile) {
-			return ((WiringTile) te).canNetworkOnSide(dir);
+			flag = flag || ((WiringTile) te).canNetworkOnSide(dir.getOpposite());
 		}
-		return false;
+		if (te instanceof WireEmitter) {
+			flag = flag || ((WireEmitter)te).canEmitPowerToSide(dir.getOpposite());
+		}
+		if (te instanceof WireReceiver) {
+			flag = flag || ((WireReceiver)te).canReceivePowerFromSide(dir.getOpposite());
+		}
+		return flag;
 	}
 
 	@Override

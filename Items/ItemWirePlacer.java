@@ -24,12 +24,12 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import Reika.DragonAPI.Libraries.World.ReikaWorldHelper;
-import Reika.RotaryCraft.API.Fillable;
 import Reika.ElectriCraft.ElectriCraft;
 import Reika.ElectriCraft.Registry.ElectriItems;
 import Reika.ElectriCraft.Registry.ElectriTiles;
 import Reika.ElectriCraft.Registry.WireType;
 import Reika.ElectriCraft.TileEntities.TileEntityWire;
+import Reika.RotaryCraft.API.Fillable;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -78,6 +78,7 @@ public class ItemWirePlacer extends Item implements Fillable {
 		}
 		world.playSoundEffect(x+0.5, y+0.5, z+0.5, ElectriTiles.WIRE.getPlaceSound(), 1F, 1.5F);
 		TileEntityWire te = (TileEntityWire)world.getBlockTileEntity(x, y, z);
+		te.placer = ep.getEntityName();
 		te.insulated = is.getItemDamage() >= WireType.INS_OFFSET;
 		return true;
 	}

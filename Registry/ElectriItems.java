@@ -20,18 +20,22 @@ import Reika.DragonAPI.Interfaces.RegistryEnum;
 import Reika.DragonAPI.Libraries.ReikaRecipeHelper;
 import Reika.DragonAPI.Libraries.Java.ReikaStringParser;
 import Reika.DragonAPI.Libraries.MathSci.ReikaMathLibrary;
-import Reika.RotaryCraft.Auxiliary.WorktableRecipes;
 import Reika.ElectriCraft.ElectriCraft;
 import Reika.ElectriCraft.Base.ElectriItemBase;
+import Reika.ElectriCraft.Items.ItemBatteryPlacer;
 import Reika.ElectriCraft.Items.ItemElectriPlacer;
 import Reika.ElectriCraft.Items.ItemWirePlacer;
+import Reika.RotaryCraft.Auxiliary.WorktableRecipes;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public enum ElectriItems implements RegistryEnum {
 
 	PLACER(0, false, "item.placer", ItemElectriPlacer.class),
 	INGOTS(16, true, "item.Electriingots", ElectriItemBase.class),
-	WIRE(32, true, "machine.wire", ItemWirePlacer.class);
+	WIRE(1, true, "machine.wire", ItemWirePlacer.class),
+	BATTERY(2, true, "machine.battery", ItemBatteryPlacer.class),
+	CRAFTING(32, true, "item.crafting", ElectriItemBase.class),
+	CRYSTAL(48, true, "item.electricrystal", ElectriItemBase.class);
 
 	private int index;
 	private boolean hasSubtypes;
@@ -95,23 +99,28 @@ public enum ElectriItems implements RegistryEnum {
 	}
 
 	public String getBasicName() {
-		String sg = name;
-		if (name.startsWith("#"))
-			sg = name.substring(1);
-		return StatCollector.translateToLocal(sg);
+		return StatCollector.translateToLocal(name);
 	}
 
 	public String getMultiValuedName(int dmg) {
 		if (!this.hasMultiValuedName())
 			throw new RuntimeException("Item "+name+" was called for a multi-name, yet does not have one!");
-		if (this == INGOTS)
+		switch(this) {
+		case INGOTS:
 			return StatCollector.translateToLocal("ingot."+ElectriOres.oreList[dmg].name().toLowerCase());
-		if (this == WIRE) {
+		case CRAFTING:
+			return ElectriCrafting.craftingList[dmg].getName();
+		case CRYSTAL:
+			return StatCollector.translateToLocal("crystal."+BatteryType.batteryList[dmg].name().toLowerCase());
+		case BATTERY:
+			return BatteryType.batteryList[dmg].getName();
+		case WIRE:
 			int d = dmg%WireType.INS_OFFSET;
 			String s = dmg >= WireType.INS_OFFSET ? "wire.insulated." : "wire.";
 			return d < WireType.wireList.length ? StatCollector.translateToLocal(s+WireType.wireList[d].name().toLowerCase()) : "";
+		default:
+			throw new RuntimeException("Item "+name+" was called for a multi-name, but it was not registered!");
 		}
-		throw new RuntimeException("Item "+name+" was called for a multi-name, but it was not registered!");
 	}
 
 	public String getUnlocalizedName() {
@@ -131,7 +140,7 @@ public enum ElectriItems implements RegistryEnum {
 	}
 
 	public boolean hasMultiValuedName() {
-		return this == INGOTS || this == WIRE;
+		return hasSubtypes;
 	}
 
 	public boolean isCreativeOnly() {
@@ -146,6 +155,12 @@ public enum ElectriItems implements RegistryEnum {
 			return ElectriOres.oreList.length;
 		case WIRE:
 			return WireType.INS_OFFSET*2;
+		case CRAFTING:
+			return ElectriCrafting.craftingList.length;
+		case CRYSTAL:
+			return BatteryType.batteryList.length;
+		case BATTERY:
+			return BatteryType.batteryList.length;
 		default:
 			throw new RegistrationException(ElectriCraft.instance, "Item "+name+" has subtypes but the number was not specified!");
 		}
@@ -295,6 +310,7 @@ public enum ElectriItems implements RegistryEnum {
 		switch(this) {
 		case WIRE:
 		case PLACER:
+		case BATTERY:
 			return true;
 		default:
 			return false;

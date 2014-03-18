@@ -49,8 +49,8 @@ public class TileEntityRelay extends TileEntityWireComponent {
 	}
 
 	@Override
-	public int getIndex() {
-		return ElectriTiles.RELAY.ordinal();
+	public ElectriTiles getMachine() {
+		return ElectriTiles.RELAY;
 	}
 
 	@Override

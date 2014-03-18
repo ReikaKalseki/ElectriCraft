@@ -26,6 +26,7 @@ import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
 import Reika.ElectriCraft.ElectriCraft;
 import Reika.ElectriCraft.Base.TileEntityWireComponent;
 import Reika.ElectriCraft.Base.WiringTile;
+import Reika.ElectriCraft.TileEntities.TileEntityBattery;
 import Reika.ElectriCraft.TileEntities.TileEntityGenerator;
 import Reika.ElectriCraft.TileEntities.TileEntityMotor;
 import Reika.ElectriCraft.TileEntities.TileEntityRelay;
@@ -41,7 +42,8 @@ public enum ElectriTiles {
 	GENERATOR("machine.electrigenerator", ElectriBlocks.MACHINE, TileEntityGenerator.class, 0, "RenderGenerator"),
 	MOTOR("machine.electrimotor", ElectriBlocks.MACHINE, TileEntityMotor.class, 1, "RenderMotor"),
 	RESISTOR("machine.electriresistor", ElectriBlocks.MACHINE, TileEntityResistor.class, 2, "RenderResistor"),
-	RELAY("machine.electrirelay", ElectriBlocks.MACHINE, TileEntityRelay.class, 3, "RenderRelay");
+	RELAY("machine.electrirelay", ElectriBlocks.MACHINE, TileEntityRelay.class, 3, "RenderRelay"),
+	BATTERY("machine.electribattery", ElectriBlocks.BATTERY, TileEntityBattery.class, 4);
 
 	private String name;
 	private final Class teClass;
@@ -113,7 +115,7 @@ public enum ElectriTiles {
 	}
 
 	public boolean hasCustomItem() {
-		return this == WIRE;
+		return this == WIRE || this == BATTERY;
 	}
 
 	public static ElectriTiles getTE(IBlockAccess iba, int x, int y, int z) {
@@ -258,5 +260,13 @@ public enum ElectriTiles {
 
 	public boolean isWiringPiece() {
 		return WiringTile.class.isAssignableFrom(teClass);
+	}
+
+	public static ElectriTiles getMachine(ItemStack item) {
+		if (item.itemID == ElectriItems.WIRE.getShiftedID())
+			return WIRE;
+		if (item.itemID == ElectriItems.BATTERY.getShiftedID())
+			return BATTERY;
+		return TEList[item.getItemDamage()];
 	}
 }

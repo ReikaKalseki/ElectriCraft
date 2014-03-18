@@ -103,8 +103,8 @@ public class TileEntityResistor extends TileEntityWireComponent {
 	}
 
 	@Override
-	public int getIndex() {
-		return ElectriTiles.RESISTOR.ordinal();
+	public ElectriTiles getMachine() {
+		return ElectriTiles.RESISTOR;
 	}
 
 	@Override

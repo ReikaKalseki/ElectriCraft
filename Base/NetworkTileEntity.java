@@ -12,9 +12,10 @@ package Reika.ElectriCraft.Base;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
+import Reika.ElectriCraft.Auxiliary.NetworkTile;
 import Reika.ElectriCraft.Network.WireNetwork;
 
-public abstract class NetworkTileEntity extends ElectriTileEntity {
+public abstract class NetworkTileEntity extends ElectriTileEntity implements NetworkTile {
 
 	protected WireNetwork network;
 
@@ -26,7 +27,7 @@ public abstract class NetworkTileEntity extends ElectriTileEntity {
 		}
 	}
 
-	public void findAndJoinNetwork(World world, int x, int y, int z) {
+	public final void findAndJoinNetwork(World world, int x, int y, int z) {
 		network = new WireNetwork();
 		network.addElement(this);
 		for (int i = 0; i < 6; i++) {
@@ -46,7 +47,10 @@ public abstract class NetworkTileEntity extends ElectriTileEntity {
 				}
 			}
 		}
+		this.onJoinNetwork();
 	}
+
+	protected void onJoinNetwork() {}
 
 	public abstract boolean canNetworkOnSide(ForgeDirection dir);
 
@@ -70,5 +74,25 @@ public abstract class NetworkTileEntity extends ElectriTileEntity {
 	public abstract int getCurrentLimit();
 
 	public abstract void overCurrent();
+
+	@Override
+	public final World getWorld() {
+		return worldObj;
+	}
+
+	@Override
+	public final int getX() {
+		return xCoord;
+	}
+
+	@Override
+	public final int getY() {
+		return yCoord;
+	}
+
+	@Override
+	public final int getZ() {
+		return zCoord;
+	}
 
 }

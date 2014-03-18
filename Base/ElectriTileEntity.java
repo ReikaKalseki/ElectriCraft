@@ -43,16 +43,16 @@ public abstract class ElectriTileEntity extends TileEntityBase implements Render
 		return ElectriTiles.TEList[this.getIndex()].getBlockID();
 	}
 
-	public ElectriTiles getMachine() {
-		return ElectriTiles.TEList[this.getIndex()];
-	}
+	public abstract ElectriTiles getMachine();
 
 	@Override
 	protected String getTEName() {
 		return ElectriTiles.TEList[this.getIndex()].getName();
 	}
 
-	public abstract int getIndex();
+	public final int getIndex() {
+		return this.getMachine().ordinal();
+	}
 
 	public int getTextureState(ForgeDirection side) {
 		return 0;

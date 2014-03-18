@@ -63,6 +63,7 @@ public class ElectriClient extends ElectriCommon
 
 		MinecraftForgeClient.registerItemRenderer(ElectriItems.PLACER.getShiftedID(), machineItems);
 		MinecraftForgeClient.registerItemRenderer(ElectriItems.WIRE.getShiftedID(), machineItems);
+		MinecraftForgeClient.registerItemRenderer(ElectriItems.BATTERY.getShiftedID(), machineItems);
 	}
 
 	private void registerSpriteSheets() {

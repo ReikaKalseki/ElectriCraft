@@ -16,45 +16,52 @@ import java.util.List;
 
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
+import Reika.ElectriCraft.Auxiliary.WireEmitter;
+import Reika.ElectriCraft.Auxiliary.WireReceiver;
 import Reika.ElectriCraft.Base.WiringTile;
 import Reika.ElectriCraft.Registry.ElectriTiles;
-import Reika.ElectriCraft.TileEntities.TileEntityGenerator;
-import Reika.ElectriCraft.TileEntities.TileEntityMotor;
 
 public class PathCalculator {
 
-	private final TileEntityGenerator start;
-	private final TileEntityMotor end;
+	private final WireEmitter start;
+	private final WireReceiver end;
 	private final WireNetwork net;
 
 	private ArrayList<WirePath> paths = new ArrayList();
 
-	public PathCalculator(TileEntityGenerator start, TileEntityMotor end, WireNetwork w) {
+	public PathCalculator(WireEmitter start, WireReceiver end, WireNetwork w) {
 		this.start = start;
 		this.end = end;
 		net = w;
+		this.verify();
+		//ReikaJavaLibrary.pConsole(start, end instanceof TileEntityBattery);
+	}
+
+	private void verify() {
+		if (start == end)
+			throw new IllegalArgumentException("Cannot connect an object to itself!");
 		if (start == null || end == null)
 			throw new IllegalArgumentException("Cannot connect null points!");
-		if (start.worldObj != end.worldObj)
+		if (start.getWorld() != end.getWorld())
 			throw new IllegalArgumentException("Cannot connect points across dimensions!");
 	}
 
 	public void calculatePaths() {
 		//ReikaJavaLibrary.pConsole("START", Side.SERVER);
-		int x = start.xCoord;
-		int y = start.yCoord;
-		int z = start.zCoord;
-		World world = start.worldObj;
+		int x = start.getX();
+		int y = start.getY();
+		int z = start.getZ();
+		World world = start.getWorld();
 		//li.add(Arrays.asList(x, y, z));
 		for (int i = 0; i < 6; i++) {
 			ForgeDirection dir = WireNetwork.dirs[i];
 			LinkedList<List<Integer>> li = new LinkedList();
-			if (start.canNetworkOnSide(dir)) {
+			if (start.canEmitPowerToSide(dir)) {
 				int dx = x+dir.offsetX;
 				int dy = y+dir.offsetY;
 				int dz = z+dir.offsetZ;
 				if (this.isEnd(world, dx, dy, dz)) {
-					if (end.canNetworkOnSide(dir.getOpposite())) {
+					if (end.canReceivePower() && end.canReceivePowerFromSide(dir.getOpposite())) {
 						//li.addLast(Arrays.asList(dx, dy, dz));
 						paths.add(new WirePath(world, li, start, end, net));
 						//li.removeLast();
@@ -89,7 +96,7 @@ public class PathCalculator {
 				int dy = y+dir.offsetY;
 				int dz = z+dir.offsetZ;
 				if (this.isEnd(world, dx, dy, dz)) {
-					if (end.canNetworkOnSide(dir.getOpposite())) {
+					if (end.canReceivePower() && end.canReceivePowerFromSide(dir.getOpposite())) {
 						//li.addLast(Arrays.asList(dx, dy, dz));
 						paths.add(new WirePath(world, li, start, end, net));
 						//ReikaJavaLibrary.pConsole(li.size(), Side.SERVER);
@@ -114,7 +121,7 @@ public class PathCalculator {
 	}
 
 	private boolean isEnd(World world, int x, int y, int z) {
-		return end.worldObj == world && x == end.xCoord && y == end.yCoord && z == end.zCoord;
+		return end.getWorld() == world && x == end.getX() && y == end.getY() && z == end.getZ();
 	}
 
 	ArrayList<WirePath> getCalculatedPaths() {

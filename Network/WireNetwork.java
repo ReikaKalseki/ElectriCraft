@@ -20,17 +20,18 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.world.WorldEvent;
 import Reika.ElectriCraft.Auxiliary.ElectriNetworkTickEvent;
+import Reika.ElectriCraft.Auxiliary.NetworkTile;
+import Reika.ElectriCraft.Auxiliary.WireEmitter;
+import Reika.ElectriCraft.Auxiliary.WireReceiver;
 import Reika.ElectriCraft.Base.NetworkTileEntity;
 import Reika.ElectriCraft.Base.WiringTile;
-import Reika.ElectriCraft.TileEntities.TileEntityGenerator;
-import Reika.ElectriCraft.TileEntities.TileEntityMotor;
 import Reika.ElectriCraft.TileEntities.TileEntityWire;
 
 public final class WireNetwork {
 
 	private ArrayList<WiringTile> wires = new ArrayList();
-	private ArrayList<TileEntityMotor> sinks = new ArrayList();
-	private ArrayList<TileEntityGenerator> sources = new ArrayList();
+	private ArrayList<WireReceiver> sinks = new ArrayList();
+	private ArrayList<WireEmitter> sources = new ArrayList();
 	private HashMap<List<Integer>, NetworkNode> nodes = new HashMap();
 	private ArrayList<WirePath> paths = new ArrayList();
 
@@ -47,7 +48,7 @@ public final class WireNetwork {
 	private int getMaxInputVoltage() {
 		int max = 0;
 		for (int i = 0; i < sources.size(); i++) {
-			TileEntityGenerator e = sources.get(i);
+			WireEmitter e = sources.get(i);
 			max = Math.max(max, e.getGenVoltage());
 		}
 		return max;
@@ -131,17 +132,25 @@ public final class WireNetwork {
 
 	public void merge(WireNetwork n) {
 		if (n != this) {
+			ArrayList<NetworkTile> li = new ArrayList();
 			for (int i = 0; i < n.wires.size(); i++) {
 				WiringTile wire = n.wires.get(i);
 				wire.setNetwork(this);
+				li.add(wire);
 			}
 			for (int i = 0; i < n.sinks.size(); i++) {
-				TileEntityMotor emitter = n.sinks.get(i);
-				emitter.setNetwork(this);
+				WireReceiver emitter = n.sinks.get(i);
+				if (!li.contains(emitter)) {
+					emitter.setNetwork(this);
+					li.add(emitter);
+				}
 			}
 			for (int i = 0; i < n.sources.size(); i++) {
-				TileEntityGenerator source = n.sources.get(i);
-				source.setNetwork(this);
+				WireEmitter source = n.sources.get(i);
+				if (!li.contains(source)) {
+					source.setNetwork(this);
+					li.add(source);
+				}
 			}
 			for (List<Integer> key : n.nodes.keySet()) {
 				NetworkNode node = n.nodes.get(key);
@@ -174,12 +183,12 @@ public final class WireNetwork {
 		MinecraftForge.EVENT_BUS.unregister(this);
 	}
 
-	public void addElement(NetworkTileEntity te) {
-		if (te instanceof TileEntityGenerator)
-			sources.add((TileEntityGenerator)te);
-		else if (te instanceof TileEntityMotor)
-			sinks.add((TileEntityMotor)te);
-		else {
+	public void addElement(NetworkTile te) {
+		if (te instanceof WireEmitter)
+			sources.add((WireEmitter)te);
+		if (te instanceof WireReceiver)
+			sinks.add((WireReceiver)te);
+		if (te instanceof WiringTile) {
 			WiringTile wire = (WiringTile)te;
 			wires.add(wire);
 			for (int k = 0; k < 6; k++) {
@@ -191,9 +200,9 @@ public final class WireNetwork {
 					for (int i = 0; i < 6; i++) {
 						ForgeDirection dir = dirs[i];
 						TileEntity adj = wire2.getAdjacentTileEntity(dir);
-						if (adj instanceof NetworkTileEntity) {
-							NetworkTileEntity nw = (NetworkTileEntity)adj;
-							if (((NetworkTileEntity) adj).canNetworkOnSide(dir.getOpposite()))
+						if (adj instanceof NetworkTile) {
+							NetworkTile nw = (NetworkTile)adj;
+							if (((NetworkTile)adj).canNetworkOnSide(dir.getOpposite()))
 								sides.add(dir);
 						}
 					}
@@ -218,22 +227,26 @@ public final class WireNetwork {
 		paths.clear();
 		for (int i = 0; i < sources.size(); i++) {
 			for (int k = 0; k < sinks.size(); k++) {
-				PathCalculator pc = new PathCalculator(sources.get(i), sinks.get(k), this);
-				pc.calculatePaths();
-				WirePath path = pc.getShortestPath();
-				if (path != null)
-					paths.add(path);
+				WireEmitter src = sources.get(i);
+				WireReceiver sink = sinks.get(k);
+				if (src != sink) {
+					PathCalculator pc = new PathCalculator(src, sink, this);
+					pc.calculatePaths();
+					WirePath path = pc.getShortestPath();
+					if (path != null)
+						paths.add(path);
+				}
 			}
 		}
 	}
 
-	public int getMotorCurrent(TileEntityMotor te) {
+	public int getTerminalCurrent(WireReceiver te) {
 		if (shorted)
 			return 0;
 		int a = 0;
 		for (int i = 0; i < paths.size(); i++) {
 			WirePath path = paths.get(i);
-			if (path.endsAt(te.xCoord, te.yCoord, te.zCoord)) {
+			if (path.endsAt(te.getX(), te.getY(), te.getZ())) {
 				int pa = path.getPathCurrent();
 				a += pa;
 			}
@@ -241,7 +254,7 @@ public final class WireNetwork {
 		return a;
 	}
 
-	public int getMotorVoltage(TileEntityMotor te) {
+	public int getTerminalVoltage(WireReceiver te) {
 		return shorted ? 0 : this.getHighestVoltageOfPaths(te);
 	}
 
@@ -249,13 +262,13 @@ public final class WireNetwork {
 		return paths.size();
 	}
 
-	private int getHighestVoltageOfPaths(TileEntityMotor te) {
+	private int getHighestVoltageOfPaths(WireReceiver te) {
 		int v = 0;
 		if (paths.isEmpty())
 			return 0;
 		for (int i = 0; i < paths.size(); i++) {
 			WirePath path = paths.get(i);
-			if (path.endsAt(te.xCoord, te.yCoord, te.zCoord)) {
+			if (path.endsAt(te.getX(), te.getY(), te.getZ())) {
 				int pv = path.getTerminalVoltage();
 				if (pv > v)
 					v = pv;
@@ -264,14 +277,14 @@ public final class WireNetwork {
 		return v;
 	}
 
-	private int getAverageVoltageOfPaths(TileEntityMotor te) {
+	private int getAverageVoltageOfPaths(WireReceiver te) {
 		int v = 0;
 		int c = 0;
 		if (paths.isEmpty())
 			return 0;
 		for (int i = 0; i < paths.size(); i++) {
 			WirePath path = paths.get(i);
-			if (path.endsAt(te.xCoord, te.yCoord, te.zCoord)) {
+			if (path.endsAt(te.getX(), te.getY(), te.getZ())) {
 				int pv = path.getTerminalVoltage();
 				v += pv;
 				c++;
@@ -305,50 +318,52 @@ public final class WireNetwork {
 	}
 
 	public void removeElement(NetworkTileEntity te) {
-		if (te instanceof TileEntityGenerator)
+		if (te instanceof WireEmitter)
 			sources.remove(te);
-		else if (te instanceof TileEntityMotor)
+		if (te instanceof WireReceiver)
 			sinks.remove(te);
-		else
+		if (te instanceof WiringTile)
 			wires.remove(te);
 		this.rebuild();
 	}
 
 	private void rebuild() {
-		ArrayList<NetworkTileEntity> li = new ArrayList();
+		ArrayList<NetworkTile> li = new ArrayList();
 		for (int i = 0; i < wires.size(); i++) {
 			li.add(wires.get(i));
 		}
 		for (int i = 0; i < sinks.size(); i++) {
-			li.add(sinks.get(i));
+			if (!li.contains(sinks.get(i)))
+				li.add(sinks.get(i));
 		}
 		for (int i = 0; i < sources.size(); i++) {
-			li.add(sources.get(i));
+			if (!li.contains(sources.get(i)))
+				li.add(sources.get(i));
 		}
 		this.clear(true);
 
 		for (int i = 0; i < li.size(); i++) {
-			NetworkTileEntity te = li.get(i);
-			te.findAndJoinNetwork(te.worldObj, te.xCoord, te.yCoord, te.zCoord);
+			NetworkTile te = li.get(i);
+			te.findAndJoinNetwork(te.getWorld(), te.getX(), te.getY(), te.getZ());
 		}
 	}
 
-	ArrayList<WirePath> getPathsStartingAt(TileEntityGenerator start) {
+	ArrayList<WirePath> getPathsStartingAt(WireEmitter start) {
 		ArrayList<WirePath> li = new ArrayList();
 		for (int i = 0; i < paths.size(); i++) {
 			WirePath path = paths.get(i);
-			if (path.startsAt(start.xCoord, start.yCoord, start.zCoord)) {
+			if (path.startsAt(start.getX(), start.getY(), start.getZ())) {
 				li.add(path);
 			}
 		}
 		return li;
 	}
 
-	public int getNumberPathsStartingAt(TileEntityGenerator start) {
+	public int getNumberPathsStartingAt(WireEmitter start) {
 		int c = 0;
 		for (int i = 0; i < paths.size(); i++) {
 			WirePath path = paths.get(i);
-			if (path.startsAt(start.xCoord, start.yCoord, start.zCoord)) {
+			if (path.startsAt(start.getX(), start.getY(), start.getZ())) {
 				c++;
 			}
 		}

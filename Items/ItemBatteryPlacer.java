@@ -20,22 +20,18 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
-import Reika.DragonAPI.Libraries.ReikaPlayerAPI;
 import Reika.DragonAPI.Libraries.World.ReikaWorldHelper;
 import Reika.ElectriCraft.ElectriCraft;
-import Reika.ElectriCraft.Auxiliary.ConversionTile;
-import Reika.ElectriCraft.Base.ElectriTileEntity;
-import Reika.ElectriCraft.Base.TileEntityWireComponent;
+import Reika.ElectriCraft.Registry.BatteryType;
+import Reika.ElectriCraft.Registry.ElectriBlocks;
 import Reika.ElectriCraft.Registry.ElectriTiles;
-import Reika.RotaryCraft.API.ShaftMachine;
-import Reika.RotaryCraft.Auxiliary.RotaryAux;
+import Reika.ElectriCraft.TileEntities.TileEntityBattery;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemElectriPlacer extends Item {
+public class ItemBatteryPlacer extends Item {
 
-	public ItemElectriPlacer(int ID, int tex) {
+	public ItemBatteryPlacer(int ID, int tex) {
 		super(ID);
 		this.setHasSubtypes(true);
 		this.setMaxDamage(0);
@@ -67,32 +63,19 @@ public class ItemElectriPlacer extends Item {
 		List inblock = world.getEntitiesWithinAABB(EntityLivingBase.class, box);
 		if (inblock.size() > 0)
 			return false;
-		ElectriTiles m = ElectriTiles.TEList[is.getItemDamage()];
 		if (!ep.canPlayerEdit(x, y, z, 0, is))
 			return false;
 		else
 		{
 			if (!ep.capabilities.isCreativeMode)
 				--is.stackSize;
-			world.setBlock(x, y, z, m.getBlockID(), m.getBlockMetadata(), 3);
+			world.setBlock(x, y, z, ElectriBlocks.BATTERY.getBlockID(), is.getItemDamage(), 3);
 		}
-		world.playSoundEffect(x+0.5, y+0.5, z+0.5, m.getPlaceSound(), 1F, 1.5F);
-		ElectriTileEntity te = (ElectriTileEntity)world.getBlockTileEntity(x, y, z);
+		world.playSoundEffect(x+0.5, y+0.5, z+0.5, ElectriTiles.BATTERY.getPlaceSound(), 1F, 1.5F);
+		TileEntityBattery te = (TileEntityBattery)world.getBlockTileEntity(x, y, z);
 		te.placer = ep.getEntityName();
-		te.setBlockMetadata(RotaryAux.get4SidedMetadataFromPlayerLook(ep));
-		if (te instanceof ShaftMachine) {
-			ShaftMachine sm = (ShaftMachine)te;
-			sm.setIORenderAlpha(512);
-		}
-		if (te instanceof TileEntityWireComponent) {
-			ForgeDirection dir = ReikaPlayerAPI.getDirectionFromPlayerLook(ep, false);
-			//ReikaJavaLibrary.pConsole(dir+":"+te, Side.SERVER);
-			((TileEntityWireComponent)te).setFacing(dir);
-		}
-		if (te instanceof ConversionTile) {
-			ForgeDirection dir = ReikaPlayerAPI.getDirectionFromPlayerLook(ep, false);
-			((ConversionTile)te).setFacing(dir);
-		}
+		//te.setBlockMetadata(RotaryAux.get4SidedMetadataFromPlayerLook(ep));
+		te.setEnergyFromNBT(is);
 
 		return true;
 	}
@@ -100,12 +83,9 @@ public class ItemElectriPlacer extends Item {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List) {
-		for (int i = 0; i < ElectriTiles.TEList.length; i++) {
-			ElectriTiles t = ElectriTiles.TEList[i];
-			if (!t.hasCustomItem() && t.isAvailableInCreativeInventory()) {
-				ItemStack item = new ItemStack(par1, 1, i);
-				par3List.add(item);
-			}
+		for (int i = 0; i < BatteryType.batteryList.length; i++) {
+			ItemStack item = new ItemStack(par1, 1, i);
+			par3List.add(item);
 		}
 	}
 
@@ -116,11 +96,6 @@ public class ItemElectriPlacer extends Item {
 	@Override
 	public int getMetadata(int meta) {
 		return meta;
-	}
-
-	@Override
-	public String getItemDisplayName(ItemStack is) {
-		return ElectriTiles.TEList[is.getItemDamage()].getName();
 	}
 
 	@Override

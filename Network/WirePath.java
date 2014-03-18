@@ -15,22 +15,26 @@ import java.util.List;
 
 import net.minecraft.world.World;
 import Reika.ElectriCraft.Auxiliary.ElectriNetworkTickEvent;
+import Reika.ElectriCraft.Auxiliary.WireEmitter;
+import Reika.ElectriCraft.Auxiliary.WireReceiver;
 import Reika.ElectriCraft.Base.TileEntityWireComponent;
 import Reika.ElectriCraft.Base.WiringTile;
-import Reika.ElectriCraft.TileEntities.TileEntityGenerator;
-import Reika.ElectriCraft.TileEntities.TileEntityMotor;
 
 public final class WirePath {
 
 	private final LinkedList<WiringTile> nodes = new LinkedList();
-	private final TileEntityGenerator start;
-	private final TileEntityMotor end;
+	private final WireEmitter start;
+	private final WireReceiver end;
 	private final WireNetwork net;
 
 	public final int resistance;
 	private final int currentLimit;
 
-	public WirePath(World world, LinkedList<List<Integer>> points, TileEntityGenerator start, TileEntityMotor end, WireNetwork net) {
+	public WirePath(World world, LinkedList<List<Integer>> points, WireEmitter start, WireReceiver end, WireNetwork net) {
+		this.start = start;
+		this.end = end;
+		this.net = net;
+		this.verify();
 		int maxcurrent = Integer.MAX_VALUE;
 		int r = 0;
 		for (int i = 0; i < points.size(); i++) {
@@ -47,12 +51,16 @@ public final class WirePath {
 					maxcurrent = max;
 			}
 		}
-		this.start = start;
-		this.end = end;
-		this.net = net;
 		resistance = r;
 		currentLimit = maxcurrent;
 		//ReikaJavaLibrary.pConsole(points, Side.SERVER);
+	}
+
+	private void verify() {
+		if (start == null || end == null)
+			throw new IllegalArgumentException("Cannot connect null points!");
+		if (start.getWorld() != end.getWorld())
+			throw new IllegalArgumentException("Cannot connect points across dimensions!");
 	}
 
 	public int getLength() {
@@ -64,7 +72,7 @@ public final class WirePath {
 	}
 
 	public int getVoltageAt(WiringTile wire) {
-		return start.getGenVoltage() > 0 ? start.getGenVoltage()-this.getResistanceTo(wire) : 0;
+		return start.canEmitPower() ? start.getGenVoltage() > 0 ? start.getGenVoltage()-this.getResistanceTo(wire) : 0 : 0;
 	}
 
 	private int getResistanceTo(WiringTile wire) {
@@ -81,7 +89,7 @@ public final class WirePath {
 	}
 
 	@Override
-	public String toString() {
+	public String toString() {/*
 		StringBuilder sb = new StringBuilder();
 		sb.append("<");
 		for (int i = 0; i < nodes.size(); i++) {
@@ -95,7 +103,8 @@ public final class WirePath {
 			sb.append("]");
 		}
 		sb.append(">");
-		return sb.toString();
+		return sb.toString();*/
+		return start+":"+end;
 	}
 
 	public boolean containsBlock(WiringTile te) {
@@ -108,11 +117,11 @@ public final class WirePath {
 	}
 
 	public boolean startsAt(int x, int y, int z) {
-		return start.xCoord == x && y == start.yCoord && z == start.zCoord;
+		return start.getX() == x && y == start.getY() && z == start.getZ();
 	}
 
 	public boolean endsAt(int x, int y, int z) {
-		return end.xCoord == x && y == end.yCoord && z == end.zCoord;
+		return x == end.getX() && y == end.getY() && z == end.getZ();
 	}
 
 	public int getTerminalVoltage() {
@@ -129,6 +138,8 @@ public final class WirePath {
 	}
 
 	public int getPathCurrent() {
+		if (!start.canEmitPower())
+			return 0;
 		ArrayList<WirePath> li = net.getPathsStartingAt(start);
 		int total = start.getGenCurrent();
 		int num = net.getNumberPathsStartingAt(start);
