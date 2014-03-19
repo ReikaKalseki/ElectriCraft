@@ -11,6 +11,7 @@ package Reika.ElectriCraft.TileEntities;
 
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import Reika.DragonAPI.Instantiable.StepTimer;
@@ -20,6 +21,7 @@ import Reika.ElectriCraft.Base.ElectricalReceiver;
 import Reika.ElectriCraft.Network.WireNetwork;
 import Reika.ElectriCraft.Registry.ElectriTiles;
 import Reika.RotaryCraft.API.ShaftPowerEmitter;
+import Reika.RotaryCraft.API.ShaftPowerReceiver;
 import Reika.RotaryCraft.Registry.EngineType;
 import Reika.RotaryCraft.Registry.SoundRegistry;
 
@@ -54,6 +56,13 @@ public class TileEntityMotor extends ElectricalReceiver implements ShaftPowerEmi
 		}
 		else {
 			torque = omega = 0;
+		}
+		TileEntity tg = this.getAdjacentTileEntity(this.getFacing().getOpposite());
+		if (tg instanceof ShaftPowerReceiver) {
+			ShaftPowerReceiver rec = (ShaftPowerReceiver)tg;
+			rec.setOmega(omega);
+			rec.setTorque(torque);
+			rec.setPower(power);
 		}
 	}
 

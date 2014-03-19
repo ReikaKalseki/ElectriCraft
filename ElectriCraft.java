@@ -18,7 +18,6 @@ import net.minecraftforge.common.MinecraftForge;
 import Reika.DragonAPI.DragonAPICore;
 import Reika.DragonAPI.Auxiliary.IntegrityChecker;
 import Reika.DragonAPI.Base.DragonAPIMod;
-import Reika.DragonAPI.Instantiable.IO.ControlledConfig;
 import Reika.DragonAPI.Instantiable.IO.ModLogger;
 import Reika.DragonAPI.Libraries.ReikaRegistryHelper;
 import Reika.DragonAPI.Libraries.Java.ReikaJavaLibrary;
@@ -53,7 +52,7 @@ public class ElectriCraft extends DragonAPIMod {
 
 	public static final Block[] blocks = new Block[ElectriBlocks.blockList.length];
 	public static final Item[] items = new Item[ElectriItems.itemList.length];
-	public static final ControlledConfig config = new ControlledConfig(instance, ElectriOptions.optionList, ElectriBlocks.blockList, ElectriItems.itemList, null, 0);
+	public static final ElectriConfig config = new ElectriConfig(instance, ElectriOptions.optionList, ElectriBlocks.blockList, ElectriItems.itemList, null, 0);
 
 	public static ModLogger logger;
 

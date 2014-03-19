@@ -9,6 +9,8 @@
  ******************************************************************************/
 package Reika.ElectriCraft.Registry;
 
+import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -17,9 +19,12 @@ import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraftforge.oredict.OreDictionary;
 import Reika.DragonAPI.Libraries.Java.ReikaJavaLibrary;
 import Reika.DragonAPI.Libraries.Java.ReikaStringParser;
+import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
 import Reika.DragonAPI.ModInteract.ReikaTwilightHelper;
+import Reika.ElectriCraft.ElectriCraft;
 
 public enum ElectriOres {
 
@@ -40,6 +45,8 @@ public enum ElectriOres {
 	public final float xpDropped;
 
 	public static final ElectriOres[] oreList = values();
+
+	private static final EnumMap<ElectriOres, Boolean> equivalents = new EnumMap(ElectriOres.class);
 
 	private ElectriOres(int min, int max, int size, int count, int dim, float xp, int level, String name) {
 		minY = min;
@@ -166,7 +173,33 @@ public enum ElectriOres {
 	}
 
 	public boolean canGenAt(World world, int x, int y, int z) {
-		return true;
+		return this.isOreEnabled();
+	}
+
+	public boolean isOreEnabled() {
+		if (ElectriCraft.config.isOreGenEnabled(this))
+			return true;
+		if (!this.hasEquivalents())
+			return true;
+		return false;
+	}
+
+	public boolean hasEquivalents() {
+		Boolean b = equivalents.get(this);
+		if (b == null) {
+			ArrayList<ItemStack> li = OreDictionary.getOres(this.getDictionaryName());
+			boolean flag = false;
+			for (int i = 0; i < li.size() && !flag; i++) {
+				ItemStack is = li.get(i);
+				if (!ReikaItemHelper.matchStacks(is, this.getOreBlock())) {
+					b = true;
+					flag = true;
+				}
+			}
+			b = flag;
+			equivalents.put(this, b);
+		}
+		return b.booleanValue();
 	}
 
 	public boolean dropsSelf(int meta) {

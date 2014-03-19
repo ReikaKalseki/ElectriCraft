@@ -29,7 +29,7 @@ public class ElectriOreGenerator implements IWorldGenerator {
 		}
 	}
 
-	public static void generate(ElectriOres ore, World world, Random random, int chunkX, int chunkZ) {
+	public void generate(ElectriOres ore, World world, Random random, int chunkX, int chunkZ) {
 		//ReikaJavaLibrary.pConsole("Generating "+ore);
 		//ReikaJavaLibrary.pConsole(chunkX+", "+chunkZ);
 		int id = ore.getBlockID();
