@@ -52,8 +52,8 @@ public class BlockWire extends ElectriBlock implements IWailaBlock {
 	public BlockWire(int par1, Material par2Material) {
 		super(par1, par2Material);
 		this.setStepSound(soundClothFootstep);
-		this.setHardness(0.5F);
-		this.setResistance(4F);
+		this.setHardness(0.05F);
+		this.setResistance(2F);
 		this.setBlockBounds(0.25F, 0.25F, 0.25F, 0.75F, 0.75F, 0.75F);
 	}
 

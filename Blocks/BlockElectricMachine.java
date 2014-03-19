@@ -10,6 +10,7 @@
 package Reika.ElectriCraft.Blocks;
 
 import java.util.List;
+import java.util.Random;
 
 import mcp.mobius.waila.api.IWailaBlock;
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -24,11 +25,13 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import Reika.DragonAPI.Libraries.MathSci.ReikaMathLibrary;
+import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
 import Reika.ElectriCraft.Base.ElectriBlock;
 import Reika.ElectriCraft.Base.TileEntityWireComponent;
 import Reika.ElectriCraft.Registry.ElectriTiles;
 import Reika.ElectriCraft.TileEntities.TileEntityRelay;
 import Reika.ElectriCraft.TileEntities.TileEntityResistor;
+import Reika.RotaryCraft.Auxiliary.RotaryAux;
 
 public class BlockElectricMachine extends ElectriBlock implements IWailaBlock {
 
@@ -45,6 +48,56 @@ public class BlockElectricMachine extends ElectriBlock implements IWailaBlock {
 	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
 	{
 		return ElectriTiles.getTE(world, x, y, z).getCraftedProduct();
+	}
+
+	@Override
+	public int idDropped(int id, Random r, int fortune) {
+		return 0;//return RotaryCraft.machineplacer.itemID;
+	}
+
+	@Override
+	public int damageDropped(int par1)
+	{
+		return ElectriTiles.getMachineFromIDandMetadata(blockID, par1).ordinal();
+	}
+
+	@Override
+	public int quantityDropped(Random par1Random)
+	{
+		return 1;
+	}
+
+	@Override
+	public final boolean canSilkHarvest(World world, EntityPlayer player, int x, int y, int z, int metadata)
+	{
+		return false;
+	}
+
+	@Override
+	public boolean removeBlockByPlayer(World world, EntityPlayer player, int x, int y, int z)
+	{
+		if (this.canHarvest(world, player, x, y, z))
+			this.harvestBlock(world, player, x, y, z, 0);
+		return world.setBlock(x, y, z, 0);
+	}
+
+	private boolean canHarvest(World world, EntityPlayer ep, int x, int y, int z) {
+		if (ep.capabilities.isCreativeMode)
+			return false;
+		return RotaryAux.canHarvestSteelMachine(ep);
+	}
+
+	@Override
+	public final void harvestBlock(World world, EntityPlayer ep, int x, int y, int z, int meta)
+	{
+		if (!this.canHarvest(world, ep, x, y, z))
+			return;
+		TileEntity te = world.getBlockTileEntity(x, y, z);
+		ElectriTiles m = ElectriTiles.getTE(world, x, y, z);
+		if (m != null) {
+			ItemStack is = m.getCraftedProduct();
+			ReikaItemHelper.dropItem(world, x+0.5, y+0.5, z+0.5, is);
+		}
 	}
 
 	@Override
