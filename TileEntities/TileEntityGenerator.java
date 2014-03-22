@@ -10,6 +10,7 @@
 package Reika.ElectriCraft.TileEntities;
 
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import Reika.DragonAPI.Libraries.MathSci.ReikaMathLibrary;
@@ -17,6 +18,7 @@ import Reika.ElectriCraft.Auxiliary.ConversionTile;
 import Reika.ElectriCraft.Base.ElectricalEmitter;
 import Reika.ElectriCraft.Network.WireNetwork;
 import Reika.ElectriCraft.Registry.ElectriTiles;
+import Reika.RotaryCraft.API.PowerTransferHelper;
 import Reika.RotaryCraft.API.ShaftPowerReceiver;
 
 public class TileEntityGenerator extends ElectricalEmitter implements ShaftPowerReceiver, ConversionTile {
@@ -38,6 +40,11 @@ public class TileEntityGenerator extends ElectricalEmitter implements ShaftPower
 
 		if (iotick > 0)
 			iotick -= 8;
+
+		TileEntity te = this.getAdjacentTileEntity(this.getFacing());
+		if (!PowerTransferHelper.checkPowerFrom(this, te)) {
+			this.noInputMachine();
+		}
 
 		if (!world.isRemote)
 			if (omega != lastomega || torque != lasttorque)
@@ -171,7 +178,8 @@ public class TileEntityGenerator extends ElectricalEmitter implements ShaftPower
 	public void noInputMachine() {
 		omega = torque = 0;
 		power = 0;
-		network.updateWires();
+		if (!worldObj.isRemote)
+			network.updateWires();
 	}
 
 	@Override

@@ -192,4 +192,9 @@ public class ItemWirePlacer extends Item implements Fillable {
 		return false;
 	}
 
+	@Override
+	public Fluid getCurrentFluid(ItemStack is) {
+		return this.getCurrentFillLevel(is) > 0 ? FluidRegistry.getFluid("liquid nitrogen") : null;
+	}
+
 }

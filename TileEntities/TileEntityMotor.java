@@ -187,4 +187,29 @@ public class TileEntityMotor extends ElectricalReceiver implements ShaftPowerEmi
 	public boolean canReceivePower() {
 		return true;
 	}
+
+	@Override
+	public int getEmittingX() {
+		return xCoord+this.getFacing().getOpposite().offsetX;
+	}
+
+	@Override
+	public int getEmittingY() {
+		return yCoord+this.getFacing().getOpposite().offsetY;
+	}
+
+	@Override
+	public int getEmittingZ() {
+		return zCoord+this.getFacing().getOpposite().offsetZ;
+	}
+
+	@Override
+	public long getMaxPower() {
+		return power;
+	}
+
+	@Override
+	public long getCurrentPower() {
+		return power;
+	}
 }
