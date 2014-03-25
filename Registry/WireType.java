@@ -17,11 +17,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
 import Reika.DragonAPI.ModRegistry.ModOreList;
+import Reika.ElectriCraft.Auxiliary.ElectriStacks;
 import Reika.RotaryCraft.Auxiliary.ItemStacks;
 import Reika.RotaryCraft.Auxiliary.WorktableRecipes;
 import Reika.RotaryCraft.Registry.ConfigRegistry;
 import Reika.RotaryCraft.Registry.DifficultyEffects;
-import Reika.ElectriCraft.Auxiliary.ElectriStacks;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public enum WireType {
@@ -98,8 +98,8 @@ public enum WireType {
 			ItemStack in = li.get(i);
 			Object[] obj = {"WWW", "III", "WWW", 'W', Block.cloth, 'I', in};
 			Object[] obj2 = {"III", 'I', in};
-			WorktableRecipes.getInstance().addRecipe(is, obj2);
-			WorktableRecipes.getInstance().addRecipe(is2, obj);
+			WorktableRecipes.getInstance().addRecipe(is, obj);
+			WorktableRecipes.getInstance().addRecipe(is2, obj2);
 			if (ConfigRegistry.TABLEMACHINES.getState()) {
 				GameRegistry.addRecipe(is, obj);
 				GameRegistry.addRecipe(is2, obj2);
