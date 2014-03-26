@@ -20,12 +20,13 @@ import Reika.ElectriCraft.Auxiliary.ConversionTile;
 import Reika.ElectriCraft.Base.ElectricalReceiver;
 import Reika.ElectriCraft.Network.WireNetwork;
 import Reika.ElectriCraft.Registry.ElectriTiles;
+import Reika.RotaryCraft.API.Screwdriverable;
 import Reika.RotaryCraft.API.ShaftPowerEmitter;
 import Reika.RotaryCraft.API.ShaftPowerReceiver;
 import Reika.RotaryCraft.Registry.EngineType;
 import Reika.RotaryCraft.Registry.SoundRegistry;
 
-public class TileEntityMotor extends ElectricalReceiver implements ShaftPowerEmitter, ConversionTile {
+public class TileEntityMotor extends ElectricalReceiver implements Screwdriverable, ShaftPowerEmitter, ConversionTile {
 
 	private StepTimer soundTimer = new StepTimer(EngineType.DC.getSoundLength(0, 2.04F));
 
@@ -211,5 +212,24 @@ public class TileEntityMotor extends ElectricalReceiver implements ShaftPowerEmi
 	@Override
 	public long getCurrentPower() {
 		return power;
+	}
+
+	@Override
+	public boolean onShiftRightClick(World world, int x, int y, int z, ForgeDirection side) {
+		return false;
+	}
+
+	@Override
+	public boolean onRightClick(World world, int x, int y, int z, ForgeDirection side) {
+		this.incrementFacing();
+		return true;
+	}
+
+	protected void incrementFacing() {
+		int o = this.getFacing().ordinal();
+		if (o == 5)
+			this.setFacing(dirs[0]);
+		else
+			this.setFacing(dirs[o+1]);
 	}
 }

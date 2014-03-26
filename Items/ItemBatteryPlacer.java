@@ -18,8 +18,11 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
+import Reika.DragonAPI.Libraries.MathSci.ReikaEngLibrary;
+import Reika.DragonAPI.Libraries.MathSci.ReikaMathLibrary;
 import Reika.DragonAPI.Libraries.World.ReikaWorldHelper;
 import Reika.ElectriCraft.ElectriCraft;
 import Reika.ElectriCraft.Registry.BatteryType;
@@ -86,6 +89,20 @@ public class ItemBatteryPlacer extends Item {
 		for (int i = 0; i < BatteryType.batteryList.length; i++) {
 			ItemStack item = new ItemStack(par1, 1, i);
 			par3List.add(item);
+		}
+		ItemStack item = new ItemStack(par1, 1, BatteryType.STAR.ordinal());
+		item.stackTagCompound = new NBTTagCompound();
+		item.stackTagCompound.setLong("nrg", BatteryType.STAR.maxCapacity);
+		par3List.add(item);
+	}
+
+	@Override
+	public void addInformation(ItemStack is, EntityPlayer ep, List li, boolean vb) {
+		if (is.stackTagCompound != null) {
+			long e = is.stackTagCompound.getLong("nrg");
+			String sg = ReikaEngLibrary.getSIPrefix(e);
+			double b = ReikaMathLibrary.getThousandBase(e);
+			li.add(String.format("Stored Energy: %.3f%sJ", b, sg));
 		}
 	}
 

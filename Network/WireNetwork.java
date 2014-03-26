@@ -255,22 +255,22 @@ public final class WireNetwork {
 	}
 
 	public int getTerminalVoltage(WireReceiver te) {
-		return shorted ? 0 : this.getHighestVoltageOfPaths(te);
+		return shorted ? 0 : this.getLowestVoltageOfPaths(te);
 	}
 
 	public int getNumberPaths() {
 		return paths.size();
 	}
 
-	private int getHighestVoltageOfPaths(WireReceiver te) {
-		int v = 0;
+	private int getLowestVoltageOfPaths(WireReceiver te) {
+		int v = Integer.MAX_VALUE;
 		if (paths.isEmpty())
 			return 0;
 		for (int i = 0; i < paths.size(); i++) {
 			WirePath path = paths.get(i);
 			if (path.endsAt(te.getX(), te.getY(), te.getZ())) {
 				int pv = path.getTerminalVoltage();
-				if (pv > v)
+				if (pv < v)
 					v = pv;
 			}
 		}

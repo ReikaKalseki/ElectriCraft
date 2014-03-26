@@ -149,7 +149,7 @@ public class TileEntityBattery extends NetworkTileEntity implements WireEmitter,
 	public void setEnergyFromNBT(ItemStack is) {
 		if (is.itemID == ElectriItems.BATTERY.getShiftedID()) {
 			if (is.stackTagCompound != null)
-				energy = is.stackTagCompound.getLong("nrg");
+				energy = is.stackTagCompound.getLong("nrg")*20L;
 		}
 	}
 

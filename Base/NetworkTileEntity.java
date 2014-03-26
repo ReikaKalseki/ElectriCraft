@@ -12,6 +12,7 @@ package Reika.ElectriCraft.Base;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
+import Reika.ElectriCraft.ElectriCraft;
 import Reika.ElectriCraft.Auxiliary.NetworkTile;
 import Reika.ElectriCraft.Network.WireNetwork;
 
@@ -59,12 +60,20 @@ public abstract class NetworkTileEntity extends ElectriTileEntity implements Net
 	}
 
 	public final void setNetwork(WireNetwork n) {
-		network = n;
-		network.addElement(this);
+		if (n == null) {
+			ElectriCraft.logger.logError(this+" was told to join a null network!");
+		}
+		else {
+			network = n;
+			network.addElement(this);
+		}
 	}
 
 	public final void removeFromNetwork() {
-		network.removeElement(this);
+		if (network == null)
+			ElectriCraft.logger.logError(this+" was removed from a null network!");
+		else
+			network.removeElement(this);
 	}
 
 	public final void resetNetwork() {

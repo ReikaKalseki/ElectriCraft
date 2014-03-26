@@ -19,9 +19,10 @@ import Reika.ElectriCraft.Base.ElectricalEmitter;
 import Reika.ElectriCraft.Network.WireNetwork;
 import Reika.ElectriCraft.Registry.ElectriTiles;
 import Reika.RotaryCraft.API.PowerTransferHelper;
+import Reika.RotaryCraft.API.Screwdriverable;
 import Reika.RotaryCraft.API.ShaftPowerReceiver;
 
-public class TileEntityGenerator extends ElectricalEmitter implements ShaftPowerReceiver, ConversionTile {
+public class TileEntityGenerator extends ElectricalEmitter implements Screwdriverable, ShaftPowerReceiver, ConversionTile {
 
 	private int lastomega;
 	private int lasttorque;
@@ -185,6 +186,25 @@ public class TileEntityGenerator extends ElectricalEmitter implements ShaftPower
 	@Override
 	public boolean canEmitPowerToSide(ForgeDirection dir) {
 		return this.canNetworkOnSide(dir);
+	}
+
+	@Override
+	public boolean onShiftRightClick(World world, int x, int y, int z, ForgeDirection side) {
+		return false;
+	}
+
+	@Override
+	public boolean onRightClick(World world, int x, int y, int z, ForgeDirection side) {
+		this.incrementFacing();
+		return true;
+	}
+
+	protected void incrementFacing() {
+		int o = this.getFacing().ordinal();
+		if (o == 5)
+			this.setFacing(dirs[0]);
+		else
+			this.setFacing(dirs[o+1]);
 	}
 
 	@Override

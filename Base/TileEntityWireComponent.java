@@ -11,9 +11,11 @@ package Reika.ElectriCraft.Base;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
+import Reika.RotaryCraft.API.Screwdriverable;
 
-public abstract class TileEntityWireComponent extends WiringTile {
+public abstract class TileEntityWireComponent extends WiringTile implements Screwdriverable {
 
 	private ForgeDirection facing;
 
@@ -56,6 +58,25 @@ public abstract class TileEntityWireComponent extends WiringTile {
 		super.readSyncTag(NBT);
 
 		this.setFacing(dirs[NBT.getInteger("face")]);
+	}
+
+	@Override
+	public boolean onShiftRightClick(World world, int x, int y, int z, ForgeDirection side) {
+		return false;
+	}
+
+	@Override
+	public boolean onRightClick(World world, int x, int y, int z, ForgeDirection side) {
+		this.incrementFacing();
+		return true;
+	}
+
+	protected void incrementFacing() {
+		int o = this.getFacing().ordinal();
+		if (o == 5)
+			this.setFacing(dirs[0]);
+		else
+			this.setFacing(dirs[o+1]);
 	}
 
 	public abstract float getHeight();
