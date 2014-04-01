@@ -35,22 +35,9 @@ public class RenderWire extends ElectriTERenderer {
 		}
 		else {
 			ReikaTextureHelper.bindTerrainTexture();
-			this.renderBlock(te, par2, par4-0.3, par6, te.getEndIcon());
-			this.renderBlock(te, par2, par4+0.1, par6, te.getCenterIcon());
-			this.renderBlock(te, par2, par4+0.5, par6, te.getEndIcon());
-			if (te.insulated) {
-				double s = 1.2;
-				double d = 2.375;
-				double dy = -0.25;
-				double dx = -0.5;
-				GL11.glRotated(90, 0, 1, 0);
-				GL11.glTranslated(dx, dy, 0);
-				GL11.glScaled(s, d, s);
-				this.renderBlock(te, par2, par4+0.1, par6, te.getInsulatedCenterIcon());
-				GL11.glScaled(1/s, 1/d, 1/s);
-				GL11.glTranslated(-dx, -dy, 0);
-				GL11.glRotated(-90, 0, 1, 0);
-			}
+			this.renderBlock(te, par2, par4-0.3, par6, te.insulated ? te.getInsulatedEndIcon() : te.getEndIcon());
+			this.renderBlock(te, par2, par4+0.1, par6, te.insulated ? te.getInsulatedCenterIcon() : te.getCenterIcon());
+			this.renderBlock(te, par2, par4+0.5, par6, te.insulated ? te.getInsulatedEndIcon() : te.getEndIcon());
 		}
 	}
 

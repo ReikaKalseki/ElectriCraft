@@ -80,6 +80,7 @@ public class ItemElectriPlacer extends Item {
 		ElectriTileEntity te = (ElectriTileEntity)world.getBlockTileEntity(x, y, z);
 		te.placer = ep.getEntityName();
 		te.setBlockMetadata(RotaryAux.get4SidedMetadataFromPlayerLook(ep));
+		te.isFlipped = RotaryAux.shouldSetFlipped(world, x, y, z);
 		if (te instanceof ShaftMachine) {
 			ShaftMachine sm = (ShaftMachine)te;
 			sm.setIORenderAlpha(512);

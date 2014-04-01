@@ -122,6 +122,8 @@ public class ItemWirePlacer extends Item implements Fillable {
 			if (is.stackTagCompound != null && is.stackTagCompound.getBoolean("fluid")) {
 				li.add("Filled with Coolant");
 			}
+			else
+				li.add("Cannot be placed until filled with coolant");
 		}
 	}
 

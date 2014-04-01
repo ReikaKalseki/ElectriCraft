@@ -32,6 +32,8 @@ public abstract class ElectriTileEntity extends TileEntityBase implements Render
 
 	public float phi;
 
+	public boolean isFlipped = false;
+
 	public final TextureFetcher getRenderer() {
 		if (ElectriTiles.TEList[this.getIndex()].hasRender())
 			return ElectriRenderList.getRenderForMachine(ElectriTiles.TEList[this.getIndex()]);
@@ -65,6 +67,7 @@ public abstract class ElectriTileEntity extends TileEntityBase implements Render
 		super.writeSyncTag(NBT);
 
 		NBT.setFloat("ang", phi);
+		NBT.setBoolean("flip", isFlipped);
 	}
 
 	@Override
@@ -73,6 +76,7 @@ public abstract class ElectriTileEntity extends TileEntityBase implements Render
 		super.readSyncTag(NBT);
 
 		phi = NBT.getFloat("ang");
+		isFlipped = NBT.getBoolean("flip");
 	}
 
 	public boolean isThisTE(int id, int meta) {
