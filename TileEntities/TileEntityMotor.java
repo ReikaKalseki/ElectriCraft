@@ -231,5 +231,6 @@ public class TileEntityMotor extends ElectricalReceiver implements Screwdriverab
 			this.setFacing(dirs[0]);
 		else
 			this.setFacing(dirs[o+1]);
+		this.rebuildNetwork();
 	}
 }

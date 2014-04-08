@@ -76,6 +76,12 @@ public abstract class NetworkTileEntity extends ElectriTileEntity implements Net
 			network.removeElement(this);
 	}
 
+	public final void rebuildNetwork() {
+		this.removeFromNetwork();
+		this.resetNetwork();
+		this.findAndJoinNetwork(worldObj, xCoord, yCoord, zCoord);
+	}
+
 	public final void resetNetwork() {
 		network = null;
 	}

@@ -77,6 +77,7 @@ public abstract class TileEntityWireComponent extends WiringTile implements Scre
 			this.setFacing(dirs[0]);
 		else
 			this.setFacing(dirs[o+1]);
+		this.rebuildNetwork();
 	}
 
 	public abstract float getHeight();
