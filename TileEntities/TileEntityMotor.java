@@ -45,7 +45,7 @@ public class TileEntityMotor extends ElectricalReceiver implements Screwdriverab
 		if (iotick > 0)
 			iotick -= 8;
 
-		if (!world.isRemote) {
+		if (!world.isRemote && network != null) {
 			torque = network.getTerminalCurrent(this)*WireNetwork.TORQUE_PER_AMP;
 			omega = network.getTerminalVoltage(this)/WireNetwork.TORQUE_PER_AMP;
 		}

@@ -47,7 +47,7 @@ public class TileEntityGenerator extends ElectricalEmitter implements Screwdrive
 			this.noInputMachine();
 		}
 
-		if (!world.isRemote)
+		if (!world.isRemote && network != null)
 			if (omega != lastomega || torque != lasttorque)
 				network.updateWires();
 
@@ -179,7 +179,7 @@ public class TileEntityGenerator extends ElectricalEmitter implements Screwdrive
 	public void noInputMachine() {
 		omega = torque = 0;
 		power = 0;
-		if (!worldObj.isRemote)
+		if (!worldObj.isRemote && network != null)
 			network.updateWires();
 	}
 

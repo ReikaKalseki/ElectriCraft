@@ -34,7 +34,9 @@ public class TileEntityResistor extends TileEntityWireComponent {
 		YELLOW(ReikaDyeHelper.YELLOW),
 		GREEN(ReikaDyeHelper.LIME),
 		BLUE(ReikaDyeHelper.BLUE),
-		PURPLE(ReikaDyeHelper.MAGENTA);
+		PURPLE(ReikaDyeHelper.MAGENTA),
+		GRAY(ReikaDyeHelper.GRAY),
+		WHITE(ReikaDyeHelper.WHITE);
 
 		public final ReikaDyeHelper renderColor;
 
