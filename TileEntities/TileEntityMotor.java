@@ -228,7 +228,7 @@ public class TileEntityMotor extends ElectricalReceiver implements Screwdriverab
 	protected void incrementFacing() {
 		int o = this.getFacing().ordinal();
 		if (o == 5)
-			this.setFacing(dirs[0]);
+			this.setFacing(dirs[2]);
 		else
 			this.setFacing(dirs[o+1]);
 		this.rebuildNetwork();

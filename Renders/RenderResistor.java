@@ -43,18 +43,20 @@ public class RenderResistor extends ElectriTERenderer
 
 		int var11 = 0;
 		float var13;
-		switch(var9) {
-		case 2:
-			var11 = 0;
-			break;
-		case 0:
+		switch(tile.getFacing()) {
+		case EAST:
 			var11 = 270;
 			break;
-		case 1:
+		case WEST:
 			var11 = 90;
 			break;
-		case 3:
+		case NORTH:
 			var11 = 180;
+			break;
+		case SOUTH:
+			var11 = 0;
+			break;
+		default:
 			break;
 		}
 
