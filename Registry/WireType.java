@@ -96,8 +96,8 @@ public enum WireType {
 		ArrayList<ItemStack> li = this.getAllValidCraftingIngots();
 		for (int i = 0; i < li.size(); i++) {
 			ItemStack in = li.get(i);
-			Object[] obj = {"WWW", "III", "WWW", 'W', Block.cloth, 'I', in};
-			Object[] obj2 = {"III", 'I', in};
+			Object[] obj2 = {"WWW", "III", "WWW", 'W', Block.cloth, 'I', in};
+			Object[] obj = {"III", 'I', in};
 			WorktableRecipes.getInstance().addRecipe(is, obj);
 			WorktableRecipes.getInstance().addRecipe(is2, obj2);
 			if (ConfigRegistry.TABLEMACHINES.getState()) {
