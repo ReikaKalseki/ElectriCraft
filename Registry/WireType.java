@@ -65,6 +65,10 @@ public enum WireType {
 		}
 	}
 
+	public static WireType getTypeFromWireDamage(int dmg) {
+		return wireList[dmg%WireType.INS_OFFSET];
+	}
+
 	public String getIconTexture() {
 		return this.name().toLowerCase();
 	}

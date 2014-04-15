@@ -22,7 +22,7 @@ public abstract class NetworkTileEntity extends ElectriTileEntity implements Net
 
 	@Override
 	public void updateEntity(World world, int x, int y, int z, int meta) {
-		if (this.getTicksExisted() == 0 && !world.isRemote) {
+		if ((this.getTicksExisted() == 0 || network == null) && !world.isRemote) {
 			this.findAndJoinNetwork(world, x, y, z);
 			//ReikaJavaLibrary.pConsole(network, Side.SERVER);
 		}

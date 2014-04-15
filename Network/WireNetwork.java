@@ -180,7 +180,12 @@ public final class WireNetwork {
 		nodes.clear();
 		paths.clear();
 
-		MinecraftForge.EVENT_BUS.unregister(this);
+		try {
+			MinecraftForge.EVENT_BUS.unregister(this);
+		}
+		catch (NullPointerException e) { //randomly??
+			e.printStackTrace();
+		}
 	}
 
 	public void addElement(NetworkTile te) {

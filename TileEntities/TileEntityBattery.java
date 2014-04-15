@@ -31,7 +31,7 @@ public class TileEntityBattery extends NetworkTileEntity implements WireEmitter,
 	public void updateEntity(World world, int x, int y, int z, int meta) {
 		super.updateEntity(world, x, y, z, meta);
 
-		if (!world.isRemote) {
+		if (!world.isRemote && network != null) {
 			if (this.canReceivePower()) {
 				int v = network.getTerminalVoltage(this);
 				int a = network.getTerminalCurrent(this);

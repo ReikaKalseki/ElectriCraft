@@ -20,9 +20,13 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
+
+import org.lwjgl.input.Keyboard;
+
 import Reika.DragonAPI.Libraries.World.ReikaWorldHelper;
 import Reika.ElectriCraft.ElectriCraft;
 import Reika.ElectriCraft.Registry.ElectriItems;
@@ -118,7 +122,15 @@ public class ItemWirePlacer extends Item implements Fillable {
 
 	@Override
 	public void addInformation(ItemStack is, EntityPlayer ep, List li, boolean par4) {
-		if (is.getItemDamage()%WireType.INS_OFFSET == WireType.SUPERCONDUCTOR.ordinal()) {
+		WireType type = WireType.getTypeFromWireDamage(is.getItemDamage());
+		if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
+			li.add(String.format("Voltage Loss: %dV/m", type.resistance));
+			li.add(String.format("Max Current: %dA", type.maxCurrent));
+		}
+		else {
+			li.add(EnumChatFormatting.GREEN+"Hold shift for wire data");
+		}
+		if (type == WireType.SUPERCONDUCTOR) {
 			if (is.stackTagCompound != null && is.stackTagCompound.getBoolean("fluid")) {
 				li.add("Filled with Coolant");
 			}
