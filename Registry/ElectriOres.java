@@ -28,10 +28,10 @@ import Reika.ElectriCraft.ElectriCraft;
 
 public enum ElectriOres {
 
-	COPPER(		32, 64, 	6, 	6, 	0, 	0.5F,	1,	"ore.copper"),
-	TIN(		48, 72, 	8, 	12,	0, 	0.2F,	1,	"ore.tin"),
+	COPPER(		32, 64, 	6, 	8, 	0, 	0.5F,	1,	"ore.copper"),
+	TIN(		48, 72, 	8, 	8,	0, 	0.2F,	1,	"ore.tin"),
 	SILVER(		0, 32, 		6, 	4, 	0, 	0.8F,	2,	"ore.silver"),
-	NICKEL(		16, 48, 	8, 	8, 	0, 	0.3F,	1,	"ore.nickel"),
+	NICKEL(		16, 48, 	8, 	6, 	0, 	0.3F,	1,	"ore.nickel"),
 	ALUMINUM(	60, 128, 	8, 	10,	0, 	0.4F,	1,	"ore.aluminum"),
 	PLATINUM(	0, 16, 		4, 	2, 	0, 	1F,		2,	"ore.platinum");
 

@@ -81,7 +81,7 @@ public class TileEntityResistor extends TileEntityWireComponent {
 		if (digit == 3)
 			b3 = band;
 		selectedCurrent = this.calculateCurrentLimit(b1, b2, b3);
-		if (!worldObj.isRemote)
+		if (!worldObj.isRemote && network != null)
 			network.updateWires();
 	}
 

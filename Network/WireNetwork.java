@@ -183,7 +183,7 @@ public final class WireNetwork {
 		try {
 			MinecraftForge.EVENT_BUS.unregister(this);
 		}
-		catch (NullPointerException e) { //randomly??
+		catch (Exception e) { //randomly??
 			e.printStackTrace();
 		}
 	}
