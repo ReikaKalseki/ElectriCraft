@@ -12,6 +12,7 @@ package Reika.ElectriCraft.TileEntities;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import Reika.DragonAPI.Libraries.Java.ReikaJavaLibrary;
 import Reika.DragonAPI.Libraries.MathSci.ReikaMathLibrary;
 import Reika.DragonAPI.Libraries.Registry.ReikaDyeHelper;
 import Reika.ElectriCraft.Base.TileEntityWireComponent;
@@ -34,7 +35,7 @@ public class TileEntityResistor extends TileEntityWireComponent {
 		YELLOW(ReikaDyeHelper.YELLOW),
 		GREEN(ReikaDyeHelper.LIME),
 		BLUE(ReikaDyeHelper.BLUE),
-		PURPLE(ReikaDyeHelper.MAGENTA),
+		PURPLE(ReikaDyeHelper.PURPLE),
 		GRAY(ReikaDyeHelper.GRAY),
 		WHITE(ReikaDyeHelper.WHITE);
 
@@ -73,6 +74,9 @@ public class TileEntityResistor extends TileEntityWireComponent {
 	public void setColor(ItemStack is, int digit) {
 		ColorBand band = this.getBandFromDyeItem(is);
 		if (band == null)
+			return;
+		ReikaJavaLibrary.pConsole(band);
+		if (band.ordinal() > 7 && digit == 3)
 			return;
 		if (digit == 1)
 			b1 = band;
