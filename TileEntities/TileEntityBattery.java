@@ -158,4 +158,9 @@ public class TileEntityBattery extends NetworkTileEntity implements WireEmitter,
 		return energy < this.getMaxEnergy()*20;
 	}
 
+	@Override
+	public int getRedstoneOverride() {
+		return (int)(15D*this.getStoredEnergy()/this.getMaxEnergy());
+	}
+
 }

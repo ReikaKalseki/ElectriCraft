@@ -17,4 +17,9 @@ public abstract class WiringTile extends NetworkTileEntity {
 
 	public abstract void onNetworkChanged();
 
+	@Override
+	public final int getRedstoneOverride() {
+		return 0;
+	}
+
 }

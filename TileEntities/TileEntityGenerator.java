@@ -212,4 +212,9 @@ public class TileEntityGenerator extends ElectricalEmitter implements Screwdrive
 	public boolean canEmitPower() {
 		return true;
 	}
+
+	@Override
+	public int getMinTorque(int available) {
+		return torque;
+	}
 }

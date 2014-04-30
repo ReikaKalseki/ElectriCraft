@@ -112,4 +112,9 @@ public abstract class ElectriTileEntity extends TileEntityBase implements Render
 	public final int getPacketDelay() {
 		return DragonAPICore.isSinglePlayer() ? 1 : Math.min(20, ConfigRegistry.PACKETDELAY.getValue());
 	}
+
+	@Override
+	public int getRedstoneOverride() {
+		return 0;
+	}
 }
