@@ -18,6 +18,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import Reika.ElectriCraft.Auxiliary.WireEmitter;
 import Reika.ElectriCraft.Auxiliary.WireReceiver;
+import Reika.ElectriCraft.Base.TileEntityWireComponent;
 import Reika.ElectriCraft.Base.WiringTile;
 import Reika.ElectriCraft.Registry.ElectriTiles;
 
@@ -109,7 +110,7 @@ public class PathCalculator {
 					ElectriTiles t = ElectriTiles.getTE(world, dx, dy, dz);
 					if (t != null && t.isWiringPiece()) {
 						WiringTile tile = (WiringTile)world.getBlockTileEntity(dx, dy, dz);
-						if (tile.canNetworkOnSide(dir.getOpposite()))
+						if (this.tileCanConnect(tile) && tile.canNetworkOnSide(dir.getOpposite()))
 							this.recursiveCalculate(world, dx, dy, dz, li);
 						//ReikaJavaLibrary.pConsole(dir+"@"+x+","+y+","+z+" :"+li.size(), Side.SERVER);
 					}
@@ -118,6 +119,10 @@ public class PathCalculator {
 		}
 		li.removeLast();
 		//ReikaJavaLibrary.pConsole(">>"+li.size()+"<<"+(x+0.5)+","+(y+0.5)+","+(z+0.5));
+	}
+
+	private boolean tileCanConnect(WiringTile tile) {
+		return tile instanceof TileEntityWireComponent ? ((TileEntityWireComponent)tile).canConnect() : true;
 	}
 
 	private boolean isEnd(World world, int x, int y, int z) {

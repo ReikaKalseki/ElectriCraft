@@ -206,7 +206,7 @@ public enum ElectriItems implements RegistryEnum {
 
 	@Override
 	public String getConfigName() {
-		return this.getBasicName();
+		return name;
 	}
 
 	@Override

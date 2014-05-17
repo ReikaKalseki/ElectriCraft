@@ -72,4 +72,9 @@ public class TileEntityRelay extends TileEntityWireComponent {
 		return 0.75F;
 	}
 
+	@Override
+	public boolean canConnect() {
+		return this.isEnabled();
+	}
+
 }

@@ -154,4 +154,9 @@ public class TileEntityResistor extends TileEntityWireComponent {
 		return 0.5F;
 	}
 
+	@Override
+	public boolean canConnect() {
+		return selectedCurrent > 0;
+	}
+
 }

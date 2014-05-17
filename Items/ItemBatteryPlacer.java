@@ -98,12 +98,24 @@ public class ItemBatteryPlacer extends Item {
 
 	@Override
 	public void addInformation(ItemStack is, EntityPlayer ep, List li, boolean vb) {
+		long e = 0;
 		if (is.stackTagCompound != null) {
-			long e = is.stackTagCompound.getLong("nrg");
-			String sg = ReikaEngLibrary.getSIPrefix(e);
-			double b = ReikaMathLibrary.getThousandBase(e);
-			li.add(String.format("Stored Energy: %.3f%sJ", b, sg));
+			e = is.stackTagCompound.getLong("nrg");
 		}
+		BatteryType bat = BatteryType.batteryList[is.getItemDamage()];
+		long max = bat.maxCapacity;
+		String sg = ReikaEngLibrary.getSIPrefix(e);
+		String sg2 = ReikaEngLibrary.getSIPrefix(max);
+		double b = ReikaMathLibrary.getThousandBase(e);
+		double b2 = ReikaMathLibrary.getThousandBase(max);
+		li.add(String.format("Stored Energy: %.1f %sJ/%.1f %sJ", b, sg, b2, sg2));
+		int a = bat.outputCurrent;
+		int v = bat.outputVoltage;
+		long power = (long)a*(long)v;
+
+		String ps = ReikaEngLibrary.getSIPrefix(power);
+		double p = ReikaMathLibrary.getThousandBase(power);
+		li.add(String.format("Emits %dA at %dV (%.3f%sW)", a, v, p, ps));
 	}
 
 	protected boolean checkValidBounds(ItemStack is, EntityPlayer ep, World world, int x, int y, int z) {

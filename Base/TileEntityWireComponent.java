@@ -32,6 +32,8 @@ public abstract class TileEntityWireComponent extends WiringTile implements Scre
 		facing = dir;
 	}
 
+	public abstract boolean canConnect();
+
 	public final AxisAlignedBB getAABB() {
 		int miny = 0;
 		float maxy = this.getHeight();

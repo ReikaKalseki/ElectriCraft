@@ -365,14 +365,7 @@ public final class WireNetwork {
 	}
 
 	public int getNumberPathsStartingAt(WireEmitter start) {
-		int c = 0;
-		for (int i = 0; i < paths.size(); i++) {
-			WirePath path = paths.get(i);
-			if (path.startsAt(start.getX(), start.getY(), start.getZ())) {
-				c++;
-			}
-		}
-		return c;
+		return this.getPathsStartingAt(start).size();
 	}
 
 }
