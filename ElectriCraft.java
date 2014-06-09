@@ -16,6 +16,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.MinecraftForge;
 import Reika.DragonAPI.DragonAPICore;
+import Reika.DragonAPI.ModList;
 import Reika.DragonAPI.Auxiliary.IntegrityChecker;
 import Reika.DragonAPI.Base.DragonAPIMod;
 import Reika.DragonAPI.Instantiable.IO.ModLogger;
@@ -26,6 +27,8 @@ import Reika.ElectriCraft.Registry.ElectriBlocks;
 import Reika.ElectriCraft.Registry.ElectriItems;
 import Reika.ElectriCraft.Registry.ElectriOptions;
 import Reika.ElectriCraft.Registry.ElectriTiles;
+import Reika.GeoStrata.API.AcceleratorBlacklist;
+import Reika.GeoStrata.API.AcceleratorBlacklist.BlacklistReason;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -107,7 +110,12 @@ public class ElectriCraft extends DragonAPIMod {
 	@Override
 	@EventHandler
 	public void postload(FMLPostInitializationEvent evt) {
-
+		if (ModList.GEOSTRATA.isLoaded()) {
+			for (int i = 0; i < ElectriTiles.TEList.length; i++) {
+				ElectriTiles m = ElectriTiles.TEList[i];
+				AcceleratorBlacklist.addBlacklist(m.getTEClass(), m.getName(), BlacklistReason.EXPLOIT);
+			}
+		}
 	}
 
 	@Override

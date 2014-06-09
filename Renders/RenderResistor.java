@@ -62,7 +62,7 @@ public class RenderResistor extends ElectriTERenderer
 
 		GL11.glRotatef(var11, 0.0F, 1.0F, 0.0F);
 		ReikaDyeHelper[] colors = tile.getBandRenderColors();
-		var14.renderAll(ReikaJavaLibrary.makeListFrom(colors), tile.phi, 0);
+		var14.renderAll(tile, ReikaJavaLibrary.makeListFrom(colors), tile.phi, 0);
 
 		this.closeGL(tile);
 	}

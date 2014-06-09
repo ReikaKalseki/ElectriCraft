@@ -62,7 +62,7 @@ public class RenderMotor extends ElectriTERenderer
 
 		GL11.glRotatef(var11, 0.0F, 1.0F, 0.0F);
 		int num = tile.isInWorld() ? 5 : 5;
-		var14.renderAll(ReikaJavaLibrary.makeListFrom(num), tile.phi, 0);
+		var14.renderAll(tile, ReikaJavaLibrary.makeListFrom(num), tile.phi, 0);
 
 		this.closeGL(tile);
 	}

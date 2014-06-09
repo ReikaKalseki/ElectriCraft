@@ -67,7 +67,12 @@ public class TileEntityBattery extends NetworkTileEntity implements WireEmitter,
 
 	@Override
 	public boolean canEmitPower() {
-		return energy > 0 && worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord) && network.getNumberPathsStartingAt(this) > 0;
+		boolean red = worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord);
+		return energy > 0 && red && network.getNumberPathsStartingAt(this) > 0;
+	}
+
+	private long getGenPower() {
+		return (long)this.getGenCurrent()*(long)this.getGenVoltage();
 	}
 
 	public long getStoredEnergy() {
