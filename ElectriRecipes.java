@@ -87,7 +87,7 @@ public class ElectriRecipes {
 		ItemStack w = ReikaItemHelper.getSizedItemStack(WireType.SUPERCONDUCTOR.getCraftedProduct(), DifficultyEffects.PIPECRAFT.getInt()/4);
 		ItemStack w2 = ReikaItemHelper.getSizedItemStack(WireType.SUPERCONDUCTOR.getCraftedInsulatedProduct(), 3);
 		ShapedOreRecipe ir = new ShapedOreRecipe(w, "IGI", "SRS", "IgI", 'I', ItemStacks.steelingot, 'G', Block.glass, 'S', "ingotSilver", 'g', "ingotGold", 'R', Item.redstone);
-		Object[] obj2 = {"WWW", "www", "WWW", 'W', Block.cloth, 'w', w};
+		Object[] obj2 = {"WwW", "WwW", "WwW", 'W', Block.cloth, 'w', w};
 		WorktableRecipes.getInstance().addRecipe(ir);
 		WorktableRecipes.getInstance().addRecipe(w2, obj2);
 		if (ConfigRegistry.TABLEMACHINES.getState()) {

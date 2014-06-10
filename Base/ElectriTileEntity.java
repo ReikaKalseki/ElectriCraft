@@ -117,4 +117,9 @@ public abstract class ElectriTileEntity extends TileEntityBase implements Render
 	public int getRedstoneOverride() {
 		return 0;
 	}
+
+	@Override
+	public final boolean hasModel() {
+		return this.getMachine().hasRender();
+	}
 }
