@@ -28,7 +28,8 @@ import Reika.RotaryCraft.Registry.SoundRegistry;
 
 public class TileEntityMotor extends ElectricalReceiver implements Screwdriverable, ShaftPowerEmitter, ConversionTile {
 
-	private StepTimer soundTimer = new StepTimer(EngineType.DC.getSoundLength(0, 2.04F));
+	private static final int soundtime = (int)(EngineType.DC.getSoundLength()*2.04F);
+	private StepTimer soundTimer = new StepTimer(soundtime);
 
 	protected int omega;
 	protected int torque;
