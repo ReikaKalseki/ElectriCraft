@@ -14,9 +14,9 @@ import java.net.URL;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
-import net.minecraftforge.common.MinecraftForge;
 import Reika.DragonAPI.DragonAPICore;
 import Reika.DragonAPI.ModList;
+import Reika.DragonAPI.Auxiliary.CommandableUpdateChecker;
 import Reika.DragonAPI.Auxiliary.IntegrityChecker;
 import Reika.DragonAPI.Base.DragonAPIMod;
 import Reika.DragonAPI.Instantiable.IO.ModLogger;
@@ -68,17 +68,13 @@ public class ElectriCraft extends DragonAPIMod {
 		config.loadSubfolderedConfigFile(evt);
 		config.initProps(evt);
 
-		MinecraftForge.EVENT_BUS.register(this);
-
 		logger = new ModLogger(instance, true, false, false);
 		proxy.registerSounds();
 
 		this.addBlocks();
 		this.addItems();
 		ElectriTiles.loadMappings();
-
-		ReikaRegistryHelper.setupModData(instance, evt);
-		ReikaRegistryHelper.setupVersionChecking(evt);
+		this.basicSetup(evt);
 	}
 
 	private static void addBlocks() {
@@ -130,27 +126,17 @@ public class ElectriCraft extends DragonAPIMod {
 
 	@Override
 	public URL getDocumentationSite() {
-		return DragonAPICore.getReikaForumPage(instance);
+		return DragonAPICore.getReikaForumPage();
 	}
 
 	@Override
-	public boolean hasWiki() {
-		return false;
-	}
-
-	@Override
-	public URL getWiki() {
+	public String getWiki() {
 		return null;
 	}
 
 	@Override
-	public boolean hasVersion() {
-		return false;
-	}
-
-	@Override
-	public String getVersionName() {
-		return null;
+	public String getUpdateCheckURL() {
+		return CommandableUpdateChecker.reikaURL;
 	}
 
 	@Override
