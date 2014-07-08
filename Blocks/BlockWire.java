@@ -181,6 +181,8 @@ public class BlockWire extends ElectriBlock implements IWailaBlock {
 	public final AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
 		double d = 0.25;
 		TileEntityWire te = (TileEntityWire)world.getBlockTileEntity(x, y, z);
+		if (te == null)
+			return null;
 		float minx = te.isConnectedOnSideAt(world, x, y, z, ForgeDirection.WEST) ? 0 : 0.3F;
 		float maxx = te.isConnectedOnSideAt(world, x, y, z, ForgeDirection.EAST) ? 1 : 0.7F;
 		float minz = te.isConnectedOnSideAt(world, x, y, z, ForgeDirection.SOUTH) ? 0 : 0.3F;
