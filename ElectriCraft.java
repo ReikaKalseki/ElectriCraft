@@ -68,7 +68,7 @@ public class ElectriCraft extends DragonAPIMod {
 		config.loadSubfolderedConfigFile(evt);
 		config.initProps(evt);
 
-		logger = new ModLogger(instance, true, false, false);
+		logger = new ModLogger(instance, false);
 		proxy.registerSounds();
 
 		this.addBlocks();

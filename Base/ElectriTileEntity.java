@@ -65,8 +65,6 @@ public abstract class ElectriTileEntity extends TileEntityBase implements Render
 	protected void writeSyncTag(NBTTagCompound NBT)
 	{
 		super.writeSyncTag(NBT);
-
-		NBT.setFloat("ang", phi);
 		NBT.setBoolean("flip", isFlipped);
 	}
 
@@ -74,8 +72,6 @@ public abstract class ElectriTileEntity extends TileEntityBase implements Render
 	protected void readSyncTag(NBTTagCompound NBT)
 	{
 		super.readSyncTag(NBT);
-
-		phi = NBT.getFloat("ang");
 		isFlipped = NBT.getBoolean("flip");
 	}
 
