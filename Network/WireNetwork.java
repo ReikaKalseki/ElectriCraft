@@ -19,6 +19,7 @@ import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.world.WorldEvent;
+import Reika.ElectriCraft.NetworkObject;
 import Reika.ElectriCraft.Auxiliary.ElectriNetworkTickEvent;
 import Reika.ElectriCraft.Auxiliary.NetworkTile;
 import Reika.ElectriCraft.Auxiliary.WireEmitter;
@@ -27,7 +28,7 @@ import Reika.ElectriCraft.Base.NetworkTileEntity;
 import Reika.ElectriCraft.Base.WiringTile;
 import Reika.ElectriCraft.TileEntities.TileEntityWire;
 
-public final class WireNetwork {
+public final class WireNetwork implements NetworkObject {
 
 	private ArrayList<WiringTile> wires = new ArrayList();
 	private ArrayList<WireReceiver> sinks = new ArrayList();

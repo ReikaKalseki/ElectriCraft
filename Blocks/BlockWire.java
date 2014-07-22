@@ -19,8 +19,10 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.EnumArmorMaterial;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -31,6 +33,7 @@ import net.minecraft.util.Icon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
+import Reika.DragonAPI.Libraries.ReikaEntityHelper;
 import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
 import Reika.ElectriCraft.ElectriCraft;
 import Reika.ElectriCraft.Base.ElectriBlock;
@@ -203,7 +206,8 @@ public class BlockWire extends ElectriBlock implements IWailaBlock {
 						int v = net.getPointVoltage(te);
 						EntityDischarge ed = new EntityDischarge(world, x+0.5, y+0.5, z+0.5, v, e.posX, e.posY, e.posZ);
 						world.spawnEntityInWorld(ed);
-						e.attackEntityFrom(RotaryCraft.shock, v > 10000 ? 20 : v > 1000 ? 10 : v > 100 ? 5 : v > 10 ? 1 : 0);
+						if (!(e instanceof EntityLivingBase) || !ReikaEntityHelper.isEntityWearingFullSuitOf((EntityLivingBase)e, EnumArmorMaterial.CHAIN))
+							e.attackEntityFrom(RotaryCraft.shock, v > 10000 ? 20 : v > 1000 ? 10 : v > 100 ? 5 : v > 10 ? 1 : 0);
 						if (e instanceof EntityCreeper) {
 							world.createExplosion(e, e.posX, e.posY, e.posZ, 3F, true);
 							e.attackEntityFrom(DamageSource.magic, Integer.MAX_VALUE);

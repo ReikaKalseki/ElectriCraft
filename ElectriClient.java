@@ -33,6 +33,7 @@ public class ElectriClient extends ElectriCommon
 	public static final ElectriItemRenderer machineItems = new ElectriItemRenderer();
 
 	public static WireRenderer wire;
+	public static CableRenderer cable;
 
 	@Override
 	public void registerSounds() {
@@ -44,6 +45,10 @@ public class ElectriClient extends ElectriCommon
 		wireRender = RenderingRegistry.getNextAvailableRenderId();
 		wire = new WireRenderer(wireRender);
 		RenderingRegistry.registerBlockHandler(wireRender, wire);
+
+		cableRender = RenderingRegistry.getNextAvailableRenderId();
+		cable = new CableRenderer(cableRender);
+		RenderingRegistry.registerBlockHandler(cableRender, cable);
 
 		if (Keyboard.isKeyDown(Keyboard.KEY_TAB)) {
 			ElectriCraft.logger.log("Disabling all machine renders for FPS and lag profiling.");

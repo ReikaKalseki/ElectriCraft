@@ -17,7 +17,6 @@ import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
@@ -26,6 +25,7 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import Reika.DragonAPI.Libraries.MathSci.ReikaMathLibrary;
+import Reika.DragonAPI.Libraries.Registry.ReikaDyeHelper;
 import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
 import Reika.ElectriCraft.Base.ElectriBlock;
 import Reika.ElectriCraft.Base.TileEntityWireComponent;
@@ -118,7 +118,7 @@ public class BlockElectricMachine extends ElectriBlock implements IWailaBlock {
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer ep, int side, float a, float b, float c) {
 		ElectriTiles e = ElectriTiles.getTE(world, x, y, z);
 		ItemStack is = ep.getCurrentEquippedItem();
-		if (e == ElectriTiles.RESISTOR && is != null && is.itemID == Item.dyePowder.itemID) {
+		if (e == ElectriTiles.RESISTOR && ReikaDyeHelper.isDyeItem(is)) {
 			TileEntityResistor te = (TileEntityResistor)world.getBlockTileEntity(x, y, z);
 			ForgeDirection dir = te.getFacing();
 			float inc = dir.offsetX != 0 ? a : c;

@@ -133,7 +133,6 @@ public class TileEntityWire extends WiringTile {
 		NBT.setBoolean("melt", shouldMelt);
 	}
 
-	/** Direction is relative to the piping block (so DOWN means the block is below the pipe) */
 	public boolean isConnectionValidForSide(ForgeDirection dir) {
 		if (dir.offsetX == 0 && MinecraftForgeClient.getRenderPass() != 1)
 			dir = dir.getOpposite();

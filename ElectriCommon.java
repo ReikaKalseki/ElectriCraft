@@ -14,6 +14,7 @@ import net.minecraft.world.World;
 public class ElectriCommon
 {
 	public static int wireRender;
+	public static int cableRender;
 
 	/**
 	 * Client side only register stuff...

@@ -14,6 +14,8 @@ import java.net.URL;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import thaumcraft.api.aspects.Aspect;
 import Reika.DragonAPI.DragonAPICore;
 import Reika.DragonAPI.ModList;
 import Reika.DragonAPI.Auxiliary.CommandableUpdateChecker;
@@ -22,10 +24,12 @@ import Reika.DragonAPI.Base.DragonAPIMod;
 import Reika.DragonAPI.Instantiable.IO.ModLogger;
 import Reika.DragonAPI.Libraries.ReikaRegistryHelper;
 import Reika.DragonAPI.Libraries.Java.ReikaJavaLibrary;
+import Reika.DragonAPI.ModInteract.ReikaThaumHelper;
 import Reika.ElectriCraft.Auxiliary.ElectriTab;
 import Reika.ElectriCraft.Registry.ElectriBlocks;
 import Reika.ElectriCraft.Registry.ElectriItems;
 import Reika.ElectriCraft.Registry.ElectriOptions;
+import Reika.ElectriCraft.Registry.ElectriOres;
 import Reika.ElectriCraft.Registry.ElectriTiles;
 import Reika.GeoStrata.API.AcceleratorBlacklist;
 import Reika.GeoStrata.API.AcceleratorBlacklist.BlacklistReason;
@@ -37,16 +41,20 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
+import cpw.mods.fml.common.network.NetworkMod.SidedPacketHandler;
+import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 
 @Mod( modid = "ElectriCraft", name="ElectriCraft", version="beta", certificateFingerprint = "@GET_FINGERPRINT@", dependencies="required-after:DragonAPI;required-after:RotaryCraft")
-@NetworkMod(clientSideRequired = true, serverSideRequired = true/*,
-clientPacketHandlerSpec = @SidedPacketHandler(channels = { "ElectriCraftData" }, packetHandler = ClientPackets.class),
-serverPacketHandlerSpec = @SidedPacketHandler(channels = { "ElectriCraftData" }, packetHandler = ServerPackets.class)*/)
+@NetworkMod(clientSideRequired = true, serverSideRequired = true,
+clientPacketHandlerSpec = @SidedPacketHandler(channels = { "ElectriCraftData" }, packetHandler = ElectriClientPackets.class),
+serverPacketHandlerSpec = @SidedPacketHandler(channels = { "ElectriCraftData" }, packetHandler = ElectriServerPackets.class))
 
 public class ElectriCraft extends DragonAPIMod {
+
+	public static final String packetChannel = "ElectriCraftData";
 
 	@Instance("ElectriCraft")
 	public static ElectriCraft instance = new ElectriCraft();
@@ -99,6 +107,8 @@ public class ElectriCraft extends DragonAPIMod {
 
 		IntegrityChecker.instance.addMod(instance, ElectriBlocks.blockList, ElectriItems.itemList);
 
+		NetworkRegistry.instance().registerGuiHandler(this, new ElectriGuiHandler());
+
 		ElectriRecipes.loadOreDict();
 		ElectriRecipes.addRecipes();
 	}
@@ -111,6 +121,21 @@ public class ElectriCraft extends DragonAPIMod {
 				ElectriTiles m = ElectriTiles.TEList[i];
 				AcceleratorBlacklist.addBlacklist(m.getTEClass(), m.getName(), BlacklistReason.EXPLOIT);
 			}
+		}
+
+		if (ModList.THAUMCRAFT.isLoaded()) {
+			for (int i = 0; i < ElectriOres.oreList.length; i++) {
+				ElectriOres ore = ElectriOres.oreList[i];
+				ItemStack block = ore.getOreBlock();
+				ItemStack drop = ore.getProduct();
+				ReikaThaumHelper.addAspects(block, Aspect.STONE, 1);
+			}
+
+			ReikaThaumHelper.addAspects(ElectriOres.PLATINUM.getOreBlock(), Aspect.GREED, 6, Aspect.METAL, 2);
+			ReikaThaumHelper.addAspects(ElectriOres.NICKEL.getOreBlock(), Aspect.METAL, 1);
+
+			ReikaThaumHelper.addAspects(ElectriOres.PLATINUM.getProduct(), Aspect.GREED, 6, Aspect.METAL, 2);
+			ReikaThaumHelper.addAspects(ElectriOres.NICKEL.getProduct(), Aspect.METAL, 2);
 		}
 	}
 
