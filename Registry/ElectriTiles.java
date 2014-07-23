@@ -53,6 +53,7 @@ public enum ElectriTiles {
 	private int meta;
 	private String render;
 	private final ElectriBlocks blockInstance;
+	private TileEntity renderInstance;
 
 	private static final HashMap<List<Integer>, ElectriTiles> machineMappings = new HashMap();
 
@@ -134,17 +135,20 @@ public enum ElectriTiles {
 	}
 
 	public TileEntity createTEInstanceForRender() {
-		try {
-			return (TileEntity)teClass.newInstance();
+		if (renderInstance == null) {
+			try {
+				renderInstance = (TileEntity)teClass.newInstance();
+			}
+			catch (InstantiationException e) {
+				e.printStackTrace();
+				throw new RegistrationException(ElectriCraft.instance, "Could not create TE instance to render "+this);
+			}
+			catch (IllegalAccessException e) {
+				e.printStackTrace();
+				throw new RegistrationException(ElectriCraft.instance, "Could not create TE instance to render "+this);
+			}
 		}
-		catch (InstantiationException e) {
-			e.printStackTrace();
-			throw new RegistrationException(ElectriCraft.instance, "Could not create TE instance to render "+this);
-		}
-		catch (IllegalAccessException e) {
-			e.printStackTrace();
-			throw new RegistrationException(ElectriCraft.instance, "Could not create TE instance to render "+this);
-		}
+		return renderInstance;
 	}
 
 	public boolean hasRender() {

@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
-import Reika.DragonAPI.DragonAPICore;
 import Reika.DragonAPI.Base.TileEntityBase;
 import Reika.DragonAPI.Interfaces.RenderFetcher;
 import Reika.DragonAPI.Interfaces.TextureFetcher;
@@ -24,7 +23,6 @@ import Reika.ElectriCraft.TileEntities.TileEntityBattery;
 import Reika.ElectriCraft.TileEntities.TileEntityWire;
 import Reika.RotaryCraft.API.ShaftMachine;
 import Reika.RotaryCraft.API.Transducerable;
-import Reika.RotaryCraft.Registry.ConfigRegistry;
 
 public abstract class ElectriTileEntity extends TileEntityBase implements RenderFetcher, Transducerable {
 
@@ -106,7 +104,7 @@ public abstract class ElectriTileEntity extends TileEntityBase implements Render
 
 	@Override
 	public final int getPacketDelay() {
-		return DragonAPICore.isSinglePlayer() ? 1 : Math.min(20, ConfigRegistry.PACKETDELAY.getValue());
+		return 1;//DragonAPICore.isSinglePlayer() ? 1 : Math.min(20, ConfigRegistry.PACKETDELAY.getValue());
 	}
 
 	@Override

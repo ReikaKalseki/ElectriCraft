@@ -55,17 +55,23 @@ public class GuiRFCable extends GuiContainer {
 			buttonList.add(new ImagedGuiButton(i, j+dx-w, k+dy, 24, 12, 18, 54, tex, RotaryCraft.class));
 			buttonList.add(new ImagedGuiButton(nve, j+dx+w, k+dy, 24, 12, 42, 54, tex, RotaryCraft.class));
 		}
+		buttonList.add(new GuiButton(100, j+xSize/2-20, k+72, 40, 20, "Reset"));
 	}
 
 	@Override
 	public void actionPerformed(GuiButton b) {
 		super.actionPerformed(b);
 
-		int amt = b.id == -40 ? 1 : ReikaMathLibrary.intpow2(10, Math.abs(b.id));
-		if (b.id < 0)
-			amt = -amt;
-		limit += amt;
-		limit = Math.max(limit, 0);
+		if (b.id == 100) {
+			limit = 0;
+		}
+		else {
+			int amt = b.id == -40 ? 1 : ReikaMathLibrary.intpow2(10, Math.abs(b.id));
+			if (b.id < 0)
+				amt = -amt;
+			limit += amt;
+			limit = Math.max(limit, 0);
+		}
 
 		cable.setRFLimit(limit);
 		ReikaPacketHelper.sendDataPacket(ElectriCraft.packetChannel, 0, cable, limit);
