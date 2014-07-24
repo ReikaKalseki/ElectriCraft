@@ -257,8 +257,11 @@ public class BlockWire extends ElectriBlock implements IWailaBlock {
 	@Override
 	public List<String> getWailaBody(ItemStack is, List<String> tip, IWailaDataAccessor acc, IWailaConfigHandler config) {
 		TileEntityWire te = (TileEntityWire)acc.getTileEntity();
-		tip.add(String.format("Point Voltage: %dV", te.getWireVoltage()));
-		tip.add(String.format("Point Current: %dA", te.getWireCurrent()));
+		if (te instanceof TileEntityWire) {
+			te.syncAllData(false);
+			tip.add(String.format("Point Voltage: %dV", te.getWireVoltage()));
+			tip.add(String.format("Point Current: %dA", te.getWireCurrent()));
+		}
 		return tip;
 	}
 
