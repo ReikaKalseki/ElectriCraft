@@ -20,6 +20,7 @@ import Reika.DragonAPI.DragonAPICore;
 import Reika.DragonAPI.ModList;
 import Reika.DragonAPI.Auxiliary.CommandableUpdateChecker;
 import Reika.DragonAPI.Auxiliary.IntegrityChecker;
+import Reika.DragonAPI.Auxiliary.NEI_AnonymousHideConfig;
 import Reika.DragonAPI.Base.DragonAPIMod;
 import Reika.DragonAPI.Instantiable.IO.ModLogger;
 import Reika.DragonAPI.Libraries.ReikaRegistryHelper;
@@ -111,6 +112,10 @@ public class ElectriCraft extends DragonAPIMod {
 
 		ElectriRecipes.loadOreDict();
 		ElectriRecipes.addRecipes();
+
+		if (ModList.NEI.isLoaded()) {
+			NEI_AnonymousHideConfig.addBlocks(blocks);
+		}
 	}
 
 	@Override
