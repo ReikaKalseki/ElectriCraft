@@ -170,9 +170,9 @@ public class TileEntityMotor extends ElectricalReceiver implements Screwdriverab
 	}
 
 	@Override
-	public boolean canWriteToBlock(int x, int y, int z) {
+	public boolean canWriteTo(ForgeDirection from) {
 		ForgeDirection dir = this.getFacing().getOpposite();
-		return x == xCoord+dir.offsetX && y == yCoord && z == zCoord+dir.offsetZ;
+		return dir == from;
 	}
 
 	@Override

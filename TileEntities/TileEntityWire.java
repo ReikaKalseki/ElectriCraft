@@ -17,6 +17,7 @@ import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.ForgeDirection;
+import Reika.ChromatiCraft.API.SpaceRift;
 import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
 import Reika.DragonAPI.Libraries.Registry.ReikaParticleHelper;
 import Reika.ElectriCraft.Auxiliary.WireEmitter;
@@ -85,6 +86,9 @@ public class TileEntityWire extends WiringTile {
 		}
 		if (te instanceof WireReceiver) {
 			flag = flag || ((WireReceiver)te).canReceivePowerFromSide(dir.getOpposite());
+		}
+		if (te instanceof SpaceRift) {
+			flag = true;
 		}
 		return flag;
 	}

@@ -77,6 +77,7 @@ public abstract class ElectriTileEntity extends TileEntityBase implements Render
 		return id == this.getTileEntityBlockID() && meta == this.getIndex();
 	}
 
+	@Override
 	public final String getName() {
 		return this.getTEName();
 	}
@@ -103,17 +104,7 @@ public abstract class ElectriTileEntity extends TileEntityBase implements Render
 	}
 
 	@Override
-	public final int getPacketDelay() {
-		return 1;//DragonAPICore.isSinglePlayer() ? 1 : Math.min(20, ConfigRegistry.PACKETDELAY.getValue());
-	}
-
-	@Override
 	public int getRedstoneOverride() {
 		return 0;
-	}
-
-	@Override
-	public final boolean hasModel() {
-		return this.getMachine().hasRender();
 	}
 }

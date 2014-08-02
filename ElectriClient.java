@@ -11,9 +11,7 @@ package Reika.ElectriCraft;
 
 import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
-
-import org.lwjgl.input.Keyboard;
-
+import Reika.DragonAPI.DragonOptions;
 import Reika.DragonAPI.Instantiable.Rendering.ItemSpriteSheetRenderer;
 import Reika.ElectriCraft.Auxiliary.ElectriRenderList;
 import Reika.ElectriCraft.Base.ElectriTERenderer;
@@ -50,7 +48,7 @@ public class ElectriClient extends ElectriCommon
 		cable = new CableRenderer(cableRender);
 		RenderingRegistry.registerBlockHandler(cableRender, cable);
 
-		if (Keyboard.isKeyDown(Keyboard.KEY_TAB)) {
+		if (DragonOptions.NORENDERS.getState()) {
 			ElectriCraft.logger.log("Disabling all machine renders for FPS and lag profiling.");
 		}
 		else {

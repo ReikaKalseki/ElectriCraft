@@ -10,7 +10,6 @@
 package Reika.ElectriCraft.TileEntities;
 
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import Reika.DragonAPI.Libraries.MathSci.ReikaMathLibrary;
@@ -42,8 +41,7 @@ public class TileEntityGenerator extends ElectricalEmitter implements Screwdrive
 		if (iotick > 0)
 			iotick -= 8;
 
-		TileEntity te = this.getAdjacentTileEntity(this.getFacing());
-		if (!PowerTransferHelper.checkPowerFrom(this, te)) {
+		if (!PowerTransferHelper.checkPowerFrom(this, this.getFacing())) {
 			this.noInputMachine();
 		}
 
@@ -165,9 +163,9 @@ public class TileEntityGenerator extends ElectricalEmitter implements Screwdrive
 	}
 
 	@Override
-	public boolean canReadFromBlock(int x, int y, int z) {
+	public boolean canReadFrom(ForgeDirection from) {
 		ForgeDirection dir = this.getFacing();
-		return x == xCoord+dir.offsetX && y == yCoord && z == zCoord+dir.offsetZ;
+		return from == dir;
 	}
 
 	@Override

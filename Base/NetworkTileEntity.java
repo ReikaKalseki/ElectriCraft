@@ -12,6 +12,8 @@ package Reika.ElectriCraft.Base;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
+import Reika.ChromatiCraft.API.SpaceRift;
+import Reika.DragonAPI.Instantiable.WorldLocation;
 import Reika.ElectriCraft.ElectriCraft;
 import Reika.ElectriCraft.Auxiliary.NetworkTile;
 import Reika.ElectriCraft.Network.WireNetwork;
@@ -35,20 +37,31 @@ public abstract class NetworkTileEntity extends ElectriTileEntity implements Net
 			ForgeDirection dir = dirs[i];
 			if (this.canNetworkOnSide(dir)) {
 				TileEntity te = this.getAdjacentTileEntity(dir);
-				if (te instanceof NetworkTileEntity) {
-					//ReikaJavaLibrary.pConsole(te, Side.SERVER);
-					NetworkTileEntity n = (NetworkTileEntity)te;
-					if (n.canNetworkOnSide(dir.getOpposite())) {
-						WireNetwork w = n.network;
-						if (w != null) {
-							//ReikaJavaLibrary.pConsole(dir+":"+te, Side.SERVER);
-							w.merge(network);
-						}
-					}
-				}
+				this.linkTile(te, dir);
 			}
 		}
 		this.onJoinNetwork();
+	}
+
+	private void linkTile(TileEntity te, ForgeDirection dir) {
+		if (te instanceof NetworkTileEntity) {
+			//ReikaJavaLibrary.pConsole(te, Side.SERVER);
+			NetworkTileEntity n = (NetworkTileEntity)te;
+			if (n.canNetworkOnSide(dir.getOpposite())) {
+				WireNetwork w = n.network;
+				if (w != null) {
+					//ReikaJavaLibrary.pConsole(dir+":"+te, Side.SERVER);
+					w.merge(network);
+				}
+			}
+		}
+		else if (te instanceof SpaceRift) {
+			SpaceRift sr = (SpaceRift)te;
+			WorldLocation loc = sr.getLinkTarget();
+			if (loc != null) {
+				this.linkTile(sr.getTileEntityFrom(dir), dir);
+			}
+		}
 	}
 
 	protected void onJoinNetwork() {}

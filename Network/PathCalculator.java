@@ -14,8 +14,11 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
+import Reika.ChromatiCraft.API.SpaceRift;
+import Reika.DragonAPI.Instantiable.WorldLocation;
 import Reika.ElectriCraft.Auxiliary.WireEmitter;
 import Reika.ElectriCraft.Auxiliary.WireReceiver;
 import Reika.ElectriCraft.Base.TileEntityWireComponent;
@@ -76,6 +79,24 @@ public class PathCalculator {
 						if (tile.canNetworkOnSide(dir.getOpposite()))
 							this.recursiveCalculate(world, dx, dy, dz, li);
 					}
+					else {
+						TileEntity te = world.getBlockTileEntity(dx, dy, dz);
+						if (te instanceof SpaceRift) {
+							SpaceRift sr = (SpaceRift)te;
+							WorldLocation loc = sr.getLinkTarget();
+							if (loc != null) {
+								TileEntity other = sr.getTileEntityFrom(dir);
+								if (other instanceof WiringTile) {
+									if (((WiringTile)other).canNetworkOnSide(dir.getOpposite())) {
+										dx = loc.xCoord+dir.offsetX;
+										dy = loc.yCoord+dir.offsetY;
+										dz = loc.zCoord+dir.offsetZ;
+										this.recursiveCalculate(world, dx, dy, dz, li);
+									}
+								}
+							}
+						}
+					}
 				}
 			}
 		}
@@ -113,6 +134,24 @@ public class PathCalculator {
 						if (this.tileCanConnect(tile) && tile.canNetworkOnSide(dir.getOpposite()))
 							this.recursiveCalculate(world, dx, dy, dz, li);
 						//ReikaJavaLibrary.pConsole(dir+"@"+x+","+y+","+z+" :"+li.size(), Side.SERVER);
+					}
+					else {
+						TileEntity te2 = world.getBlockTileEntity(dx, dy, dz);
+						if (te2 instanceof SpaceRift) {
+							SpaceRift sr = (SpaceRift)te2;
+							WorldLocation loc = sr.getLinkTarget();
+							if (loc != null) {
+								TileEntity other = sr.getTileEntityFrom(dir);
+								if (other instanceof WiringTile) {
+									if (((WiringTile)other).canNetworkOnSide(dir.getOpposite())) {
+										dx = loc.xCoord+dir.offsetX;
+										dy = loc.yCoord+dir.offsetY;
+										dz = loc.zCoord+dir.offsetZ;
+										this.recursiveCalculate(world, dx, dy, dz, li);
+									}
+								}
+							}
+						}
 					}
 				}
 			}
