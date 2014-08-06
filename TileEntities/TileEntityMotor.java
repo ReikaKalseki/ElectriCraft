@@ -69,6 +69,8 @@ public class TileEntityMotor extends ElectricalReceiver implements Screwdriverab
 	}
 
 	private float getSoundVolume(World world, int x, int y, int z) {
+		if (world.getBlockId(x, y-1, z) == Block.cloth.blockID && world.getBlockId(x, y+1, z) == Block.cloth.blockID)
+			return 0.1F;
 		ForgeDirection dir = this.getFacing();
 		ForgeDirection dir2 = dir.getOpposite();
 		for (int i = 0; i < 6; i++) {
@@ -82,7 +84,7 @@ public class TileEntityMotor extends ElectricalReceiver implements Screwdriverab
 					return 0.36F;
 			}
 		}
-		return 0.125F;
+		return 0.1F;
 	}
 
 	public final ForgeDirection getFacing() {

@@ -19,6 +19,7 @@ import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.world.WorldEvent;
+import Reika.ElectriCraft.ElectriCraft;
 import Reika.ElectriCraft.NetworkObject;
 import Reika.ElectriCraft.Auxiliary.ElectriNetworkTickEvent;
 import Reika.ElectriCraft.Auxiliary.NetworkTile;
@@ -35,6 +36,10 @@ public final class WireNetwork implements NetworkObject {
 	private ArrayList<WireEmitter> sources = new ArrayList();
 	private HashMap<List<Integer>, NetworkNode> nodes = new HashMap();
 	private ArrayList<WirePath> paths = new ArrayList();
+	private HashMap<TileEntityWire, Integer> pointVoltages = new HashMap();
+	private HashMap<TileEntityWire, Integer> pointCurrents = new HashMap();
+	private HashMap<WireReceiver, Integer> terminalVoltages = new HashMap();
+	private HashMap<WireReceiver, Integer> terminalCurrents = new HashMap();
 
 	private boolean shorted = false;
 
@@ -44,6 +49,13 @@ public final class WireNetwork implements NetworkObject {
 
 	public WireNetwork() {
 		MinecraftForge.EVENT_BUS.register(this);
+	}
+
+	public void clearCache() {
+		terminalCurrents.clear();
+		terminalVoltages.clear();
+		pointCurrents.clear();
+		pointVoltages.clear();
 	}
 
 	private int getMaxInputVoltage() {
@@ -88,6 +100,26 @@ public final class WireNetwork implements NetworkObject {
 	public int getPointVoltage(TileEntityWire te) {
 		if (shorted)
 			return 0;
+		Integer val = pointVoltages.get(te);
+		if (val == null) {
+			val = this.calcPointVoltage(te);
+			pointVoltages.put(te, val);
+		}
+		return val.intValue();
+	}
+
+	public int getPointCurrent(TileEntityWire te) {
+		if (shorted)
+			return 0;
+		Integer val = pointCurrents.get(te);
+		if (val == null) {
+			val = this.calcPointCurrent(te);
+			pointCurrents.put(te, val);
+		}
+		return val.intValue();
+	}
+
+	private int calcPointVoltage(TileEntityWire te) {
 		if (paths.isEmpty())
 			return 0;
 		int sv = 0;
@@ -102,9 +134,7 @@ public final class WireNetwork implements NetworkObject {
 		return sv;
 	}
 
-	public int getPointCurrent(TileEntityWire te) {
-		if (shorted)
-			return 0;
+	private int calcPointCurrent(TileEntityWire te) {
 		if (paths.isEmpty())
 			return 0;
 		int sa = 0;
@@ -180,6 +210,7 @@ public final class WireNetwork implements NetworkObject {
 		sources.clear();
 		nodes.clear();
 		paths.clear();
+		this.clearCache();
 
 		try {
 			MinecraftForge.EVENT_BUS.unregister(this);
@@ -231,6 +262,7 @@ public final class WireNetwork implements NetworkObject {
 
 	private void recalculatePaths() {
 		paths.clear();
+		this.clearCache();
 		for (int i = 0; i < sources.size(); i++) {
 			for (int k = 0; k < sinks.size(); k++) {
 				WireEmitter src = sources.get(i);
@@ -244,11 +276,32 @@ public final class WireNetwork implements NetworkObject {
 				}
 			}
 		}
+		ElectriCraft.logger.debug("Remapped network "+this);
 	}
 
 	public int getTerminalCurrent(WireReceiver te) {
 		if (shorted)
 			return 0;
+		Integer val = terminalCurrents.get(te);
+		if (val == null) {
+			val = this.calcTerminalCurrent(te);
+			terminalCurrents.put(te, val);
+		}
+		return val.intValue();
+	}
+
+	public int getTerminalVoltage(WireReceiver te) {
+		if (shorted)
+			return 0;
+		Integer val = terminalVoltages.get(te);
+		if (val == null) {
+			val = this.calcTerminalVoltage(te);
+			terminalVoltages.put(te, val);
+		}
+		return val.intValue();
+	}
+
+	private int calcTerminalCurrent(WireReceiver te) {
 		int a = 0;
 		for (int i = 0; i < paths.size(); i++) {
 			WirePath path = paths.get(i);
@@ -260,8 +313,8 @@ public final class WireNetwork implements NetworkObject {
 		return a;
 	}
 
-	public int getTerminalVoltage(WireReceiver te) {
-		return shorted ? 0 : this.getLowestVoltageOfPaths(te);
+	private int calcTerminalVoltage(WireReceiver te) {
+		return this.getLowestVoltageOfPaths(te);
 	}
 
 	public int getNumberPaths() {

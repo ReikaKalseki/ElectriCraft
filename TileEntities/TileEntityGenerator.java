@@ -177,8 +177,6 @@ public class TileEntityGenerator extends ElectricalEmitter implements Screwdrive
 	public void noInputMachine() {
 		omega = torque = 0;
 		power = 0;
-		if (!worldObj.isRemote && network != null)
-			network.updateWires();
 	}
 
 	@Override

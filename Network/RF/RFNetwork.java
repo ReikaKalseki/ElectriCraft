@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeSubscribe;
+import Reika.ElectriCraft.ElectriCraft;
 import Reika.ElectriCraft.NetworkObject;
 import Reika.ElectriCraft.Auxiliary.ElectriNetworkTickEvent;
 import Reika.ElectriCraft.TileEntities.TileEntityRFCable;
@@ -98,6 +99,7 @@ public class RFNetwork implements NetworkObject {
 	}
 
 	private void rebuild() {
+		ElectriCraft.logger.debug("Remapping RF network "+this);
 		for (int i = 0; i < cables.size(); i++) {
 			TileEntityRFCable te = cables.get(i);
 			te.findAndJoinNetwork(te.worldObj, te.xCoord, te.yCoord, te.zCoord);
