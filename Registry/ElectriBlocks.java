@@ -9,10 +9,7 @@
  ******************************************************************************/
 package Reika.ElectriCraft.Registry;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.item.ItemBlock;
-import Reika.DragonAPI.Interfaces.RegistryEnum;
+import Reika.DragonAPI.Interfaces.BlockEnum;
 import Reika.DragonAPI.Libraries.Java.ReikaStringParser;
 import Reika.ElectriCraft.ElectriCraft;
 import Reika.ElectriCraft.Blocks.BlockElectriOre;
@@ -22,7 +19,12 @@ import Reika.ElectriCraft.Blocks.BlockRFCable;
 import Reika.ElectriCraft.Blocks.BlockWire;
 import Reika.ElectriCraft.Items.ItemBlockElectriOre;
 
-public enum ElectriBlocks implements RegistryEnum {
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
+
+public enum ElectriBlocks implements BlockEnum {
 	WIRE(BlockWire.class, "Wire", false),
 	MACHINE(BlockElectricMachine.class, "Converter", false),
 	ORE(BlockElectriOre.class, ItemBlockElectriOre.class, "ElectriOre", true),
@@ -51,8 +53,8 @@ public enum ElectriBlocks implements RegistryEnum {
 		this(cl, null, n, m);
 	}
 
-	public int getBlockID() {
-		return ElectriCraft.config.getBlockID(this.ordinal());
+	public Block getBlockInstance() {
+		return ElectriCraft.blocks[this.ordinal()];
 	}
 
 	public Material getBlockMaterial() {
@@ -61,12 +63,12 @@ public enum ElectriBlocks implements RegistryEnum {
 
 	@Override
 	public Class[] getConstructorParamTypes() {
-		return new Class[]{int.class, Material.class};
+		return new Class[]{Material.class};
 	}
 
 	@Override
 	public Object[] getConstructorParams() {
-		return new Object[]{this.getBlockID(), this.getBlockMaterial()};
+		return new Object[]{this.getBlockMaterial()};
 	}
 
 	@Override
@@ -115,50 +117,16 @@ public enum ElectriBlocks implements RegistryEnum {
 		return itemBlock != null;
 	}
 
-	@Override
-	public String getConfigName() {
-		return this.getBasicName();
-	}
-
-	@Override
-	public int getDefaultID() {
-		return 720+this.ordinal();
-	}
-
-	@Override
-	public boolean isBlock() {
-		return true;
-	}
-
-	@Override
-	public boolean isItem() {
-		return false;
-	}
-
-	@Override
-	public String getCategory() {
-		return "Electri Blocks";
-	}
-
 	public boolean isDummiedOut() {
 		return blockClass == null;
-	}
-
-	public Block getBlockVariable() {
-		return ElectriCraft.blocks[this.ordinal()];
 	}
 
 	public boolean isModelled() {
 		return model;
 	}
 
-	public int getID() {
-		return this.getBlockID();
-	}
-
-	@Override
-	public boolean overwritingItem() {
-		return false;
+	public Item getItem() {
+		return Item.getItemFromBlock(this.getBlockInstance());
 	}
 
 }

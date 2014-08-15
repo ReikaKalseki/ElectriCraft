@@ -9,16 +9,17 @@
  ******************************************************************************/
 package Reika.ElectriCraft.Network;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-
-import net.minecraft.world.World;
 import Reika.ElectriCraft.Auxiliary.ElectriNetworkTickEvent;
 import Reika.ElectriCraft.Auxiliary.WireEmitter;
 import Reika.ElectriCraft.Auxiliary.WireReceiver;
 import Reika.ElectriCraft.Base.TileEntityWireComponent;
 import Reika.ElectriCraft.Base.WiringTile;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
+import net.minecraft.world.World;
 
 public final class WirePath {
 
@@ -42,7 +43,7 @@ public final class WirePath {
 			int x = li.get(0);
 			int y = li.get(1);
 			int z = li.get(2);
-			WiringTile te = (WiringTile)world.getBlockTileEntity(x, y, z);
+			WiringTile te = (WiringTile)world.getTileEntity(x, y, z);
 			nodes.addLast(te);
 			r += te.getResistance();
 			if (te instanceof TileEntityWireComponent) {

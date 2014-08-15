@@ -9,30 +9,6 @@
  ******************************************************************************/
 package Reika.ElectriCraft.Blocks;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
-import mcp.mobius.waila.api.IWailaBlock;
-import mcp.mobius.waila.api.IWailaConfigHandler;
-import mcp.mobius.waila.api.IWailaDataAccessor;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IconRegister;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.monster.EntityCreeper;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.EnumArmorMaterial;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.Icon;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
 import Reika.DragonAPI.Libraries.ReikaEntityHelper;
 import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
 import Reika.ElectriCraft.ElectriCraft;
@@ -45,17 +21,44 @@ import Reika.RotaryCraft.API.Fillable;
 import Reika.RotaryCraft.Entities.EntityDischarge;
 import Reika.RotaryCraft.Registry.SoundRegistry;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+import mcp.mobius.waila.api.IWailaBlock;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.monster.EntityCreeper;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemArmor.ArmorMaterial;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.IIcon;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+
 public class BlockWire extends ElectriBlock implements IWailaBlock {
 
-	private static final Icon[] textures = new Icon[WireType.wireList.length];
-	private static final Icon[] insulTextures = new Icon[WireType.wireList.length];
+	private static final IIcon[] textures = new IIcon[WireType.wireList.length];
+	private static final IIcon[] insulTextures = new IIcon[WireType.wireList.length];
 
-	private static final Icon[] texturesEnd = new Icon[WireType.wireList.length];
-	private static final Icon[] insulTexturesEnd = new Icon[WireType.wireList.length];
+	private static final IIcon[] texturesEnd = new IIcon[WireType.wireList.length];
+	private static final IIcon[] insulTexturesEnd = new IIcon[WireType.wireList.length];
 
-	public BlockWire(int par1, Material par2Material) {
-		super(par1, par2Material);
-		this.setStepSound(soundClothFootstep);
+	public BlockWire(Material par2Material) {
+		super(par2Material);
+		this.setStepSound(soundTypeCloth);
 		this.setHardness(0.05F);
 		this.setResistance(2F);
 		this.setBlockBounds(0.25F, 0.25F, 0.25F, 0.75F, 0.75F, 0.75F);
@@ -72,30 +75,30 @@ public class BlockWire extends ElectriBlock implements IWailaBlock {
 	}
 
 	@Override
-	public int idDropped(int id, Random r, int fortune) {
-		return 0;
+	public Item getItemDropped(int id, Random r, int fortune) {
+		return null;
 	}
 
 	@Override
-	public boolean removeBlockByPlayer(World world, EntityPlayer player, int x, int y, int z)
+	public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z, boolean harv)
 	{
 		if (!player.capabilities.isCreativeMode && this.canHarvest(world, player, x, y, z))
 			this.harvestBlock(world, player, x, y, z, world.getBlockMetadata(x, y, z));
-		return world.setBlock(x, y, z, 0);
+		return world.setBlockToAir(x, y, z);
 	}
 
 	@Override
 	public void harvestBlock(World world, EntityPlayer ep, int x, int y, int z, int meta) {
 		if (!this.canHarvest(world, ep, x, y, z))
 			return;
-		if (world.getBlockId(x, y, z) == blockID)
-			ReikaItemHelper.dropItems(world, x+0.5, y+0.5, z+0.5, this.getBlockDropped(world, x, y, z, meta, 0));
+		if (world.getBlock(x, y, z) == this)
+			ReikaItemHelper.dropItems(world, x+0.5, y+0.5, z+0.5, this.getDrops(world, x, y, z, meta, 0));
 	}
 
 	@Override
-	public ArrayList<ItemStack> getBlockDropped(World world, int x, int y, int z, int meta, int fortune) {
+	public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int meta, int fortune) {
 		ArrayList li = new ArrayList();
-		TileEntityWire te = (TileEntityWire)world.getBlockTileEntity(x, y, z);
+		TileEntityWire te = (TileEntityWire)world.getTileEntity(x, y, z);
 		ItemStack is = te.insulated ? te.getWireType().getCraftedInsulatedProduct() : te.getWireType().getCraftedProduct();
 		if (is.getItemDamage()%WireType.INS_OFFSET == WireType.SUPERCONDUCTOR.ordinal()) {
 			is.stackTagCompound = new NBTTagCompound();
@@ -107,7 +110,7 @@ public class BlockWire extends ElectriBlock implements IWailaBlock {
 	}
 
 	@Override
-	public void registerIcons(IconRegister ico) {
+	public void registerBlockIcons(IIconRegister ico) {
 		for (int i = 0; i < WireType.wireList.length; i++) {
 			WireType wire = WireType.wireList[i];
 			textures[i] = ico.registerIcon("ElectriCraft:"+wire.getIconTexture());
@@ -119,23 +122,23 @@ public class BlockWire extends ElectriBlock implements IWailaBlock {
 	}
 
 	@Override
-	public Icon getIcon(int s, int meta) {
+	public IIcon getIcon(int s, int meta) {
 		return textures[meta];
 	}
 
-	public static Icon getInsulatedEndTexture(WireType type) {
+	public static IIcon getInsulatedEndTexture(WireType type) {
 		return insulTexturesEnd[type.ordinal()];
 	}
 
-	public static Icon getEndTexture(WireType type) {
+	public static IIcon getEndTexture(WireType type) {
 		return texturesEnd[type.ordinal()];
 	}
 
-	public static Icon getInsulatedTexture(WireType type) {
+	public static IIcon getInsulatedTexture(WireType type) {
 		return insulTextures[type.ordinal()];
 	}
 
-	public static Icon getTexture(WireType type) {
+	public static IIcon getTexture(WireType type) {
 		return textures[type.ordinal()];
 	}
 
@@ -168,14 +171,14 @@ public class BlockWire extends ElectriBlock implements IWailaBlock {
 	}
 
 	@Override
-	public void onNeighborBlockChange(World world, int x, int y, int z, int id) {
-		TileEntityWire te = (TileEntityWire)world.getBlockTileEntity(x, y, z);
+	public void onNeighborBlockChange(World world, int x, int y, int z, Block id) {
+		TileEntityWire te = (TileEntityWire)world.getTileEntity(x, y, z);
 		te.recomputeConnections(world, x, y, z);
 	}
 
 	@Override
 	public void onBlockAdded(World world, int x, int y, int z) {
-		TileEntityWire te = (TileEntityWire)world.getBlockTileEntity(x, y, z);
+		TileEntityWire te = (TileEntityWire)world.getTileEntity(x, y, z);
 		te.addToAdjacentConnections(world, x, y, z);
 		te.recomputeConnections(world, x, y, z);
 	}
@@ -183,7 +186,7 @@ public class BlockWire extends ElectriBlock implements IWailaBlock {
 	@Override
 	public final AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
 		double d = 0.25;
-		TileEntityWire te = (TileEntityWire)world.getBlockTileEntity(x, y, z);
+		TileEntityWire te = (TileEntityWire)world.getTileEntity(x, y, z);
 		if (te == null)
 			return null;
 		float minx = te.isConnectedOnSideAt(world, x, y, z, ForgeDirection.WEST) ? 0 : 0.3F;
@@ -192,21 +195,21 @@ public class BlockWire extends ElectriBlock implements IWailaBlock {
 		float maxz = te.isConnectedOnSideAt(world, x, y, z, ForgeDirection.NORTH) ? 1 : 0.7F;
 		float miny = te.isConnectedOnSideAt(world, x, y, z, ForgeDirection.UP) ? 0 : 0.3F;
 		float maxy = te.isConnectedOnSideAt(world, x, y, z, ForgeDirection.DOWN) ? 1 : 0.7F;
-		return AxisAlignedBB.getAABBPool().getAABB(x+minx, y+miny, z+minz, x+maxx, y+maxy, z+maxz);
+		return AxisAlignedBB.getBoundingBox(x+minx, y+miny, z+minz, x+maxx, y+maxy, z+maxz);
 	}
 
 	@Override
 	public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity e) {
 		if (!world.isRemote) {
 			if (!(e instanceof EntityPlayer) || (e instanceof EntityPlayer && !((EntityPlayer)e).capabilities.isCreativeMode)) {
-				TileEntityWire te = (TileEntityWire)world.getBlockTileEntity(x, y, z);
+				TileEntityWire te = (TileEntityWire)world.getTileEntity(x, y, z);
 				WireNetwork net = te.getNetwork();
 				if (!te.insulated && net != null) {
 					if (net.isLive()) {
 						int v = net.getPointVoltage(te);
 						EntityDischarge ed = new EntityDischarge(world, x+0.5, y+0.5, z+0.5, v, e.posX, e.posY, e.posZ);
 						world.spawnEntityInWorld(ed);
-						if (!(e instanceof EntityLivingBase) || !ReikaEntityHelper.isEntityWearingFullSuitOf((EntityLivingBase)e, EnumArmorMaterial.CHAIN))
+						if (!(e instanceof EntityLivingBase) || !ReikaEntityHelper.isEntityWearingFullSuitOf((EntityLivingBase)e, ArmorMaterial.CHAIN))
 							e.attackEntityFrom(RotaryCraft.shock, v > 10000 ? 20 : v > 1000 ? 10 : v > 100 ? 5 : v > 10 ? 1 : 0);
 						if (e instanceof EntityCreeper) {
 							world.createExplosion(e, e.posX, e.posY, e.posZ, 3F, true);
@@ -227,7 +230,7 @@ public class BlockWire extends ElectriBlock implements IWailaBlock {
 	@Override
 	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
 	{
-		TileEntityWire te = (TileEntityWire)world.getBlockTileEntity(x, y, z);
+		TileEntityWire te = (TileEntityWire)world.getTileEntity(x, y, z);
 		ItemStack is = te.insulated ? te.getWireType().getCraftedInsulatedProduct() : te.getWireType().getCraftedProduct();
 		if (te.getWireType() == WireType.SUPERCONDUCTOR) {
 			is.stackTagCompound = new NBTTagCompound();

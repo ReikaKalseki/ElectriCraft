@@ -9,6 +9,12 @@
  ******************************************************************************/
 package Reika.ElectriCraft.Blocks;
 
+import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
+import Reika.ElectriCraft.Base.NetworkBlock;
+import Reika.ElectriCraft.Registry.BatteryType;
+import Reika.ElectriCraft.Registry.ElectriItems;
+import Reika.ElectriCraft.TileEntities.TileEntityBattery;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,29 +22,24 @@ import mcp.mobius.waila.api.IWailaBlock;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
-import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
-import Reika.ElectriCraft.Base.NetworkBlock;
-import Reika.ElectriCraft.Registry.BatteryType;
-import Reika.ElectriCraft.Registry.ElectriItems;
-import Reika.ElectriCraft.TileEntities.TileEntityBattery;
 
 public class BlockElectricBattery extends NetworkBlock implements IWailaBlock {
 
-	private final Icon[] bottomTex = new Icon[BatteryType.batteryList.length];
-	private final Icon[] sideTex = new Icon[BatteryType.batteryList.length];
-	private final Icon[] topTex = new Icon[BatteryType.batteryList.length];
+	private final IIcon[] bottomTex = new IIcon[BatteryType.batteryList.length];
+	private final IIcon[] sideTex = new IIcon[BatteryType.batteryList.length];
+	private final IIcon[] topTex = new IIcon[BatteryType.batteryList.length];
 
-	public BlockElectricBattery(int par1, Material par2Material) {
-		super(par1, par2Material);
+	public BlockElectricBattery(Material par2Material) {
+		super(par2Material);
 	}
 
 	@Override
@@ -52,7 +53,7 @@ public class BlockElectricBattery extends NetworkBlock implements IWailaBlock {
 	}
 
 	@Override
-	public void registerIcons(IconRegister ico) {
+	public void registerBlockIcons(IIconRegister ico) {
 		for (int i = 0; i < BatteryType.batteryList.length; i++) {
 			BatteryType b = BatteryType.batteryList[i];
 			String s = b.name().toLowerCase();
@@ -69,7 +70,7 @@ public class BlockElectricBattery extends NetworkBlock implements IWailaBlock {
 	}
 
 	@Override
-	public Icon getIcon(int s, int meta) {
+	public IIcon getIcon(int s, int meta) {
 		if (s == 0)
 			return bottomTex[meta];
 		else if (s == 1)
@@ -79,19 +80,19 @@ public class BlockElectricBattery extends NetworkBlock implements IWailaBlock {
 	}
 
 	@Override
-	public boolean removeBlockByPlayer(World world, EntityPlayer player, int x, int y, int z)
+	public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z, boolean harv)
 	{
 		if (!player.capabilities.isCreativeMode && this.canHarvest(world, player, x, y, z))
 			this.harvestBlock(world, player, x, y, z, world.getBlockMetadata(x, y, z));
-		return world.setBlock(x, y, z, 0);
+		return world.setBlockToAir(x, y, z);
 	}
 
 	@Override
 	public void harvestBlock(World world, EntityPlayer ep, int x, int y, int z, int meta) {
 		if (!this.canHarvest(world, ep, x, y, z))
 			return;
-		if (world.getBlockId(x, y, z) == blockID)
-			ReikaItemHelper.dropItems(world, x+0.5, y+0.5, z+0.5, this.getBlockDropped(world, x, y, z, meta, 0));
+		if (world.getBlock(x, y, z) == this)
+			ReikaItemHelper.dropItems(world, x+0.5, y+0.5, z+0.5, this.getDrops(world, x, y, z, meta, 0));
 	}
 
 	private boolean canHarvest(World world, EntityPlayer ep, int x, int y, int z) {
@@ -99,9 +100,9 @@ public class BlockElectricBattery extends NetworkBlock implements IWailaBlock {
 	}
 
 	@Override
-	public ArrayList<ItemStack> getBlockDropped(World world, int x, int y, int z, int meta, int fortune) {
+	public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int meta, int fortune) {
 		ArrayList li = new ArrayList();
-		TileEntityBattery te = (TileEntityBattery)world.getBlockTileEntity(x, y, z);
+		TileEntityBattery te = (TileEntityBattery)world.getTileEntity(x, y, z);
 		long e = te.getStoredEnergy();
 		ItemStack is = ElectriItems.BATTERY.getStackOfMetadata(meta);
 		is.stackTagCompound = new NBTTagCompound();
@@ -113,7 +114,7 @@ public class BlockElectricBattery extends NetworkBlock implements IWailaBlock {
 	@Override
 	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
 	{
-		TileEntityBattery te = (TileEntityBattery)world.getBlockTileEntity(x, y, z);
+		TileEntityBattery te = (TileEntityBattery)world.getTileEntity(x, y, z);
 		int meta = world.getBlockMetadata(x, y, z);
 		ItemStack is = ElectriItems.BATTERY.getStackOfMetadata(meta);
 		return is;

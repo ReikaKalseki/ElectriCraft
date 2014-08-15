@@ -8,13 +8,14 @@
  * explicit, prior permission from the owner.
  ******************************************************************************/
 package Reika.ElectriCraft;
-import net.minecraftforge.event.ForgeSubscribe;
 import Reika.ElectriCraft.Auxiliary.ElectriNetworkTickEvent;
+
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 
 public interface NetworkObject {
 
-	@ForgeSubscribe
+	@SubscribeEvent
 	public void tick(ElectriNetworkTickEvent evt);
 
 }

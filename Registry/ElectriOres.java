@@ -9,22 +9,24 @@
  ******************************************************************************/
 package Reika.ElectriCraft.Registry;
 
+import Reika.DragonAPI.Libraries.Java.ReikaJavaLibrary;
+import Reika.DragonAPI.Libraries.Java.ReikaStringParser;
+import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
+import Reika.DragonAPI.ModInteract.ReikaTwilightHelper;
+import Reika.ElectriCraft.ElectriCraft;
+
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.oredict.OreDictionary;
-import Reika.DragonAPI.Libraries.Java.ReikaJavaLibrary;
-import Reika.DragonAPI.Libraries.Java.ReikaStringParser;
-import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
-import Reika.DragonAPI.ModInteract.ReikaTwilightHelper;
-import Reika.ElectriCraft.ElectriCraft;
 
 public enum ElectriOres {
 
@@ -65,15 +67,15 @@ public enum ElectriOres {
 	}
 
 	public static ElectriOres getOre(IBlockAccess iba, int x, int y, int z) {
-		int id = iba.getBlockId(x, y, z);
+		Block id = iba.getBlock(x, y, z);
 		int meta = iba.getBlockMetadata(x, y, z);
-		if (id != ElectriBlocks.ORE.getBlockID())
+		if (id != ElectriBlocks.ORE.getBlockInstance())
 			return null;
 		return oreList[meta];
 	}
 
-	public static ElectriOres getOre(int id, int meta) {
-		if (id != ElectriBlocks.ORE.getBlockID())
+	public static ElectriOres getOre(Block id, int meta) {
+		if (id != ElectriBlocks.ORE.getBlockInstance())
 			return null;
 		return oreList[meta];
 	}
@@ -93,8 +95,8 @@ public enum ElectriOres {
 		}
 	}
 
-	public int getBlockID() {
-		return ElectriBlocks.ORE.getBlockID();
+	public Block getBlock() {
+		return ElectriBlocks.ORE.getBlockInstance();
 	}
 
 
@@ -103,7 +105,7 @@ public enum ElectriOres {
 	}
 
 	public ItemStack getOreBlock() {
-		return new ItemStack(this.getBlockID(), 1, this.getBlockMetadata());
+		return new ItemStack(this.getBlock(), 1, this.getBlockMetadata());
 	}
 
 	public ItemStack getProduct() {
@@ -116,29 +118,29 @@ public enum ElectriOres {
 	public List<ItemStack> getOreDrop(int meta) {
 		switch(this) {
 		default:
-			return ReikaJavaLibrary.makeListFrom(new ItemStack(ElectriBlocks.ORE.getBlockID(), 1, meta));
+			return ReikaJavaLibrary.makeListFrom(new ItemStack(ElectriBlocks.ORE.getBlockInstance(), 1, meta));
 		}
 	}
 
 	public String getProductName() {
 		switch(this) {
 		default:
-			return StatCollector.translateToLocal("item."+this.name().toLowerCase());
+			return StatCollector.translateToLocal("Items."+this.name().toLowerCase());
 		}
 	}
 
-	public int getReplaceableBlock() {
+	public Block getReplaceableBlock() {
 		switch(dimensionID) {
 		case 0:
-			return Block.stone.blockID;
+			return Blocks.stone;
 		case 1:
-			return Block.whiteStone.blockID;
+			return Blocks.end_stone;
 		case -1:
-			return Block.netherrack.blockID;
+			return Blocks.netherrack;
 		case 7:
-			return Block.stone.blockID;
+			return Blocks.stone;
 		default:
-			return Block.stone.blockID;
+			return Blocks.stone;
 		}
 	}
 
@@ -204,6 +206,6 @@ public enum ElectriOres {
 
 	public boolean dropsSelf(int meta) {
 		List<ItemStack> li = this.getOreDrop(meta);
-		return li.size() == 1 && li.get(0).itemID == ElectriBlocks.ORE.getBlockID() && li.get(0).getItemDamage() == meta;
+		return li.size() == 1 && ReikaItemHelper.matchStackWithBlock(li.get(0), ElectriBlocks.ORE.getBlockInstance()) && li.get(0).getItemDamage() == meta;
 	}
 }

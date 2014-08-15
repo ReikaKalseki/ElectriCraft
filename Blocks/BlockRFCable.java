@@ -9,30 +9,32 @@
  ******************************************************************************/
 package Reika.ElectriCraft.Blocks;
 
-import java.util.Random;
-
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IconRegister;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.Icon;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
 import Reika.ElectriCraft.ElectriCraft;
 import Reika.ElectriCraft.Registry.ElectriTiles;
 import Reika.ElectriCraft.TileEntities.TileEntityRFCable;
 
+import java.util.Random;
+
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.IIcon;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+
 public class BlockRFCable extends Block {
 
-	private static Icon center;
-	private static Icon end;
+	private static IIcon center;
+	private static IIcon end;
 
-	public BlockRFCable(int par1, Material par2Material) {
-		super(par1, par2Material);
+	public BlockRFCable(Material par2Material) {
+		super(par2Material);
 		this.setResistance(15);
 		this.setHardness(0.5F);
 	}
@@ -43,21 +45,21 @@ public class BlockRFCable extends Block {
 	}
 
 	@Override
-	public void onNeighborBlockChange(World world, int x, int y, int z, int id) {
-		TileEntityRFCable te = (TileEntityRFCable)world.getBlockTileEntity(x, y, z);
+	public void onNeighborBlockChange(World world, int x, int y, int z, Block id) {
+		TileEntityRFCable te = (TileEntityRFCable)world.getTileEntity(x, y, z);
 		te.recomputeConnections(world, x, y, z);
 	}
 
 	@Override
 	public void onBlockAdded(World world, int x, int y, int z) {
-		TileEntityRFCable te = (TileEntityRFCable)world.getBlockTileEntity(x, y, z);
+		TileEntityRFCable te = (TileEntityRFCable)world.getTileEntity(x, y, z);
 		te.addToAdjacentConnections(world, x, y, z);
 		te.recomputeConnections(world, x, y, z);
 	}
 
 	@Override
-	public int idDropped(int id, Random r, int fortune) {
-		return ElectriTiles.CABLE.getCraftedProduct().itemID;
+	public Item getItemDropped(int id, Random r, int fortune) {
+		return ElectriTiles.CABLE.getCraftedProduct().getItem();
 	}
 
 	@Override
@@ -68,7 +70,7 @@ public class BlockRFCable extends Block {
 	@Override
 	public final AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
 		double d = 0.25;
-		TileEntityRFCable te = (TileEntityRFCable)world.getBlockTileEntity(x, y, z);
+		TileEntityRFCable te = (TileEntityRFCable)world.getTileEntity(x, y, z);
 		if (te == null)
 			return null;
 		float minx = te.isConnectedOnSideAt(world, x, y, z, ForgeDirection.WEST) ? 0 : 0.3F;
@@ -77,12 +79,12 @@ public class BlockRFCable extends Block {
 		float maxz = te.isConnectedOnSideAt(world, x, y, z, ForgeDirection.NORTH) ? 1 : 0.7F;
 		float miny = te.isConnectedOnSideAt(world, x, y, z, ForgeDirection.UP) ? 0 : 0.3F;
 		float maxy = te.isConnectedOnSideAt(world, x, y, z, ForgeDirection.DOWN) ? 1 : 0.7F;
-		return AxisAlignedBB.getAABBPool().getAABB(x+minx, y+miny, z+minz, x+maxx, y+maxy, z+maxz);
+		return AxisAlignedBB.getBoundingBox(x+minx, y+miny, z+minz, x+maxx, y+maxy, z+maxz);
 	}
 
 	@Override
-	public void breakBlock(World world, int x, int y, int z, int oldid, int oldmeta) {
-		TileEntityRFCable te = (TileEntityRFCable)world.getBlockTileEntity(x, y, z);
+	public void breakBlock(World world, int x, int y, int z, Block oldid, int oldmeta) {
+		TileEntityRFCable te = (TileEntityRFCable)world.getTileEntity(x, y, z);
 		if (!world.isRemote)
 			te.removeFromNetwork();
 		super.breakBlock(world, x, y, z, oldid, oldmeta);
@@ -115,21 +117,21 @@ public class BlockRFCable extends Block {
 		return this.getCollisionBoundingBoxFromPool(world, x, y, z);
 	}
 
-	public static Icon getCenterIcon() {
+	public static IIcon getCenterIcon() {
 		return center;
 	}
 
-	public static Icon getEndIcon() {
+	public static IIcon getEndIcon() {
 		return end;
 	}
 
 	@Override
-	public Icon getIcon(int s, int meta) {
+	public IIcon getIcon(int s, int meta) {
 		return center;
 	}
 
 	@Override
-	public void registerIcons(IconRegister ico) {
+	public void registerBlockIcons(IIconRegister ico) {
 		center = ico.registerIcon("electricraft:rf");
 		end = ico.registerIcon("electricraft:rf_end");
 	}
@@ -137,7 +139,7 @@ public class BlockRFCable extends Block {
 	@Override
 	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
 	{
-		TileEntityRFCable te = (TileEntityRFCable)world.getBlockTileEntity(x, y, z);
+		TileEntityRFCable te = (TileEntityRFCable)world.getTileEntity(x, y, z);
 		ItemStack is = ElectriTiles.CABLE.getCraftedProduct();
 		return is;
 	}

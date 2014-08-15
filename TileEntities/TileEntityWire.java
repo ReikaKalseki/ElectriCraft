@@ -9,14 +9,6 @@
  ******************************************************************************/
 package Reika.ElectriCraft.TileEntities;
 
-import net.minecraft.block.Block;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.Icon;
-import net.minecraft.world.World;
-import net.minecraftforge.client.MinecraftForgeClient;
-import net.minecraftforge.common.ForgeDirection;
 import Reika.ChromatiCraft.API.SpaceRift;
 import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
 import Reika.DragonAPI.Libraries.Registry.ReikaParticleHelper;
@@ -26,6 +18,16 @@ import Reika.ElectriCraft.Base.WiringTile;
 import Reika.ElectriCraft.Blocks.BlockWire;
 import Reika.ElectriCraft.Registry.ElectriTiles;
 import Reika.ElectriCraft.Registry.WireType;
+
+import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.IIcon;
+import net.minecraft.world.World;
+import net.minecraftforge.client.MinecraftForgeClient;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileEntityWire extends WiringTile {
 
@@ -72,11 +74,11 @@ public class TileEntityWire extends WiringTile {
 		int dx = x+dir.offsetX;
 		int dy = y+dir.offsetY;
 		int dz = z+dir.offsetZ;
-		int id = world.getBlockId(dx, dy, dz);
+		Block b = world.getBlock(dx, dy, dz);
 		int meta = world.getBlockMetadata(dx, dy, dz);
-		if (id == this.getTileEntityBlockID())
+		if (b == this.getTileEntityBlockID())
 			return true;
-		TileEntity te = world.getBlockTileEntity(dx, dy, dz);
+		TileEntity te = world.getTileEntity(dx, dy, dz);
 		boolean flag = false;
 		if (te instanceof WiringTile) {
 			flag = flag || ((WiringTile) te).canNetworkOnSide(dir.getOpposite());
@@ -151,9 +153,9 @@ public class TileEntityWire extends WiringTile {
 	public void recomputeConnections(World world, int x, int y, int z) {
 		for (int i = 0; i < 6; i++) {
 			connections[i] = this.isConnected(dirs[i]);
-			world.markBlockForRenderUpdate(x+dirs[i].offsetX, y+dirs[i].offsetY, z+dirs[i].offsetZ);
+			world.func_147479_m(x+dirs[i].offsetX, y+dirs[i].offsetY, z+dirs[i].offsetZ);
 		}
-		world.markBlockForRenderUpdate(x, y, z);
+		world.func_147479_m(x, y, z);
 	}
 
 	public void deleteFromAdjacentConnections(World world, int x, int y, int z) {
@@ -164,9 +166,9 @@ public class TileEntityWire extends WiringTile {
 			int dz = x+dir.offsetZ;
 			ElectriTiles m = ElectriTiles.getTE(world, dx, dy, dz);
 			if (m == this.getMachine()) {
-				TileEntityWire te = (TileEntityWire)world.getBlockTileEntity(dx, dy, dz);
+				TileEntityWire te = (TileEntityWire)world.getTileEntity(dx, dy, dz);
 				te.connections[dir.getOpposite().ordinal()] = false;
-				world.markBlockForRenderUpdate(dx, dy, dz);
+				world.func_147479_m(dx, dy, dz);
 			}
 		}
 	}
@@ -179,9 +181,9 @@ public class TileEntityWire extends WiringTile {
 			int dz = x+dir.offsetZ;
 			ElectriTiles m = ElectriTiles.getTE(world, dx, dy, dz);
 			if (m == this.getMachine()) {
-				TileEntityWire te = (TileEntityWire)world.getBlockTileEntity(dx, dy, dz);
+				TileEntityWire te = (TileEntityWire)world.getTileEntity(dx, dy, dz);
 				te.connections[dir.getOpposite().ordinal()] = true;
-				world.markBlockForRenderUpdate(dx, dy, dz);
+				world.func_147479_m(dx, dy, dz);
 			}
 		}
 	}
@@ -206,7 +208,7 @@ public class TileEntityWire extends WiringTile {
 	public void melt(World world, int x, int y, int z) {
 		ReikaSoundHelper.playSoundAtBlock(world, x, y, z, "random.fizz");
 		ReikaParticleHelper.LAVA.spawnAroundBlock(world, x, y, z, 12);
-		world.setBlock(x, y, z, Block.lavaMoving.blockID);
+		world.setBlock(x, y, z, Blocks.flowing_lava);
 	}
 
 	@Override
@@ -214,19 +216,19 @@ public class TileEntityWire extends WiringTile {
 		shouldMelt = true;
 	}
 
-	public Icon getEndIcon() {
+	public IIcon getEndIcon() {
 		return BlockWire.getEndTexture(this.getWireType());
 	}
 
-	public Icon getCenterIcon() {
+	public IIcon getCenterIcon() {
 		return BlockWire.getTexture(this.getWireType());
 	}
 
-	public Icon getInsulatedCenterIcon() {
+	public IIcon getInsulatedCenterIcon() {
 		return BlockWire.getInsulatedTexture(this.getWireType());
 	}
 
-	public Icon getInsulatedEndIcon() {
+	public IIcon getInsulatedEndIcon() {
 		return BlockWire.getInsulatedEndTexture(this.getWireType());
 	}
 

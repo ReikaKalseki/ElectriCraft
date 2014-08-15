@@ -9,21 +9,18 @@
  ******************************************************************************/
 package Reika.ElectriCraft;
 
-import java.net.URL;
-
-import net.minecraft.block.Block;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import thaumcraft.api.aspects.Aspect;
+import Reika.ChromatiCraft.API.AcceleratorBlacklist;
+import Reika.ChromatiCraft.API.AcceleratorBlacklist.BlacklistReason;
 import Reika.DragonAPI.DragonAPICore;
 import Reika.DragonAPI.ModList;
 import Reika.DragonAPI.Auxiliary.CommandableUpdateChecker;
 import Reika.DragonAPI.Auxiliary.IntegrityChecker;
 import Reika.DragonAPI.Auxiliary.NEI_AnonymousHideConfig;
+import Reika.DragonAPI.Auxiliary.TickRegistry;
 import Reika.DragonAPI.Base.DragonAPIMod;
 import Reika.DragonAPI.Instantiable.IO.ModLogger;
 import Reika.DragonAPI.Libraries.ReikaRegistryHelper;
+import Reika.DragonAPI.Libraries.IO.ReikaPacketHelper;
 import Reika.DragonAPI.Libraries.Java.ReikaJavaLibrary;
 import Reika.DragonAPI.ModInteract.ReikaThaumHelper;
 import Reika.ElectriCraft.Auxiliary.ElectriTab;
@@ -32,8 +29,14 @@ import Reika.ElectriCraft.Registry.ElectriItems;
 import Reika.ElectriCraft.Registry.ElectriOptions;
 import Reika.ElectriCraft.Registry.ElectriOres;
 import Reika.ElectriCraft.Registry.ElectriTiles;
-import Reika.GeoStrata.API.AcceleratorBlacklist;
-import Reika.GeoStrata.API.AcceleratorBlacklist.BlacklistReason;
+
+import java.net.URL;
+
+import net.minecraft.block.Block;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import thaumcraft.api.aspects.Aspect;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -41,17 +44,11 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.network.NetworkMod;
-import cpw.mods.fml.common.network.NetworkMod.SidedPacketHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
 
 @Mod( modid = "ElectriCraft", name="ElectriCraft", version="beta", certificateFingerprint = "@GET_FINGERPRINT@", dependencies="required-after:DragonAPI;required-after:RotaryCraft")
-@NetworkMod(clientSideRequired = true, serverSideRequired = true,
-clientPacketHandlerSpec = @SidedPacketHandler(channels = { "ElectriCraftData" }, packetHandler = ElectriClientPackets.class),
-serverPacketHandlerSpec = @SidedPacketHandler(channels = { "ElectriCraftData" }, packetHandler = ElectriServerPackets.class))
 
 public class ElectriCraft extends DragonAPIMod {
 
@@ -64,7 +61,7 @@ public class ElectriCraft extends DragonAPIMod {
 
 	public static final Block[] blocks = new Block[ElectriBlocks.blockList.length];
 	public static final Item[] items = new Item[ElectriItems.itemList.length];
-	public static final ElectriConfig config = new ElectriConfig(instance, ElectriOptions.optionList, ElectriBlocks.blockList, ElectriItems.itemList, null, 0);
+	public static final ElectriConfig config = new ElectriConfig(instance, ElectriOptions.optionList, null, 0);
 
 	public static ModLogger logger;
 
@@ -83,6 +80,9 @@ public class ElectriCraft extends DragonAPIMod {
 		this.addBlocks();
 		this.addItems();
 		ElectriTiles.loadMappings();
+
+		ReikaPacketHelper.registerPacketHandler(instance, packetChannel, new ElectriPacketCore());
+
 		this.basicSetup(evt);
 	}
 
@@ -102,13 +102,13 @@ public class ElectriCraft extends DragonAPIMod {
 	@EventHandler
 	public void load(FMLInitializationEvent event) {
 		proxy.registerRenderers();
-		GameRegistry.registerWorldGenerator(new ElectriOreGenerator());
+		GameRegistry.registerWorldGenerator(new ElectriOreGenerator(), 0);
 
-		TickRegistry.registerTickHandler(new NetworkTicker(), Side.SERVER);
+		TickRegistry.instance.registerTickHandler(new NetworkTicker(), Side.SERVER);
 
 		IntegrityChecker.instance.addMod(instance, ElectriBlocks.blockList, ElectriItems.itemList);
 
-		NetworkRegistry.instance().registerGuiHandler(this, new ElectriGuiHandler());
+		NetworkRegistry.INSTANCE.registerGuiHandler(this, new ElectriGuiHandler());
 
 		ElectriRecipes.loadOreDict();
 		ElectriRecipes.addRecipes();

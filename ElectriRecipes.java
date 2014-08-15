@@ -9,14 +9,6 @@
  ******************************************************************************/
 package Reika.ElectriCraft;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.oredict.OreDictionary;
-import net.minecraftforge.oredict.ShapedOreRecipe;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
 import Reika.DragonAPI.ModList;
 import Reika.DragonAPI.Libraries.ReikaRecipeHelper;
 import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
@@ -28,12 +20,21 @@ import Reika.ElectriCraft.Registry.ElectriItems;
 import Reika.ElectriCraft.Registry.ElectriOres;
 import Reika.ElectriCraft.Registry.ElectriTiles;
 import Reika.ElectriCraft.Registry.WireType;
-import Reika.RotaryCraft.RotaryCraft;
 import Reika.RotaryCraft.API.GrinderAPI;
 import Reika.RotaryCraft.Auxiliary.ItemStacks;
 import Reika.RotaryCraft.Auxiliary.WorktableRecipes;
+import Reika.RotaryCraft.Registry.BlockRegistry;
 import Reika.RotaryCraft.Registry.ConfigRegistry;
 import Reika.RotaryCraft.Registry.DifficultyEffects;
+
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.ShapedOreRecipe;
+import net.minecraftforge.oredict.ShapelessOreRecipe;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class ElectriRecipes {
@@ -54,7 +55,7 @@ public class ElectriRecipes {
 			}
 		}
 
-		OreDictionary.registerOre("dustGlowstone", Item.glowstone);
+		OreDictionary.registerOre("dustGlowstone", Items.glowstone_dust);
 	}
 
 	public static void addRecipes() {
@@ -71,24 +72,24 @@ public class ElectriRecipes {
 			ReikaRecipeHelper.addSmelting(ore.getOreBlock(), ore.getProduct(), ore.xpDropped);
 		}
 
-		GrinderAPI.addRecipe(new ItemStack(Item.diamond), ElectriCrafting.DIAMONDDUST.getItem());
+		GrinderAPI.addRecipe(new ItemStack(Items.diamond), ElectriCrafting.DIAMONDDUST.getItem());
 		GrinderAPI.addRecipe(ReikaItemHelper.lapisDye, ElectriCrafting.BLUEDUST.getItem());
-		GrinderAPI.addRecipe(new ItemStack(Item.netherQuartz), ElectriCrafting.QUARTZDUST.getItem());
+		GrinderAPI.addRecipe(new ItemStack(Items.quartz), ElectriCrafting.QUARTZDUST.getItem());
 
 		ReikaRecipeHelper.addSmelting(ElectriCrafting.CRYSTALDUST.getItem(), ElectriItems.CRYSTAL.getStackOf(), 1F);
 		GameRegistry.addRecipe(new ShapelessOreRecipe(ElectriCrafting.CRYSTALDUST.getItem(2), ElectriCrafting.BLUEDUST.oreDictName, ElectriCrafting.DIAMONDDUST.oreDictName, ElectriCrafting.QUARTZDUST.oreDictName, "dustGlowstone"));
 
-		Object[] ctr = {Block.glowStone, Block.blockLapis, Item.eyeOfEnder, Item.diamond, Item.netherStar};
+		Object[] ctr = {Blocks.glowstone, Blocks.lapis_block, Items.ender_eye, Items.diamond, Items.nether_star};
 		for (int i = 1; i < 6; i++) {
 			ItemStack cry = ElectriItems.CRYSTAL.getStackOfMetadata(i-1);
 			ItemStack is = ElectriItems.CRYSTAL.getStackOfMetadata(i);
-			GameRegistry.addRecipe(is, "RCR", "CIC", "RCR", 'R', Item.redstone, 'C', cry, 'I', ctr[i-1]);
+			GameRegistry.addRecipe(is, "RCR", "CIC", "RCR", 'R', Items.redstone, 'C', cry, 'I', ctr[i-1]);
 		}
 
 		ItemStack w = ReikaItemHelper.getSizedItemStack(WireType.SUPERCONDUCTOR.getCraftedProduct(), DifficultyEffects.PIPECRAFT.getInt()/4);
 		ItemStack w2 = ReikaItemHelper.getSizedItemStack(WireType.SUPERCONDUCTOR.getCraftedInsulatedProduct(), 3);
-		ShapedOreRecipe ir = new ShapedOreRecipe(w, "IGI", "SRS", "IgI", 'I', ItemStacks.steelingot, 'G', Block.glass, 'S', "ingotSilver", 'g', "ingotGold", 'R', Item.redstone);
-		Object[] obj2 = {"WwW", "WwW", "WwW", 'W', Block.cloth, 'w', w};
+		ShapedOreRecipe ir = new ShapedOreRecipe(w, "IGI", "SRS", "IgI", 'I', ItemStacks.steelingot, 'G', Blocks.glass, 'S', "ingotSilver", 'g', "ingotGold", 'R', Items.redstone);
+		Object[] obj2 = {"WwW", "WwW", "WwW", 'W', Blocks.wool, 'w', w};
 		WorktableRecipes.getInstance().addRecipe(ir);
 		WorktableRecipes.getInstance().addRecipe(w2, obj2);
 		if (ConfigRegistry.TABLEMACHINES.getState()) {
@@ -101,7 +102,7 @@ public class ElectriRecipes {
 		ElectriTiles.RELAY.addSizedOreCrafting(4, "SCS", "CPC", 'C', "ingotCopper", 'P', ItemStacks.basepanel, 'S', ItemStacks.steelingot);
 		ElectriTiles.RESISTOR.addSizedCrafting(4, "SCS", "PCP", 'C', ItemStacks.coaldust, 'S', ItemStacks.steelingot, 'P', ItemStacks.basepanel);
 
-		ElectriTiles.CABLE.addSizedCrafting(DifficultyEffects.PIPECRAFT.getInt(), "RDR", "BGB", "RER", 'D', Item.diamond, 'R', Block.blockRedstone, 'G', Block.blockGold, 'E', Item.enderPearl, 'B', RotaryCraft.blastglass);
+		ElectriTiles.CABLE.addSizedCrafting(DifficultyEffects.PIPECRAFT.getInt(), "RDR", "BGB", "RER", 'D', Items.diamond, 'R', Blocks.redstone_block, 'G', Blocks.gold_block, 'E', Items.ender_pearl, 'B', BlockRegistry.BLASTGLASS.getStackOf());
 
 		if (ModList.THERMALEXPANSION.isLoaded()) {
 			ItemStack is = WireType.SUPERCONDUCTOR.getCraftedProduct();

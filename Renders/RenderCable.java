@@ -9,16 +9,16 @@
  ******************************************************************************/
 package Reika.ElectriCraft.Renders;
 
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Icon;
-
-import org.lwjgl.opengl.GL11;
-
 import Reika.DragonAPI.Interfaces.RenderFetcher;
 import Reika.DragonAPI.Libraries.IO.ReikaTextureHelper;
 import Reika.ElectriCraft.Base.ElectriTERenderer;
 import Reika.ElectriCraft.TileEntities.TileEntityRFCable;
+
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
+
+import org.lwjgl.opengl.GL11;
 
 public class RenderCable extends ElectriTERenderer {
 
@@ -41,7 +41,7 @@ public class RenderCable extends ElectriTERenderer {
 		}
 	}
 
-	private void renderBlock(TileEntityRFCable te, double par2, double par4, double par6, Icon ico, Icon ico2) {
+	private void renderBlock(TileEntityRFCable te, double par2, double par4, double par6, IIcon ico, IIcon ico2) {
 		float u = ico.getMinU();
 		float v = ico.getMinV();
 		float du = ico.getMaxU();

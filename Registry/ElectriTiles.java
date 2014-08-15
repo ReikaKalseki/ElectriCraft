@@ -9,19 +9,8 @@
  ******************************************************************************/
 package Reika.ElectriCraft.Registry;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.StatCollector;
-import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.oredict.ShapedOreRecipe;
 import Reika.DragonAPI.Exception.RegistrationException;
+import Reika.DragonAPI.Instantiable.Data.BlockMap;
 import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
 import Reika.ElectriCraft.ElectriCraft;
 import Reika.ElectriCraft.Base.TileEntityWireComponent;
@@ -35,6 +24,16 @@ import Reika.ElectriCraft.TileEntities.TileEntityResistor;
 import Reika.ElectriCraft.TileEntities.TileEntityWire;
 import Reika.RotaryCraft.Auxiliary.WorktableRecipes;
 import Reika.RotaryCraft.Registry.ConfigRegistry;
+
+import java.util.ArrayList;
+
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.StatCollector;
+import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public enum ElectriTiles {
@@ -55,7 +54,7 @@ public enum ElectriTiles {
 	private final ElectriBlocks blockInstance;
 	private TileEntity renderInstance;
 
-	private static final HashMap<List<Integer>, ElectriTiles> machineMappings = new HashMap();
+	private static final BlockMap<ElectriTiles> machineMappings = new BlockMap();
 
 	public static final ElectriTiles[] TEList = values();
 
@@ -88,8 +87,8 @@ public enum ElectriTiles {
 		return li;
 	}
 
-	public static TileEntity createTEFromIDAndMetadata(int id, int meta) {
-		if (id == ElectriBlocks.WIRE.getBlockID())
+	public static TileEntity createTEFromIDAndMetadata(Block id, int meta) {
+		if (id == ElectriBlocks.WIRE.getBlockInstance())
 			return new TileEntityWire();
 		ElectriTiles index = getMachineFromIDandMetadata(id, meta);
 		if (index == null) {
@@ -110,8 +109,8 @@ public enum ElectriTiles {
 		}
 	}
 
-	public static ElectriTiles getMachineFromIDandMetadata(int id, int meta) {
-		return machineMappings.get(Arrays.asList(id, meta));
+	public static ElectriTiles getMachineFromIDandMetadata(Block id, int meta) {
+		return machineMappings.get(id, meta);
 	}
 
 	public boolean isAvailableInCreativeInventory() {
@@ -123,15 +122,15 @@ public enum ElectriTiles {
 	}
 
 	public static ElectriTiles getTE(IBlockAccess iba, int x, int y, int z) {
-		int id = iba.getBlockId(x, y, z);
-		if (id == ElectriBlocks.WIRE.getBlockID())
+		Block id = iba.getBlock(x, y, z);
+		if (id == ElectriBlocks.WIRE.getBlockInstance())
 			return WIRE;
 		int meta = iba.getBlockMetadata(x, y, z);
 		return getMachineFromIDandMetadata(id, meta);
 	}
 
 	public ItemStack getCraftedProduct() {
-		return new ItemStack(ElectriItems.PLACER.getShiftedID(), 1, this.ordinal());
+		return new ItemStack(ElectriItems.PLACER.getItemInstance(), 1, this.ordinal());
 	}
 
 	public TileEntity createTEInstanceForRender() {
@@ -161,12 +160,12 @@ public enum ElectriTiles {
 		return "Reika.ElectriCraft.Renders."+render;
 	}
 
-	public int getBlockID() {
-		return this.getBlockVariable().blockID;
+	public Block getBlock() {
+		return this.getBlockInstance();
 	}
 
-	public Block getBlockVariable() {
-		return blockInstance.getBlockVariable();
+	public Block getBlockInstance() {
+		return blockInstance.getBlockInstance();
 	}
 
 	public int getBlockMetadata() {
@@ -245,10 +244,9 @@ public enum ElectriTiles {
 	public static void loadMappings() {
 		for (int i = 0; i < ElectriTiles.TEList.length; i++) {
 			ElectriTiles r = ElectriTiles.TEList[i];
-			int id = r.getBlockID();
+			Block id = r.getBlock();
 			int meta = r.getBlockMetadata();
-			List<Integer> li = Arrays.asList(id, meta);
-			machineMappings.put(li, r);
+			machineMappings.put(id, meta, r);
 		}
 	}
 
@@ -270,9 +268,9 @@ public enum ElectriTiles {
 	}
 
 	public static ElectriTiles getMachine(ItemStack item) {
-		if (item.itemID == ElectriItems.WIRE.getShiftedID())
+		if (item.getItem() == ElectriItems.WIRE.getItemInstance())
 			return WIRE;
-		if (item.itemID == ElectriItems.BATTERY.getShiftedID())
+		if (item.getItem() == ElectriItems.BATTERY.getItemInstance())
 			return BATTERY;
 		return TEList[item.getItemDamage()];
 	}

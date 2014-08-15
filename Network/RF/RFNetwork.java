@@ -9,16 +9,17 @@
  ******************************************************************************/
 package Reika.ElectriCraft.Network.RF;
 
-import java.util.ArrayList;
-
-import net.minecraftforge.common.ForgeDirection;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.ForgeSubscribe;
 import Reika.ElectriCraft.ElectriCraft;
 import Reika.ElectriCraft.NetworkObject;
 import Reika.ElectriCraft.Auxiliary.ElectriNetworkTickEvent;
 import Reika.ElectriCraft.TileEntities.TileEntityRFCable;
+
+import java.util.ArrayList;
+
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.ForgeDirection;
 import cofh.api.energy.IEnergyHandler;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class RFNetwork implements NetworkObject {
 
@@ -49,7 +50,7 @@ public class RFNetwork implements NetworkObject {
 		MinecraftForge.EVENT_BUS.register(this);
 	}
 
-	@ForgeSubscribe
+	@SubscribeEvent
 	public void tick(ElectriNetworkTickEvent evt) {
 		if (!cables.isEmpty()) {
 			ArrayList<EnergyInteraction> collectibles = new ArrayList();

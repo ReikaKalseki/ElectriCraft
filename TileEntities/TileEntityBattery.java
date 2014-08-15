@@ -9,10 +9,6 @@
  ******************************************************************************/
 package Reika.ElectriCraft.TileEntities;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
 import Reika.DragonAPI.Libraries.MathSci.ReikaEngLibrary;
 import Reika.DragonAPI.Libraries.MathSci.ReikaMathLibrary;
 import Reika.ElectriCraft.Auxiliary.WireEmitter;
@@ -21,6 +17,11 @@ import Reika.ElectriCraft.Base.NetworkTileEntity;
 import Reika.ElectriCraft.Registry.BatteryType;
 import Reika.ElectriCraft.Registry.ElectriItems;
 import Reika.ElectriCraft.Registry.ElectriTiles;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileEntityBattery extends NetworkTileEntity implements WireEmitter, WireReceiver {
 
@@ -156,7 +157,7 @@ public class TileEntityBattery extends NetworkTileEntity implements WireEmitter,
 	}
 
 	public void setEnergyFromNBT(ItemStack is) {
-		if (is.itemID == ElectriItems.BATTERY.getShiftedID()) {
+		if (is.getItem() == ElectriItems.BATTERY.getItemInstance()) {
 			if (is.stackTagCompound != null)
 				energy = is.stackTagCompound.getLong("nrg")*20L;
 		}

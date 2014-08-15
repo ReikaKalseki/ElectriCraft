@@ -9,12 +9,6 @@
  ******************************************************************************/
 package Reika.ElectriCraft.Registry;
 
-import java.util.ArrayList;
-
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.OreDictionary;
 import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
 import Reika.DragonAPI.ModRegistry.ModOreList;
 import Reika.ElectriCraft.Auxiliary.ElectriStacks;
@@ -22,6 +16,13 @@ import Reika.RotaryCraft.Auxiliary.ItemStacks;
 import Reika.RotaryCraft.Auxiliary.WorktableRecipes;
 import Reika.RotaryCraft.Registry.ConfigRegistry;
 import Reika.RotaryCraft.Registry.DifficultyEffects;
+
+import java.util.ArrayList;
+
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public enum WireType {
@@ -32,7 +33,7 @@ public enum WireType {
 	ALUMINUM(		1024, 				8, 	ElectriStacks.aluminumIngot, ModOreList.ALUMINUM),
 	COPPER(			4096, 				2, 	ElectriStacks.copperIngot, ModOreList.COPPER, ModOreList.NETHERCOPPER),
 	SILVER(			32768, 				1, 	ElectriStacks.silverIngot, ModOreList.SILVER, ModOreList.NETHERSILVER),
-	GOLD(			65536, 				4, 	new ItemStack(Item.ingotGold)),
+	GOLD(			65536, 				4, 	new ItemStack(Items.gold_ingot)),
 	PLATINUM(		131072, 			16, ElectriStacks.platinumIngot, ModOreList.PLATINUM, ModOreList.NETHERPLATINUM),
 	SUPERCONDUCTOR(	Integer.MAX_VALUE, 	0, 	null);
 
@@ -100,7 +101,7 @@ public enum WireType {
 		ArrayList<ItemStack> li = this.getAllValidCraftingIngots();
 		for (int i = 0; i < li.size(); i++) {
 			ItemStack in = li.get(i);
-			Object[] obj2 = {"WIW", "WIW", "WIW", 'W', Block.cloth, 'I', in};
+			Object[] obj2 = {"WIW", "WIW", "WIW", 'W', Blocks.wool, 'I', in};
 			Object[] obj = {"I", "I", "I", 'I', in};
 			WorktableRecipes.getInstance().addRecipe(is, obj);
 			WorktableRecipes.getInstance().addRecipe(is2, obj2);

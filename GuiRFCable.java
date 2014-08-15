@@ -9,12 +9,6 @@
  ******************************************************************************/
 package Reika.ElectriCraft;
 
-import net.minecraft.client.gui.GuiButton;
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.entity.player.EntityPlayer;
-
-import org.lwjgl.opengl.GL11;
-
 import Reika.DragonAPI.Base.CoreContainer;
 import Reika.DragonAPI.Instantiable.GUI.ImagedGuiButton;
 import Reika.DragonAPI.Libraries.IO.ReikaGuiAPI;
@@ -24,6 +18,12 @@ import Reika.DragonAPI.Libraries.MathSci.ReikaEngLibrary;
 import Reika.DragonAPI.Libraries.MathSci.ReikaMathLibrary;
 import Reika.ElectriCraft.TileEntities.TileEntityRFCable;
 import Reika.RotaryCraft.RotaryCraft;
+
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.entity.player.EntityPlayer;
+
+import org.lwjgl.opengl.GL11;
 
 public class GuiRFCable extends GuiContainer {
 
@@ -87,8 +87,8 @@ public class GuiRFCable extends GuiContainer {
 		String s2 = String.format("%.3f %sRF/t", ReikaMathLibrary.getThousandBase(limit), ReikaEngLibrary.getSIPrefix(limit));
 		int dx = xSize/2;
 		int dy = ySize/2-4;
-		ReikaGuiAPI.instance.drawCenteredStringNoShadow(fontRenderer, s, dx, dy-6, 4210752);
-		ReikaGuiAPI.instance.drawCenteredStringNoShadow(fontRenderer, s2, dx, dy+6, 4210752);
+		ReikaGuiAPI.instance.drawCenteredStringNoShadow(fontRendererObj, s, dx, dy-6, 4210752);
+		ReikaGuiAPI.instance.drawCenteredStringNoShadow(fontRendererObj, s2, dx, dy+6, 4210752);
 
 		for (int i = 0; i < 6; i++) {
 			int dx2 = xSize/2-12;
@@ -97,12 +97,12 @@ public class GuiRFCable extends GuiContainer {
 			int n = ReikaMathLibrary.intpow2(10, Math.abs(i));
 			String sl = String.format("+%d%s", (int)ReikaMathLibrary.getThousandBase(n), ReikaEngLibrary.getSIPrefix(n));
 			String sr = String.format("-%d%s", (int)ReikaMathLibrary.getThousandBase(n), ReikaEngLibrary.getSIPrefix(n));
-			fontRenderer.drawString(sl, dx2-w-fontRenderer.getStringWidth(sl), dy2, 0);
-			fontRenderer.drawString(sr, dx2+w+24, dy2, 0);
+			fontRendererObj.drawString(sl, dx2-w-fontRendererObj.getStringWidth(sl), dy2, 0);
+			fontRendererObj.drawString(sr, dx2+w+24, dy2, 0);
 		}
 
 
-		ReikaGuiAPI.instance.drawCenteredStringNoShadow(fontRenderer, "RF Cable Network", dx, 6, 4210752);
+		ReikaGuiAPI.instance.drawCenteredStringNoShadow(fontRendererObj, "RF Cable Network", dx, 6, 4210752);
 	}
 
 	@Override

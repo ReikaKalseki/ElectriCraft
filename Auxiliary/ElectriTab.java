@@ -9,9 +9,11 @@
  ******************************************************************************/
 package Reika.ElectriCraft.Auxiliary;
 
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.ItemStack;
 import Reika.ElectriCraft.Registry.ElectriTiles;
+
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -30,6 +32,12 @@ public class ElectriTab extends CreativeTabs {
 	@Override
 	public String getTranslatedTabLabel() {
 		return "ElectriCraft";
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public Item getTabIconItem() {
+		return null;
 	}
 
 }

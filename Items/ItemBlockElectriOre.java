@@ -9,26 +9,29 @@
  ******************************************************************************/
 package Reika.ElectriCraft.Items;
 
+import Reika.ElectriCraft.Registry.ElectriOres;
+
 import java.util.List;
 
+import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import Reika.ElectriCraft.Registry.ElectriOres;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemBlockElectriOre extends ItemBlock {
 
-	public ItemBlockElectriOre(int ID) {
-		super(ID);
+	public ItemBlockElectriOre(Block b) {
+		super(b);
 		hasSubtypes = true;
 		this.setMaxDamage(0);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubItems(int ID, CreativeTabs cr, List li)
+	public void getSubItems(Item ID, CreativeTabs cr, List li)
 	{
 		for (int i = 0; i < this.getDataValues(); i++) {
 			ItemStack item = new ItemStack(ID, 1, i);
@@ -41,7 +44,7 @@ public class ItemBlockElectriOre extends ItemBlock {
 	}
 
 	@Override
-	public String getItemDisplayName(ItemStack is) {
+	public String getItemStackDisplayName(ItemStack is) {
 		ElectriOres ore = ElectriOres.oreList[is.getItemDamage()];
 		return ore.oreName;
 	}

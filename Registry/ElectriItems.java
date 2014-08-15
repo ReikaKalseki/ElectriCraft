@@ -9,14 +9,8 @@
  ******************************************************************************/
 package Reika.ElectriCraft.Registry;
 
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.util.StatCollector;
-import net.minecraftforge.oredict.ShapedOreRecipe;
 import Reika.DragonAPI.Exception.RegistrationException;
-import Reika.DragonAPI.Interfaces.RegistryEnum;
+import Reika.DragonAPI.Interfaces.ItemEnum;
 import Reika.DragonAPI.Libraries.ReikaRecipeHelper;
 import Reika.DragonAPI.Libraries.Java.ReikaStringParser;
 import Reika.DragonAPI.Libraries.MathSci.ReikaMathLibrary;
@@ -26,9 +20,15 @@ import Reika.ElectriCraft.Items.ItemBatteryPlacer;
 import Reika.ElectriCraft.Items.ItemElectriPlacer;
 import Reika.ElectriCraft.Items.ItemWirePlacer;
 import Reika.RotaryCraft.Auxiliary.WorktableRecipes;
+
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.util.StatCollector;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-public enum ElectriItems implements RegistryEnum {
+public enum ElectriItems implements ItemEnum {
 
 	PLACER(0, false, "item.placer", ItemElectriPlacer.class),
 	INGOTS(16, true, "item.Electriingots", ElectriItemBase.class),
@@ -54,11 +54,11 @@ public enum ElectriItems implements RegistryEnum {
 	public static final ElectriItems[] itemList = values();
 
 	public Class[] getConstructorParamTypes() {
-		return new Class[]{int.class, int.class}; // ID, Sprite index
+		return new Class[]{int.class}; // ID, Sprite index
 	}
 
 	public Object[] getConstructorParams() {
-		return new Object[]{ElectriCraft.config.getItemID(this.ordinal()), this.getTextureIndex()};
+		return new Object[]{this.getTextureIndex()};
 	}
 
 	public int getTextureIndex() {
@@ -66,20 +66,20 @@ public enum ElectriItems implements RegistryEnum {
 	}
 
 	public static boolean isRegistered(ItemStack is) {
-		return isRegistered(is.itemID);
+		return isRegistered(is.getItem());
 	}
 
-	public static boolean isRegistered(int id) {
+	public static boolean isRegistered(Item id) {
 		for (int i = 0; i < itemList.length; i++) {
-			if (itemList[i].getShiftedID() == id)
+			if (itemList[i].getItemInstance() == id)
 				return true;
 		}
 		return false;
 	}
 
-	public static ElectriItems getEntryByID(int id) {
+	public static ElectriItems getEntryByID(Item id) {
 		for (int i = 0; i < itemList.length; i++) {
-			if (itemList[i].getShiftedID() == id)
+			if (itemList[i].getItemInstance() == id)
 				return itemList[i];
 		}
 		//throw new RegistrationException(ElectriCraft.instance, "Item ID "+id+" was called to the item registry but does not exist there!");
@@ -89,7 +89,7 @@ public enum ElectriItems implements RegistryEnum {
 	public static ElectriItems getEntry(ItemStack is) {
 		if (is == null)
 			return null;
-		return getEntryByID(is.itemID);
+		return getEntryByID(is.getItem());
 	}
 
 	public String getName(int dmg) {
@@ -111,9 +111,11 @@ public enum ElectriItems implements RegistryEnum {
 		case CRAFTING:
 			return ElectriCrafting.craftingList[dmg].getName();
 		case CRYSTAL:
-			return StatCollector.translateToLocal("crystal."+BatteryType.batteryList[dmg].name().toLowerCase());
+			return StatCollector.translateToLocal("energycrystal."+BatteryType.batteryList[dmg].name().toLowerCase());
 		case BATTERY:
 			return BatteryType.batteryList[dmg].getName();
+		case PLACER:
+			return ElectriTiles.TEList[dmg].getName();
 		case WIRE:
 			int d = dmg%WireType.INS_OFFSET;
 			String s = dmg >= WireType.INS_OFFSET ? "wire.insulated." : "wire.";
@@ -127,20 +129,12 @@ public enum ElectriItems implements RegistryEnum {
 		return ReikaStringParser.stripSpaces(name).toLowerCase();
 	}
 
-	public int getID() {
-		return ElectriCraft.config.getItemID(this.ordinal());
-	}
-
-	public int getShiftedID() {
-		return ElectriCraft.config.getItemID(this.ordinal())+256;
-	}
-
 	public Item getItemInstance() {
 		return ElectriCraft.items[this.ordinal()];
 	}
 
 	public boolean hasMultiValuedName() {
-		return hasSubtypes;
+		return hasSubtypes || this == PLACER;
 	}
 
 	public boolean isCreativeOnly() {
@@ -167,11 +161,11 @@ public enum ElectriItems implements RegistryEnum {
 	}
 
 	public ItemStack getCraftedProduct(int amt) {
-		return new ItemStack(this.getShiftedID(), amt, 0);
+		return new ItemStack(this.getItemInstance(), amt, 0);
 	}
 
 	public ItemStack getCraftedMetadataProduct(int amt, int meta) {
-		return new ItemStack(this.getShiftedID(), amt, meta);
+		return new ItemStack(this.getItemInstance(), amt, meta);
 	}
 
 	public ItemStack getStackOf() {
@@ -192,41 +186,6 @@ public enum ElectriItems implements RegistryEnum {
 	@Override
 	public Class getObjectClass() {
 		return itemClass;
-	}
-
-	@Override
-	public Class<? extends ItemBlock> getItemBlock() {
-		return null;
-	}
-
-	@Override
-	public boolean hasItemBlock() {
-		return false;
-	}
-
-	@Override
-	public String getConfigName() {
-		return name;
-	}
-
-	@Override
-	public int getDefaultID() {
-		return 15000+this.ordinal();
-	}
-
-	@Override
-	public boolean isBlock() {
-		return false;
-	}
-
-	@Override
-	public boolean isItem() {
-		return true;
-	}
-
-	@Override
-	public String getCategory() {
-		return "Item IDs";
 	}
 
 	public boolean isDummiedOut() {

@@ -9,9 +9,10 @@
  ******************************************************************************/
 package Reika.ElectriCraft.Registry;
 
+import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
-import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
 
 public enum ElectriCrafting {
 

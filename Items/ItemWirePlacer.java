@@ -9,10 +9,18 @@
  ******************************************************************************/
 package Reika.ElectriCraft.Items;
 
+import Reika.DragonAPI.Libraries.World.ReikaWorldHelper;
+import Reika.ElectriCraft.ElectriCraft;
+import Reika.ElectriCraft.Registry.ElectriItems;
+import Reika.ElectriCraft.Registry.ElectriTiles;
+import Reika.ElectriCraft.Registry.WireType;
+import Reika.ElectriCraft.TileEntities.TileEntityWire;
+import Reika.RotaryCraft.API.Fillable;
+
 import java.util.List;
 
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -27,20 +35,13 @@ import net.minecraftforge.fluids.FluidRegistry;
 
 import org.lwjgl.input.Keyboard;
 
-import Reika.DragonAPI.Libraries.World.ReikaWorldHelper;
-import Reika.ElectriCraft.ElectriCraft;
-import Reika.ElectriCraft.Registry.ElectriItems;
-import Reika.ElectriCraft.Registry.ElectriTiles;
-import Reika.ElectriCraft.Registry.WireType;
-import Reika.ElectriCraft.TileEntities.TileEntityWire;
-import Reika.RotaryCraft.API.Fillable;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemWirePlacer extends Item implements Fillable {
 
-	public ItemWirePlacer(int par1, int tex) {
-		super(par1);
+	public ItemWirePlacer(int tex) {
+		super();
 		this.setHasSubtypes(true);
 		this.setMaxDamage(0);
 		maxStackSize = 64;
@@ -49,7 +50,7 @@ public class ItemWirePlacer extends Item implements Fillable {
 
 	@Override
 	public boolean onItemUse(ItemStack is, EntityPlayer ep, World world, int x, int y, int z, int side, float par8, float par9, float par10) {
-		if (!ReikaWorldHelper.softBlocks(world, x, y, z) && world.getBlockMaterial(x, y, z) != Material.water && world.getBlockMaterial(x, y, z) != Material.lava) {
+		if (!ReikaWorldHelper.softBlocks(world, x, y, z) && ReikaWorldHelper.getMaterial(world, x, y, z) != Material.water && ReikaWorldHelper.getMaterial(world, x, y, z) != Material.lava) {
 			if (side == 0)
 				--y;
 			if (side == 1)
@@ -62,7 +63,7 @@ public class ItemWirePlacer extends Item implements Fillable {
 				--x;
 			if (side == 5)
 				++x;
-			if (!ReikaWorldHelper.softBlocks(world, x, y, z) && world.getBlockMaterial(x, y, z) != Material.water && world.getBlockMaterial(x, y, z) != Material.lava)
+			if (!ReikaWorldHelper.softBlocks(world, x, y, z) && ReikaWorldHelper.getMaterial(world, x, y, z) != Material.water && ReikaWorldHelper.getMaterial(world, x, y, z) != Material.lava)
 				return false;
 		}
 		AxisAlignedBB box = AxisAlignedBB.getBoundingBox(x, y, z, x+1, y+1, z+1);
@@ -78,11 +79,11 @@ public class ItemWirePlacer extends Item implements Fillable {
 			if (!ep.capabilities.isCreativeMode)
 				--is.stackSize;
 			int meta = is.getItemDamage()%WireType.INS_OFFSET;
-			world.setBlock(x, y, z, ElectriTiles.WIRE.getBlockID(), meta, 3);
+			world.setBlock(x, y, z, ElectriTiles.WIRE.getBlock(), meta, 3);
 		}
 		world.playSoundEffect(x+0.5, y+0.5, z+0.5, ElectriTiles.WIRE.getPlaceSound(), 1F, 1.5F);
-		TileEntityWire te = (TileEntityWire)world.getBlockTileEntity(x, y, z);
-		te.placer = ep.getEntityName();
+		TileEntityWire te = (TileEntityWire)world.getTileEntity(x, y, z);
+		te.setPlacer(ep);
 		te.insulated = is.getItemDamage() >= WireType.INS_OFFSET;
 		return true;
 	}
@@ -96,7 +97,7 @@ public class ItemWirePlacer extends Item implements Fillable {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List) {
+	public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
 		for (int i = 0; i < 32; i++) {
 			ItemStack item = new ItemStack(par1, 1, i);
 			if (ElectriItems.WIRE.isAvailableInCreative(item)) {
@@ -152,7 +153,7 @@ public class ItemWirePlacer extends Item implements Fillable {
 	}
 
 	@Override
-	public final void registerIcons(IconRegister ico) {}
+	public final void registerIcons(IIconRegister ico) {}
 
 	@Override
 	public boolean isValidFluid(Fluid f, ItemStack is) {
@@ -209,6 +210,12 @@ public class ItemWirePlacer extends Item implements Fillable {
 	@Override
 	public Fluid getCurrentFluid(ItemStack is) {
 		return this.getCurrentFillLevel(is) > 0 ? FluidRegistry.getFluid("liquid nitrogen") : null;
+	}
+
+	@Override
+	public String getItemStackDisplayName(ItemStack is) {
+		ElectriItems ir = ElectriItems.getEntry(is);
+		return ir.hasMultiValuedName() ? ir.getMultiValuedName(is.getItemDamage()) : ir.getBasicName();
 	}
 
 }

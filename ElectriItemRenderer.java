@@ -9,17 +9,17 @@
  ******************************************************************************/
 package Reika.ElectriCraft;
 
-import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.client.IItemRenderer;
-
-import org.lwjgl.opengl.GL11;
-
 import Reika.DragonAPI.Libraries.IO.ReikaTextureHelper;
 import Reika.ElectriCraft.Registry.ElectriTiles;
 import Reika.ElectriCraft.Registry.WireType;
 import Reika.ElectriCraft.TileEntities.TileEntityWire;
+
+import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.client.IItemRenderer;
+
+import org.lwjgl.opengl.GL11;
 
 public class ElectriItemRenderer implements IItemRenderer {
 
@@ -53,14 +53,14 @@ public class ElectriItemRenderer implements IItemRenderer {
 			TileEntityWire wire = (TileEntityWire)ElectriTiles.WIRE.createTEInstanceForRender();
 			wire.insulated = item.getItemDamage() >= WireType.INS_OFFSET;
 			wire.setBlockMetadata(item.getItemDamage()%WireType.INS_OFFSET);
-			TileEntityRenderer.instance.renderTileEntityAt(wire, a, -0.1D, b, 0.0F);
+			TileEntityRendererDispatcher.instance.renderTileEntityAt(wire, a, -0.1D, b, 0.0F);
 			return;
 		}
 		if (machine.hasRender())
-			TileEntityRenderer.instance.renderTileEntityAt(machine.createTEInstanceForRender(), a, -0.1D, b, 0.0F);
+			TileEntityRendererDispatcher.instance.renderTileEntityAt(machine.createTEInstanceForRender(), a, -0.1D, b, 0.0F);
 		else {
 			ReikaTextureHelper.bindTerrainTexture();
-			rb.renderBlockAsItem(machine.getBlockVariable(), item.getItemDamage(), 1);
+			rb.renderBlockAsItem(machine.getBlockInstance(), item.getItemDamage(), 1);
 		}
 	}
 }

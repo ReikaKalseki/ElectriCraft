@@ -9,11 +9,12 @@
  ******************************************************************************/
 package Reika.ElectriCraft.Base;
 
+import Reika.RotaryCraft.API.Screwdriverable;
+
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
-import Reika.RotaryCraft.API.Screwdriverable;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public abstract class TileEntityWireComponent extends WiringTile implements Screwdriverable {
 
@@ -43,7 +44,7 @@ public abstract class TileEntityWireComponent extends WiringTile implements Scre
 		float minx = dir.offsetX != 0 ? 0 : 0.5F-w;
 		float maxz = dir.offsetZ != 0 ? 1 : 0.5F+w;
 		float minz = dir.offsetZ != 0 ? 0 : 0.5F-w;
-		return AxisAlignedBB.getAABBPool().getAABB(xCoord+minx, yCoord+miny, zCoord+minz, xCoord+maxx, yCoord+maxy, zCoord+maxz);
+		return AxisAlignedBB.getBoundingBox(xCoord+minx, yCoord+miny, zCoord+minz, xCoord+maxx, yCoord+maxy, zCoord+maxz);
 	}
 
 	@Override

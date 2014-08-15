@@ -9,15 +9,16 @@
  ******************************************************************************/
 package Reika.ElectriCraft.Registry;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
-import net.minecraftforge.oredict.ShapedOreRecipe;
 import Reika.DragonAPI.Libraries.MathSci.ReikaEngLibrary;
 import Reika.DragonAPI.Libraries.MathSci.ReikaMathLibrary;
 import Reika.RotaryCraft.Auxiliary.ItemStacks;
 import Reika.RotaryCraft.Auxiliary.WorktableRecipes;
 import Reika.RotaryCraft.Registry.ConfigRegistry;
+
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public enum BatteryType {
@@ -54,7 +55,7 @@ public enum BatteryType {
 	public void addCrafting() {
 		ItemStack is = this.getCraftedProduct();
 		ItemStack in = ElectriItems.CRYSTAL.getStackOfMetadata(this.ordinal());
-		Object[] obj = {"ScS", "WCW", "SPS", 'W', Block.cloth, 'c', "ingotCopper", 'C', in, 'P', ItemStacks.basepanel, 'S', ItemStacks.steelingot};
+		Object[] obj = {"ScS", "WCW", "SPS", 'W', Blocks.wool, 'c', "ingotCopper", 'C', in, 'P', ItemStacks.basepanel, 'S', ItemStacks.steelingot};
 		ShapedOreRecipe ir = new ShapedOreRecipe(is, obj);
 		WorktableRecipes.getInstance().addRecipe(ir);
 		if (ConfigRegistry.TABLEMACHINES.getState()) {

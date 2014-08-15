@@ -9,10 +9,21 @@
  ******************************************************************************/
 package Reika.ElectriCraft.Items;
 
+import Reika.DragonAPI.Libraries.ReikaPlayerAPI;
+import Reika.DragonAPI.Libraries.World.ReikaWorldHelper;
+import Reika.ElectriCraft.ElectriCraft;
+import Reika.ElectriCraft.Auxiliary.ConversionTile;
+import Reika.ElectriCraft.Base.ElectriTileEntity;
+import Reika.ElectriCraft.Base.TileEntityWireComponent;
+import Reika.ElectriCraft.Registry.ElectriItems;
+import Reika.ElectriCraft.Registry.ElectriTiles;
+import Reika.RotaryCraft.API.ShaftMachine;
+import Reika.RotaryCraft.Auxiliary.RotaryAux;
+
 import java.util.List;
 
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -20,23 +31,14 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
-import Reika.DragonAPI.Libraries.ReikaPlayerAPI;
-import Reika.DragonAPI.Libraries.World.ReikaWorldHelper;
-import Reika.ElectriCraft.ElectriCraft;
-import Reika.ElectriCraft.Auxiliary.ConversionTile;
-import Reika.ElectriCraft.Base.ElectriTileEntity;
-import Reika.ElectriCraft.Base.TileEntityWireComponent;
-import Reika.ElectriCraft.Registry.ElectriTiles;
-import Reika.RotaryCraft.API.ShaftMachine;
-import Reika.RotaryCraft.Auxiliary.RotaryAux;
+import net.minecraftforge.common.util.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemElectriPlacer extends Item {
 
-	public ItemElectriPlacer(int ID, int tex) {
-		super(ID);
+	public ItemElectriPlacer(int tex) {
+		super();
 		this.setHasSubtypes(true);
 		this.setMaxDamage(0);
 		maxStackSize = 64;
@@ -45,7 +47,7 @@ public class ItemElectriPlacer extends Item {
 
 	@Override
 	public boolean onItemUse(ItemStack is, EntityPlayer ep, World world, int x, int y, int z, int side, float par8, float par9, float par10) {
-		if (!ReikaWorldHelper.softBlocks(world, x, y, z) && world.getBlockMaterial(x, y, z) != Material.water && world.getBlockMaterial(x, y, z) != Material.lava) {
+		if (!ReikaWorldHelper.softBlocks(world, x, y, z) && ReikaWorldHelper.getMaterial(world, x, y, z) != Material.water && ReikaWorldHelper.getMaterial(world, x, y, z) != Material.lava) {
 			if (side == 0)
 				--y;
 			if (side == 1)
@@ -58,7 +60,7 @@ public class ItemElectriPlacer extends Item {
 				--x;
 			if (side == 5)
 				++x;
-			if (!ReikaWorldHelper.softBlocks(world, x, y, z) && world.getBlockMaterial(x, y, z) != Material.water && world.getBlockMaterial(x, y, z) != Material.lava)
+			if (!ReikaWorldHelper.softBlocks(world, x, y, z) && ReikaWorldHelper.getMaterial(world, x, y, z) != Material.water && ReikaWorldHelper.getMaterial(world, x, y, z) != Material.lava)
 				return false;
 		}
 		if (!this.checkValidBounds(is, ep, world, x, y, z))
@@ -74,11 +76,11 @@ public class ItemElectriPlacer extends Item {
 		{
 			if (!ep.capabilities.isCreativeMode)
 				--is.stackSize;
-			world.setBlock(x, y, z, m.getBlockID(), m.getBlockMetadata(), 3);
+			world.setBlock(x, y, z, m.getBlock(), m.getBlockMetadata(), 3);
 		}
 		world.playSoundEffect(x+0.5, y+0.5, z+0.5, m.getPlaceSound(), 1F, 1.5F);
-		ElectriTileEntity te = (ElectriTileEntity)world.getBlockTileEntity(x, y, z);
-		te.placer = ep.getEntityName();
+		ElectriTileEntity te = (ElectriTileEntity)world.getTileEntity(x, y, z);
+		te.setPlacer(ep);
 		te.setBlockMetadata(RotaryAux.get4SidedMetadataFromPlayerLook(ep));
 		te.isFlipped = RotaryAux.shouldSetFlipped(world, x, y, z);
 		if (te instanceof ShaftMachine) {
@@ -100,7 +102,7 @@ public class ItemElectriPlacer extends Item {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List) {
+	public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
 		for (int i = 0; i < ElectriTiles.TEList.length; i++) {
 			ElectriTiles t = ElectriTiles.TEList[i];
 			if (!t.hasCustomItem() && t.isAvailableInCreativeInventory()) {
@@ -120,8 +122,9 @@ public class ItemElectriPlacer extends Item {
 	}
 
 	@Override
-	public String getItemDisplayName(ItemStack is) {
-		return ElectriTiles.TEList[is.getItemDamage()].getName();
+	public String getItemStackDisplayName(ItemStack is) {
+		ElectriItems ir = ElectriItems.getEntry(is);
+		return ir.hasMultiValuedName() ? ir.getMultiValuedName(is.getItemDamage()) : ir.getBasicName();
 	}
 
 	@Override
@@ -132,6 +135,6 @@ public class ItemElectriPlacer extends Item {
 	}
 
 	@Override
-	public final void registerIcons(IconRegister ico) {}
+	public final void registerIcons(IIconRegister ico) {}
 
 }

@@ -9,18 +9,18 @@
  ******************************************************************************/
 package Reika.ElectriCraft;
 
+import Reika.DragonAPI.Instantiable.Rendering.WorldPipingRenderer;
+import Reika.ElectriCraft.TileEntities.TileEntityRFCable;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
-
-import Reika.DragonAPI.Instantiable.Rendering.WorldPipingRenderer;
-import Reika.ElectriCraft.TileEntities.TileEntityRFCable;
 
 public class CableRenderer extends WorldPipingRenderer {
 
@@ -31,7 +31,7 @@ public class CableRenderer extends WorldPipingRenderer {
 	@Override
 	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
 		super.renderWorldBlock(world, x, y, z, block, modelId, renderer);
-		TileEntityRFCable tile = (TileEntityRFCable)world.getBlockTileEntity(x, y, z);
+		TileEntityRFCable tile = (TileEntityRFCable)world.getTileEntity(x, y, z);
 		float size = 0.25F;
 		GL11.glColor4f(1, 1, 1, 1);
 		for (int i = 0; i < 6; i++) {
@@ -46,7 +46,7 @@ public class CableRenderer extends WorldPipingRenderer {
 	protected void renderFace(TileEntity te, int x, int y, int z, ForgeDirection dir, double size) {
 		TileEntityRFCable tile = (TileEntityRFCable)te;
 		Tessellator v5 = Tessellator.instance;
-		Icon ico = tile.getCenterIcon();
+		IIcon ico = tile.getCenterIcon();
 		float u = ico.getMinU();
 		float v = ico.getMinV();
 		float du = ico.getMaxU();

@@ -9,15 +9,16 @@
  ******************************************************************************/
 package Reika.ElectriCraft.Base;
 
-import java.util.List;
-
-import net.minecraft.client.renderer.texture.IconRegister;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import Reika.DragonAPI.Interfaces.IndexedItemSprites;
 import Reika.ElectriCraft.ElectriCraft;
 import Reika.ElectriCraft.Registry.ElectriItems;
+
+import java.util.List;
+
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -25,8 +26,8 @@ public class ElectriItemBase extends Item implements IndexedItemSprites {
 
 	private int index;
 
-	public ElectriItemBase(int ID, int tex) {
-		super(ID);
+	public ElectriItemBase(int tex) {
+		super();
 		index = tex;
 		this.setCreativeTab(ElectriCraft.tabElectri);
 		if (this.getDataValues() > 1) {
@@ -45,11 +46,11 @@ public class ElectriItemBase extends Item implements IndexedItemSprites {
 	}
 
 	@Override
-	public final void registerIcons(IconRegister ico) {}
+	public final void registerIcons(IIconRegister ico) {}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubItems(int ID, CreativeTabs cr, List li)
+	public void getSubItems(Item ID, CreativeTabs cr, List li)
 	{
 		ElectriItems ri = ElectriItems.getEntryByID(ID);
 		for (int i = 0; i < this.getDataValues(); i++) {
@@ -60,7 +61,7 @@ public class ElectriItemBase extends Item implements IndexedItemSprites {
 	}
 
 	public final int getDataValues() {
-		ElectriItems i = ElectriItems.getEntryByID(itemID);
+		ElectriItems i = ElectriItems.getEntryByID(this);
 		if (i == null)
 			return 0;
 		return i.getNumberMetadatas();
@@ -82,4 +83,11 @@ public class ElectriItemBase extends Item implements IndexedItemSprites {
 	public String getTexture(ItemStack is) {
 		return "/Reika/ElectriCraft/Textures/Items/items1.png";
 	}
+
+	@Override
+	public String getItemStackDisplayName(ItemStack is) {
+		ElectriItems ir = ElectriItems.getEntry(is);
+		return ir.hasMultiValuedName() ? ir.getMultiValuedName(is.getItemDamage()) : ir.getBasicName();
+	}
+
 }

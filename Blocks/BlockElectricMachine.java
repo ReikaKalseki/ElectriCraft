@@ -9,21 +9,6 @@
  ******************************************************************************/
 package Reika.ElectriCraft.Blocks;
 
-import java.util.List;
-import java.util.Random;
-
-import mcp.mobius.waila.api.IWailaBlock;
-import mcp.mobius.waila.api.IWailaConfigHandler;
-import mcp.mobius.waila.api.IWailaDataAccessor;
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.EnumChatFormatting;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
 import Reika.DragonAPI.Libraries.MathSci.ReikaMathLibrary;
 import Reika.DragonAPI.Libraries.Registry.ReikaDyeHelper;
 import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
@@ -34,15 +19,32 @@ import Reika.ElectriCraft.TileEntities.TileEntityRelay;
 import Reika.ElectriCraft.TileEntities.TileEntityResistor;
 import Reika.RotaryCraft.Auxiliary.RotaryAux;
 
+import java.util.List;
+import java.util.Random;
+
+import mcp.mobius.waila.api.IWailaBlock;
+import mcp.mobius.waila.api.IWailaConfigHandler;
+import mcp.mobius.waila.api.IWailaDataAccessor;
+import net.minecraft.block.material.Material;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+
 public class BlockElectricMachine extends ElectriBlock implements IWailaBlock {
 
-	public BlockElectricMachine(int par1, Material mat) {
-		super(par1, mat);
+	public BlockElectricMachine(Material mat) {
+		super(mat);
 	}
 
 	@Override
 	public TileEntity createTileEntity(World world, int meta) {
-		return ElectriTiles.createTEFromIDAndMetadata(blockID, meta);
+		return ElectriTiles.createTEFromIDAndMetadata(this, meta);
 	}
 
 	@Override
@@ -52,14 +54,15 @@ public class BlockElectricMachine extends ElectriBlock implements IWailaBlock {
 	}
 
 	@Override
-	public int idDropped(int id, Random r, int fortune) {
-		return 0;//return RotaryCraft.machineplacer.itemID;
+	public Item getItemDropped(int id, Random r, int fortune) {
+		return null;
 	}
+
 
 	@Override
 	public int damageDropped(int par1)
 	{
-		return ElectriTiles.getMachineFromIDandMetadata(blockID, par1).ordinal();
+		return ElectriTiles.getMachineFromIDandMetadata(this, par1).ordinal();
 	}
 
 	@Override
@@ -75,11 +78,11 @@ public class BlockElectricMachine extends ElectriBlock implements IWailaBlock {
 	}
 
 	@Override
-	public boolean removeBlockByPlayer(World world, EntityPlayer player, int x, int y, int z)
+	public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z, boolean harv)
 	{
 		if (this.canHarvest(world, player, x, y, z))
 			this.harvestBlock(world, player, x, y, z, 0);
-		return world.setBlock(x, y, z, 0);
+		return world.setBlockToAir(x, y, z);
 	}
 
 	private boolean canHarvest(World world, EntityPlayer ep, int x, int y, int z) {
@@ -93,7 +96,7 @@ public class BlockElectricMachine extends ElectriBlock implements IWailaBlock {
 	{
 		if (!this.canHarvest(world, ep, x, y, z))
 			return;
-		TileEntity te = world.getBlockTileEntity(x, y, z);
+		TileEntity te = world.getTileEntity(x, y, z);
 		ElectriTiles m = ElectriTiles.getTE(world, x, y, z);
 		if (m != null) {
 			ItemStack is = m.getCraftedProduct();
@@ -107,7 +110,7 @@ public class BlockElectricMachine extends ElectriBlock implements IWailaBlock {
 		ElectriTiles t = ElectriTiles.getTE(world, x, y, z);
 		if (t != null) {
 			if (t.isSpecialWiringPiece()) {
-				AxisAlignedBB box = ((TileEntityWireComponent)world.getBlockTileEntity(x, y, z)).getAABB();
+				AxisAlignedBB box = ((TileEntityWireComponent)world.getTileEntity(x, y, z)).getAABB();
 				return box;
 			}
 		}
@@ -119,7 +122,7 @@ public class BlockElectricMachine extends ElectriBlock implements IWailaBlock {
 		ElectriTiles e = ElectriTiles.getTE(world, x, y, z);
 		ItemStack is = ep.getCurrentEquippedItem();
 		if (e == ElectriTiles.RESISTOR && ReikaDyeHelper.isDyeItem(is)) {
-			TileEntityResistor te = (TileEntityResistor)world.getBlockTileEntity(x, y, z);
+			TileEntityResistor te = (TileEntityResistor)world.getTileEntity(x, y, z);
 			ForgeDirection dir = te.getFacing();
 			float inc = dir.offsetX != 0 ? a : c;
 			if (dir.offsetX > 0 || dir.offsetZ > 0)

@@ -9,31 +9,31 @@
  ******************************************************************************/
 package Reika.ElectriCraft;
 
-import java.util.EnumSet;
+import Reika.DragonAPI.Auxiliary.TickRegistry.TickHandler;
+import Reika.DragonAPI.Auxiliary.TickRegistry.TickType;
+import Reika.ElectriCraft.Auxiliary.ElectriNetworkTickEvent;
 
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
-import Reika.ElectriCraft.Auxiliary.ElectriNetworkTickEvent;
-import cpw.mods.fml.common.ITickHandler;
-import cpw.mods.fml.common.TickType;
+import cpw.mods.fml.common.gameevent.TickEvent.Phase;
 
-public class NetworkTicker implements ITickHandler {
+public class NetworkTicker implements TickHandler {
 
 	@Override
-	public void tickStart(EnumSet<TickType> type, Object... tickData) {
+	public void tick(Object... tickData) {
 		World world = (World)tickData[0];
 		if (world != null)
 			MinecraftForge.EVENT_BUS.post(new ElectriNetworkTickEvent(world));
 	}
 
 	@Override
-	public void tickEnd(EnumSet<TickType> type, Object... tickData) {
-
+	public TickType getType() {
+		return TickType.WORLD;
 	}
 
 	@Override
-	public EnumSet<TickType> ticks() {
-		return EnumSet.of(TickType.WORLD);
+	public Phase getPhase() {
+		return Phase.START;
 	}
 
 	@Override

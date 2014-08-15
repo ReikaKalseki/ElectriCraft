@@ -9,8 +9,9 @@
  ******************************************************************************/
 package Reika.ElectriCraft.Auxiliary;
 
-import net.minecraft.item.ItemStack;
 import Reika.ElectriCraft.Registry.ElectriOres;
+
+import net.minecraft.item.ItemStack;
 
 public class ElectriStacks {
 

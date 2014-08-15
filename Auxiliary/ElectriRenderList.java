@@ -9,14 +9,15 @@
  ******************************************************************************/
 package Reika.ElectriCraft.Auxiliary;
 
-import java.util.HashMap;
-
 import Reika.DragonAPI.Exception.RegistrationException;
 import Reika.DragonAPI.Interfaces.RenderFetcher;
 import Reika.DragonAPI.Libraries.Java.ReikaJavaLibrary;
 import Reika.ElectriCraft.ElectriCraft;
 import Reika.ElectriCraft.Base.ElectriTERenderer;
 import Reika.ElectriCraft.Registry.ElectriTiles;
+
+import java.util.HashMap;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

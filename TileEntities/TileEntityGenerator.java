@@ -9,9 +9,6 @@
  ******************************************************************************/
 package Reika.ElectriCraft.TileEntities;
 
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
 import Reika.DragonAPI.Libraries.MathSci.ReikaMathLibrary;
 import Reika.ElectriCraft.Auxiliary.ConversionTile;
 import Reika.ElectriCraft.Base.ElectricalEmitter;
@@ -20,6 +17,10 @@ import Reika.ElectriCraft.Registry.ElectriTiles;
 import Reika.RotaryCraft.API.PowerTransferHelper;
 import Reika.RotaryCraft.API.Screwdriverable;
 import Reika.RotaryCraft.API.ShaftPowerReceiver;
+
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileEntityGenerator extends ElectricalEmitter implements Screwdriverable, ShaftPowerReceiver, ConversionTile {
 

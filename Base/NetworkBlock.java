@@ -15,15 +15,15 @@ import net.minecraft.world.World;
 
 public abstract class NetworkBlock extends Block {
 
-	public NetworkBlock(int par1, Material par2Material) {
-		super(par1, par2Material);
+	public NetworkBlock(Material par2Material) {
+		super(par2Material);
 		this.setHardness(2F);
 		this.setResistance(10F);
 	}
 
 	@Override
-	public void breakBlock(World world, int x, int y, int z, int oldid, int oldmeta) {
-		NetworkTileEntity te = (NetworkTileEntity)world.getBlockTileEntity(x, y, z);
+	public void breakBlock(World world, int x, int y, int z, Block oldid, int oldmeta) {
+		NetworkTileEntity te = (NetworkTileEntity)world.getTileEntity(x, y, z);
 		if (!world.isRemote && te != null)
 			te.removeFromNetwork();
 		super.breakBlock(world, x, y, z, oldid, oldmeta);

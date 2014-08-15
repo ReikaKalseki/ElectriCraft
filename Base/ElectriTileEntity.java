@@ -9,11 +9,6 @@
  ******************************************************************************/
 package Reika.ElectriCraft.Base;
 
-import java.util.ArrayList;
-
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
 import Reika.DragonAPI.Base.TileEntityBase;
 import Reika.DragonAPI.Interfaces.RenderFetcher;
 import Reika.DragonAPI.Interfaces.TextureFetcher;
@@ -23,6 +18,13 @@ import Reika.ElectriCraft.TileEntities.TileEntityBattery;
 import Reika.ElectriCraft.TileEntities.TileEntityWire;
 import Reika.RotaryCraft.API.ShaftMachine;
 import Reika.RotaryCraft.API.Transducerable;
+
+import java.util.ArrayList;
+
+import net.minecraft.block.Block;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public abstract class ElectriTileEntity extends TileEntityBase implements RenderFetcher, Transducerable {
 
@@ -40,8 +42,8 @@ public abstract class ElectriTileEntity extends TileEntityBase implements Render
 	}
 
 	@Override
-	public int getTileEntityBlockID() {
-		return ElectriTiles.TEList[this.getIndex()].getBlockID();
+	public Block getTileEntityBlockID() {
+		return ElectriTiles.TEList[this.getIndex()].getBlock();
 	}
 
 	public abstract ElectriTiles getMachine();
@@ -73,7 +75,7 @@ public abstract class ElectriTileEntity extends TileEntityBase implements Render
 		isFlipped = NBT.getBoolean("flip");
 	}
 
-	public boolean isThisTE(int id, int meta) {
+	public boolean isThisTE(Block id, int meta) {
 		return id == this.getTileEntityBlockID() && meta == this.getIndex();
 	}
 

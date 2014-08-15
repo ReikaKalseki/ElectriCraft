@@ -9,12 +9,14 @@
  ******************************************************************************/
 package Reika.ElectriCraft;
 
+import Reika.ElectriCraft.Registry.ElectriOres;
+
 import java.util.Random;
 
+import net.minecraft.block.Block;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.feature.WorldGenMinable;
-import Reika.ElectriCraft.Registry.ElectriOres;
 import cpw.mods.fml.common.IWorldGenerator;
 
 public class ElectriOreGenerator implements IWorldGenerator {
@@ -32,7 +34,7 @@ public class ElectriOreGenerator implements IWorldGenerator {
 	public void generate(ElectriOres ore, World world, Random random, int chunkX, int chunkZ) {
 		//ReikaJavaLibrary.pConsole("Generating "+ore);
 		//ReikaJavaLibrary.pConsole(chunkX+", "+chunkZ);
-		int id = ore.getBlockID();
+		Block id = ore.getBlock();
 		int meta = ore.getBlockMetadata();
 		int passes = ore.perChunk;
 		for (int i = 0; i < passes; i++) {

@@ -9,11 +9,6 @@
  ******************************************************************************/
 package Reika.ElectriCraft.TileEntities;
 
-import net.minecraft.block.Block;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
 import Reika.DragonAPI.Instantiable.StepTimer;
 import Reika.DragonAPI.Libraries.MathSci.ReikaMathLibrary;
 import Reika.ElectriCraft.Auxiliary.ConversionTile;
@@ -25,6 +20,13 @@ import Reika.RotaryCraft.API.ShaftPowerEmitter;
 import Reika.RotaryCraft.API.ShaftPowerReceiver;
 import Reika.RotaryCraft.Registry.EngineType;
 import Reika.RotaryCraft.Registry.SoundRegistry;
+
+import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileEntityMotor extends ElectricalReceiver implements Screwdriverable, ShaftPowerEmitter, ConversionTile {
 
@@ -69,7 +71,7 @@ public class TileEntityMotor extends ElectricalReceiver implements Screwdriverab
 	}
 
 	private float getSoundVolume(World world, int x, int y, int z) {
-		if (world.getBlockId(x, y-1, z) == Block.cloth.blockID && world.getBlockId(x, y+1, z) == Block.cloth.blockID)
+		if (world.getBlock(x, y-1, z) == Blocks.wool && world.getBlock(x, y+1, z) == Blocks.wool)
 			return 0.1F;
 		ForgeDirection dir = this.getFacing();
 		ForgeDirection dir2 = dir.getOpposite();
@@ -79,8 +81,8 @@ public class TileEntityMotor extends ElectricalReceiver implements Screwdriverab
 				int dx = x+side.offsetX;
 				int dy = y+side.offsetY;
 				int dz = z+side.offsetZ;
-				int id = world.getBlockId(dx, dy, dz);
-				if (id != Block.cloth.blockID)
+				Block id = world.getBlock(dx, dy, dz);
+				if (id != Blocks.wool)
 					return 0.36F;
 			}
 		}

@@ -9,18 +9,20 @@
  ******************************************************************************/
 package Reika.ElectriCraft.TileEntities;
 
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.Icon;
-import net.minecraft.world.World;
-import net.minecraftforge.client.MinecraftForgeClient;
-import net.minecraftforge.common.ForgeDirection;
 import Reika.ElectriCraft.ElectriCraft;
 import Reika.ElectriCraft.Base.ElectriTileEntity;
 import Reika.ElectriCraft.Blocks.BlockRFCable;
 import Reika.ElectriCraft.Network.RF.RFNetwork;
 import Reika.ElectriCraft.Registry.ElectriTiles;
+
+import net.minecraft.block.Block;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.IIcon;
+import net.minecraft.world.World;
+import net.minecraftforge.client.MinecraftForgeClient;
+import net.minecraftforge.common.util.ForgeDirection;
 import cofh.api.energy.IEnergyHandler;
 
 public class TileEntityRFCable extends ElectriTileEntity implements IEnergyHandler {
@@ -192,7 +194,7 @@ public class TileEntityRFCable extends ElectriTileEntity implements IEnergyHandl
 			int dy = y+dir.offsetY;
 			int dz = z+dir.offsetZ;
 			connections[i] = this.isConnected(dir);
-			world.markBlockForRenderUpdate(dx, dy, dz);
+			world.func_147479_m(dx, dy, dz);
 			if (network != null) {
 				TileEntity te = this.getAdjacentTileEntity(dir);
 				if (te instanceof IEnergyHandler) {
@@ -203,7 +205,7 @@ public class TileEntityRFCable extends ElectriTileEntity implements IEnergyHandl
 				}
 			}
 		}
-		world.markBlockForRenderUpdate(x, y, z);
+		world.func_147479_m(x, y, z);
 	}
 
 	public void deleteFromAdjacentConnections(World world, int x, int y, int z) {
@@ -214,9 +216,9 @@ public class TileEntityRFCable extends ElectriTileEntity implements IEnergyHandl
 			int dz = x+dir.offsetZ;
 			ElectriTiles m = ElectriTiles.getTE(world, dx, dy, dz);
 			if (m == this.getMachine()) {
-				TileEntityRFCable te = (TileEntityRFCable)world.getBlockTileEntity(dx, dy, dz);
+				TileEntityRFCable te = (TileEntityRFCable)world.getTileEntity(dx, dy, dz);
 				te.connections[dir.getOpposite().ordinal()] = false;
-				world.markBlockForRenderUpdate(dx, dy, dz);
+				world.func_147479_m(dx, dy, dz);
 			}
 		}
 	}
@@ -229,9 +231,9 @@ public class TileEntityRFCable extends ElectriTileEntity implements IEnergyHandl
 			int dz = x+dir.offsetZ;
 			ElectriTiles m = ElectriTiles.getTE(world, dx, dy, dz);
 			if (m == this.getMachine()) {
-				TileEntityRFCable te = (TileEntityRFCable)world.getBlockTileEntity(dx, dy, dz);
+				TileEntityRFCable te = (TileEntityRFCable)world.getTileEntity(dx, dy, dz);
 				te.connections[dir.getOpposite().ordinal()] = true;
-				world.markBlockForRenderUpdate(dx, dy, dz);
+				world.func_147479_m(dx, dy, dz);
 			}
 		}
 	}
@@ -253,11 +255,11 @@ public class TileEntityRFCable extends ElectriTileEntity implements IEnergyHandl
 		int dx = x+dir.offsetX;
 		int dy = y+dir.offsetY;
 		int dz = z+dir.offsetZ;
-		int id = world.getBlockId(dx, dy, dz);
+		Block b = world.getBlock(dx, dy, dz);
 		int meta = world.getBlockMetadata(dx, dy, dz);
-		if (id == this.getTileEntityBlockID())
+		if (b == this.getTileEntityBlockID())
 			return true;
-		TileEntity te = world.getBlockTileEntity(dx, dy, dz);
+		TileEntity te = world.getTileEntity(dx, dy, dz);
 		boolean flag = false;
 		if (te instanceof IEnergyHandler) {
 			flag = flag || ((IEnergyHandler)te).canInterface(dir.getOpposite());
@@ -265,11 +267,11 @@ public class TileEntityRFCable extends ElectriTileEntity implements IEnergyHandl
 		return flag;
 	}
 
-	public Icon getCenterIcon() {
+	public IIcon getCenterIcon() {
 		return BlockRFCable.getCenterIcon();
 	}
 
-	public Icon getEndIcon() {
+	public IIcon getEndIcon() {
 		return BlockRFCable.getEndIcon();
 	}
 
@@ -278,11 +280,11 @@ public class TileEntityRFCable extends ElectriTileEntity implements IEnergyHandl
 		int dx = x+dir.offsetX;
 		int dy = y+dir.offsetY;
 		int dz = z+dir.offsetZ;
-		int id = world.getBlockId(dx, dy, dz);
+		Block b = world.getBlock(dx, dy, dz);
 		int meta = world.getBlockMetadata(dx, dy, dz);
-		if (id == this.getTileEntityBlockID())
+		if (b == this.getTileEntityBlockID())
 			return false;
-		TileEntity te = world.getBlockTileEntity(dx, dy, dz);
+		TileEntity te = world.getTileEntity(dx, dy, dz);
 		boolean flag = false;
 		if (te instanceof IEnergyHandler) {
 			flag = flag || ((IEnergyHandler)te).canInterface(dir.getOpposite());

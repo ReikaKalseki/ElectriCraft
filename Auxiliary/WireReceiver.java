@@ -9,7 +9,7 @@
  ******************************************************************************/
 package Reika.ElectriCraft.Auxiliary;
 
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public interface WireReceiver extends WireTerminus {
 

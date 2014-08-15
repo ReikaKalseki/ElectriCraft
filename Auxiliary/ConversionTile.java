@@ -9,8 +9,9 @@
  ******************************************************************************/
 package Reika.ElectriCraft.Auxiliary;
 
-import net.minecraftforge.common.ForgeDirection;
 import Reika.RotaryCraft.API.ShaftMachine;
+
+import net.minecraftforge.common.util.ForgeDirection;
 
 public interface ConversionTile extends ShaftMachine {
 

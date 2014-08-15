@@ -9,16 +9,6 @@
  ******************************************************************************/
 package Reika.ElectriCraft.Network;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-
-import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.ForgeDirection;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.ForgeSubscribe;
-import net.minecraftforge.event.world.WorldEvent;
 import Reika.ElectriCraft.ElectriCraft;
 import Reika.ElectriCraft.NetworkObject;
 import Reika.ElectriCraft.Auxiliary.ElectriNetworkTickEvent;
@@ -28,6 +18,17 @@ import Reika.ElectriCraft.Auxiliary.WireReceiver;
 import Reika.ElectriCraft.Base.NetworkTileEntity;
 import Reika.ElectriCraft.Base.WiringTile;
 import Reika.ElectriCraft.TileEntities.TileEntityWire;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+
+import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.event.world.WorldEvent;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public final class WireNetwork implements NetworkObject {
 
@@ -75,7 +76,7 @@ public final class WireNetwork implements NetworkObject {
 		return sinks.size();
 	}
 
-	@ForgeSubscribe
+	@SubscribeEvent
 	public void tick(ElectriNetworkTickEvent evt) {
 		for (int i = 0; i < paths.size(); i++) {
 			WirePath path = paths.get(i);
@@ -148,7 +149,7 @@ public final class WireNetwork implements NetworkObject {
 		return sa;
 	}
 
-	@ForgeSubscribe
+	@SubscribeEvent
 	public void onRemoveWorld(WorldEvent.Unload evt) {
 		this.clear(true);
 	}

@@ -9,14 +9,6 @@
  ******************************************************************************/
 package Reika.ElectriCraft.Network;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
 import Reika.ChromatiCraft.API.SpaceRift;
 import Reika.DragonAPI.Instantiable.WorldLocation;
 import Reika.ElectriCraft.Auxiliary.WireEmitter;
@@ -24,6 +16,15 @@ import Reika.ElectriCraft.Auxiliary.WireReceiver;
 import Reika.ElectriCraft.Base.TileEntityWireComponent;
 import Reika.ElectriCraft.Base.WiringTile;
 import Reika.ElectriCraft.Registry.ElectriTiles;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public class PathCalculator {
 
@@ -75,12 +76,12 @@ public class PathCalculator {
 				else {
 					ElectriTiles t = ElectriTiles.getTE(world, dx, dy, dz);
 					if (t != null && t.isWiringPiece()) {
-						WiringTile tile = (WiringTile)world.getBlockTileEntity(dx, dy, dz);
+						WiringTile tile = (WiringTile)world.getTileEntity(dx, dy, dz);
 						if (tile.canNetworkOnSide(dir.getOpposite()))
 							this.recursiveCalculate(world, dx, dy, dz, li);
 					}
 					else {
-						TileEntity te = world.getBlockTileEntity(dx, dy, dz);
+						TileEntity te = world.getTileEntity(dx, dy, dz);
 						if (te instanceof SpaceRift) {
 							SpaceRift sr = (SpaceRift)te;
 							WorldLocation loc = sr.getLinkTarget();
@@ -109,7 +110,7 @@ public class PathCalculator {
 		}
 		//ReikaJavaLibrary.pConsole(x+", "+y+", "+z, Side.SERVER);
 		li.addLast(Arrays.asList(x, y, z));
-		WiringTile te = (WiringTile)world.getBlockTileEntity(x, y, z);
+		WiringTile te = (WiringTile)world.getTileEntity(x, y, z);
 		//ReikaJavaLibrary.pConsole("<<"+li.size()+">>"+(x+0.5)+","+(y+0.5)+","+(z+0.5));
 		for (int i = 0; i < 6; i++) {
 			ForgeDirection dir = WireNetwork.dirs[i];
@@ -130,13 +131,13 @@ public class PathCalculator {
 				else {
 					ElectriTiles t = ElectriTiles.getTE(world, dx, dy, dz);
 					if (t != null && t.isWiringPiece()) {
-						WiringTile tile = (WiringTile)world.getBlockTileEntity(dx, dy, dz);
+						WiringTile tile = (WiringTile)world.getTileEntity(dx, dy, dz);
 						if (this.tileCanConnect(tile) && tile.canNetworkOnSide(dir.getOpposite()))
 							this.recursiveCalculate(world, dx, dy, dz, li);
 						//ReikaJavaLibrary.pConsole(dir+"@"+x+","+y+","+z+" :"+li.size(), Side.SERVER);
 					}
 					else {
-						TileEntity te2 = world.getBlockTileEntity(dx, dy, dz);
+						TileEntity te2 = world.getTileEntity(dx, dy, dz);
 						if (te2 instanceof SpaceRift) {
 							SpaceRift sr = (SpaceRift)te2;
 							WorldLocation loc = sr.getLinkTarget();
