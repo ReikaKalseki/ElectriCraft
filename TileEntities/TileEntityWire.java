@@ -9,16 +9,6 @@
  ******************************************************************************/
 package Reika.ElectriCraft.TileEntities;
 
-import Reika.ChromatiCraft.API.SpaceRift;
-import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
-import Reika.DragonAPI.Libraries.Registry.ReikaParticleHelper;
-import Reika.ElectriCraft.Auxiliary.WireEmitter;
-import Reika.ElectriCraft.Auxiliary.WireReceiver;
-import Reika.ElectriCraft.Base.WiringTile;
-import Reika.ElectriCraft.Blocks.BlockWire;
-import Reika.ElectriCraft.Registry.ElectriTiles;
-import Reika.ElectriCraft.Registry.WireType;
-
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
@@ -28,14 +18,20 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.util.ForgeDirection;
+import Reika.ChromatiCraft.API.WorldRift;
+import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
+import Reika.DragonAPI.Libraries.Registry.ReikaParticleHelper;
+import Reika.ElectriCraft.Auxiliary.WireEmitter;
+import Reika.ElectriCraft.Auxiliary.WireReceiver;
+import Reika.ElectriCraft.Base.WiringTile;
+import Reika.ElectriCraft.Blocks.BlockWire;
+import Reika.ElectriCraft.Registry.ElectriTiles;
+import Reika.ElectriCraft.Registry.WireType;
 
 public class TileEntityWire extends WiringTile {
 
 	private boolean[] connections = new boolean[6];
 	public boolean insulated;
-
-	private int voltage;
-	private int current;
 
 	private boolean shouldMelt;
 
@@ -45,18 +41,6 @@ public class TileEntityWire extends WiringTile {
 
 		if (shouldMelt)
 			this.melt(world, x, y, z);
-	}
-
-	@Override
-	protected void onJoinNetwork() {
-		current = network.getPointCurrent(this);
-		voltage = network.getPointVoltage(this);
-	}
-
-	@Override
-	public void onNetworkChanged() {
-		current = network.getPointCurrent(this);
-		voltage = network.getPointVoltage(this);
 	}
 
 	@Override
@@ -89,7 +73,7 @@ public class TileEntityWire extends WiringTile {
 		if (te instanceof WireReceiver) {
 			flag = flag || ((WireReceiver)te).canReceivePowerFromSide(dir.getOpposite());
 		}
-		if (te instanceof SpaceRift) {
+		if (te instanceof WorldRift) {
 			flag = true;
 		}
 		return flag;
@@ -116,9 +100,6 @@ public class TileEntityWire extends WiringTile {
 
 		insulated = NBT.getBoolean("insul");
 
-		voltage = NBT.getInteger("v");
-		current = NBT.getInteger("a");
-
 		shouldMelt = NBT.getBoolean("melt");
 	}
 
@@ -132,9 +113,6 @@ public class TileEntityWire extends WiringTile {
 		}
 
 		NBT.setBoolean("insul", insulated);
-
-		NBT.setInteger("a", current);
-		NBT.setInteger("v", voltage);
 
 		NBT.setBoolean("melt", shouldMelt);
 	}
@@ -230,14 +208,6 @@ public class TileEntityWire extends WiringTile {
 
 	public IIcon getInsulatedEndIcon() {
 		return BlockWire.getInsulatedEndTexture(this.getWireType());
-	}
-
-	public int getWireVoltage() {
-		return voltage;
-	}
-
-	public int getWireCurrent() {
-		return current;
 	}
 
 	@Override

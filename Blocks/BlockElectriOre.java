@@ -9,12 +9,6 @@
  ******************************************************************************/
 package Reika.ElectriCraft.Blocks;
 
-import Reika.DragonAPI.Libraries.Java.ReikaRandomHelper;
-import Reika.DragonAPI.Libraries.World.ReikaWorldHelper;
-import Reika.ElectriCraft.ElectriCraft;
-import Reika.ElectriCraft.Registry.ElectriBlocks;
-import Reika.ElectriCraft.Registry.ElectriOres;
-
 import java.util.ArrayList;
 
 import net.minecraft.block.Block;
@@ -25,6 +19,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
+import Reika.DragonAPI.Libraries.Java.ReikaRandomHelper;
+import Reika.DragonAPI.Libraries.World.ReikaWorldHelper;
+import Reika.ElectriCraft.ElectriCraft;
+import Reika.ElectriCraft.Registry.ElectriBlocks;
+import Reika.ElectriCraft.Registry.ElectriOres;
 
 public class BlockElectriOre extends Block {
 

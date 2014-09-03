@@ -9,22 +9,6 @@
  ******************************************************************************/
 package Reika.ElectriCraft.Registry;
 
-import Reika.DragonAPI.Exception.RegistrationException;
-import Reika.DragonAPI.Instantiable.Data.BlockMap;
-import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
-import Reika.ElectriCraft.ElectriCraft;
-import Reika.ElectriCraft.Base.TileEntityWireComponent;
-import Reika.ElectriCraft.Base.WiringTile;
-import Reika.ElectriCraft.TileEntities.TileEntityBattery;
-import Reika.ElectriCraft.TileEntities.TileEntityGenerator;
-import Reika.ElectriCraft.TileEntities.TileEntityMotor;
-import Reika.ElectriCraft.TileEntities.TileEntityRFCable;
-import Reika.ElectriCraft.TileEntities.TileEntityRelay;
-import Reika.ElectriCraft.TileEntities.TileEntityResistor;
-import Reika.ElectriCraft.TileEntities.TileEntityWire;
-import Reika.RotaryCraft.Auxiliary.WorktableRecipes;
-import Reika.RotaryCraft.Registry.ConfigRegistry;
-
 import java.util.ArrayList;
 
 import net.minecraft.block.Block;
@@ -34,6 +18,22 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+import Reika.DragonAPI.Exception.RegistrationException;
+import Reika.DragonAPI.Instantiable.Data.BlockMap;
+import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
+import Reika.ElectriCraft.ElectriCraft;
+import Reika.ElectriCraft.Base.TileEntityWireComponent;
+import Reika.ElectriCraft.Base.WiringTile;
+import Reika.ElectriCraft.TileEntities.TileEntityBattery;
+import Reika.ElectriCraft.TileEntities.TileEntityGenerator;
+import Reika.ElectriCraft.TileEntities.TileEntityMeter;
+import Reika.ElectriCraft.TileEntities.TileEntityMotor;
+import Reika.ElectriCraft.TileEntities.TileEntityRFCable;
+import Reika.ElectriCraft.TileEntities.TileEntityRelay;
+import Reika.ElectriCraft.TileEntities.TileEntityResistor;
+import Reika.ElectriCraft.TileEntities.TileEntityWire;
+import Reika.RotaryCraft.Auxiliary.WorktableRecipes;
+import Reika.RotaryCraft.Registry.ConfigRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public enum ElectriTiles {
@@ -44,7 +44,8 @@ public enum ElectriTiles {
 	RESISTOR("machine.electriresistor", ElectriBlocks.MACHINE, TileEntityResistor.class, 2, "RenderResistor"),
 	RELAY("machine.electrirelay", ElectriBlocks.MACHINE, TileEntityRelay.class, 3, "RenderRelay"),
 	BATTERY("machine.electribattery", ElectriBlocks.BATTERY, TileEntityBattery.class, 4),
-	CABLE("machine.rfcable", ElectriBlocks.CABLE, TileEntityRFCable.class, 0, "RenderCable");
+	CABLE("machine.rfcable", ElectriBlocks.CABLE, TileEntityRFCable.class, 0, "RenderCable"),
+	METER("machine.wiremeter", ElectriBlocks.MACHINE, TileEntityMeter.class, 4, "RenderElectricMeter");
 	//RFTHROTTLE("machine.rfthrottle", ElectriBlocks.MACHINE, TileEntityRFThrottle.class,  4);
 
 	private String name;

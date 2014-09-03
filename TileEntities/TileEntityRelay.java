@@ -9,10 +9,9 @@
  ******************************************************************************/
 package Reika.ElectriCraft.TileEntities;
 
+import net.minecraft.world.World;
 import Reika.ElectriCraft.Base.TileEntityWireComponent;
 import Reika.ElectriCraft.Registry.ElectriTiles;
-
-import net.minecraft.world.World;
 
 public class TileEntityRelay extends TileEntityWireComponent {
 

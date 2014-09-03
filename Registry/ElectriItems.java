@@ -9,6 +9,11 @@
  ******************************************************************************/
 package Reika.ElectriCraft.Registry;
 
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.util.StatCollector;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 import Reika.DragonAPI.Exception.RegistrationException;
 import Reika.DragonAPI.Interfaces.ItemEnum;
 import Reika.DragonAPI.Libraries.ReikaRecipeHelper;
@@ -20,12 +25,6 @@ import Reika.ElectriCraft.Items.ItemBatteryPlacer;
 import Reika.ElectriCraft.Items.ItemElectriPlacer;
 import Reika.ElectriCraft.Items.ItemWirePlacer;
 import Reika.RotaryCraft.Auxiliary.WorktableRecipes;
-
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.IRecipe;
-import net.minecraft.util.StatCollector;
-import net.minecraftforge.oredict.ShapedOreRecipe;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public enum ElectriItems implements ItemEnum {

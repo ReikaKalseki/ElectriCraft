@@ -9,15 +9,14 @@
  ******************************************************************************/
 package Reika.ElectriCraft.Network.RF;
 
-import Reika.ElectriCraft.ElectriCraft;
-import Reika.ElectriCraft.NetworkObject;
-import Reika.ElectriCraft.Auxiliary.ElectriNetworkTickEvent;
-import Reika.ElectriCraft.TileEntities.TileEntityRFCable;
-
 import java.util.ArrayList;
 
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
+import Reika.ElectriCraft.ElectriCraft;
+import Reika.ElectriCraft.NetworkObject;
+import Reika.ElectriCraft.Auxiliary.ElectriNetworkTickEvent;
+import Reika.ElectriCraft.TileEntities.TileEntityRFCable;
 import cofh.api.energy.IEnergyHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
@@ -218,7 +217,7 @@ public class RFNetwork implements NetworkObject {
 			int total = 0;
 			for (int i = 0; i < sides.size(); i++) {
 				ForgeDirection dir = sides.get(i);
-				if (tile.canInterface(dir)) {
+				if (tile.canConnectEnergy(dir)) {
 					int collect = max-total;
 					total += tile.extractEnergy(dir, collect, false);
 				}
@@ -230,7 +229,7 @@ public class RFNetwork implements NetworkObject {
 			int total = 0;
 			for (int i = 0; i < sides.size(); i++) {
 				ForgeDirection dir = sides.get(i);
-				if (tile.canInterface(dir)) {
+				if (tile.canConnectEnergy(dir)) {
 					int add = max-total;
 					total += tile.receiveEnergy(dir, add, false);
 				}
@@ -242,7 +241,7 @@ public class RFNetwork implements NetworkObject {
 			int total = 0;
 			for (int i = 0; i < sides.size(); i++) {
 				ForgeDirection dir = sides.get(i);
-				if (tile.canInterface(dir)) {
+				if (tile.canConnectEnergy(dir)) {
 					total += tile.extractEnergy(dir, Integer.MAX_VALUE, true);
 				}
 			}
@@ -253,7 +252,7 @@ public class RFNetwork implements NetworkObject {
 			int total = 0;
 			for (int i = 0; i < sides.size(); i++) {
 				ForgeDirection dir = sides.get(i);
-				if (tile.canInterface(dir)) {
+				if (tile.canConnectEnergy(dir)) {
 					total += tile.receiveEnergy(dir, Integer.MAX_VALUE, true);
 				}
 			}

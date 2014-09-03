@@ -9,17 +9,55 @@
  ******************************************************************************/
 package Reika.ElectriCraft.Base;
 
-
+import net.minecraft.nbt.NBTTagCompound;
 
 public abstract class WiringTile extends NetworkTileEntity {
 
-	public abstract int getResistance();
+	private int voltage;
+	private int current;
 
-	public abstract void onNetworkChanged();
+	public abstract int getResistance();
 
 	@Override
 	public final int getRedstoneOverride() {
 		return 0;
+	}
+
+	@Override
+	protected void onJoinNetwork() {
+		current = network.getPointCurrent(this);
+		voltage = network.getPointVoltage(this);
+	}
+
+	public void onNetworkChanged() {
+		current = network.getPointCurrent(this);
+		voltage = network.getPointVoltage(this);
+	}
+
+	public final int getWireVoltage() {
+		return voltage;
+	}
+
+	public final int getWireCurrent() {
+		return current;
+	}
+
+	@Override
+	protected void readSyncTag(NBTTagCompound NBT)
+	{
+		super.readSyncTag(NBT);
+
+		voltage = NBT.getInteger("v");
+		current = NBT.getInteger("a");
+	}
+
+	@Override
+	protected void writeSyncTag(NBTTagCompound NBT)
+	{
+		super.writeSyncTag(NBT);
+
+		NBT.setInteger("a", current);
+		NBT.setInteger("v", voltage);
 	}
 
 }

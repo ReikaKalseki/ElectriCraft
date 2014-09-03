@@ -9,14 +9,6 @@
  ******************************************************************************/
 package Reika.ElectriCraft.Network;
 
-import Reika.ChromatiCraft.API.SpaceRift;
-import Reika.DragonAPI.Instantiable.WorldLocation;
-import Reika.ElectriCraft.Auxiliary.WireEmitter;
-import Reika.ElectriCraft.Auxiliary.WireReceiver;
-import Reika.ElectriCraft.Base.TileEntityWireComponent;
-import Reika.ElectriCraft.Base.WiringTile;
-import Reika.ElectriCraft.Registry.ElectriTiles;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -25,6 +17,13 @@ import java.util.List;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import Reika.ChromatiCraft.API.WorldRift;
+import Reika.DragonAPI.Instantiable.WorldLocation;
+import Reika.ElectriCraft.Auxiliary.WireEmitter;
+import Reika.ElectriCraft.Auxiliary.WireReceiver;
+import Reika.ElectriCraft.Base.TileEntityWireComponent;
+import Reika.ElectriCraft.Base.WiringTile;
+import Reika.ElectriCraft.Registry.ElectriTiles;
 
 public class PathCalculator {
 
@@ -82,8 +81,8 @@ public class PathCalculator {
 					}
 					else {
 						TileEntity te = world.getTileEntity(dx, dy, dz);
-						if (te instanceof SpaceRift) {
-							SpaceRift sr = (SpaceRift)te;
+						if (te instanceof WorldRift) {
+							WorldRift sr = (WorldRift)te;
 							WorldLocation loc = sr.getLinkTarget();
 							if (loc != null) {
 								TileEntity other = sr.getTileEntityFrom(dir);
@@ -138,8 +137,8 @@ public class PathCalculator {
 					}
 					else {
 						TileEntity te2 = world.getTileEntity(dx, dy, dz);
-						if (te2 instanceof SpaceRift) {
-							SpaceRift sr = (SpaceRift)te2;
+						if (te2 instanceof WorldRift) {
+							WorldRift sr = (WorldRift)te2;
 							WorldLocation loc = sr.getLinkTarget();
 							if (loc != null) {
 								TileEntity other = sr.getTileEntityFrom(dir);

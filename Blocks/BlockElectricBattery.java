@@ -9,12 +9,6 @@
  ******************************************************************************/
 package Reika.ElectriCraft.Blocks;
 
-import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
-import Reika.ElectriCraft.Base.NetworkBlock;
-import Reika.ElectriCraft.Registry.BatteryType;
-import Reika.ElectriCraft.Registry.ElectriItems;
-import Reika.ElectriCraft.TileEntities.TileEntityBattery;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +25,11 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
+import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
+import Reika.ElectriCraft.Base.NetworkBlock;
+import Reika.ElectriCraft.Registry.BatteryType;
+import Reika.ElectriCraft.Registry.ElectriItems;
+import Reika.ElectriCraft.TileEntities.TileEntityBattery;
 
 public class BlockElectricBattery extends NetworkBlock implements IWailaBlock {
 
@@ -141,6 +140,7 @@ public class BlockElectricBattery extends NetworkBlock implements IWailaBlock {
 	@Override
 	public List<String> getWailaBody(ItemStack is, List<String> tip, IWailaDataAccessor acc, IWailaConfigHandler cfg) {
 		TileEntityBattery te = (TileEntityBattery)acc.getTileEntity();
+		te.syncAllData(false);
 		tip.add(String.format("Stored Energy: %s", te.getDisplayEnergy()));
 		tip.add(String.format("Capacity: %s", te.getBatteryType().getFormattedCapacity()));
 		return tip;

@@ -9,17 +9,6 @@
  ******************************************************************************/
 package Reika.ElectriCraft.Items;
 
-import Reika.DragonAPI.Libraries.ReikaPlayerAPI;
-import Reika.DragonAPI.Libraries.World.ReikaWorldHelper;
-import Reika.ElectriCraft.ElectriCraft;
-import Reika.ElectriCraft.Auxiliary.ConversionTile;
-import Reika.ElectriCraft.Base.ElectriTileEntity;
-import Reika.ElectriCraft.Base.TileEntityWireComponent;
-import Reika.ElectriCraft.Registry.ElectriItems;
-import Reika.ElectriCraft.Registry.ElectriTiles;
-import Reika.RotaryCraft.API.ShaftMachine;
-import Reika.RotaryCraft.Auxiliary.RotaryAux;
-
 import java.util.List;
 
 import net.minecraft.block.material.Material;
@@ -32,6 +21,16 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import Reika.DragonAPI.Libraries.ReikaPlayerAPI;
+import Reika.DragonAPI.Libraries.World.ReikaWorldHelper;
+import Reika.ElectriCraft.ElectriCraft;
+import Reika.ElectriCraft.Auxiliary.ConversionTile;
+import Reika.ElectriCraft.Base.ElectriTileEntity;
+import Reika.ElectriCraft.Base.TileEntityWireComponent;
+import Reika.ElectriCraft.Registry.ElectriItems;
+import Reika.ElectriCraft.Registry.ElectriTiles;
+import Reika.RotaryCraft.API.ShaftMachine;
+import Reika.RotaryCraft.Auxiliary.RotaryAux;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

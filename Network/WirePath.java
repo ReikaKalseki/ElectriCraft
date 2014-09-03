@@ -9,17 +9,16 @@
  ******************************************************************************/
 package Reika.ElectriCraft.Network;
 
-import Reika.ElectriCraft.Auxiliary.ElectriNetworkTickEvent;
-import Reika.ElectriCraft.Auxiliary.WireEmitter;
-import Reika.ElectriCraft.Auxiliary.WireReceiver;
-import Reika.ElectriCraft.Base.TileEntityWireComponent;
-import Reika.ElectriCraft.Base.WiringTile;
-
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 import net.minecraft.world.World;
+import Reika.ElectriCraft.Auxiliary.ElectriNetworkTickEvent;
+import Reika.ElectriCraft.Auxiliary.WireEmitter;
+import Reika.ElectriCraft.Auxiliary.WireReceiver;
+import Reika.ElectriCraft.Base.TileEntityWireComponent;
+import Reika.ElectriCraft.Base.WiringTile;
 
 public final class WirePath {
 

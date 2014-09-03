@@ -9,15 +9,14 @@
  ******************************************************************************/
 package Reika.ElectriCraft.Base;
 
-import Reika.ChromatiCraft.API.SpaceRift;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
+import Reika.ChromatiCraft.API.WorldRift;
 import Reika.DragonAPI.Instantiable.WorldLocation;
 import Reika.ElectriCraft.ElectriCraft;
 import Reika.ElectriCraft.Auxiliary.NetworkTile;
 import Reika.ElectriCraft.Network.WireNetwork;
-
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public abstract class NetworkTileEntity extends ElectriTileEntity implements NetworkTile {
 
@@ -56,8 +55,8 @@ public abstract class NetworkTileEntity extends ElectriTileEntity implements Net
 				}
 			}
 		}
-		else if (te instanceof SpaceRift) {
-			SpaceRift sr = (SpaceRift)te;
+		else if (te instanceof WorldRift) {
+			WorldRift sr = (WorldRift)te;
 			WorldLocation loc = sr.getLinkTarget();
 			if (loc != null) {
 				this.linkTile(sr.getTileEntityFrom(dir), dir);

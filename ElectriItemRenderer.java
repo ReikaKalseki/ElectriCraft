@@ -9,17 +9,17 @@
  ******************************************************************************/
 package Reika.ElectriCraft;
 
-import Reika.DragonAPI.Libraries.IO.ReikaTextureHelper;
-import Reika.ElectriCraft.Registry.ElectriTiles;
-import Reika.ElectriCraft.Registry.WireType;
-import Reika.ElectriCraft.TileEntities.TileEntityWire;
-
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
 
 import org.lwjgl.opengl.GL11;
+
+import Reika.DragonAPI.Libraries.IO.ReikaTextureHelper;
+import Reika.ElectriCraft.Registry.ElectriTiles;
+import Reika.ElectriCraft.Registry.WireType;
+import Reika.ElectriCraft.TileEntities.TileEntityWire;
 
 public class ElectriItemRenderer implements IItemRenderer {
 

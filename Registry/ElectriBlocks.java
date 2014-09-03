@@ -9,6 +9,10 @@
  ******************************************************************************/
 package Reika.ElectriCraft.Registry;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import Reika.DragonAPI.Interfaces.BlockEnum;
 import Reika.DragonAPI.Libraries.Java.ReikaStringParser;
 import Reika.ElectriCraft.ElectriCraft;
@@ -18,11 +22,6 @@ import Reika.ElectriCraft.Blocks.BlockElectricMachine;
 import Reika.ElectriCraft.Blocks.BlockRFCable;
 import Reika.ElectriCraft.Blocks.BlockWire;
 import Reika.ElectriCraft.Items.ItemBlockElectriOre;
-
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 
 public enum ElectriBlocks implements BlockEnum {
 	WIRE(BlockWire.class, "Wire", false),

@@ -9,10 +9,6 @@
  ******************************************************************************/
 package Reika.ElectriCraft.Blocks;
 
-import Reika.ElectriCraft.ElectriCraft;
-import Reika.ElectriCraft.Registry.ElectriTiles;
-import Reika.ElectriCraft.TileEntities.TileEntityRFCable;
-
 import java.util.Random;
 
 import net.minecraft.block.Block;
@@ -27,6 +23,9 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import Reika.ElectriCraft.ElectriCraft;
+import Reika.ElectriCraft.Registry.ElectriTiles;
+import Reika.ElectriCraft.TileEntities.TileEntityRFCable;
 
 public class BlockRFCable extends Block {
 

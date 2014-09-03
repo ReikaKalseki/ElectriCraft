@@ -9,16 +9,15 @@
  ******************************************************************************/
 package Reika.ElectriCraft.Registry;
 
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 import Reika.DragonAPI.Libraries.MathSci.ReikaEngLibrary;
 import Reika.DragonAPI.Libraries.MathSci.ReikaMathLibrary;
 import Reika.RotaryCraft.Auxiliary.ItemStacks;
 import Reika.RotaryCraft.Auxiliary.WorktableRecipes;
 import Reika.RotaryCraft.Registry.ConfigRegistry;
-
-import net.minecraft.init.Blocks;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
-import net.minecraftforge.oredict.ShapedOreRecipe;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public enum BatteryType {
@@ -55,11 +54,36 @@ public enum BatteryType {
 	public void addCrafting() {
 		ItemStack is = this.getCraftedProduct();
 		ItemStack in = ElectriItems.CRYSTAL.getStackOfMetadata(this.ordinal());
-		Object[] obj = {"ScS", "WCW", "SPS", 'W', Blocks.wool, 'c', "ingotCopper", 'C', in, 'P', ItemStacks.basepanel, 'S', ItemStacks.steelingot};
+		Object[] obj = {"ScS", "WCW", "SPS", 'W', Blocks.wool, 'c', this.getTopMaterial(), 'C', in, 'P', this.getBottomMaterial(), 'S', ItemStacks.steelingot};
 		ShapedOreRecipe ir = new ShapedOreRecipe(is, obj);
 		WorktableRecipes.getInstance().addRecipe(ir);
 		if (ConfigRegistry.TABLEMACHINES.getState()) {
 			GameRegistry.addRecipe(ir);
+		}
+	}
+
+	private Object getBottomMaterial() {
+		switch(this) {
+		case STAR:
+			return ItemStacks.bedingot;
+		case DIAMOND:
+			return ItemStacks.tungsteningot;
+		default:
+			return ItemStacks.basepanel;
+		}
+	}
+
+	private Object getTopMaterial() {
+		switch(this) {
+		case GLOWSTONE:
+		case LAPIS:
+			return "ingotSilver";
+		case ENDER:
+		case STAR:
+		case DIAMOND:
+			return ItemStacks.redgoldingot;
+		default:
+			return "ingotCopper";
 		}
 	}
 

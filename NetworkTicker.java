@@ -9,12 +9,11 @@
  ******************************************************************************/
 package Reika.ElectriCraft;
 
+import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 import Reika.DragonAPI.Auxiliary.TickRegistry.TickHandler;
 import Reika.DragonAPI.Auxiliary.TickRegistry.TickType;
 import Reika.ElectriCraft.Auxiliary.ElectriNetworkTickEvent;
-
-import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.common.gameevent.TickEvent.Phase;
 
 public class NetworkTicker implements TickHandler {
@@ -32,8 +31,8 @@ public class NetworkTicker implements TickHandler {
 	}
 
 	@Override
-	public Phase getPhase() {
-		return Phase.START;
+	public boolean canFire(Phase p) {
+		return p == Phase.START;
 	}
 
 	@Override

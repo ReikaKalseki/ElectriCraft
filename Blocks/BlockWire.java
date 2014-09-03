@@ -9,18 +9,6 @@
  ******************************************************************************/
 package Reika.ElectriCraft.Blocks;
 
-import Reika.DragonAPI.Libraries.ReikaEntityHelper;
-import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
-import Reika.ElectriCraft.ElectriCraft;
-import Reika.ElectriCraft.Base.ElectriBlock;
-import Reika.ElectriCraft.Network.WireNetwork;
-import Reika.ElectriCraft.Registry.WireType;
-import Reika.ElectriCraft.TileEntities.TileEntityWire;
-import Reika.RotaryCraft.RotaryCraft;
-import Reika.RotaryCraft.API.Fillable;
-import Reika.RotaryCraft.Entities.EntityDischarge;
-import Reika.RotaryCraft.Registry.SoundRegistry;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -47,6 +35,17 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import Reika.DragonAPI.Libraries.ReikaEntityHelper;
+import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
+import Reika.ElectriCraft.ElectriCraft;
+import Reika.ElectriCraft.Base.ElectriBlock;
+import Reika.ElectriCraft.Network.WireNetwork;
+import Reika.ElectriCraft.Registry.WireType;
+import Reika.ElectriCraft.TileEntities.TileEntityWire;
+import Reika.RotaryCraft.RotaryCraft;
+import Reika.RotaryCraft.API.Fillable;
+import Reika.RotaryCraft.Entities.EntityDischarge;
+import Reika.RotaryCraft.Registry.SoundRegistry;
 
 public class BlockWire extends ElectriBlock implements IWailaBlock {
 

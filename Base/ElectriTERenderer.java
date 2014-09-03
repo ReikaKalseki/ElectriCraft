@@ -9,15 +9,14 @@
  ******************************************************************************/
 package Reika.ElectriCraft.Base;
 
-import Reika.DragonAPI.Base.TileEntityRenderBase;
-import Reika.DragonAPI.Interfaces.TextureFetcher;
-import Reika.ElectriCraft.ElectriCraft;
-
 import net.minecraftforge.client.MinecraftForgeClient;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
+import Reika.DragonAPI.Base.TileEntityRenderBase;
+import Reika.DragonAPI.Interfaces.TextureFetcher;
+import Reika.ElectriCraft.ElectriCraft;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

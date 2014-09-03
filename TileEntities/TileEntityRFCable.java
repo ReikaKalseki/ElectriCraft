@@ -9,12 +9,6 @@
  ******************************************************************************/
 package Reika.ElectriCraft.TileEntities;
 
-import Reika.ElectriCraft.ElectriCraft;
-import Reika.ElectriCraft.Base.ElectriTileEntity;
-import Reika.ElectriCraft.Blocks.BlockRFCable;
-import Reika.ElectriCraft.Network.RF.RFNetwork;
-import Reika.ElectriCraft.Registry.ElectriTiles;
-
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -23,6 +17,11 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.util.ForgeDirection;
+import Reika.ElectriCraft.ElectriCraft;
+import Reika.ElectriCraft.Base.ElectriTileEntity;
+import Reika.ElectriCraft.Blocks.BlockRFCable;
+import Reika.ElectriCraft.Network.RF.RFNetwork;
+import Reika.ElectriCraft.Registry.ElectriTiles;
 import cofh.api.energy.IEnergyHandler;
 
 public class TileEntityRFCable extends ElectriTileEntity implements IEnergyHandler {
@@ -74,7 +73,7 @@ public class TileEntityRFCable extends ElectriTileEntity implements IEnergyHandl
 			else if (te instanceof IEnergyHandler) {
 				//ReikaJavaLibrary.pConsole(te, Side.SERVER);
 				IEnergyHandler n = (IEnergyHandler)te;
-				if (n.canInterface(dir.getOpposite()))
+				if (n.canConnectEnergy(dir.getOpposite()))
 					network.addConnection(n, dir.getOpposite());
 			}
 		}
@@ -137,7 +136,7 @@ public class TileEntityRFCable extends ElectriTileEntity implements IEnergyHandl
 	}
 
 	@Override
-	public boolean canInterface(ForgeDirection from) {
+	public boolean canConnectEnergy(ForgeDirection from) {
 		return true;
 	}
 
@@ -199,7 +198,7 @@ public class TileEntityRFCable extends ElectriTileEntity implements IEnergyHandl
 				TileEntity te = this.getAdjacentTileEntity(dir);
 				if (te instanceof IEnergyHandler) {
 					IEnergyHandler ih = (IEnergyHandler)te;
-					if (ih.canInterface(dir.getOpposite())) {
+					if (ih.canConnectEnergy(dir.getOpposite())) {
 						network.addConnection(ih, dir.getOpposite());
 					}
 				}
@@ -262,7 +261,7 @@ public class TileEntityRFCable extends ElectriTileEntity implements IEnergyHandl
 		TileEntity te = world.getTileEntity(dx, dy, dz);
 		boolean flag = false;
 		if (te instanceof IEnergyHandler) {
-			flag = flag || ((IEnergyHandler)te).canInterface(dir.getOpposite());
+			flag = flag || ((IEnergyHandler)te).canConnectEnergy(dir.getOpposite());
 		}
 		return flag;
 	}
@@ -287,7 +286,7 @@ public class TileEntityRFCable extends ElectriTileEntity implements IEnergyHandl
 		TileEntity te = world.getTileEntity(dx, dy, dz);
 		boolean flag = false;
 		if (te instanceof IEnergyHandler) {
-			flag = flag || ((IEnergyHandler)te).canInterface(dir.getOpposite());
+			flag = flag || ((IEnergyHandler)te).canConnectEnergy(dir.getOpposite());
 		}
 		return flag;
 	}

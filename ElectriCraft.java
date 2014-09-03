@@ -9,6 +9,13 @@
  ******************************************************************************/
 package Reika.ElectriCraft;
 
+import java.net.URL;
+
+import net.minecraft.block.Block;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import thaumcraft.api.aspects.Aspect;
 import Reika.ChromatiCraft.API.AcceleratorBlacklist;
 import Reika.ChromatiCraft.API.AcceleratorBlacklist.BlacklistReason;
 import Reika.DragonAPI.DragonAPICore;
@@ -29,14 +36,6 @@ import Reika.ElectriCraft.Registry.ElectriItems;
 import Reika.ElectriCraft.Registry.ElectriOptions;
 import Reika.ElectriCraft.Registry.ElectriOres;
 import Reika.ElectriCraft.Registry.ElectriTiles;
-
-import java.net.URL;
-
-import net.minecraft.block.Block;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import thaumcraft.api.aspects.Aspect;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -57,7 +56,7 @@ public class ElectriCraft extends DragonAPIMod {
 	@Instance("ElectriCraft")
 	public static ElectriCraft instance = new ElectriCraft();
 
-	public static CreativeTabs tabElectri = new ElectriTab(CreativeTabs.getNextID(), "Rotational Electri");
+	public static CreativeTabs tabElectri = new ElectriTab(CreativeTabs.getNextID(), "ElectriCraft");
 
 	public static final Block[] blocks = new Block[ElectriBlocks.blockList.length];
 	public static final Item[] items = new Item[ElectriItems.itemList.length];
@@ -133,7 +132,7 @@ public class ElectriCraft extends DragonAPIMod {
 				ElectriOres ore = ElectriOres.oreList[i];
 				ItemStack block = ore.getOreBlock();
 				ItemStack drop = ore.getProduct();
-				ReikaThaumHelper.addAspects(block, Aspect.STONE, 1);
+				//ReikaThaumHelper.addAspects(block, Aspect.STONE, 1);
 			}
 
 			ReikaThaumHelper.addAspects(ElectriOres.PLATINUM.getOreBlock(), Aspect.GREED, 6, Aspect.METAL, 2);

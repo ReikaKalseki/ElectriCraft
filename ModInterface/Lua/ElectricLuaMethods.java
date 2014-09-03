@@ -7,15 +7,13 @@
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
  ******************************************************************************/
-package Reika.ElectriCraft.Auxiliary;
+package Reika.ElectriCraft.ModInterface.Lua;
 
-import net.minecraftforge.common.util.ForgeDirection;
-import Reika.RotaryCraft.API.ShaftMachine;
+import Reika.DragonAPI.ModInteract.Lua.LuaMethod;
 
-public interface ConversionTile extends ShaftMachine {
+public class ElectricLuaMethods {
 
-	public void setFacing(ForgeDirection dir);
-
-	public ForgeDirection getFacing();
+	private static final LuaMethod getVoltage = new LuaGetVoltage();
+	private static final LuaMethod getCurrent = new LuaGetCurrent();
 
 }

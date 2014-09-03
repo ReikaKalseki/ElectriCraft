@@ -9,10 +9,9 @@
  ******************************************************************************/
 package Reika.ElectriCraft.Auxiliary;
 
-import Reika.ElectriCraft.Network.WireNetwork;
-
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import Reika.ElectriCraft.Network.WireNetwork;
 
 public interface NetworkTile {
 

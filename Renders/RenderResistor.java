@@ -9,17 +9,17 @@
  ******************************************************************************/
 package Reika.ElectriCraft.Renders;
 
+import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.client.MinecraftForgeClient;
+
+import org.lwjgl.opengl.GL11;
+
 import Reika.DragonAPI.Interfaces.RenderFetcher;
 import Reika.DragonAPI.Libraries.Java.ReikaJavaLibrary;
 import Reika.DragonAPI.Libraries.Registry.ReikaDyeHelper;
 import Reika.ElectriCraft.Base.ElectriTERenderer;
 import Reika.ElectriCraft.TileEntities.TileEntityResistor;
 import Reika.RotaryCraft.Auxiliary.IORenderer;
-
-import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.client.MinecraftForgeClient;
-
-import org.lwjgl.opengl.GL11;
 
 public class RenderResistor extends ElectriTERenderer
 {

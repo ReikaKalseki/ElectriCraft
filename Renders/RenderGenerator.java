@@ -9,16 +9,16 @@
  ******************************************************************************/
 package Reika.ElectriCraft.Renders;
 
+import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.client.MinecraftForgeClient;
+
+import org.lwjgl.opengl.GL11;
+
 import Reika.DragonAPI.Interfaces.RenderFetcher;
 import Reika.ElectriCraft.Base.ElectriTERenderer;
 import Reika.ElectriCraft.TileEntities.TileEntityGenerator;
 import Reika.RotaryCraft.Auxiliary.IORenderer;
 import Reika.RotaryCraft.ModInterface.ModelGenerator;
-
-import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.client.MinecraftForgeClient;
-
-import org.lwjgl.opengl.GL11;
 
 public class RenderGenerator extends ElectriTERenderer
 {

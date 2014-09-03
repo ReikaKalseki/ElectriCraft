@@ -9,6 +9,12 @@
  ******************************************************************************/
 package Reika.ElectriCraft;
 
+import java.io.DataInputStream;
+import java.io.IOException;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 import Reika.DragonAPI.Auxiliary.PacketTypes;
 import Reika.DragonAPI.Interfaces.IPacketHandler;
 import Reika.DragonAPI.Libraries.IO.ReikaChatHelper;
@@ -16,13 +22,6 @@ import Reika.DragonAPI.Libraries.IO.ReikaPacketHelper;
 import Reika.DragonAPI.Libraries.IO.ReikaPacketHelper.PacketObj;
 import Reika.DragonAPI.Libraries.Java.ReikaJavaLibrary;
 import Reika.ElectriCraft.TileEntities.TileEntityRFCable;
-
-import java.io.DataInputStream;
-import java.io.IOException;
-
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
 
 
 public class ElectriPacketCore implements IPacketHandler {
@@ -97,6 +96,8 @@ public class ElectriPacketCore implements IPacketHandler {
 				data = new int[len];
 				for (int i = 0; i < len; i++)
 					data[i] = inputStream.readInt();
+				break;
+			case NBT:
 				break;
 			}
 			if (packetType.hasCoordinates()) {

@@ -9,12 +9,6 @@
  ******************************************************************************/
 package Reika.ElectriCraft.Registry;
 
-import Reika.DragonAPI.Libraries.Java.ReikaJavaLibrary;
-import Reika.DragonAPI.Libraries.Java.ReikaStringParser;
-import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
-import Reika.DragonAPI.ModInteract.ReikaTwilightHelper;
-import Reika.ElectriCraft.ElectriCraft;
-
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
@@ -27,6 +21,11 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.oredict.OreDictionary;
+import Reika.DragonAPI.Libraries.Java.ReikaJavaLibrary;
+import Reika.DragonAPI.Libraries.Java.ReikaStringParser;
+import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
+import Reika.DragonAPI.ModInteract.ReikaTwilightHelper;
+import Reika.ElectriCraft.ElectriCraft;
 
 public enum ElectriOres {
 

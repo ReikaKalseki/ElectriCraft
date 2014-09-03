@@ -9,14 +9,13 @@
  ******************************************************************************/
 package Reika.ElectriCraft;
 
-import Reika.ElectriCraft.Registry.ElectriOres;
-
 import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.feature.WorldGenMinable;
+import Reika.ElectriCraft.Registry.ElectriOres;
 import cpw.mods.fml.common.IWorldGenerator;
 
 public class ElectriOreGenerator implements IWorldGenerator {

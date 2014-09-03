@@ -9,7 +9,6 @@
  ******************************************************************************/
 package Reika.ElectriCraft;
 import Reika.ElectriCraft.Auxiliary.ElectriNetworkTickEvent;
-
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 

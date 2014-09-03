@@ -9,16 +9,6 @@
  ******************************************************************************/
 package Reika.ElectriCraft.Blocks;
 
-import Reika.DragonAPI.Libraries.MathSci.ReikaMathLibrary;
-import Reika.DragonAPI.Libraries.Registry.ReikaDyeHelper;
-import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
-import Reika.ElectriCraft.Base.ElectriBlock;
-import Reika.ElectriCraft.Base.TileEntityWireComponent;
-import Reika.ElectriCraft.Registry.ElectriTiles;
-import Reika.ElectriCraft.TileEntities.TileEntityRelay;
-import Reika.ElectriCraft.TileEntities.TileEntityResistor;
-import Reika.RotaryCraft.Auxiliary.RotaryAux;
-
 import java.util.List;
 import java.util.Random;
 
@@ -35,6 +25,15 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import Reika.DragonAPI.Libraries.MathSci.ReikaMathLibrary;
+import Reika.DragonAPI.Libraries.Registry.ReikaDyeHelper;
+import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
+import Reika.ElectriCraft.Base.ElectriBlock;
+import Reika.ElectriCraft.Base.TileEntityWireComponent;
+import Reika.ElectriCraft.Registry.ElectriTiles;
+import Reika.ElectriCraft.TileEntities.TileEntityRelay;
+import Reika.ElectriCraft.TileEntities.TileEntityResistor;
+import Reika.RotaryCraft.Auxiliary.RotaryAux;
 
 public class BlockElectricMachine extends ElectriBlock implements IWailaBlock {
 

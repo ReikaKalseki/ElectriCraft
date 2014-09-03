@@ -9,11 +9,10 @@
  ******************************************************************************/
 package Reika.ElectriCraft.Network;
 
-import Reika.ElectriCraft.Base.WiringTile;
-
 import java.util.ArrayList;
 
 import net.minecraftforge.common.util.ForgeDirection;
+import Reika.ElectriCraft.Base.WiringTile;
 
 public final class NetworkNode {
 

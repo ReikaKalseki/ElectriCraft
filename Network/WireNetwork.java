@@ -9,16 +9,6 @@
  ******************************************************************************/
 package Reika.ElectriCraft.Network;
 
-import Reika.ElectriCraft.ElectriCraft;
-import Reika.ElectriCraft.NetworkObject;
-import Reika.ElectriCraft.Auxiliary.ElectriNetworkTickEvent;
-import Reika.ElectriCraft.Auxiliary.NetworkTile;
-import Reika.ElectriCraft.Auxiliary.WireEmitter;
-import Reika.ElectriCraft.Auxiliary.WireReceiver;
-import Reika.ElectriCraft.Base.NetworkTileEntity;
-import Reika.ElectriCraft.Base.WiringTile;
-import Reika.ElectriCraft.TileEntities.TileEntityWire;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -28,6 +18,15 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.world.WorldEvent;
+import Reika.ElectriCraft.ElectriCraft;
+import Reika.ElectriCraft.NetworkObject;
+import Reika.ElectriCraft.Auxiliary.ElectriNetworkTickEvent;
+import Reika.ElectriCraft.Auxiliary.NetworkTile;
+import Reika.ElectriCraft.Auxiliary.WireEmitter;
+import Reika.ElectriCraft.Auxiliary.WireReceiver;
+import Reika.ElectriCraft.Base.NetworkTileEntity;
+import Reika.ElectriCraft.Base.WiringTile;
+import Reika.ElectriCraft.TileEntities.TileEntityWire;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public final class WireNetwork implements NetworkObject {
@@ -37,8 +36,8 @@ public final class WireNetwork implements NetworkObject {
 	private ArrayList<WireEmitter> sources = new ArrayList();
 	private HashMap<List<Integer>, NetworkNode> nodes = new HashMap();
 	private ArrayList<WirePath> paths = new ArrayList();
-	private HashMap<TileEntityWire, Integer> pointVoltages = new HashMap();
-	private HashMap<TileEntityWire, Integer> pointCurrents = new HashMap();
+	private HashMap<WiringTile, Integer> pointVoltages = new HashMap();
+	private HashMap<WiringTile, Integer> pointCurrents = new HashMap();
 	private HashMap<WireReceiver, Integer> terminalVoltages = new HashMap();
 	private HashMap<WireReceiver, Integer> terminalCurrents = new HashMap();
 
@@ -50,6 +49,15 @@ public final class WireNetwork implements NetworkObject {
 
 	public WireNetwork() {
 		MinecraftForge.EVENT_BUS.register(this);
+
+		/* Debugging
+		try {
+			ReikaJavaLibrary.pConsole("Main class: "+Arrays.toString(ElectriNetworkTickEvent.class.getConstructors()));
+			ReikaJavaLibrary.pConsole("Super class: "+Arrays.toString(ElectriNetworkTickEvent.class.getSuperclass().getConstructors()));
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}*/
 	}
 
 	public void clearCache() {
@@ -85,7 +93,7 @@ public final class WireNetwork implements NetworkObject {
 		for (int i = 0; i < wires.size(); i++) {
 			WiringTile w = wires.get(i);
 			if (w instanceof TileEntityWire) {
-				int current = this.getPointCurrent((TileEntityWire)w);
+				int current = this.getPointCurrent(w);
 				if (current > w.getCurrentLimit()) {
 					w.overCurrent();
 				}
@@ -98,7 +106,7 @@ public final class WireNetwork implements NetworkObject {
 		shorted = false;
 	}
 
-	public int getPointVoltage(TileEntityWire te) {
+	public int getPointVoltage(WiringTile te) {
 		if (shorted)
 			return 0;
 		Integer val = pointVoltages.get(te);
@@ -109,7 +117,7 @@ public final class WireNetwork implements NetworkObject {
 		return val.intValue();
 	}
 
-	public int getPointCurrent(TileEntityWire te) {
+	public int getPointCurrent(WiringTile te) {
 		if (shorted)
 			return 0;
 		Integer val = pointCurrents.get(te);
@@ -120,7 +128,7 @@ public final class WireNetwork implements NetworkObject {
 		return val.intValue();
 	}
 
-	private int calcPointVoltage(TileEntityWire te) {
+	private int calcPointVoltage(WiringTile te) {
 		if (paths.isEmpty())
 			return 0;
 		int sv = 0;
@@ -135,7 +143,7 @@ public final class WireNetwork implements NetworkObject {
 		return sv;
 	}
 
-	private int calcPointCurrent(TileEntityWire te) {
+	private int calcPointCurrent(WiringTile te) {
 		if (paths.isEmpty())
 			return 0;
 		int sa = 0;

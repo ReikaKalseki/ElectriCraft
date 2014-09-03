@@ -9,12 +9,11 @@
  ******************************************************************************/
 package Reika.ElectriCraft;
 
-import Reika.DragonAPI.Base.CoreContainer;
-import Reika.ElectriCraft.TileEntities.TileEntityRFCable;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import Reika.DragonAPI.Base.CoreContainer;
+import Reika.ElectriCraft.TileEntities.TileEntityRFCable;
 import cpw.mods.fml.common.network.IGuiHandler;
 
 public class ElectriGuiHandler implements IGuiHandler {

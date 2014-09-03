@@ -9,14 +9,6 @@
  ******************************************************************************/
 package Reika.ElectriCraft.Items;
 
-import Reika.DragonAPI.Libraries.World.ReikaWorldHelper;
-import Reika.ElectriCraft.ElectriCraft;
-import Reika.ElectriCraft.Registry.ElectriItems;
-import Reika.ElectriCraft.Registry.ElectriTiles;
-import Reika.ElectriCraft.Registry.WireType;
-import Reika.ElectriCraft.TileEntities.TileEntityWire;
-import Reika.RotaryCraft.API.Fillable;
-
 import java.util.List;
 
 import net.minecraft.block.material.Material;
@@ -35,6 +27,13 @@ import net.minecraftforge.fluids.FluidRegistry;
 
 import org.lwjgl.input.Keyboard;
 
+import Reika.DragonAPI.Libraries.World.ReikaWorldHelper;
+import Reika.ElectriCraft.ElectriCraft;
+import Reika.ElectriCraft.Registry.ElectriItems;
+import Reika.ElectriCraft.Registry.ElectriTiles;
+import Reika.ElectriCraft.Registry.WireType;
+import Reika.ElectriCraft.TileEntities.TileEntityWire;
+import Reika.RotaryCraft.API.Fillable;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

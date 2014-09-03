@@ -9,9 +9,6 @@
  ******************************************************************************/
 package Reika.ElectriCraft;
 
-import Reika.DragonAPI.Instantiable.Rendering.WorldPipingRenderer;
-import Reika.ElectriCraft.TileEntities.TileEntityWire;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
@@ -21,6 +18,9 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import org.lwjgl.opengl.GL11;
+
+import Reika.DragonAPI.Instantiable.Rendering.WorldPipingRenderer;
+import Reika.ElectriCraft.TileEntities.TileEntityWire;
 
 public class WireRenderer extends WorldPipingRenderer {
 

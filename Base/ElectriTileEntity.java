@@ -9,6 +9,12 @@
  ******************************************************************************/
 package Reika.ElectriCraft.Base;
 
+import java.util.ArrayList;
+
+import net.minecraft.block.Block;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 import Reika.DragonAPI.Base.TileEntityBase;
 import Reika.DragonAPI.Interfaces.RenderFetcher;
 import Reika.DragonAPI.Interfaces.TextureFetcher;
@@ -18,13 +24,6 @@ import Reika.ElectriCraft.TileEntities.TileEntityBattery;
 import Reika.ElectriCraft.TileEntities.TileEntityWire;
 import Reika.RotaryCraft.API.ShaftMachine;
 import Reika.RotaryCraft.API.Transducerable;
-
-import java.util.ArrayList;
-
-import net.minecraft.block.Block;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public abstract class ElectriTileEntity extends TileEntityBase implements RenderFetcher, Transducerable {
 
