@@ -120,7 +120,7 @@ public class ElectriCraft extends DragonAPIMod {
 	@Override
 	@EventHandler
 	public void postload(FMLPostInitializationEvent evt) {
-		if (ModList.GEOSTRATA.isLoaded()) {
+		if (ModList.CHROMATICRAFT.isLoaded()) {
 			for (int i = 0; i < ElectriTiles.TEList.length; i++) {
 				ElectriTiles m = ElectriTiles.TEList[i];
 				AcceleratorBlacklist.addBlacklist(m.getTEClass(), m.getName(), BlacklistReason.EXPLOIT);
