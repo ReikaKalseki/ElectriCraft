@@ -63,7 +63,10 @@ public class RenderElectricMeter extends ElectriTERenderer
 		ReikaRenderHelper.disableEntityLighting();
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		GL11.glDepthMask(false);
-		int ra = 90*(int)((RenderManager.instance.playerViewY+180+45)/90F);
+		float ang = RenderManager.instance.playerViewY%360;
+		if (ang < 0)
+			ang += 360;
+		int ra = 90*(int)((ang+180+45)/90F);
 		GL11.glRotated(ra, 0, 1, 0);
 		GL11.glTranslated(0, 0.515, 0);
 		GL11.glScaled(s, s, s);

@@ -12,9 +12,9 @@ package Reika.ElectriCraft.Blocks;
 import java.util.List;
 import java.util.Random;
 
-import mcp.mobius.waila.api.IWailaBlock;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
+import mcp.mobius.waila.api.IWailaDataProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -35,7 +35,7 @@ import Reika.ElectriCraft.TileEntities.TileEntityRelay;
 import Reika.ElectriCraft.TileEntities.TileEntityResistor;
 import Reika.RotaryCraft.Auxiliary.RotaryAux;
 
-public class BlockElectricMachine extends ElectriBlock implements IWailaBlock {
+public class BlockElectricMachine extends ElectriBlock implements IWailaDataProvider {
 
 	public BlockElectricMachine(Material mat) {
 		super(mat);

@@ -12,9 +12,9 @@ package Reika.ElectriCraft.Blocks;
 import java.util.ArrayList;
 import java.util.List;
 
-import mcp.mobius.waila.api.IWailaBlock;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
+import mcp.mobius.waila.api.IWailaDataProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
@@ -31,7 +31,7 @@ import Reika.ElectriCraft.Registry.BatteryType;
 import Reika.ElectriCraft.Registry.ElectriItems;
 import Reika.ElectriCraft.TileEntities.TileEntityBattery;
 
-public class BlockElectricBattery extends NetworkBlock implements IWailaBlock {
+public class BlockElectricBattery extends NetworkBlock implements IWailaDataProvider {
 
 	private final IIcon[] bottomTex = new IIcon[BatteryType.batteryList.length];
 	private final IIcon[] sideTex = new IIcon[BatteryType.batteryList.length];

@@ -29,10 +29,8 @@ public class ElectriItemBase extends Item implements IndexedItemSprites {
 		super();
 		index = tex;
 		this.setCreativeTab(ElectriCraft.tabElectri);
-		if (this.getDataValues() > 1) {
-			hasSubtypes = true;
-			this.setMaxDamage(0);
-		}
+		hasSubtypes = true;
+		this.setMaxDamage(0);
 	}
 
 	@Override

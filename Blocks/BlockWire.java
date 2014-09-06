@@ -13,9 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import mcp.mobius.waila.api.IWailaBlock;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
+import mcp.mobius.waila.api.IWailaDataProvider;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -30,7 +30,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
@@ -47,7 +46,7 @@ import Reika.RotaryCraft.API.Fillable;
 import Reika.RotaryCraft.Entities.EntityDischarge;
 import Reika.RotaryCraft.Registry.SoundRegistry;
 
-public class BlockWire extends ElectriBlock implements IWailaBlock {
+public class BlockWire extends ElectriBlock implements IWailaDataProvider {
 
 	private static final IIcon[] textures = new IIcon[WireType.wireList.length];
 	private static final IIcon[] insulTextures = new IIcon[WireType.wireList.length];
@@ -245,14 +244,6 @@ public class BlockWire extends ElectriBlock implements IWailaBlock {
 	}
 
 	public List<String> getWailaHead(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor acc, IWailaConfigHandler config) {
-		World world = acc.getWorld();
-		MovingObjectPosition mov = acc.getPosition();
-		if (mov != null) {
-			int x = mov.blockX;
-			int y = mov.blockY;
-			int z = mov.blockZ;
-			currenttip.add(EnumChatFormatting.WHITE+this.getPickBlock(mov, world, x, y, z).getDisplayName());
-		}
 		return currenttip;
 	}
 
@@ -268,9 +259,6 @@ public class BlockWire extends ElectriBlock implements IWailaBlock {
 	}
 
 	public List<String> getWailaTail(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor acc, IWailaConfigHandler config) {
-		String s1 = EnumChatFormatting.ITALIC.toString();
-		String s2 = EnumChatFormatting.BLUE.toString();
-		currenttip.add(s2+s1+"ElectriCraft");
 		return currenttip;
 	}
 
