@@ -21,6 +21,7 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 import Reika.DragonAPI.Exception.RegistrationException;
 import Reika.DragonAPI.Instantiable.Data.BlockMap;
 import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
+import Reika.DragonAPI.ModRegistry.PowerTypes;
 import Reika.ElectriCraft.ElectriCraft;
 import Reika.ElectriCraft.Base.TileEntityWireComponent;
 import Reika.ElectriCraft.Base.WiringTile;
@@ -115,6 +116,8 @@ public enum ElectriTiles {
 	}
 
 	public boolean isAvailableInCreativeInventory() {
+		if (this == CABLE)
+			return PowerTypes.RF.exists();
 		return true;
 	}
 
