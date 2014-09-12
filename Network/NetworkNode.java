@@ -10,6 +10,8 @@
 package Reika.ElectriCraft.Network;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 
 import net.minecraftforge.common.util.ForgeDirection;
 import Reika.ElectriCraft.Base.WiringTile;
@@ -54,10 +56,8 @@ public final class NetworkNode {
 		return false;
 	}
 
-	public ArrayList<ForgeDirection> getDirections() {
-		ArrayList<ForgeDirection> li = new ArrayList();
-		li.addAll(connections);
-		return li;
+	public Collection<ForgeDirection> getDirections() {
+		return Collections.unmodifiableCollection(connections);
 	}
 
 }

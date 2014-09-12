@@ -7,7 +7,7 @@
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
  ******************************************************************************/
-package Reika.ElectriCraft.ModInterface.Lua;
+package Reika.ElectriCraft.Auxiliary.Lua;
 
 import Reika.DragonAPI.ModInteract.Lua.LuaMethod;
 

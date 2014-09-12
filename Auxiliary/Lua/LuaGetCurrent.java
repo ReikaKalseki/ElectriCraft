@@ -7,11 +7,12 @@
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
  ******************************************************************************/
-package Reika.ElectriCraft.ModInterface.Lua;
+package Reika.ElectriCraft.Auxiliary.Lua;
 
 import net.minecraft.tileentity.TileEntity;
 import Reika.DragonAPI.ModInteract.Lua.LuaMethod;
 import Reika.ElectriCraft.Base.WiringTile;
+import dan200.computercraft.api.lua.LuaException;
 
 public class LuaGetCurrent extends LuaMethod {
 
@@ -20,7 +21,7 @@ public class LuaGetCurrent extends LuaMethod {
 	}
 
 	@Override
-	public Object[] invoke(TileEntity te, Object[] args) throws Exception {
+	public Object[] invoke(TileEntity te, Object[] args) throws LuaException, InterruptedException {
 		return new Object[]{((WiringTile)te).getWireVoltage()};
 	}
 
