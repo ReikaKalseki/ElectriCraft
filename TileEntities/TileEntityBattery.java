@@ -15,6 +15,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import Reika.DragonAPI.Libraries.MathSci.ReikaEngLibrary;
 import Reika.DragonAPI.Libraries.MathSci.ReikaMathLibrary;
+import Reika.ElectriCraft.Auxiliary.BatteryTile;
 import Reika.ElectriCraft.Auxiliary.WireEmitter;
 import Reika.ElectriCraft.Auxiliary.WireReceiver;
 import Reika.ElectriCraft.Base.NetworkTileEntity;
@@ -22,7 +23,7 @@ import Reika.ElectriCraft.Registry.BatteryType;
 import Reika.ElectriCraft.Registry.ElectriItems;
 import Reika.ElectriCraft.Registry.ElectriTiles;
 
-public class TileEntityBattery extends NetworkTileEntity implements WireEmitter, WireReceiver {
+public class TileEntityBattery extends NetworkTileEntity implements WireEmitter, WireReceiver, BatteryTile {
 
 	private long energy;
 	private boolean lastPower;
@@ -170,6 +171,11 @@ public class TileEntityBattery extends NetworkTileEntity implements WireEmitter,
 	@Override
 	public int getRedstoneOverride() {
 		return (int)(15D*this.getStoredEnergy()/this.getMaxEnergy());
+	}
+
+	@Override
+	public String getFormattedCapacity() {
+		return this.getBatteryType().getFormattedCapacity();
 	}
 
 }

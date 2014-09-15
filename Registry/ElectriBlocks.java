@@ -19,6 +19,7 @@ import Reika.ElectriCraft.ElectriCraft;
 import Reika.ElectriCraft.Blocks.BlockElectriOre;
 import Reika.ElectriCraft.Blocks.BlockElectricBattery;
 import Reika.ElectriCraft.Blocks.BlockElectricMachine;
+import Reika.ElectriCraft.Blocks.BlockRFBattery;
 import Reika.ElectriCraft.Blocks.BlockRFCable;
 import Reika.ElectriCraft.Blocks.BlockWire;
 import Reika.ElectriCraft.Items.ItemBlockElectriOre;
@@ -28,7 +29,8 @@ public enum ElectriBlocks implements BlockEnum {
 	MACHINE(BlockElectricMachine.class, "Converter", false),
 	ORE(BlockElectriOre.class, ItemBlockElectriOre.class, "ElectriOre", true),
 	BATTERY(BlockElectricBattery.class, "ElectriBattery", true),
-	CABLE(BlockRFCable.class, "RFCable", false);
+	CABLE(BlockRFCable.class, "RFCable", false),
+	RFBATTERY(BlockRFBattery.class, "ElectriRFBattery", true);
 
 	private Class blockClass;
 	private String blockName;

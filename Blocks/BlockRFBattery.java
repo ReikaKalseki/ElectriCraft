@@ -1,12 +1,3 @@
-/*******************************************************************************
- * @author Reika Kalseki
- * 
- * Copyright 2014
- * 
- * All rights reserved.
- * Distribution of the software in any form is only allowed with
- * explicit, prior permission from the owner.
- ******************************************************************************/
 package Reika.ElectriCraft.Blocks;
 
 import java.util.ArrayList;
@@ -15,6 +6,7 @@ import java.util.List;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import mcp.mobius.waila.api.IWailaDataProvider;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
@@ -28,24 +20,22 @@ import net.minecraft.world.World;
 import Reika.DragonAPI.Base.TileEntityBase;
 import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
 import Reika.ElectriCraft.Auxiliary.BatteryTile;
-import Reika.ElectriCraft.Base.NetworkBlock;
-import Reika.ElectriCraft.Registry.BatteryType;
 import Reika.ElectriCraft.Registry.ElectriItems;
-import Reika.ElectriCraft.TileEntities.TileEntityBattery;
+import Reika.ElectriCraft.TileEntities.TileEntityRFBattery;
 
-public class BlockElectricBattery extends NetworkBlock implements IWailaDataProvider {
+public class BlockRFBattery extends Block implements IWailaDataProvider {
 
-	private final IIcon[] bottomTex = new IIcon[BatteryType.batteryList.length];
-	private final IIcon[] sideTex = new IIcon[BatteryType.batteryList.length];
-	private final IIcon[] topTex = new IIcon[BatteryType.batteryList.length];
+	private final IIcon[] bottomTex = new IIcon[1];
+	private final IIcon[] sideTex = new IIcon[1];
+	private final IIcon[] topTex = new IIcon[1];
 
-	public BlockElectricBattery(Material par2Material) {
+	public BlockRFBattery(Material par2Material) {
 		super(par2Material);
 	}
 
 	@Override
 	public TileEntity createTileEntity(World world, int meta) {
-		return new TileEntityBattery();
+		return new TileEntityRFBattery();
 	}
 
 	@Override
@@ -54,7 +44,7 @@ public class BlockElectricBattery extends NetworkBlock implements IWailaDataProv
 	}
 
 	@Override
-	public void registerBlockIcons(IIconRegister ico) {
+	public void registerBlockIcons(IIconRegister ico) {/*
 		for (int i = 0; i < BatteryType.batteryList.length; i++) {
 			BatteryType b = BatteryType.batteryList[i];
 			String s = b.name().toLowerCase();
@@ -62,7 +52,7 @@ public class BlockElectricBattery extends NetworkBlock implements IWailaDataProv
 			s = "";
 			topTex[i] = ico.registerIcon("electricraft:battery/"+s+"_top");
 			bottomTex[i] = ico.registerIcon("electricraft:battery/"+s+"_bottom");
-		}
+		}*/
 	}
 
 	@Override
@@ -103,9 +93,9 @@ public class BlockElectricBattery extends NetworkBlock implements IWailaDataProv
 	@Override
 	public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int meta, int fortune) {
 		ArrayList li = new ArrayList();
-		TileEntityBattery te = (TileEntityBattery)world.getTileEntity(x, y, z);
+		TileEntityRFBattery te = (TileEntityRFBattery)world.getTileEntity(x, y, z);
 		long e = te.getStoredEnergy();
-		ItemStack is = ElectriItems.BATTERY.getStackOfMetadata(meta);
+		ItemStack is = ElectriItems.RFBATTERY.getStackOfMetadata(meta);
 		is.stackTagCompound = new NBTTagCompound();
 		is.stackTagCompound.setLong("nrg", e);
 		li.add(is);
@@ -115,9 +105,9 @@ public class BlockElectricBattery extends NetworkBlock implements IWailaDataProv
 	@Override
 	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
 	{
-		TileEntityBattery te = (TileEntityBattery)world.getTileEntity(x, y, z);
+		TileEntityRFBattery te = (TileEntityRFBattery)world.getTileEntity(x, y, z);
 		int meta = world.getBlockMetadata(x, y, z);
-		ItemStack is = ElectriItems.BATTERY.getStackOfMetadata(meta);
+		ItemStack is = ElectriItems.RFBATTERY.getStackOfMetadata(meta);
 		return is;
 	}
 

@@ -23,6 +23,7 @@ import Reika.ElectriCraft.ElectriCraft;
 import Reika.ElectriCraft.Base.ElectriItemBase;
 import Reika.ElectriCraft.Items.ItemBatteryPlacer;
 import Reika.ElectriCraft.Items.ItemElectriPlacer;
+import Reika.ElectriCraft.Items.ItemRFBatteryPlacer;
 import Reika.ElectriCraft.Items.ItemWirePlacer;
 import Reika.RotaryCraft.Auxiliary.WorktableRecipes;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -34,7 +35,8 @@ public enum ElectriItems implements ItemEnum {
 	WIRE(1, true, "machine.wire", ItemWirePlacer.class),
 	BATTERY(2, true, "machine.battery", ItemBatteryPlacer.class),
 	CRAFTING(32, true, "item.crafting", ElectriItemBase.class),
-	CRYSTAL(48, true, "item.electricrystal", ElectriItemBase.class);
+	CRYSTAL(48, true, "item.electricrystal", ElectriItemBase.class),
+	RFBATTERY(3, true, "machine.rfbattery", ItemRFBatteryPlacer.class);
 
 	private int index;
 	private boolean hasSubtypes;
