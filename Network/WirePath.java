@@ -11,9 +11,9 @@ package Reika.ElectriCraft.Network;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 
 import net.minecraft.world.World;
+import Reika.DragonAPI.Instantiable.Data.Coordinate;
 import Reika.ElectriCraft.Auxiliary.ElectriNetworkTickEvent;
 import Reika.ElectriCraft.Auxiliary.WireEmitter;
 import Reika.ElectriCraft.Auxiliary.WireReceiver;
@@ -30,7 +30,7 @@ public final class WirePath {
 	public final int resistance;
 	private final int currentLimit;
 
-	public WirePath(World world, LinkedList<List<Integer>> points, WireEmitter start, WireReceiver end, WireNetwork net) {
+	public WirePath(World world, LinkedList<Coordinate> points, WireEmitter start, WireReceiver end, WireNetwork net) {
 		this.start = start;
 		this.end = end;
 		this.net = net;
@@ -38,11 +38,8 @@ public final class WirePath {
 		int maxcurrent = Integer.MAX_VALUE;
 		int r = 0;
 		for (int i = 0; i < points.size(); i++) {
-			List<Integer> li = points.get(i);
-			int x = li.get(0);
-			int y = li.get(1);
-			int z = li.get(2);
-			WiringTile te = (WiringTile)world.getTileEntity(x, y, z);
+			Coordinate li = points.get(i);
+			WiringTile te = (WiringTile)li.getTileEntity(world);
 			nodes.addLast(te);
 			r += te.getResistance();
 			if (te instanceof TileEntityWireComponent) {

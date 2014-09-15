@@ -59,7 +59,7 @@ public class BlockWire extends ElectriBlock implements IWailaDataProvider {
 		this.setStepSound(soundTypeCloth);
 		this.setHardness(0.05F);
 		this.setResistance(2F);
-		this.setBlockBounds(0.25F, 0.25F, 0.25F, 0.75F, 0.75F, 0.75F);
+		//this.setBlockBounds(0.25F, 0.25F, 0.25F, 0.75F, 0.75F, 0.75F);
 	}
 
 	@Override
@@ -193,7 +193,13 @@ public class BlockWire extends ElectriBlock implements IWailaDataProvider {
 		float maxz = te.isConnectedOnSideAt(world, x, y, z, ForgeDirection.NORTH) ? 1 : 0.7F;
 		float miny = te.isConnectedOnSideAt(world, x, y, z, ForgeDirection.UP) ? 0 : 0.3F;
 		float maxy = te.isConnectedOnSideAt(world, x, y, z, ForgeDirection.DOWN) ? 1 : 0.7F;
-		return AxisAlignedBB.getBoundingBox(x+minx, y+miny, z+minz, x+maxx, y+maxy, z+maxz);
+		AxisAlignedBB box = AxisAlignedBB.getBoundingBox(x+minx, y+miny, z+minz, x+maxx, y+maxy, z+maxz);
+		this.setBounds(box, x, y, z);
+		return box;
+	}
+
+	protected final void setBounds(AxisAlignedBB box, int x, int y, int z) {
+		this.setBlockBounds((float)box.minX-x, (float)box.minY-y, (float)box.minZ-z, (float)box.maxX-x, (float)box.maxY-y, (float)box.maxZ-z);
 	}
 
 	@Override

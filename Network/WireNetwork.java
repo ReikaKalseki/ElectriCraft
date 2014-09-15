@@ -10,14 +10,13 @@
 package Reika.ElectriCraft.Network;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.world.WorldEvent;
+import Reika.DragonAPI.Instantiable.Data.Coordinate;
 import Reika.ElectriCraft.ElectriCraft;
 import Reika.ElectriCraft.NetworkObject;
 import Reika.ElectriCraft.Auxiliary.ElectriNetworkTickEvent;
@@ -34,7 +33,7 @@ public final class WireNetwork implements NetworkObject {
 	private ArrayList<WiringTile> wires = new ArrayList();
 	private ArrayList<WireReceiver> sinks = new ArrayList();
 	private ArrayList<WireEmitter> sources = new ArrayList();
-	private HashMap<List<Integer>, NetworkNode> nodes = new HashMap();
+	private HashMap<Coordinate, NetworkNode> nodes = new HashMap();
 	private ArrayList<WirePath> paths = new ArrayList();
 	private HashMap<WiringTile, Integer> pointVoltages = new HashMap();
 	private HashMap<WiringTile, Integer> pointCurrents = new HashMap();
@@ -192,7 +191,7 @@ public final class WireNetwork implements NetworkObject {
 					li.add(source);
 				}
 			}
-			for (List<Integer> key : n.nodes.keySet()) {
+			for (Coordinate key : n.nodes.keySet()) {
 				NetworkNode node = n.nodes.get(key);
 				nodes.put(key, node);
 			}
@@ -253,7 +252,7 @@ public final class WireNetwork implements NetworkObject {
 						}
 					}
 					if (sides.size() > 2 && !this.hasNode(wire2.xCoord, wire2.yCoord, wire2.zCoord)) {
-						nodes.put(Arrays.asList(wire2.xCoord, wire2.yCoord, wire2.zCoord), new NetworkNode(this, wire2, sides));
+						nodes.put(new Coordinate(wire2.xCoord, wire2.yCoord, wire2.zCoord), new NetworkNode(this, wire2, sides));
 					}
 				}
 			}
@@ -334,15 +333,19 @@ public final class WireNetwork implements NetworkObject {
 		int v = Integer.MAX_VALUE;
 		if (paths.isEmpty())
 			return 0;
+		boolean someV = false;
 		for (int i = 0; i < paths.size(); i++) {
 			WirePath path = paths.get(i);
 			if (path.endsAt(te.getX(), te.getY(), te.getZ())) {
 				int pv = path.getTerminalVoltage();
-				if (pv < v)
-					v = pv;
+				if (pv != 0) {
+					someV = true;
+					if (pv < v)
+						v = pv;
+				}
 			}
 		}
-		return v;
+		return someV ? v : 0;
 	}
 
 	private int getAverageVoltageOfPaths(WireReceiver te) {
@@ -362,11 +365,11 @@ public final class WireNetwork implements NetworkObject {
 	}
 
 	public boolean hasNode(int x, int y, int z) {
-		return nodes.containsKey(Arrays.asList(x, y, z));
+		return nodes.containsKey(new Coordinate(x, y, z));
 	}
 
 	NetworkNode getNodeAt(int x, int y, int z) {
-		return nodes.get(Arrays.asList(x, y, z));
+		return nodes.get(new Coordinate(x, y, z));
 	}
 
 	public void shortNetwork() {

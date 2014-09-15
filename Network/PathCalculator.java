@@ -10,14 +10,13 @@
 package Reika.ElectriCraft.Network;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedList;
-import java.util.List;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import Reika.ChromatiCraft.API.WorldRift;
+import Reika.DragonAPI.Instantiable.Data.Coordinate;
 import Reika.DragonAPI.Instantiable.Data.WorldLocation;
 import Reika.ElectriCraft.Auxiliary.WireEmitter;
 import Reika.ElectriCraft.Auxiliary.WireReceiver;
@@ -59,7 +58,7 @@ public class PathCalculator {
 		//li.add(Arrays.asList(x, y, z));
 		for (int i = 0; i < 6; i++) {
 			ForgeDirection dir = WireNetwork.dirs[i];
-			LinkedList<List<Integer>> li = new LinkedList();
+			LinkedList<Coordinate> li = new LinkedList();
 			if (start.canEmitPowerToSide(dir)) {
 				int dx = x+dir.offsetX;
 				int dy = y+dir.offsetY;
@@ -104,11 +103,11 @@ public class PathCalculator {
 	}
 	//check direction code!!
 	private void recursiveCalculate(World world, int x, int y, int z, LinkedList li) {
-		if (li.contains(Arrays.asList(x, y, z))) {
+		if (li.contains(new Coordinate(x, y, z))) {
 			return;
 		}
 		//ReikaJavaLibrary.pConsole(x+", "+y+", "+z, Side.SERVER);
-		li.addLast(Arrays.asList(x, y, z));
+		li.addLast(new Coordinate(x, y, z));
 		WiringTile te = (WiringTile)world.getTileEntity(x, y, z);
 		//ReikaJavaLibrary.pConsole("<<"+li.size()+">>"+(x+0.5)+","+(y+0.5)+","+(z+0.5));
 		for (int i = 0; i < 6; i++) {

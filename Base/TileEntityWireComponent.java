@@ -35,7 +35,7 @@ public abstract class TileEntityWireComponent extends WiringTile implements Scre
 	public abstract boolean canConnect();
 
 	public final AxisAlignedBB getAABB() {
-		int miny = 0;
+		float miny = 0;
 		float maxy = this.getHeight();
 		float w = this.getWidth()/2F;
 		ForgeDirection dir = this.getFacing();
@@ -43,6 +43,10 @@ public abstract class TileEntityWireComponent extends WiringTile implements Scre
 		float minx = dir.offsetX != 0 ? 0 : 0.5F-w;
 		float maxz = dir.offsetZ != 0 ? 1 : 0.5F+w;
 		float minz = dir.offsetZ != 0 ? 0 : 0.5F-w;
+		if (isFlipped) {
+			miny = 1-this.getHeight();
+			maxy = 1;
+		}
 		return AxisAlignedBB.getBoundingBox(xCoord+minx, yCoord+miny, zCoord+minz, xCoord+maxx, yCoord+maxy, zCoord+maxz);
 	}
 

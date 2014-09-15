@@ -126,6 +126,9 @@ public class BlockElectricMachine extends ElectriBlock implements IWailaDataProv
 			float inc = dir.offsetX != 0 ? a : c;
 			if (dir.offsetX > 0 || dir.offsetZ > 0)
 				inc = 1F-inc;
+			if (te.isFlipped && dir.offsetZ != 0) {
+				inc = 1-inc;
+			}
 			int band = 0;
 			if (ReikaMathLibrary.isValueInsideBoundsIncl(0.125, 0.25, inc))
 				band = 1;
