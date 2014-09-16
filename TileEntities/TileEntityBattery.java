@@ -160,6 +160,11 @@ public class TileEntityBattery extends NetworkTileEntity implements WireEmitter,
 		if (is.getItem() == ElectriItems.BATTERY.getItemInstance()) {
 			if (is.stackTagCompound != null)
 				energy = is.stackTagCompound.getLong("nrg")*20L;
+			else
+				energy = 0;
+		}
+		else {
+			energy = 0;
 		}
 	}
 

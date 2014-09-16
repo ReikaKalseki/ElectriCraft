@@ -19,6 +19,7 @@ import org.lwjgl.opengl.GL11;
 import Reika.DragonAPI.Libraries.IO.ReikaTextureHelper;
 import Reika.ElectriCraft.Registry.ElectriTiles;
 import Reika.ElectriCraft.Registry.WireType;
+import Reika.ElectriCraft.TileEntities.TileEntityRFBattery;
 import Reika.ElectriCraft.TileEntities.TileEntityWire;
 
 public class ElectriItemRenderer implements IItemRenderer {
@@ -54,9 +55,15 @@ public class ElectriItemRenderer implements IItemRenderer {
 			wire.insulated = item.getItemDamage() >= WireType.INS_OFFSET;
 			wire.setBlockMetadata(item.getItemDamage()%WireType.INS_OFFSET);
 			TileEntityRendererDispatcher.instance.renderTileEntityAt(wire, a, -0.1D, b, 0.0F);
-			return;
 		}
-		if (machine.hasRender())
+		else if (machine == ElectriTiles.RFBATTERY) {
+			TileEntityRFBattery te = (TileEntityRFBattery)machine.createTEInstanceForRender();
+			ReikaTextureHelper.bindTerrainTexture();
+			rb.renderBlockAsItem(machine.getBlockInstance(), item.getItemDamage(), 1);
+			te.setEnergyFromNBT(item);
+			TileEntityRendererDispatcher.instance.renderTileEntityAt(te, -0.5, -0.5, -0.5, 0.0F);
+		}
+		else if (machine.hasRender())
 			TileEntityRendererDispatcher.instance.renderTileEntityAt(machine.createTEInstanceForRender(), a, -0.1D, b, 0.0F);
 		else {
 			ReikaTextureHelper.bindTerrainTexture();

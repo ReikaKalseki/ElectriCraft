@@ -36,7 +36,7 @@ public enum ElectriItems implements ItemEnum {
 	BATTERY(2, true, "machine.battery", ItemBatteryPlacer.class),
 	CRAFTING(32, true, "item.crafting", ElectriItemBase.class),
 	CRYSTAL(48, true, "item.electricrystal", ElectriItemBase.class),
-	RFBATTERY(3, true, "machine.rfbattery", ItemRFBatteryPlacer.class);
+	RFBATTERY(3, false, "machine.rfbattery", ItemRFBatteryPlacer.class);
 
 	private int index;
 	private boolean hasSubtypes;
@@ -112,6 +112,8 @@ public enum ElectriItems implements ItemEnum {
 		case CRAFTING:
 			return ElectriCrafting.craftingList[dmg].getName();
 		case CRYSTAL:
+			if (dmg == BatteryType.batteryList.length)
+				return StatCollector.translateToLocal("energycrystal.rf");
 			return StatCollector.translateToLocal("energycrystal."+BatteryType.batteryList[dmg].name().toLowerCase());
 		case BATTERY:
 			return BatteryType.batteryList[dmg].getName();
@@ -153,7 +155,7 @@ public enum ElectriItems implements ItemEnum {
 		case CRAFTING:
 			return ElectriCrafting.craftingList.length;
 		case CRYSTAL:
-			return BatteryType.batteryList.length;
+			return BatteryType.batteryList.length+1;
 		case BATTERY:
 			return BatteryType.batteryList.length;
 		default:
@@ -271,6 +273,7 @@ public enum ElectriItems implements ItemEnum {
 		case WIRE:
 		case PLACER:
 		case BATTERY:
+		case RFBATTERY:
 			return true;
 		default:
 			return false;

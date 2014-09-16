@@ -53,6 +53,12 @@ public class BlockRFBattery extends Block implements IWailaDataProvider {
 			topTex[i] = ico.registerIcon("electricraft:battery/"+s+"_top");
 			bottomTex[i] = ico.registerIcon("electricraft:battery/"+s+"_bottom");
 		}*/
+
+		String s = "rf";
+		sideTex[0] = ico.registerIcon("electricraft:battery/"+s);
+		s = "";
+		topTex[0] = ico.registerIcon("electricraft:battery/"+s+"_top");
+		bottomTex[0] = ico.registerIcon("electricraft:battery/"+s+"_bottom");
 	}
 
 	@Override

@@ -48,7 +48,7 @@ public enum ElectriTiles {
 	BATTERY("machine.electribattery", ElectriBlocks.BATTERY, TileEntityBattery.class, 4),
 	CABLE("machine.rfcable", ElectriBlocks.CABLE, TileEntityRFCable.class, 0, "RenderCable"),
 	METER("machine.wiremeter", ElectriBlocks.MACHINE, TileEntityMeter.class, 4, "RenderElectricMeter"),
-	RFBATTERY("machine.rfbattery", ElectriBlocks.RFBATTERY, TileEntityRFBattery.class, 1);
+	RFBATTERY("machine.rfbattery", ElectriBlocks.RFBATTERY, TileEntityRFBattery.class, 1, "RenderRFBattery");
 	//RFTHROTTLE("machine.rfthrottle", ElectriBlocks.MACHINE, TileEntityRFThrottle.class,  4);
 
 	private String name;
@@ -118,13 +118,13 @@ public enum ElectriTiles {
 	}
 
 	public boolean isAvailableInCreativeInventory() {
-		if (this == CABLE)
+		if (this == CABLE || this == RFBATTERY)
 			return PowerTypes.RF.exists();
 		return true;
 	}
 
 	public boolean hasCustomItem() {
-		return this == WIRE || this == BATTERY;
+		return this == WIRE || this == BATTERY || this == RFBATTERY;
 	}
 
 	public static ElectriTiles getTE(IBlockAccess iba, int x, int y, int z) {
@@ -136,7 +136,17 @@ public enum ElectriTiles {
 	}
 
 	public ItemStack getCraftedProduct() {
-		return new ItemStack(ElectriItems.PLACER.getItemInstance(), 1, this.ordinal());
+		if (this == WIRE) {
+			return new ItemStack(ElectriItems.WIRE.getItemInstance());
+		}
+		else if (this == BATTERY) {
+			return new ItemStack(ElectriItems.BATTERY.getItemInstance());
+		}
+		else if (this == RFBATTERY) {
+			return new ItemStack(ElectriItems.RFBATTERY.getItemInstance());
+		}
+		else
+			return new ItemStack(ElectriItems.PLACER.getItemInstance(), 1, this.ordinal());
 	}
 
 	public TileEntity createTEInstanceForRender() {
@@ -259,6 +269,7 @@ public enum ElectriTiles {
 	public String getPlaceSound() {
 		switch(this) {
 		case WIRE:
+		case CABLE:
 			return "step.cloth";
 		default:
 			return "step.stone";
@@ -278,6 +289,8 @@ public enum ElectriTiles {
 			return WIRE;
 		if (item.getItem() == ElectriItems.BATTERY.getItemInstance())
 			return BATTERY;
+		if (item.getItem() == ElectriItems.RFBATTERY.getItemInstance())
+			return RFBATTERY;
 		return TEList[item.getItemDamage()];
 	}
 }

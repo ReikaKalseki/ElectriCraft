@@ -80,11 +80,15 @@ public class ElectriRecipes {
 		GameRegistry.addRecipe(new ShapelessOreRecipe(ElectriCrafting.CRYSTALDUST.getItem(2), ElectriCrafting.BLUEDUST.oreDictName, ElectriCrafting.DIAMONDDUST.oreDictName, ElectriCrafting.QUARTZDUST.oreDictName, "dustGlowstone", "dustRedstone", "dustRedstone", "dustRedstone", "dustRedstone"));
 
 		Object[] ctr = {Blocks.glowstone, Blocks.lapis_block, Items.ender_eye, Items.diamond, Items.nether_star};
-		for (int i = 1; i < 6; i++) {
+		for (int i = 1; i < BatteryType.batteryList.length; i++) {
 			ItemStack cry = ElectriItems.CRYSTAL.getStackOfMetadata(i-1);
 			ItemStack is = ElectriItems.CRYSTAL.getStackOfMetadata(i);
 			GameRegistry.addRecipe(is, "RCR", "CIC", "RCR", 'R', Items.redstone, 'C', cry, 'I', ctr[i-1]);
 		}
+
+		ItemStack cry = ElectriItems.CRYSTAL.getStackOfMetadata(BatteryType.batteryList.length-1);
+		ItemStack out = ElectriItems.CRYSTAL.getStackOfMetadata(BatteryType.batteryList.length);
+		GameRegistry.addRecipe(out, "RRR", "RCR", "RRR", 'R', Blocks.redstone_block, 'C', cry);
 
 		ItemStack w = ReikaItemHelper.getSizedItemStack(WireType.SUPERCONDUCTOR.getCraftedProduct(), DifficultyEffects.PIPECRAFT.getInt()/4);
 		ItemStack w2 = ReikaItemHelper.getSizedItemStack(WireType.SUPERCONDUCTOR.getCraftedInsulatedProduct(), 3);
@@ -103,8 +107,16 @@ public class ElectriRecipes {
 		ElectriTiles.RESISTOR.addSizedCrafting(4, "SCS", "PCP", 'C', ItemStacks.coaldust, 'S', ItemStacks.steelingot, 'P', ItemStacks.basepanel);
 		ElectriTiles.METER.addCrafting("SsS", "wCw", "SbS", 'S', ItemStacks.steelingot, 'w', WireType.SILVER.getCraftedProduct(), 'C', ItemStacks.pcb, 's', ItemStacks.screen, 'b', ItemStacks.basepanel);
 
-		if (PowerTypes.RF.exists())
+		if (PowerTypes.RF.exists()) {
 			ElectriTiles.CABLE.addSizedCrafting(DifficultyEffects.PIPECRAFT.getInt(), "RDR", "BGB", "RER", 'D', Items.diamond, 'R', Blocks.redstone_block, 'G', Blocks.gold_block, 'E', Items.ender_pearl, 'B', BlockRegistry.BLASTGLASS.getStackOf());
+
+			Object[] obj = {"ScS", "WCW", "tPt", 't', ItemStacks.tungsteningot, 'W', Blocks.wool, 'c', ItemStacks.redgoldingot, 'C', ElectriItems.CRYSTAL.getStackOfMetadata(BatteryType.batteryList.length), 'P', ItemStacks.bedingot, 'S', ItemStacks.steelingot};
+			ShapedOreRecipe ir2 = new ShapedOreRecipe(ElectriTiles.RFBATTERY.getCraftedProduct(), obj);
+			WorktableRecipes.getInstance().addRecipe(ir2);
+			if (ConfigRegistry.TABLEMACHINES.getState()) {
+				GameRegistry.addRecipe(ir2);
+			}
+		}
 
 		if (ModList.THERMALEXPANSION.isLoaded()) {
 			ItemStack is = WireType.SUPERCONDUCTOR.getCraftedProduct();

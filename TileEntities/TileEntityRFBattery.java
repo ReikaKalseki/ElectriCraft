@@ -1,5 +1,6 @@
 package Reika.ElectriCraft.TileEntities;
 
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -7,13 +8,14 @@ import Reika.DragonAPI.Libraries.MathSci.ReikaEngLibrary;
 import Reika.DragonAPI.Libraries.MathSci.ReikaMathLibrary;
 import Reika.ElectriCraft.Auxiliary.BatteryTile;
 import Reika.ElectriCraft.Base.ElectriTileEntity;
+import Reika.ElectriCraft.Registry.ElectriItems;
 import Reika.ElectriCraft.Registry.ElectriTiles;
 import cofh.api.energy.IEnergyHandler;
 
 public class TileEntityRFBattery extends ElectriTileEntity implements BatteryTile, IEnergyHandler {
 
 	private long energy;
-	public static final long CAPACITY = 1200000000000L;
+	public static final long CAPACITY = 1200000000000L;//1099511627775L;//;
 
 	@Override
 	public String getDisplayEnergy() {
@@ -36,7 +38,7 @@ public class TileEntityRFBattery extends ElectriTileEntity implements BatteryTil
 	}
 
 	private static String formatNumber(long num) {
-		return ReikaMathLibrary.getThousandBase(num)+" "+ReikaEngLibrary.getSIPrefix(num)+"RF";
+		return String.format("%.3f %sRF", ReikaMathLibrary.getThousandBase(num), ReikaEngLibrary.getSIPrefix(num));
 	}
 
 	@Override
@@ -101,6 +103,18 @@ public class TileEntityRFBattery extends ElectriTileEntity implements BatteryTil
 		super.readSyncTag(NBT);
 
 		energy = NBT.getLong("e");
+	}
+
+	public void setEnergyFromNBT(ItemStack is) {
+		if (is.getItem() == ElectriItems.RFBATTERY.getItemInstance()) {
+			if (is.stackTagCompound != null)
+				energy = is.stackTagCompound.getLong("nrg");
+			else
+				energy = 0;
+		}
+		else {
+			energy = 0;
+		}
 	}
 
 }

@@ -11,6 +11,7 @@ package Reika.ElectriCraft.Items;
 
 import java.util.List;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -21,15 +22,16 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
+import Reika.DragonAPI.Base.TileEntityBase;
 import Reika.DragonAPI.Libraries.MathSci.ReikaEngLibrary;
 import Reika.DragonAPI.Libraries.MathSci.ReikaMathLibrary;
 import Reika.DragonAPI.Libraries.World.ReikaWorldHelper;
 import Reika.ElectriCraft.ElectriCraft;
+import Reika.ElectriCraft.Auxiliary.BatteryTile;
 import Reika.ElectriCraft.Registry.BatteryType;
 import Reika.ElectriCraft.Registry.ElectriBlocks;
 import Reika.ElectriCraft.Registry.ElectriItems;
 import Reika.ElectriCraft.Registry.ElectriTiles;
-import Reika.ElectriCraft.TileEntities.TileEntityBattery;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -44,7 +46,7 @@ public class ItemBatteryPlacer extends Item {
 	}
 
 	@Override
-	public boolean onItemUse(ItemStack is, EntityPlayer ep, World world, int x, int y, int z, int side, float par8, float par9, float par10) {
+	public final boolean onItemUse(ItemStack is, EntityPlayer ep, World world, int x, int y, int z, int side, float par8, float par9, float par10) {
 		if (!ReikaWorldHelper.softBlocks(world, x, y, z) && ReikaWorldHelper.getMaterial(world, x, y, z) != Material.water && ReikaWorldHelper.getMaterial(world, x, y, z) != Material.lava) {
 			if (side == 0)
 				--y;
@@ -73,15 +75,23 @@ public class ItemBatteryPlacer extends Item {
 		{
 			if (!ep.capabilities.isCreativeMode)
 				--is.stackSize;
-			world.setBlock(x, y, z, ElectriBlocks.BATTERY.getBlockInstance(), is.getItemDamage(), 3);
+			world.setBlock(x, y, z, this.getPlacingBlock(), this.getPlacingMeta(is), 3);
 		}
 		world.playSoundEffect(x+0.5, y+0.5, z+0.5, ElectriTiles.BATTERY.getPlaceSound(), 1F, 1.5F);
-		TileEntityBattery te = (TileEntityBattery)world.getTileEntity(x, y, z);
+		TileEntityBase te = (TileEntityBase)world.getTileEntity(x, y, z);
 		te.setPlacer(ep);
 		//te.setBlockMetadata(RotaryAux.get4SidedMetadataFromPlayerLook(ep));
-		te.setEnergyFromNBT(is);
+		((BatteryTile)te).setEnergyFromNBT(is);
 
 		return true;
+	}
+
+	protected Block getPlacingBlock() {
+		return ElectriBlocks.BATTERY.getBlockInstance();
+	}
+
+	protected int getPlacingMeta(ItemStack is) {
+		return is.getItemDamage();
 	}
 
 	@Override
