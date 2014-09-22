@@ -79,7 +79,11 @@ public final class WireNetwork implements NetworkObject {
 		return this.getMaxInputVoltage() > 0;
 	}
 
-	public int getNumberMotors() {
+	public int getNumberSources() {
+		return sources.size();
+	}
+
+	public int getNumberSinks() {
 		return sinks.size();
 	}
 
@@ -257,7 +261,6 @@ public final class WireNetwork implements NetworkObject {
 				}
 			}
 		}
-		this.recalculatePaths();
 		this.updateWires();
 	}
 

@@ -28,12 +28,16 @@ import net.minecraftforge.common.util.ForgeDirection;
 import Reika.DragonAPI.Libraries.MathSci.ReikaMathLibrary;
 import Reika.DragonAPI.Libraries.Registry.ReikaDyeHelper;
 import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
+import Reika.ElectriCraft.ElectriCraft;
 import Reika.ElectriCraft.Base.ElectriBlock;
 import Reika.ElectriCraft.Base.TileEntityWireComponent;
 import Reika.ElectriCraft.Registry.ElectriTiles;
 import Reika.ElectriCraft.TileEntities.TileEntityRelay;
 import Reika.ElectriCraft.TileEntities.TileEntityResistor;
+import Reika.ElectriCraft.TileEntities.TileEntityTransformer;
 import Reika.RotaryCraft.Auxiliary.RotaryAux;
+import Reika.RotaryCraft.Auxiliary.Interfaces.TemperatureTE;
+import Reika.RotaryCraft.Registry.ItemRegistry;
 
 public class BlockElectricMachine extends ElectriBlock implements IWailaDataProvider {
 
@@ -112,6 +116,10 @@ public class BlockElectricMachine extends ElectriBlock implements IWailaDataProv
 				AxisAlignedBB box = ((TileEntityWireComponent)world.getTileEntity(x, y, z)).getAABB();
 				return box;
 			}
+			else if (t == ElectriTiles.TRANSFORMER) {
+				AxisAlignedBB box = ((TileEntityTransformer)world.getTileEntity(x, y, z)).getAABB();
+				return box;
+			}
 		}
 		return super.getCollisionBoundingBoxFromPool(world, x, y, z);
 	}
@@ -120,6 +128,9 @@ public class BlockElectricMachine extends ElectriBlock implements IWailaDataProv
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer ep, int side, float a, float b, float c) {
 		ElectriTiles e = ElectriTiles.getTE(world, x, y, z);
 		ItemStack is = ep.getCurrentEquippedItem();
+		ItemRegistry ir = ItemRegistry.getEntry(is);
+		if (ir != null && ir.overridesRightClick(is))
+			return false;
 		if (e == ElectriTiles.RESISTOR && ReikaDyeHelper.isDyeItem(is)) {
 			TileEntityResistor te = (TileEntityResistor)world.getTileEntity(x, y, z);
 			ForgeDirection dir = te.getFacing();
@@ -142,6 +153,10 @@ public class BlockElectricMachine extends ElectriBlock implements IWailaDataProv
 					is.stackSize--;
 				return true;
 			}
+		}
+		if (e == ElectriTiles.TRANSFORMER) {
+			ep.openGui(ElectriCraft.instance, 0, world, x, y, z);
+			return true;
 		}
 		return false;
 	}
@@ -172,6 +187,12 @@ public class BlockElectricMachine extends ElectriBlock implements IWailaDataProv
 		}
 		if (te instanceof TileEntityRelay) {
 			tip.add(((TileEntityRelay) te).isEnabled() ? "Connected" : "Disconnected");
+		}
+		if (te instanceof TileEntityTransformer) {
+			tip.add(String.format("Ratio: %s", ((TileEntityTransformer)te).getRatioForDisplay()));
+		}
+		if (te instanceof TemperatureTE) {
+			tip.add(String.format("Temperature: %dC", ((TemperatureTE)te).getTemperature()));
 		}
 		return tip;
 	}

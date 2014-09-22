@@ -21,6 +21,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import Reika.DragonAPI.Libraries.ReikaDirectionHelper;
 import Reika.DragonAPI.Libraries.ReikaPlayerAPI;
 import Reika.DragonAPI.Libraries.World.ReikaWorldHelper;
 import Reika.ElectriCraft.ElectriCraft;
@@ -29,6 +30,7 @@ import Reika.ElectriCraft.Base.ElectriTileEntity;
 import Reika.ElectriCraft.Base.TileEntityWireComponent;
 import Reika.ElectriCraft.Registry.ElectriItems;
 import Reika.ElectriCraft.Registry.ElectriTiles;
+import Reika.ElectriCraft.TileEntities.TileEntityTransformer;
 import Reika.RotaryCraft.API.ShaftMachine;
 import Reika.RotaryCraft.Auxiliary.RotaryAux;
 import cpw.mods.fml.relauncher.Side;
@@ -91,6 +93,11 @@ public class ItemElectriPlacer extends Item {
 			//ReikaJavaLibrary.pConsole(dir+":"+te, Side.SERVER);
 			((TileEntityWireComponent)te).setFacing(dir);
 		}
+		if (te instanceof TileEntityTransformer) {
+			ForgeDirection dir = ReikaDirectionHelper.getRightBy90(ReikaPlayerAPI.getDirectionFromPlayerLook(ep, false));
+			//ReikaJavaLibrary.pConsole(dir+":"+te, Side.SERVER);
+			((TileEntityTransformer)te).setFacing(dir);
+		}
 		if (te instanceof ConversionTile) {
 			ForgeDirection dir = ReikaPlayerAPI.getDirectionFromPlayerLook(ep, false);
 			((ConversionTile)te).setFacing(dir);
@@ -112,7 +119,7 @@ public class ItemElectriPlacer extends Item {
 	}
 
 	protected boolean checkValidBounds(ItemStack is, EntityPlayer ep, World world, int x, int y, int z) {
-		return true;
+		return y > 0 && y < world.provider.getHeight()-1;
 	}
 
 	@Override

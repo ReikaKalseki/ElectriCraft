@@ -21,7 +21,9 @@ import Reika.DragonAPI.Libraries.IO.ReikaChatHelper;
 import Reika.DragonAPI.Libraries.IO.ReikaPacketHelper;
 import Reika.DragonAPI.Libraries.IO.ReikaPacketHelper.PacketObj;
 import Reika.DragonAPI.Libraries.Java.ReikaJavaLibrary;
+import Reika.ElectriCraft.Registry.ElectriPackets;
 import Reika.ElectriCraft.TileEntities.TileEntityRFCable;
+import Reika.ElectriCraft.TileEntities.TileEntityTransformer;
 
 
 public class ElectriPacketCore implements IPacketHandler {
@@ -32,6 +34,7 @@ public class ElectriPacketCore implements IPacketHandler {
 		DataInputStream inputStream = packet.getDataIn();
 		int control = Integer.MIN_VALUE;
 		int len;
+		ElectriPackets pack = null;
 		int[] data = new int[0];
 		long longdata = 0;
 		float floatdata = 0;
@@ -54,8 +57,8 @@ public class ElectriPacketCore implements IPacketHandler {
 				break;
 			case DATA:
 				control = inputStream.readInt();
-				//pack = ReactorPackets.getEnum(control);
-				len = 1;//pack.getNumberDataInts();
+				pack = ElectriPackets.getEnum(control);
+				len = pack.numInts;
 				data = new int[len];
 				readinglong = false;//pack.isLongPacket();
 				//if (!readinglong) {
@@ -112,10 +115,14 @@ public class ElectriPacketCore implements IPacketHandler {
 		}
 		TileEntity te = world.getTileEntity(x, y, z);
 		try {
-			switch (control) {
-			case 0:
+			switch (pack) {
+			case RFCABLE:
 				cable = (TileEntityRFCable)te;
 				cable.setRFLimit(data[0]);
+				break;
+			case TRANSFORMER:
+				TileEntityTransformer tf = (TileEntityTransformer)te;
+				tf.setRatio(data[0], data[1]);
 				break;
 			}
 		}

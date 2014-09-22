@@ -33,6 +33,7 @@ import Reika.ElectriCraft.TileEntities.TileEntityRFBattery;
 import Reika.ElectriCraft.TileEntities.TileEntityRFCable;
 import Reika.ElectriCraft.TileEntities.TileEntityRelay;
 import Reika.ElectriCraft.TileEntities.TileEntityResistor;
+import Reika.ElectriCraft.TileEntities.TileEntityTransformer;
 import Reika.ElectriCraft.TileEntities.TileEntityWire;
 import Reika.RotaryCraft.Auxiliary.WorktableRecipes;
 import Reika.RotaryCraft.Registry.ConfigRegistry;
@@ -48,7 +49,8 @@ public enum ElectriTiles {
 	BATTERY("machine.electribattery", ElectriBlocks.BATTERY, TileEntityBattery.class, 4),
 	CABLE("machine.rfcable", ElectriBlocks.CABLE, TileEntityRFCable.class, 0, "RenderCable"),
 	METER("machine.wiremeter", ElectriBlocks.MACHINE, TileEntityMeter.class, 4, "RenderElectricMeter"),
-	RFBATTERY("machine.rfbattery", ElectriBlocks.RFBATTERY, TileEntityRFBattery.class, 1, "RenderRFBattery");
+	RFBATTERY("machine.rfbattery", ElectriBlocks.RFBATTERY, TileEntityRFBattery.class, 1, "RenderRFBattery"),
+	TRANSFORMER("machine.transformer", ElectriBlocks.MACHINE, TileEntityTransformer.class, 5, "RenderTransformer");
 	//RFTHROTTLE("machine.rfthrottle", ElectriBlocks.MACHINE, TileEntityRFThrottle.class,  4);
 
 	private String name;

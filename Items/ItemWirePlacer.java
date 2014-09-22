@@ -65,6 +65,8 @@ public class ItemWirePlacer extends Item implements Fillable {
 			if (!ReikaWorldHelper.softBlocks(world, x, y, z) && ReikaWorldHelper.getMaterial(world, x, y, z) != Material.water && ReikaWorldHelper.getMaterial(world, x, y, z) != Material.lava)
 				return false;
 		}
+		if (!this.checkValidBounds(is, ep, world, x, y, z))
+			return false;
 		AxisAlignedBB box = AxisAlignedBB.getBoundingBox(x, y, z, x+1, y+1, z+1);
 		List inblock = world.getEntitiesWithinAABB(EntityLivingBase.class, box);
 		if (inblock.size() > 0)
@@ -85,6 +87,10 @@ public class ItemWirePlacer extends Item implements Fillable {
 		te.setPlacer(ep);
 		te.insulated = is.getItemDamage() >= WireType.INS_OFFSET;
 		return true;
+	}
+
+	protected boolean checkValidBounds(ItemStack is, EntityPlayer ep, World world, int x, int y, int z) {
+		return y > 0 && y < world.provider.getHeight()-1;
 	}
 
 	private boolean canBePlaced(ItemStack is) {

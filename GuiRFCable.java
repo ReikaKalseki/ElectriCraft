@@ -22,6 +22,7 @@ import Reika.DragonAPI.Libraries.IO.ReikaPacketHelper;
 import Reika.DragonAPI.Libraries.IO.ReikaTextureHelper;
 import Reika.DragonAPI.Libraries.MathSci.ReikaEngLibrary;
 import Reika.DragonAPI.Libraries.MathSci.ReikaMathLibrary;
+import Reika.ElectriCraft.Registry.ElectriPackets;
 import Reika.ElectriCraft.TileEntities.TileEntityRFCable;
 import Reika.RotaryCraft.RotaryCraft;
 
@@ -74,7 +75,7 @@ public class GuiRFCable extends GuiContainer {
 		}
 
 		cable.setRFLimit(limit);
-		ReikaPacketHelper.sendDataPacket(ElectriCraft.packetChannel, 0, cable, limit);
+		ReikaPacketHelper.sendDataPacket(ElectriCraft.packetChannel, ElectriPackets.RFCABLE.ordinal(), cable, limit);
 		this.initGui();
 	}
 

@@ -14,6 +14,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import Reika.DragonAPI.Base.CoreContainer;
 import Reika.ElectriCraft.TileEntities.TileEntityRFCable;
+import Reika.ElectriCraft.TileEntities.TileEntityTransformer;
 import cpw.mods.fml.common.network.IGuiHandler;
 
 public class ElectriGuiHandler implements IGuiHandler {
@@ -21,6 +22,9 @@ public class ElectriGuiHandler implements IGuiHandler {
 	@Override
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z) {
 		TileEntity te = world.getTileEntity(x, y, z);
+		if (te instanceof TileEntityRFCable) {
+			return new CoreContainer(player, te);
+		}
 		if (te instanceof TileEntityRFCable) {
 			return new CoreContainer(player, te);
 		}
@@ -32,6 +36,9 @@ public class ElectriGuiHandler implements IGuiHandler {
 		TileEntity te = world.getTileEntity(x, y, z);
 		if (te instanceof TileEntityRFCable) {
 			return new GuiRFCable(player, (TileEntityRFCable)te);
+		}
+		if (te instanceof TileEntityTransformer) {
+			return new GuiTransformer(player, (TileEntityTransformer)te);
 		}
 		return null;
 	}
