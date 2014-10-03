@@ -10,6 +10,7 @@
 package Reika.ElectriCraft;
 
 import java.net.URL;
+import java.util.HashMap;
 
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
@@ -36,6 +37,7 @@ import Reika.ElectriCraft.Registry.ElectriItems;
 import Reika.ElectriCraft.Registry.ElectriOptions;
 import Reika.ElectriCraft.Registry.ElectriOres;
 import Reika.ElectriCraft.Registry.ElectriTiles;
+import Reika.RotaryCraft.RotaryCraft;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -70,6 +72,7 @@ public class ElectriCraft extends DragonAPIMod {
 	@Override
 	@EventHandler
 	public void preload(FMLPreInitializationEvent evt) {
+		this.verifyVersions();
 		config.loadSubfolderedConfigFile(evt);
 		config.initProps(evt);
 
@@ -95,6 +98,13 @@ public class ElectriCraft extends DragonAPIMod {
 
 	private static void addItems() {
 		ReikaRegistryHelper.instantiateAndRegisterItems(instance, ElectriItems.itemList, items);
+	}
+
+	@Override
+	protected HashMap<String, String> getDependencies() {
+		HashMap map = new HashMap();
+		map.put("RotaryCraft", RotaryCraft.currentVersion);
+		return map;
 	}
 
 	@Override

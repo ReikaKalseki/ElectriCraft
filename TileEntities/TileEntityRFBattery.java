@@ -57,7 +57,9 @@ public class TileEntityRFBattery extends ElectriTileEntity implements BatteryTil
 
 	@Override
 	public void updateEntity(World world, int x, int y, int z, int meta) {
-
+		if (world.getTotalWorldTime()%64 == 0) {
+			world.markBlockForUpdate(x, y, z);
+		}
 	}
 
 	@Override
@@ -124,6 +126,11 @@ public class TileEntityRFBattery extends ElectriTileEntity implements BatteryTil
 		else {
 			energy = 0;
 		}
+	}
+
+	@Override
+	public int getRedstoneOverride() {
+		return (int)(15D*ReikaMathLibrary.logbase(this.getStoredEnergy(), 2)/ReikaMathLibrary.logbase(this.getMaxEnergy(), 2));
 	}
 
 }
