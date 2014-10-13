@@ -119,7 +119,7 @@ public class ElectriRecipes {
 			}
 		}
 
-		if (ModList.THERMALEXPANSION.isLoaded()) {
+		if (ModList.THERMALFOUNDATION.isLoaded()) {
 			ItemStack is = WireType.SUPERCONDUCTOR.getCraftedProduct();
 			ItemStack is2 = WireType.SUPERCONDUCTOR.getCraftedInsulatedProduct();
 			ItemWirePlacer item = (ItemWirePlacer)ElectriItems.WIRE.getItemInstance();
