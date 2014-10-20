@@ -19,7 +19,7 @@ import cpw.mods.fml.common.gameevent.TickEvent.Phase;
 public class NetworkTicker implements TickHandler {
 
 	@Override
-	public void tick(Object... tickData) {
+	public void tick(TickType type, Object... tickData) {
 		World world = (World)tickData[0];
 		if (world != null)
 			MinecraftForge.EVENT_BUS.post(new ElectriNetworkTickEvent(world));
