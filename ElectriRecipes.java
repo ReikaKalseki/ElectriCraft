@@ -90,7 +90,7 @@ public class ElectriRecipes {
 		ItemStack out = ElectriItems.CRYSTAL.getStackOfMetadata(BatteryType.batteryList.length);
 		GameRegistry.addRecipe(out, "RRR", "RCR", "RRR", 'R', Blocks.redstone_block, 'C', cry);
 
-		ItemStack w = ReikaItemHelper.getSizedItemStack(WireType.SUPERCONDUCTOR.getCraftedProduct(), DifficultyEffects.PIPECRAFT.getInt()/4);
+		ItemStack w = ReikaItemHelper.getSizedItemStack(WireType.SUPERCONDUCTOR.getCraftedProduct(), DifficultyEffects.PIPECRAFT.getInt());
 		ItemStack w2 = ReikaItemHelper.getSizedItemStack(WireType.SUPERCONDUCTOR.getCraftedInsulatedProduct(), 3);
 		ShapedOreRecipe ir = new ShapedOreRecipe(w, "IGI", "SRS", "tgt", 't', ItemStacks.tungsteningot, 'I', ItemStacks.steelingot, 'G', BlockRegistry.BLASTGLASS.getBlockInstance(), 'S', "ingotSilver", 'g', "ingotGold", 'R', Items.redstone);
 		Object[] obj2 = {"WwW", "WwW", "WwW", 'W', Blocks.wool, 'w', w};
