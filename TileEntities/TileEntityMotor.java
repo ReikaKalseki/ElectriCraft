@@ -24,6 +24,7 @@ import Reika.ElectriCraft.Registry.ElectriTiles;
 import Reika.RotaryCraft.API.Screwdriverable;
 import Reika.RotaryCraft.API.ShaftPowerEmitter;
 import Reika.RotaryCraft.API.ShaftPowerReceiver;
+import Reika.RotaryCraft.Registry.ConfigRegistry;
 import Reika.RotaryCraft.Registry.EngineType;
 import Reika.RotaryCraft.Registry.SoundRegistry;
 
@@ -55,7 +56,7 @@ public class TileEntityMotor extends ElectricalReceiver implements Screwdriverab
 		if (power > 0) {
 			soundTimer.update();
 			if (soundTimer.checkCap())
-				SoundRegistry.ELECTRIC.playSoundAtBlock(world, x, y, z, this.getSoundVolume(world, x, y, z), 0.333F);
+				SoundRegistry.ELECTRIC.playSoundAtBlock(world, x, y, z, this.getTrueVolume(world, x, y, z), 0.333F);
 		}
 		else {
 			torque = omega = 0;
@@ -67,6 +68,10 @@ public class TileEntityMotor extends ElectricalReceiver implements Screwdriverab
 			rec.setTorque(torque);
 			rec.setPower(power);
 		}
+	}
+
+	private float getTrueVolume(World world, int x, int y, int z) {
+		return ConfigRegistry.ENGINEVOLUME.getFloat()*this.getSoundVolume(world, x, y, z);
 	}
 
 	private float getSoundVolume(World world, int x, int y, int z) {
