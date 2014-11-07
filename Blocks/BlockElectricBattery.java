@@ -41,6 +41,8 @@ public class BlockElectricBattery extends NetworkBlock implements IWailaDataProv
 
 	public BlockElectricBattery(Material par2Material) {
 		super(par2Material);
+		this.setHardness(2);
+		this.setResistance(10);
 	}
 
 	@Override
@@ -153,6 +155,18 @@ public class BlockElectricBattery extends NetworkBlock implements IWailaDataProv
 		String s2 = EnumChatFormatting.BLUE.toString();
 		currenttip.add(s2+s1+"ElectriCraft");
 		return currenttip;
+	}
+
+	@Override
+	public final boolean hasComparatorInputOverride()
+	{
+		return true;
+	}
+
+	@Override
+	public final int getComparatorInputOverride(World world, int x, int y, int z, int par5)
+	{
+		return ((TileEntityBase)world.getTileEntity(x, y, z)).getRedstoneOverride();
 	}
 
 }

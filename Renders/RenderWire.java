@@ -46,6 +46,7 @@ public class RenderWire extends ElectriTERenderer {
 		float v = ico.getMinV();
 		float du = ico.getMaxU();
 		float dv = ico.getMaxV();
+		GL11.glPushMatrix();
 		GL11.glTranslated(par2, par4, par6);
 		Tessellator v5 = Tessellator.instance;
 
@@ -53,6 +54,7 @@ public class RenderWire extends ElectriTERenderer {
 		double s = 0.4;
 		GL11.glColor4f(f, f, f, 1);
 		GL11.glScaled(s, s, s);
+		GL11.glTranslated(0.5, 0.375, 0.5);
 		v5.startDrawingQuads();
 		v5.setNormal(0, 1, 0);
 		v5.addVertexWithUV(0, 0, 1, u, v);
@@ -104,8 +106,7 @@ public class RenderWire extends ElectriTERenderer {
 		v5.addVertexWithUV(1, 0, 1, du, dv);
 		v5.addVertexWithUV(0, 0, 1, u, dv);
 		v5.draw();
-		GL11.glScaled(1/s, 1/s, 1/s);
-		GL11.glTranslated(-par2, -par4, -par6);
+		GL11.glPopMatrix();
 		v5.setColorOpaque(255, 255, 255);
 	}
 

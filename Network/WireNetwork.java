@@ -176,20 +176,17 @@ public final class WireNetwork implements NetworkObject {
 	public void merge(WireNetwork n) {
 		if (n != this) {
 			ArrayList<NetworkTile> li = new ArrayList();
-			for (int i = 0; i < n.wires.size(); i++) {
-				WiringTile wire = n.wires.get(i);
+			for (WiringTile wire : n.wires) {
 				wire.setNetwork(this);
 				li.add(wire);
 			}
-			for (int i = 0; i < n.sinks.size(); i++) {
-				WireReceiver emitter = n.sinks.get(i);
+			for (WireReceiver emitter : n.sinks) {
 				if (!li.contains(emitter)) {
 					emitter.setNetwork(this);
 					li.add(emitter);
 				}
 			}
-			for (int i = 0; i < n.sources.size(); i++) {
-				WireEmitter source = n.sources.get(i);
+			for (WireEmitter source : n.sources) {
 				if (!li.contains(source)) {
 					source.setNetwork(this);
 					li.add(source);
@@ -206,14 +203,14 @@ public final class WireNetwork implements NetworkObject {
 
 	private void clear(boolean clearTiles) {
 		if (clearTiles) {
-			for (int i = 0; i < wires.size(); i++) {
-				wires.get(i).resetNetwork();
+			for (WiringTile te : wires) {
+				te.resetNetwork();
 			}
-			for (int i = 0; i < sinks.size(); i++) {
-				sinks.get(i).resetNetwork();
+			for (WireReceiver te : sinks) {
+				te.resetNetwork();
 			}
-			for (int i = 0; i < sources.size(); i++) {
-				sources.get(i).resetNetwork();
+			for (WireEmitter te : sources) {
+				te.resetNetwork();
 			}
 		}
 
@@ -403,21 +400,20 @@ public final class WireNetwork implements NetworkObject {
 
 	private void rebuild() {
 		ArrayList<NetworkTile> li = new ArrayList();
-		for (int i = 0; i < wires.size(); i++) {
-			li.add(wires.get(i));
+		for (NetworkTile te : wires) {
+			li.add(te);
 		}
-		for (int i = 0; i < sinks.size(); i++) {
-			if (!li.contains(sinks.get(i)))
-				li.add(sinks.get(i));
+		for (NetworkTile te : sinks) {
+			if (!li.contains(te))
+				li.add(te);
 		}
-		for (int i = 0; i < sources.size(); i++) {
-			if (!li.contains(sources.get(i)))
-				li.add(sources.get(i));
+		for (NetworkTile te : sources) {
+			if (!li.contains(te))
+				li.add(te);
 		}
 		this.clear(true);
 
-		for (int i = 0; i < li.size(); i++) {
-			NetworkTile te = li.get(i);
+		for (NetworkTile te : li) {
 			te.findAndJoinNetwork(te.getWorld(), te.getX(), te.getY(), te.getZ());
 		}
 	}

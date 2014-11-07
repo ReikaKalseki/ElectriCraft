@@ -117,15 +117,15 @@ public class TileEntityWire extends WiringTile {
 		NBT.setBoolean("melt", shouldMelt);
 	}
 
+	@Override
+	public final AxisAlignedBB getRenderBoundingBox() {
+		return AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord+1, yCoord+1, zCoord+1);
+	}
+
 	public boolean isConnectionValidForSide(ForgeDirection dir) {
 		if (dir.offsetX == 0 && MinecraftForgeClient.getRenderPass() != 1)
 			dir = dir.getOpposite();
 		return connections[dir.ordinal()];
-	}
-
-	@Override
-	public final AxisAlignedBB getRenderBoundingBox() {
-		return AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord+1, yCoord+1, zCoord+1);
 	}
 
 	public void recomputeConnections(World world, int x, int y, int z) {

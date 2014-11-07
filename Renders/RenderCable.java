@@ -51,6 +51,7 @@ public class RenderCable extends ElectriTERenderer {
 		float v2 = ico2.getMinV();
 		float du2 = ico2.getMaxU();
 		float dv2 = ico2.getMaxV();
+		GL11.glPushMatrix();
 		GL11.glTranslated(par2, par4, par6);
 		Tessellator v5 = Tessellator.instance;
 
@@ -58,6 +59,7 @@ public class RenderCable extends ElectriTERenderer {
 		double s = 0.4;
 		GL11.glColor4f(f, f, f, 1);
 		GL11.glScaled(s, s, s);
+		GL11.glTranslated(0.5, 0.375, 0.5);
 		v5.startDrawingQuads();
 		v5.setNormal(0, 1, 0);
 		v5.addVertexWithUV(0, 0, 1, u, v);
@@ -109,8 +111,7 @@ public class RenderCable extends ElectriTERenderer {
 		v5.addVertexWithUV(1, 0, 1, du2, dv2);
 		v5.addVertexWithUV(0, 0, 1, u2, dv2);
 		v5.draw();
-		GL11.glScaled(1/s, 1/s, 1/s);
-		GL11.glTranslated(-par2, -par4, -par6);
+		GL11.glPopMatrix();
 		v5.setColorOpaque(255, 255, 255);
 	}
 

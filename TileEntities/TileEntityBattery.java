@@ -15,6 +15,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import Reika.DragonAPI.Libraries.MathSci.ReikaEngLibrary;
 import Reika.DragonAPI.Libraries.MathSci.ReikaMathLibrary;
+import Reika.DragonAPI.Libraries.World.ReikaWorldHelper;
 import Reika.ElectriCraft.Auxiliary.BatteryTile;
 import Reika.ElectriCraft.Auxiliary.WireEmitter;
 import Reika.ElectriCraft.Auxiliary.WireReceiver;
@@ -26,6 +27,7 @@ import Reika.ElectriCraft.Registry.ElectriTiles;
 public class TileEntityBattery extends NetworkTileEntity implements WireEmitter, WireReceiver, BatteryTile {
 
 	private long energy;
+	private long lastE;
 	private boolean lastPower;
 
 	@Override
@@ -38,7 +40,7 @@ public class TileEntityBattery extends NetworkTileEntity implements WireEmitter,
 			}*/
 
 			if (world.getTotalWorldTime()%64 == 0) {
-				world.markBlockForUpdate(x, y, z);
+				ReikaWorldHelper.causeAdjacentUpdates(world, x, y, z);
 			}
 
 			if (this.canReceivePower()) {
@@ -61,12 +63,16 @@ public class TileEntityBattery extends NetworkTileEntity implements WireEmitter,
 				int a = this.getGenCurrent();
 				long p = (long)v*(long)a;
 				energy -= p;
-				if (energy < 0) {
+				if (energy <= 0) {
 					energy = 0;
+					network.updateWires();
+				}
+				else if (lastE == 0) {
 					network.updateWires();
 				}
 			}
 			lastPower = flag;
+			lastE = energy;
 		}
 	}
 
