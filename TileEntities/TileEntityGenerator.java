@@ -45,9 +45,13 @@ public class TileEntityGenerator extends ElectricalEmitter implements Screwdrive
 			this.noInputMachine();
 		}
 
-		if (!world.isRemote && network != null)
-			if (omega != lastomega || torque != lasttorque)
+		//ReikaJavaLibrary.pConsole(network, Side.SERVER);
+		if (!world.isRemote && network != null) {
+			//ReikaJavaLibrary.pConsole(omega);
+			if (omega != lastomega || torque != lasttorque) {
 				network.updateWires();
+			}
+		}
 
 		lastomega = omega;
 		lasttorque = torque;

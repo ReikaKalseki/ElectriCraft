@@ -46,7 +46,7 @@ public class PathCalculator {
 		if (start == null || end == null)
 			throw new IllegalArgumentException("Cannot connect null points!");
 		if (start.getWorld() != end.getWorld())
-			throw new IllegalArgumentException("Cannot connect points across dimensions!");
+			;//throw new IllegalArgumentException("Cannot connect points across dimensions!");
 	}
 
 	public void calculatePaths() {
