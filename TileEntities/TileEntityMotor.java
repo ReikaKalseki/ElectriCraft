@@ -9,14 +9,18 @@
  ******************************************************************************/
 package Reika.ElectriCraft.TileEntities;
 
+import java.util.ArrayList;
+
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import Reika.DragonAPI.Instantiable.StepTimer;
 import Reika.DragonAPI.Libraries.MathSci.ReikaMathLibrary;
+import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
 import Reika.ElectriCraft.Auxiliary.ConversionTile;
 import Reika.ElectriCraft.Base.ElectricalReceiver;
 import Reika.ElectriCraft.Network.WireNetwork;
@@ -24,11 +28,13 @@ import Reika.ElectriCraft.Registry.ElectriTiles;
 import Reika.RotaryCraft.API.Screwdriverable;
 import Reika.RotaryCraft.API.ShaftPowerEmitter;
 import Reika.RotaryCraft.API.ShaftPowerReceiver;
+import Reika.RotaryCraft.Auxiliary.ItemStacks;
+import Reika.RotaryCraft.Auxiliary.Interfaces.NBTMachine;
 import Reika.RotaryCraft.Registry.ConfigRegistry;
 import Reika.RotaryCraft.Registry.EngineType;
 import Reika.RotaryCraft.Registry.SoundRegistry;
 
-public class TileEntityMotor extends ElectricalReceiver implements Screwdriverable, ShaftPowerEmitter, ConversionTile {
+public class TileEntityMotor extends ElectricalReceiver implements Screwdriverable, ShaftPowerEmitter, ConversionTile, NBTMachine {
 
 	private static final int soundtime = (int)(EngineType.DC.getSoundLength()*2.04F);
 	private StepTimer soundTimer = new StepTimer(soundtime);
@@ -41,6 +47,8 @@ public class TileEntityMotor extends ElectricalReceiver implements Screwdriverab
 
 	private ForgeDirection facing;
 
+	private int maxAmp = 1;
+
 	@Override
 	public void updateEntity(World world, int x, int y, int z, int meta) {
 		super.updateEntity(world, x, y, z, meta);
@@ -49,7 +57,7 @@ public class TileEntityMotor extends ElectricalReceiver implements Screwdriverab
 			iotick -= 8;
 
 		if (!world.isRemote && network != null) {
-			torque = network.getTerminalCurrent(this)*WireNetwork.TORQUE_PER_AMP;
+			torque = Math.min(network.getTerminalCurrent(this), maxAmp*network.getAverageCurrent(this))*WireNetwork.TORQUE_PER_AMP;
 			omega = network.getTerminalVoltage(this)/WireNetwork.TORQUE_PER_AMP;
 		}
 		power = (long)omega*(long)torque;
@@ -67,6 +75,20 @@ public class TileEntityMotor extends ElectricalReceiver implements Screwdriverab
 			rec.setOmega(omega);
 			rec.setTorque(torque);
 			rec.setPower(power);
+		}
+	}
+
+	public boolean upgrade(ItemStack is) {
+		if (ReikaItemHelper.matchStacks(is, ItemStacks.redgoldingot) && maxAmp < 2) {
+			maxAmp = 2;
+			return true;
+		}
+		else if (ReikaItemHelper.matchStacks(is, ItemStacks.tungsteningot) && maxAmp < 4) {
+			maxAmp = 4;
+			return true;
+		}
+		else {
+			return false;
 		}
 	}
 
@@ -145,6 +167,8 @@ public class TileEntityMotor extends ElectricalReceiver implements Screwdriverab
 		omega = NBT.getInteger("omg");
 		torque = NBT.getInteger("tq");
 		power = NBT.getLong("pwr");
+
+		maxAmp = NBT.getInteger("amp");
 	}
 
 	@Override
@@ -156,6 +180,8 @@ public class TileEntityMotor extends ElectricalReceiver implements Screwdriverab
 		NBT.setInteger("omg", omega);
 		NBT.setInteger("tq", torque);
 		NBT.setLong("pwr", power);
+
+		NBT.setInteger("amp", maxAmp);
 	}
 
 	@Override
@@ -241,5 +267,40 @@ public class TileEntityMotor extends ElectricalReceiver implements Screwdriverab
 		else
 			this.setFacing(dirs[o+1]);
 		this.rebuildNetwork();
+	}
+
+	@Override
+	public NBTTagCompound getTagsToWriteToStack() {
+		if (maxAmp > 1) {
+			NBTTagCompound nbt = new NBTTagCompound();
+			nbt.setInteger("amp", maxAmp);
+			return nbt;
+		}
+		return null;
+	}
+
+	@Override
+	public void setDataFromItemStackTag(NBTTagCompound NBT) {
+		if (NBT != null && NBT.hasKey("amp"))
+			maxAmp = NBT.getInteger("amp");
+	}
+
+	@Override
+	public ArrayList<NBTTagCompound> getCreativeModeVariants() {
+		ArrayList<NBTTagCompound> li = new ArrayList();
+		NBTTagCompound NBT = new NBTTagCompound();
+		NBT.setInteger("amp", 4);
+		li.add(NBT);
+		return li;
+	}
+
+	@Override
+	public ArrayList<String> getDisplayTags(NBTTagCompound NBT) {
+		ArrayList<String> li = new ArrayList();
+		if (NBT != null && NBT.hasKey("amp")) {
+			int amp = NBT.getInteger("amp");
+			li.add(String.format("Contains a %dx amplifier", amp));
+		}
+		return li;
 	}
 }

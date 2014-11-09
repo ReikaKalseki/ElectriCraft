@@ -39,6 +39,7 @@ public final class WireNetwork implements NetworkObject {
 	private HashMap<WiringTile, Integer> pointCurrents = new HashMap();
 	private HashMap<WireReceiver, Integer> terminalVoltages = new HashMap();
 	private HashMap<WireReceiver, Integer> terminalCurrents = new HashMap();
+	private HashMap<WireReceiver, Integer> avgCurrents = new HashMap();
 
 	private boolean shorted = false;
 
@@ -287,6 +288,17 @@ public final class WireNetwork implements NetworkObject {
 		ElectriCraft.logger.debug("Remapped network "+this);
 	}
 
+	public int getAverageCurrent(WireReceiver te) {
+		if (shorted)
+			return 0;
+		Integer val = avgCurrents.get(te);
+		if (val == null) {
+			val = this.calcAvgCurrent(te);
+			avgCurrents.put(te, val);
+		}
+		return val.intValue();
+	}
+
 	public int getTerminalCurrent(WireReceiver te) {
 		if (shorted)
 			return 0;
@@ -319,6 +331,20 @@ public final class WireNetwork implements NetworkObject {
 			}
 		}
 		return a;
+	}
+
+	private int calcAvgCurrent(WireReceiver te) {
+		int a = 0;
+		int c = 0;
+		for (int i = 0; i < paths.size(); i++) {
+			WirePath path = paths.get(i);
+			if (path.endsAt(te.getX(), te.getY(), te.getZ())) {
+				int pa = path.getPathCurrent();
+				a += pa;
+				c++;
+			}
+		}
+		return c > 0 ? a/c : 0;
 	}
 
 	private int calcTerminalVoltage(WireReceiver te) {

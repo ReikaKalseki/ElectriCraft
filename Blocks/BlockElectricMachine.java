@@ -19,6 +19,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
@@ -32,10 +33,12 @@ import Reika.ElectriCraft.ElectriCraft;
 import Reika.ElectriCraft.Base.ElectriBlock;
 import Reika.ElectriCraft.Base.TileEntityWireComponent;
 import Reika.ElectriCraft.Registry.ElectriTiles;
+import Reika.ElectriCraft.TileEntities.TileEntityMotor;
 import Reika.ElectriCraft.TileEntities.TileEntityRelay;
 import Reika.ElectriCraft.TileEntities.TileEntityResistor;
 import Reika.ElectriCraft.TileEntities.TileEntityTransformer;
 import Reika.RotaryCraft.Auxiliary.RotaryAux;
+import Reika.RotaryCraft.Auxiliary.Interfaces.NBTMachine;
 import Reika.RotaryCraft.Auxiliary.Interfaces.TemperatureTE;
 import Reika.RotaryCraft.Registry.ItemRegistry;
 
@@ -103,6 +106,10 @@ public class BlockElectricMachine extends ElectriBlock implements IWailaDataProv
 		ElectriTiles m = ElectriTiles.getTE(world, x, y, z);
 		if (m != null) {
 			ItemStack is = m.getCraftedProduct();
+			if (m.hasNBTVariants()) {
+				NBTTagCompound nbt = ((NBTMachine)te).getTagsToWriteToStack();
+				is.stackTagCompound = (NBTTagCompound)(nbt != null ? nbt.copy() : null);
+			}
 			ReikaItemHelper.dropItem(world, x+0.5, y+0.5, z+0.5, is);
 		}
 	}
@@ -149,6 +156,14 @@ public class BlockElectricMachine extends ElectriBlock implements IWailaDataProv
 				band = 3;
 			if (band > 0) {
 				te.setColor(is, band);
+				if (!ep.capabilities.isCreativeMode)
+					is.stackSize--;
+				return true;
+			}
+		}
+		if (e == ElectriTiles.MOTOR) {
+			TileEntityMotor te = (TileEntityMotor)world.getTileEntity(x, y, z);
+			if (is != null && te.upgrade(is)) {
 				if (!ep.capabilities.isCreativeMode)
 					is.stackSize--;
 				return true;

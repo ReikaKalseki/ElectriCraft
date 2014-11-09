@@ -9,6 +9,7 @@
  ******************************************************************************/
 package Reika.ElectriCraft.Items;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.material.Material;
@@ -18,6 +19,8 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -33,6 +36,7 @@ import Reika.ElectriCraft.Registry.ElectriTiles;
 import Reika.ElectriCraft.TileEntities.TileEntityTransformer;
 import Reika.RotaryCraft.API.ShaftMachine;
 import Reika.RotaryCraft.Auxiliary.RotaryAux;
+import Reika.RotaryCraft.Auxiliary.Interfaces.NBTMachine;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -88,6 +92,9 @@ public class ItemElectriPlacer extends Item {
 			ShaftMachine sm = (ShaftMachine)te;
 			sm.setIORenderAlpha(512);
 		}
+		if (te instanceof NBTMachine) {
+			((NBTMachine)te).setDataFromItemStackTag(is.stackTagCompound);
+		}
 		if (te instanceof TileEntityWireComponent) {
 			ForgeDirection dir = ReikaPlayerAPI.getDirectionFromPlayerLook(ep, false);
 			//ReikaJavaLibrary.pConsole(dir+":"+te, Side.SERVER);
@@ -112,9 +119,30 @@ public class ItemElectriPlacer extends Item {
 		for (int i = 0; i < ElectriTiles.TEList.length; i++) {
 			ElectriTiles t = ElectriTiles.TEList[i];
 			if (!t.hasCustomItem() && t.isAvailableInCreativeInventory()) {
-				ItemStack item = new ItemStack(par1, 1, i);
+				TileEntity te = t.createTEInstanceForRender();
+				ItemStack item = t.getCraftedProduct();
 				par3List.add(item);
+				if (t.hasNBTVariants()) {
+					ArrayList<NBTTagCompound> li = ((NBTMachine)te).getCreativeModeVariants();
+					for (int k = 0; k < li.size(); k++) {
+						NBTTagCompound NBT = li.get(k);
+						ItemStack is = item.copy();
+						is.stackTagCompound = NBT;
+						par3List.add(is);
+					}
+				}
 			}
+		}
+	}
+
+	@SideOnly(Side.CLIENT)
+	@Override
+	public void addInformation(ItemStack is, EntityPlayer ep, List li, boolean verbose) {
+		int i = is.getItemDamage();
+		ElectriTiles m = ElectriTiles.TEList[i];
+		TileEntity te = m.createTEInstanceForRender();
+		if (m.hasNBTVariants() && is.stackTagCompound != null) {
+			li.addAll(((NBTMachine)te).getDisplayTags(is.stackTagCompound));
 		}
 	}
 

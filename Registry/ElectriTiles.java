@@ -36,6 +36,7 @@ import Reika.ElectriCraft.TileEntities.TileEntityResistor;
 import Reika.ElectriCraft.TileEntities.TileEntityTransformer;
 import Reika.ElectriCraft.TileEntities.TileEntityWire;
 import Reika.RotaryCraft.Auxiliary.WorktableRecipes;
+import Reika.RotaryCraft.Auxiliary.Interfaces.NBTMachine;
 import Reika.RotaryCraft.Registry.ConfigRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -294,5 +295,9 @@ public enum ElectriTiles {
 		if (item.getItem() == ElectriItems.RFBATTERY.getItemInstance())
 			return RFBATTERY;
 		return TEList[item.getItemDamage()];
+	}
+
+	public boolean hasNBTVariants() {
+		return NBTMachine.class.isAssignableFrom(teClass);
 	}
 }
