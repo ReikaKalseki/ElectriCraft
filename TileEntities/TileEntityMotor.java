@@ -18,9 +18,14 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import Reika.DragonAPI.APIPacketHandler.PacketIDs;
+import Reika.DragonAPI.DragonAPIInit;
 import Reika.DragonAPI.Instantiable.StepTimer;
+import Reika.DragonAPI.Libraries.IO.ReikaPacketHelper;
+import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
 import Reika.DragonAPI.Libraries.MathSci.ReikaMathLibrary;
 import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
+import Reika.DragonAPI.Libraries.Registry.ReikaParticleHelper;
 import Reika.ElectriCraft.Auxiliary.ConversionTile;
 import Reika.ElectriCraft.Base.ElectricalReceiver;
 import Reika.ElectriCraft.Network.WireNetwork;
@@ -57,7 +62,7 @@ public class TileEntityMotor extends ElectricalReceiver implements Screwdriverab
 			iotick -= 8;
 
 		if (!world.isRemote && network != null) {
-			torque = Math.min(network.getTerminalCurrent(this), maxAmp*network.getAverageCurrent(this))*WireNetwork.TORQUE_PER_AMP;
+			torque = this.getEffectiveCurrent(world, x, y, z)*WireNetwork.TORQUE_PER_AMP;
 			omega = network.getTerminalVoltage(this)/WireNetwork.TORQUE_PER_AMP;
 		}
 		power = (long)omega*(long)torque;
@@ -76,6 +81,19 @@ public class TileEntityMotor extends ElectricalReceiver implements Screwdriverab
 			rec.setTorque(torque);
 			rec.setPower(power);
 		}
+	}
+
+	private int getEffectiveCurrent(World world, int x, int y, int z) {
+		int in = network.getTerminalCurrent(this);
+		int max = maxAmp*network.getAverageCurrent(this);
+		if (in > max) {
+			if (rand.nextInt(10) == 0) {
+				ReikaSoundHelper.playSoundAtBlock(world, x, y, z, "random.fizz");
+				//ReikaParticleHelper.SMOKE.spawnAroundBlock(world, x, y, z, 2);
+				ReikaPacketHelper.sendDataPacket(DragonAPIInit.packetChannel, PacketIDs.PARTICLE.ordinal(), this, ReikaParticleHelper.SMOKE.ordinal(), 1);
+			}
+		}
+		return Math.min(in, max);
 	}
 
 	public boolean upgrade(ItemStack is) {
