@@ -97,17 +97,22 @@ public class TileEntityMotor extends ElectricalReceiver implements Screwdriverab
 	}
 
 	public boolean upgrade(ItemStack is) {
+		boolean flag = false;
 		if (ReikaItemHelper.matchStacks(is, ItemStacks.redgoldingot) && maxAmp < 2) {
 			maxAmp = 2;
-			return true;
+			flag = true;
 		}
 		else if (ReikaItemHelper.matchStacks(is, ItemStacks.tungsteningot) && maxAmp < 4) {
 			maxAmp = 4;
-			return true;
+			flag = true;
 		}
-		else {
-			return false;
+
+		if (flag) {
+			if (network != null) {
+				network.updateWires();
+			}
 		}
+		return flag;
 	}
 
 	private float getTrueVolume(World world, int x, int y, int z) {

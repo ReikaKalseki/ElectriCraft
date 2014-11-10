@@ -65,6 +65,7 @@ public final class WireNetwork implements NetworkObject {
 		terminalVoltages.clear();
 		pointCurrents.clear();
 		pointVoltages.clear();
+		avgCurrents.clear();
 	}
 
 	private int getMaxInputVoltage() {
@@ -344,6 +345,7 @@ public final class WireNetwork implements NetworkObject {
 				c++;
 			}
 		}
+		//ReikaJavaLibrary.pConsole(a+":"+c+" @ "+te);
 		return c > 0 ? a/c : 0;
 	}
 
