@@ -108,7 +108,10 @@ public final class WireNetwork implements NetworkObject {
 		if (this.isEmpty())
 			this.clear(true);
 
-		shorted = false;
+		if (shorted) {
+			shorted = false;
+			this.updateWires();
+		}
 	}
 
 	public int getPointVoltage(WiringTile te) {
