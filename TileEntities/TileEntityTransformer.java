@@ -114,9 +114,11 @@ IFluidHandler, PipeConnector {
 			return;
 		//this.setRatio((double)n2/n1);
 
+		boolean f1 = n1 != this.n1;
+		boolean f2 = n2 != this.n2;
 		this.n1 = n1;
 		this.n2 = n2;
-		this.onRatioChanged(n1 != this.n1 || n2 != this.n2);
+		this.onRatioChanged(f1 || f2);
 	}
 	/*
 	private void setRatio(double r) {
