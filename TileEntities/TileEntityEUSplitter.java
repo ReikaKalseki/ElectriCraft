@@ -104,17 +104,25 @@ public class TileEntityEUSplitter extends ElectriTileEntity implements IEnergySo
 
 	@Override
 	public boolean onShiftRightClick(World world, int x, int y, int z, ForgeDirection side) {
+		if (!world.isRemote && ModList.IC2.isLoaded())
+			this.removeTileFromNet();
 		out[side.ordinal()] = !out[side.ordinal()];
 		world.markBlockForUpdate(x, y, z);
 		ReikaWorldHelper.causeAdjacentUpdates(world, x, y, z);
+		if (!world.isRemote && ModList.IC2.isLoaded())
+			this.addTileToNet();
 		return true;
 	}
 
 	@Override
 	public boolean onRightClick(World world, int x, int y, int z, ForgeDirection side) {
+		if (!world.isRemote && ModList.IC2.isLoaded())
+			this.removeTileFromNet();
 		facing = side;
 		world.markBlockForUpdate(x, y, z);
 		ReikaWorldHelper.causeAdjacentUpdates(world, x, y, z);
+		if (!world.isRemote && ModList.IC2.isLoaded())
+			this.addTileToNet();
 		return true;
 	}
 

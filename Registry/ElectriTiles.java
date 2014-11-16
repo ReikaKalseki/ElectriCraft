@@ -18,6 +18,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+import Reika.DragonAPI.DragonAPICore;
 import Reika.DragonAPI.Exception.RegistrationException;
 import Reika.DragonAPI.Instantiable.Data.BlockMap;
 import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
@@ -200,6 +201,10 @@ public enum ElectriTiles {
 	}
 
 	public boolean isDummiedOut() {
+		if (DragonAPICore.isReikasComputer())
+			return false;
+		if (this == EUSPLIT && !PowerTypes.EU.exists())
+			return true;
 		return false;
 	}
 
