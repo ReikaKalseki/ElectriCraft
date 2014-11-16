@@ -11,6 +11,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
 import Reika.DragonAPI.ModList;
 import Reika.DragonAPI.ASM.DependentMethodStripper.ModDependent;
+import Reika.DragonAPI.Libraries.World.ReikaWorldHelper;
 import Reika.DragonAPI.ModInteract.ReikaEUHelper;
 import Reika.ElectriCraft.Base.ElectriTileEntity;
 import Reika.ElectriCraft.Registry.ElectriTiles;
@@ -105,6 +106,7 @@ public class TileEntityEUSplitter extends ElectriTileEntity implements IEnergySo
 	public boolean onShiftRightClick(World world, int x, int y, int z, ForgeDirection side) {
 		out[side.ordinal()] = !out[side.ordinal()];
 		world.markBlockForUpdate(x, y, z);
+		ReikaWorldHelper.causeAdjacentUpdates(world, x, y, z);
 		return true;
 	}
 
@@ -112,6 +114,7 @@ public class TileEntityEUSplitter extends ElectriTileEntity implements IEnergySo
 	public boolean onRightClick(World world, int x, int y, int z, ForgeDirection side) {
 		facing = side;
 		world.markBlockForUpdate(x, y, z);
+		ReikaWorldHelper.causeAdjacentUpdates(world, x, y, z);
 		return true;
 	}
 
