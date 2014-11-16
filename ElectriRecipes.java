@@ -119,6 +119,10 @@ public class ElectriRecipes {
 			}
 		}
 
+		if (PowerTypes.EU.exists()) {
+			ElectriTiles.EUSPLIT.addOreCrafting("PCP", "CcC", "PCP", 'P', ItemStacks.basepanel, 'C', "ingotCopper", 'c', ItemStacks.goldcoil);
+		}
+
 		if (ModList.THERMALFOUNDATION.isLoaded()) {
 			ItemStack is = WireType.SUPERCONDUCTOR.getCraftedProduct();
 			ItemStack is2 = WireType.SUPERCONDUCTOR.getCraftedInsulatedProduct();

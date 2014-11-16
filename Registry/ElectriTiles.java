@@ -26,6 +26,7 @@ import Reika.ElectriCraft.ElectriCraft;
 import Reika.ElectriCraft.Base.TileEntityWireComponent;
 import Reika.ElectriCraft.Base.WiringTile;
 import Reika.ElectriCraft.TileEntities.TileEntityBattery;
+import Reika.ElectriCraft.TileEntities.TileEntityEUSplitter;
 import Reika.ElectriCraft.TileEntities.TileEntityGenerator;
 import Reika.ElectriCraft.TileEntities.TileEntityMeter;
 import Reika.ElectriCraft.TileEntities.TileEntityMotor;
@@ -51,8 +52,8 @@ public enum ElectriTiles {
 	CABLE("machine.rfcable", ElectriBlocks.CABLE, TileEntityRFCable.class, 0, "RenderCable"),
 	METER("machine.wiremeter", ElectriBlocks.MACHINE, TileEntityMeter.class, 4, "RenderElectricMeter"),
 	RFBATTERY("machine.rfbattery", ElectriBlocks.RFBATTERY, TileEntityRFBattery.class, 1, "RenderRFBattery"),
-	TRANSFORMER("machine.transformer", ElectriBlocks.MACHINE, TileEntityTransformer.class, 5, "RenderTransformer");
-	//RFTHROTTLE("machine.rfthrottle", ElectriBlocks.MACHINE, TileEntityRFThrottle.class,  4);
+	TRANSFORMER("machine.transformer", ElectriBlocks.MACHINE, TileEntityTransformer.class, 5, "RenderTransformer"),
+	EUSPLIT("machine.eusplit", ElectriBlocks.EUSPLIT, TileEntityEUSplitter.class, 6);
 
 	private String name;
 	private final Class teClass;

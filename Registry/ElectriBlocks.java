@@ -16,6 +16,7 @@ import net.minecraft.item.ItemBlock;
 import Reika.DragonAPI.Interfaces.BlockEnum;
 import Reika.DragonAPI.Libraries.Java.ReikaStringParser;
 import Reika.ElectriCraft.ElectriCraft;
+import Reika.ElectriCraft.Blocks.BlockEUSplitter;
 import Reika.ElectriCraft.Blocks.BlockElectriOre;
 import Reika.ElectriCraft.Blocks.BlockElectricBattery;
 import Reika.ElectriCraft.Blocks.BlockElectricMachine;
@@ -30,7 +31,8 @@ public enum ElectriBlocks implements BlockEnum {
 	ORE(BlockElectriOre.class, ItemBlockElectriOre.class, "ElectriOre", true),
 	BATTERY(BlockElectricBattery.class, "ElectriBattery", true),
 	CABLE(BlockRFCable.class, "RFCable", false),
-	RFBATTERY(BlockRFBattery.class, "ElectriRFBattery", true);
+	RFBATTERY(BlockRFBattery.class, "ElectriRFBattery", true),
+	EUSPLIT(BlockEUSplitter.class, "EUSplitter", false);
 
 	private Class blockClass;
 	private String blockName;
