@@ -132,6 +132,10 @@ public enum ElectriTiles {
 		return this == WIRE || this == BATTERY || this == RFBATTERY;
 	}
 
+	public boolean isWiring() {
+		return this == WIRE || this == CABLE;
+	}
+
 	public static ElectriTiles getTE(IBlockAccess iba, int x, int y, int z) {
 		Block id = iba.getBlock(x, y, z);
 		if (id == ElectriBlocks.WIRE.getBlockInstance())

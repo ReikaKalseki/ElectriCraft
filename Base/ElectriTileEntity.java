@@ -11,10 +11,13 @@ package Reika.ElectriCraft.Base;
 
 import java.util.ArrayList;
 
+import li.cil.oc.api.network.Visibility;
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import Reika.DragonAPI.ModList;
+import Reika.DragonAPI.ASM.DependentMethodStripper.ModDependent;
 import Reika.DragonAPI.Base.TileEntityBase;
 import Reika.DragonAPI.Interfaces.RenderFetcher;
 import Reika.DragonAPI.Interfaces.TextureFetcher;
@@ -107,5 +110,12 @@ public abstract class ElectriTileEntity extends TileEntityBase implements Render
 	@Override
 	public int getRedstoneOverride() {
 		return 0;
+	}
+
+
+	@Override
+	@ModDependent(ModList.OPENCOMPUTERS)
+	protected final Visibility getOCNetworkVisibility() {
+		return this.getMachine().isWiring() ? Visibility.Neighbors : Visibility.Network;
 	}
 }
