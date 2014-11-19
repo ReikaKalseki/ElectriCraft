@@ -34,6 +34,9 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import Reika.DragonAPI.ModList;
+import Reika.DragonAPI.ASM.APIStripper.Strippable;
+import Reika.DragonAPI.ASM.DependentMethodStripper.ModDependent;
 import Reika.DragonAPI.Libraries.ReikaEntityHelper;
 import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
 import Reika.ElectriCraft.ElectriCraft;
@@ -46,6 +49,7 @@ import Reika.RotaryCraft.API.Fillable;
 import Reika.RotaryCraft.Entities.EntityDischarge;
 import Reika.RotaryCraft.Registry.SoundRegistry;
 
+@Strippable(value = {"mcp.mobius.waila.api.IWailaDataProvider"})
 public class BlockWire extends ElectriBlock implements IWailaDataProvider {
 
 	private static final IIcon[] textures = new IIcon[WireType.wireList.length];
@@ -245,15 +249,18 @@ public class BlockWire extends ElectriBlock implements IWailaDataProvider {
 	}
 
 	@Override
+	@ModDependent(ModList.WAILA)
 	public ItemStack getWailaStack(IWailaDataAccessor accessor, IWailaConfigHandler config) {
 		return null;
 	}
 
+	@ModDependent(ModList.WAILA)
 	public List<String> getWailaHead(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor acc, IWailaConfigHandler config) {
 		return currenttip;
 	}
 
 	@Override
+	@ModDependent(ModList.WAILA)
 	public List<String> getWailaBody(ItemStack is, List<String> tip, IWailaDataAccessor acc, IWailaConfigHandler config) {
 		TileEntityWire te = (TileEntityWire)acc.getTileEntity();
 		if (te instanceof TileEntityWire) {
@@ -264,6 +271,7 @@ public class BlockWire extends ElectriBlock implements IWailaDataProvider {
 		return tip;
 	}
 
+	@ModDependent(ModList.WAILA)
 	public List<String> getWailaTail(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor acc, IWailaConfigHandler config) {
 		return currenttip;
 	}

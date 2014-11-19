@@ -26,12 +26,16 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
+import Reika.DragonAPI.ModList;
+import Reika.DragonAPI.ASM.APIStripper.Strippable;
+import Reika.DragonAPI.ASM.DependentMethodStripper.ModDependent;
 import Reika.DragonAPI.Base.TileEntityBase;
 import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
 import Reika.ElectriCraft.Auxiliary.BatteryTile;
 import Reika.ElectriCraft.Registry.ElectriItems;
 import Reika.ElectriCraft.TileEntities.TileEntityRFBattery;
 
+@Strippable(value = {"mcp.mobius.waila.api.IWailaDataProvider"})
 public class BlockRFBattery extends Block implements IWailaDataProvider {
 
 	private final IIcon[] bottomTex = new IIcon[1];
@@ -129,10 +133,12 @@ public class BlockRFBattery extends Block implements IWailaDataProvider {
 	}
 
 	@Override
+	@ModDependent(ModList.WAILA)
 	public ItemStack getWailaStack(IWailaDataAccessor acc, IWailaConfigHandler cfg) {
 		return null;
 	}
 
+	@ModDependent(ModList.WAILA)
 	public List<String> getWailaHead(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor acc, IWailaConfigHandler config) {
 		World world = acc.getWorld();
 		TileEntity te = acc.getTileEntity();
@@ -147,6 +153,7 @@ public class BlockRFBattery extends Block implements IWailaDataProvider {
 	}
 
 	@Override
+	@ModDependent(ModList.WAILA)
 	public List<String> getWailaBody(ItemStack is, List<String> tip, IWailaDataAccessor acc, IWailaConfigHandler cfg) {
 		BatteryTile te = (BatteryTile)acc.getTileEntity();
 		((TileEntityBase)te).syncAllData(false);
@@ -155,6 +162,7 @@ public class BlockRFBattery extends Block implements IWailaDataProvider {
 		return tip;
 	}
 
+	@ModDependent(ModList.WAILA)
 	public List<String> getWailaTail(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor acc, IWailaConfigHandler config) {
 		String s1 = EnumChatFormatting.ITALIC.toString();
 		String s2 = EnumChatFormatting.BLUE.toString();
