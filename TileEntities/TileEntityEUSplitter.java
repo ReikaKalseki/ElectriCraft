@@ -19,6 +19,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
 import Reika.DragonAPI.ModList;
+import Reika.DragonAPI.ASM.APIStripper.Strippable;
 import Reika.DragonAPI.ASM.DependentMethodStripper.ModDependent;
 import Reika.DragonAPI.Libraries.World.ReikaWorldHelper;
 import Reika.DragonAPI.ModInteract.ReikaEUHelper;
@@ -26,7 +27,7 @@ import Reika.ElectriCraft.Base.ElectriTileEntity;
 import Reika.ElectriCraft.Registry.ElectriTiles;
 import Reika.RotaryCraft.API.Screwdriverable;
 
-
+@Strippable(value = {"ic2.api.energy.tile.IEnergySink", "ic2.api.energy.tile.IEnergySource"})
 public class TileEntityEUSplitter extends ElectriTileEntity implements IEnergySource, IEnergySink, Screwdriverable {
 
 	private boolean[] out = new boolean[6];
