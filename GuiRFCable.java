@@ -13,6 +13,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
 
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
 import Reika.DragonAPI.Base.CoreContainer;
@@ -67,7 +68,7 @@ public class GuiRFCable extends GuiContainer {
 			limit = 0;
 		}
 		else {
-			int amt = b.id == -40 ? 1 : ReikaMathLibrary.intpow2(10, Math.abs(b.id));
+			int amt = b.id == -40 ? 1 : ReikaMathLibrary.intpow2(10, this.getPower(b.id));
 			if (b.id < 0)
 				amt = -amt;
 			limit += amt;
@@ -77,6 +78,10 @@ public class GuiRFCable extends GuiContainer {
 		cable.setRFLimit(limit);
 		ReikaPacketHelper.sendDataPacket(ElectriCraft.packetChannel, ElectriPackets.RFCABLE.ordinal(), cable, limit);
 		this.initGui();
+	}
+
+	private int getPower(int base) {
+		return Math.abs(base)+(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) ? 3 : 0);
 	}
 
 	@Override
@@ -95,7 +100,7 @@ public class GuiRFCable extends GuiContainer {
 			int dx2 = xSize/2-12;
 			int dy2 = 20+i*12+3;
 			int w = 53;
-			int n = ReikaMathLibrary.intpow2(10, Math.abs(i));
+			int n = ReikaMathLibrary.intpow2(10, this.getPower(i));
 			String sl = String.format("+%d%s", (int)ReikaMathLibrary.getThousandBase(n), ReikaEngLibrary.getSIPrefix(n));
 			String sr = String.format("-%d%s", (int)ReikaMathLibrary.getThousandBase(n), ReikaEngLibrary.getSIPrefix(n));
 			fontRendererObj.drawString(sl, dx2-w-fontRendererObj.getStringWidth(sl), dy2, 0);
