@@ -92,12 +92,12 @@ public class TileEntityRFBattery extends ElectriTileEntity implements BatteryTil
 
 	@Override
 	public int getEnergyStored(ForgeDirection dir) {
-		return (int)this.getStoredEnergy();
+		return energy == this.getMaxEnergy() ? Integer.MAX_VALUE : (int)Math.min(energy, Integer.MAX_VALUE-1);
 	}
 
 	@Override
 	public int getMaxEnergyStored(ForgeDirection dir) {
-		return (int)CAPACITY; //uhhh...
+		return Integer.MAX_VALUE;
 	}
 
 	@Override
