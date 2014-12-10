@@ -102,6 +102,13 @@ public class ElectriPacketCore implements IPacketHandler {
 				break;
 			case NBT:
 				break;
+			case STRINGINT:
+				stringdata = packet.readString();
+				control = inputStream.readInt();
+				data = new int[1];
+				for (int i = 0; i < data.length; i++)
+					data[i] = inputStream.readInt();
+				break;
 			}
 			if (packetType.hasCoordinates()) {
 				x = inputStream.readInt();
