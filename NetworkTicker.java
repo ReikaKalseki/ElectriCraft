@@ -11,8 +11,8 @@ package Reika.ElectriCraft;
 
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
-import Reika.DragonAPI.Auxiliary.TickRegistry.TickHandler;
-import Reika.DragonAPI.Auxiliary.TickRegistry.TickType;
+import Reika.DragonAPI.Auxiliary.Trackers.TickRegistry.TickHandler;
+import Reika.DragonAPI.Auxiliary.Trackers.TickRegistry.TickType;
 import Reika.ElectriCraft.Auxiliary.ElectriNetworkTickEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.Phase;
 
