@@ -21,7 +21,7 @@ import Reika.ChromatiCraft.API.AcceleratorBlacklist;
 import Reika.ChromatiCraft.API.AcceleratorBlacklist.BlacklistReason;
 import Reika.DragonAPI.DragonAPICore;
 import Reika.DragonAPI.ModList;
-import Reika.DragonAPI.Auxiliary.NEI_AnonymousHideConfig;
+import Reika.DragonAPI.Auxiliary.NEI_DragonAPI_Config;
 import Reika.DragonAPI.Auxiliary.Trackers.CommandableUpdateChecker;
 import Reika.DragonAPI.Auxiliary.Trackers.IntegrityChecker;
 import Reika.DragonAPI.Auxiliary.Trackers.TickRegistry;
@@ -123,7 +123,7 @@ public class ElectriCraft extends DragonAPIMod {
 		ElectriRecipes.addRecipes();
 
 		if (ModList.NEI.isLoaded()) {
-			NEI_AnonymousHideConfig.addBlocks(blocks);
+			NEI_DragonAPI_Config.hideBlocks(blocks);
 		}
 	}
 
