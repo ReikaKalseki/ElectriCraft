@@ -28,8 +28,6 @@ import Reika.ElectriCraft.TileEntities.TileEntityTransformer;
 
 public class ElectriPacketCore implements IPacketHandler {
 
-	private TileEntityRFCable cable;
-
 	public void handleData(PacketObj packet, World world, EntityPlayer ep) {
 		DataInputStream inputStream = packet.getDataIn();
 		int control = Integer.MIN_VALUE;
@@ -124,8 +122,7 @@ public class ElectriPacketCore implements IPacketHandler {
 		try {
 			switch (pack) {
 			case RFCABLE:
-				cable = (TileEntityRFCable)te;
-				cable.setRFLimit(data[0]);
+				((TileEntityRFCable)te).setRFLimit(data[0]);
 				break;
 			case TRANSFORMER:
 				TileEntityTransformer tf = (TileEntityTransformer)te;
