@@ -53,10 +53,8 @@ public enum WireType {
 		ArrayList<String> li = new ArrayList();
 		if (ores != null) {
 			for (int i = 0; i < ores.length; i++) {
-				String[] s = ores[i].getOreDictIngots();
-				for (int k = 0; k < s.length; k++) {
-					li.add(s[k]);
-				}
+				String s = ores[i].getProductOreDictName();
+				li.add(s);
 			}
 		}
 		oreTypes = new String[li.size()];
