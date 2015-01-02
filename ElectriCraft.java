@@ -30,6 +30,7 @@ import Reika.DragonAPI.Instantiable.IO.ModLogger;
 import Reika.DragonAPI.Libraries.ReikaRegistryHelper;
 import Reika.DragonAPI.Libraries.IO.ReikaPacketHelper;
 import Reika.DragonAPI.Libraries.Java.ReikaJavaLibrary;
+import Reika.DragonAPI.ModInteract.ReikaEEHelper;
 import Reika.DragonAPI.ModInteract.ReikaThaumHelper;
 import Reika.ElectriCraft.Auxiliary.ElectriTab;
 import Reika.ElectriCraft.Registry.ElectriBlocks;
@@ -125,6 +126,9 @@ public class ElectriCraft extends DragonAPIMod {
 		if (ModList.NEI.isLoaded()) {
 			NEI_DragonAPI_Config.hideBlocks(blocks);
 		}
+
+		ReikaEEHelper.blacklistRegistry(ElectriBlocks.blockList);
+		ReikaEEHelper.blacklistRegistry(ElectriItems.itemList);
 	}
 
 	@Override

@@ -13,6 +13,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
 import Reika.DragonAPI.Interfaces.BlockEnum;
 import Reika.DragonAPI.Libraries.Java.ReikaStringParser;
 import Reika.ElectriCraft.ElectriCraft;
@@ -130,6 +131,10 @@ public enum ElectriBlocks implements BlockEnum {
 
 	public Item getItem() {
 		return Item.getItemFromBlock(this.getBlockInstance());
+	}
+
+	public ItemStack getStackOfMetadata(int meta) {
+		return new ItemStack(this.getBlockInstance(), 1, meta);
 	}
 
 }
