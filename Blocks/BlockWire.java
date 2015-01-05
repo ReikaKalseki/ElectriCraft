@@ -23,6 +23,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.item.ItemStack;
@@ -45,7 +46,7 @@ import Reika.ElectriCraft.Network.WireNetwork;
 import Reika.ElectriCraft.Registry.WireType;
 import Reika.ElectriCraft.TileEntities.TileEntityWire;
 import Reika.RotaryCraft.RotaryCraft;
-import Reika.RotaryCraft.API.Fillable;
+import Reika.RotaryCraft.API.Interfaces.Fillable;
 import Reika.RotaryCraft.Entities.EntityDischarge;
 import Reika.RotaryCraft.Registry.SoundRegistry;
 
@@ -274,6 +275,12 @@ public class BlockWire extends ElectriBlock implements IWailaDataProvider {
 	@ModDependent(ModList.WAILA)
 	public List<String> getWailaTail(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor acc, IWailaConfigHandler config) {
 		return currenttip;
+	}
+
+	@Override
+	@ModDependent(ModList.WAILA)
+	public NBTTagCompound getNBTData(EntityPlayerMP player, TileEntity te, NBTTagCompound tag, World world, int x, int y, int z) {
+		return tag;
 	}
 
 }

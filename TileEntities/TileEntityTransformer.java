@@ -27,7 +27,7 @@ import Reika.ElectriCraft.Auxiliary.WireEmitter;
 import Reika.ElectriCraft.Auxiliary.WireReceiver;
 import Reika.ElectriCraft.Base.NetworkTileEntity;
 import Reika.ElectriCraft.Registry.ElectriTiles;
-import Reika.RotaryCraft.API.Screwdriverable;
+import Reika.RotaryCraft.API.Interfaces.Screwdriverable;
 import Reika.RotaryCraft.Auxiliary.Interfaces.PipeConnector;
 import Reika.RotaryCraft.Auxiliary.Interfaces.TemperatureTE;
 import Reika.RotaryCraft.Base.TileEntity.TileEntityPiping.Flow;

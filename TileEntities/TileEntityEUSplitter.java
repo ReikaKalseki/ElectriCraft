@@ -25,7 +25,7 @@ import Reika.DragonAPI.Libraries.World.ReikaWorldHelper;
 import Reika.DragonAPI.ModInteract.ReikaEUHelper;
 import Reika.ElectriCraft.Base.ElectriTileEntity;
 import Reika.ElectriCraft.Registry.ElectriTiles;
-import Reika.RotaryCraft.API.Screwdriverable;
+import Reika.RotaryCraft.API.Interfaces.Screwdriverable;
 
 @Strippable(value = {"ic2.api.energy.tile.IEnergySink", "ic2.api.energy.tile.IEnergySource"})
 public class TileEntityEUSplitter extends ElectriTileEntity implements IEnergySource, IEnergySink, Screwdriverable {

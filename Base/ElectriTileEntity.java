@@ -25,8 +25,8 @@ import Reika.ElectriCraft.Auxiliary.ElectriRenderList;
 import Reika.ElectriCraft.Registry.ElectriTiles;
 import Reika.ElectriCraft.TileEntities.TileEntityBattery;
 import Reika.ElectriCraft.TileEntities.TileEntityWire;
-import Reika.RotaryCraft.API.ShaftMachine;
-import Reika.RotaryCraft.API.Transducerable;
+import Reika.RotaryCraft.API.Interfaces.Transducerable;
+import Reika.RotaryCraft.API.Power.ShaftMachine;
 
 public abstract class ElectriTileEntity extends TileEntityBase implements RenderFetcher, Transducerable {
 

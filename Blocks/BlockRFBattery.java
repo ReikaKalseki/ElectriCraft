@@ -19,6 +19,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -168,6 +169,12 @@ public class BlockRFBattery extends Block implements IWailaDataProvider {
 		String s2 = EnumChatFormatting.BLUE.toString();
 		currenttip.add(s2+s1+"ElectriCraft");
 		return currenttip;
+	}
+
+	@Override
+	@ModDependent(ModList.WAILA)
+	public NBTTagCompound getNBTData(EntityPlayerMP player, TileEntity te, NBTTagCompound tag, World world, int x, int y, int z) {
+		return tag;
 	}
 
 	@Override

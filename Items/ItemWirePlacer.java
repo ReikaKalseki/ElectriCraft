@@ -33,7 +33,7 @@ import Reika.ElectriCraft.Registry.ElectriItems;
 import Reika.ElectriCraft.Registry.ElectriTiles;
 import Reika.ElectriCraft.Registry.WireType;
 import Reika.ElectriCraft.TileEntities.TileEntityWire;
-import Reika.RotaryCraft.API.Fillable;
+import Reika.RotaryCraft.API.Interfaces.Fillable;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

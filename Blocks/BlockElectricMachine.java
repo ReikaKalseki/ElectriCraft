@@ -17,6 +17,7 @@ import mcp.mobius.waila.api.IWailaDataAccessor;
 import mcp.mobius.waila.api.IWailaDataProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -225,6 +226,12 @@ public class BlockElectricMachine extends ElectriBlock implements IWailaDataProv
 		String s2 = EnumChatFormatting.BLUE.toString();
 		currenttip.add(s2+s1+"ElectriCraft");
 		return currenttip;
+	}
+
+	@Override
+	@ModDependent(ModList.WAILA)
+	public final NBTTagCompound getNBTData(EntityPlayerMP player, TileEntity te, NBTTagCompound tag, World world, int x, int y, int z) {
+		return tag;
 	}
 
 }

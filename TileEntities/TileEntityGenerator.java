@@ -17,9 +17,9 @@ import Reika.ElectriCraft.Auxiliary.ConversionTile;
 import Reika.ElectriCraft.Base.ElectricalEmitter;
 import Reika.ElectriCraft.Network.WireNetwork;
 import Reika.ElectriCraft.Registry.ElectriTiles;
-import Reika.RotaryCraft.API.PowerTransferHelper;
-import Reika.RotaryCraft.API.Screwdriverable;
-import Reika.RotaryCraft.API.ShaftPowerReceiver;
+import Reika.RotaryCraft.API.Interfaces.Screwdriverable;
+import Reika.RotaryCraft.API.Power.PowerTransferHelper;
+import Reika.RotaryCraft.API.Power.ShaftPowerReceiver;
 
 public class TileEntityGenerator extends ElectricalEmitter implements Screwdriverable, ShaftPowerReceiver, ConversionTile {
 

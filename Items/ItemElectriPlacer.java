@@ -34,7 +34,7 @@ import Reika.ElectriCraft.Base.TileEntityWireComponent;
 import Reika.ElectriCraft.Registry.ElectriItems;
 import Reika.ElectriCraft.Registry.ElectriTiles;
 import Reika.ElectriCraft.TileEntities.TileEntityTransformer;
-import Reika.RotaryCraft.API.ShaftMachine;
+import Reika.RotaryCraft.API.Power.ShaftMachine;
 import Reika.RotaryCraft.Auxiliary.RotaryAux;
 import Reika.RotaryCraft.Auxiliary.Interfaces.NBTMachine;
 import cpw.mods.fml.relauncher.Side;
