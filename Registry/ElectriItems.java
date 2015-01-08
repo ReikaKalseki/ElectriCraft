@@ -25,7 +25,7 @@ import Reika.ElectriCraft.Items.ItemBatteryPlacer;
 import Reika.ElectriCraft.Items.ItemElectriPlacer;
 import Reika.ElectriCraft.Items.ItemRFBatteryPlacer;
 import Reika.ElectriCraft.Items.ItemWirePlacer;
-import Reika.RotaryCraft.Auxiliary.WorktableRecipes;
+import Reika.RotaryCraft.Auxiliary.RecipeManagers.WorktableRecipes;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public enum ElectriItems implements ItemEnum {
@@ -233,7 +233,7 @@ public enum ElectriItems implements ItemEnum {
 	public void addRecipe(IRecipe ir) {
 		if (!this.isDummiedOut()) {
 			GameRegistry.addRecipe(ir);
-			WorktableRecipes.addRecipe(ir);
+			WorktableRecipes.getInstance().addRecipe(ir);
 		}
 	}
 
@@ -242,7 +242,7 @@ public enum ElectriItems implements ItemEnum {
 			ItemStack out = this.getStackOf();
 			boolean added = ReikaRecipeHelper.addOreRecipe(out, in);
 			if (added)
-				WorktableRecipes.addRecipe(new ShapedOreRecipe(out, in));
+				WorktableRecipes.getInstance().addRecipe(new ShapedOreRecipe(out, in));
 		}
 	}
 
