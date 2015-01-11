@@ -26,6 +26,7 @@ import Reika.DragonAPI.Auxiliary.Trackers.CommandableUpdateChecker;
 import Reika.DragonAPI.Auxiliary.Trackers.IntegrityChecker;
 import Reika.DragonAPI.Auxiliary.Trackers.TickRegistry;
 import Reika.DragonAPI.Base.DragonAPIMod;
+import Reika.DragonAPI.Base.DragonAPIMod.LoadProfiler.LoadPhase;
 import Reika.DragonAPI.Instantiable.IO.ModLogger;
 import Reika.DragonAPI.Libraries.ReikaRegistryHelper;
 import Reika.DragonAPI.Libraries.IO.ReikaPacketHelper;
@@ -73,6 +74,7 @@ public class ElectriCraft extends DragonAPIMod {
 	@Override
 	@EventHandler
 	public void preload(FMLPreInitializationEvent evt) {
+		this.startTiming(LoadPhase.PRELOAD);
 		this.verifyVersions();
 		config.loadSubfolderedConfigFile(evt);
 		config.initProps(evt);
@@ -87,6 +89,7 @@ public class ElectriCraft extends DragonAPIMod {
 		ReikaPacketHelper.registerPacketHandler(instance, packetChannel, new ElectriPacketCore());
 
 		this.basicSetup(evt);
+		this.finishTiming();
 	}
 
 	private static void addBlocks() {
@@ -111,6 +114,7 @@ public class ElectriCraft extends DragonAPIMod {
 	@Override
 	@EventHandler
 	public void load(FMLInitializationEvent event) {
+		this.startTiming(LoadPhase.LOAD);
 		proxy.registerRenderers();
 		GameRegistry.registerWorldGenerator(new ElectriOreGenerator(), 0);
 
@@ -129,11 +133,14 @@ public class ElectriCraft extends DragonAPIMod {
 
 		ReikaEEHelper.blacklistRegistry(ElectriBlocks.blockList);
 		ReikaEEHelper.blacklistRegistry(ElectriItems.itemList);
+
+		this.finishTiming();
 	}
 
 	@Override
 	@EventHandler
 	public void postload(FMLPostInitializationEvent evt) {
+		this.startTiming(LoadPhase.POSTLOAD);
 		if (ModList.CHROMATICRAFT.isLoaded()) {
 			for (int i = 0; i < ElectriTiles.TEList.length; i++) {
 				ElectriTiles m = ElectriTiles.TEList[i];
@@ -155,6 +162,7 @@ public class ElectriCraft extends DragonAPIMod {
 			ReikaThaumHelper.addAspects(ElectriOres.PLATINUM.getProduct(), Aspect.GREED, 6, Aspect.METAL, 2);
 			ReikaThaumHelper.addAspects(ElectriOres.NICKEL.getProduct(), Aspect.METAL, 2);
 		}
+		this.finishTiming();
 	}
 
 	@Override
