@@ -20,7 +20,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import Reika.DragonAPI.DragonAPICore;
 import Reika.DragonAPI.Exception.RegistrationException;
-import Reika.DragonAPI.Instantiable.Data.BlockMap;
+import Reika.DragonAPI.Instantiable.Data.Maps.BlockMap;
 import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
 import Reika.DragonAPI.ModRegistry.PowerTypes;
 import Reika.ElectriCraft.ElectriCraft;

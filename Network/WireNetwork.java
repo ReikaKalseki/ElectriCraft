@@ -16,7 +16,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.world.WorldEvent;
-import Reika.DragonAPI.Instantiable.Data.Coordinate;
+import Reika.DragonAPI.Instantiable.Data.Immutable.Coordinate;
 import Reika.ElectriCraft.ElectriCraft;
 import Reika.ElectriCraft.NetworkObject;
 import Reika.ElectriCraft.Auxiliary.ElectriNetworkTickEvent;
