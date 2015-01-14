@@ -42,7 +42,7 @@ public class RenderRFBattery extends ElectriTERenderer {
 			GL11.glDisable(GL11.GL_LIGHTING);
 		}
 
-		double o = 0.001;
+		double o = 0.0025;
 		double w = 0.1875;
 		double h = 0.0625;
 
