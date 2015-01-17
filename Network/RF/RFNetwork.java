@@ -10,6 +10,7 @@
 package Reika.ElectriCraft.Network.RF;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -18,20 +19,21 @@ import Reika.ElectriCraft.NetworkObject;
 import Reika.ElectriCraft.Auxiliary.ElectriNetworkTickEvent;
 import Reika.ElectriCraft.TileEntities.TileEntityRFCable;
 import cofh.api.energy.IEnergyHandler;
+import cofh.api.energy.IEnergyProvider;
+import cofh.api.energy.IEnergyReceiver;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class RFNetwork implements NetworkObject {
 
-	private ArrayList<TileEntityRFCable> cables = new ArrayList();
-	private ArrayList<EnergyInteraction> endpoints = new ArrayList();
+	private final Collection<TileEntityRFCable> cables = new ArrayList();
+	private final Collection<EnergyInteraction> endpoints = new ArrayList();
 	private int energy = 0;
 	private int networkLimit;
 
 	public void setIOLimit(int limit) {
 		if (networkLimit != limit) {
 			networkLimit = limit;
-			for (int i = 0; i < cables.size(); i++) {
-				TileEntityRFCable cable = cables.get(i);
+			for (TileEntityRFCable cable : cables) {
 				if (cable.getRFLimit() != networkLimit) {
 					cable.setRFLimit(networkLimit);
 				}
@@ -56,8 +58,7 @@ public class RFNetwork implements NetworkObject {
 			ArrayList<EnergyInteraction> insertibles = new ArrayList();
 			int maxCanPush = energy;
 			//ReikaJavaLibrary.pConsole(this.getIOLimit(), Side.SERVER);
-			for (int i = 0; i < endpoints.size(); i++) {
-				EnergyInteraction ei = endpoints.get(i);
+			for (EnergyInteraction ei : endpoints) {
 				maxCanPush += ei.getTotalInsertible();
 				if (ei.isCollectible()) {
 					collectibles.add(ei);
@@ -100,8 +101,7 @@ public class RFNetwork implements NetworkObject {
 
 	private void rebuild() {
 		ElectriCraft.logger.debug("Remapping RF network "+this);
-		for (int i = 0; i < cables.size(); i++) {
-			TileEntityRFCable te = cables.get(i);
+		for (TileEntityRFCable te : cables) {
 			te.findAndJoinNetwork(te.worldObj, te.xCoord, te.yCoord, te.zCoord);
 		}
 		this.clear(true);
@@ -122,12 +122,10 @@ public class RFNetwork implements NetworkObject {
 	public void merge(RFNetwork n) {
 		if (n != this) {
 			ArrayList<TileEntityRFCable> li = new ArrayList();
-			for (int i = 0; i < n.cables.size(); i++) {
-				TileEntityRFCable wire = n.cables.get(i);
+			for (TileEntityRFCable wire : cables) {
 				li.add(wire);
 			}
-			for (int i = 0; i < n.endpoints.size(); i++) {
-				EnergyInteraction ei = n.endpoints.get(i);
+			for (EnergyInteraction ei : endpoints) {
 				EnergyInteraction has = this.getInteractionFor(ei.tile);
 				if (has == null) {
 					endpoints.add(ei);
@@ -148,8 +146,7 @@ public class RFNetwork implements NetworkObject {
 	}
 
 	private EnergyInteraction getInteractionFor(IEnergyHandler tile) {
-		for (int i = 0; i < endpoints.size(); i++) {
-			EnergyInteraction ei = endpoints.get(i);
+		for (EnergyInteraction ei : endpoints) {
 			if (ei.contains(tile))
 				return ei;
 		}
@@ -162,8 +159,8 @@ public class RFNetwork implements NetworkObject {
 
 	private void clear(boolean clearTiles) {
 		if (clearTiles) {
-			for (int i = 0; i < cables.size(); i++) {
-				cables.get(i).resetNetwork();
+			for (TileEntityRFCable cable : cables) {
+				cable.resetNetwork();
 			}
 		}
 
@@ -238,6 +235,8 @@ public class RFNetwork implements NetworkObject {
 		}
 
 		public int getTotalCollectible() {
+			if (!(tile instanceof IEnergyProvider))
+				return 0;
 			int total = 0;
 			for (int i = 0; i < sides.size(); i++) {
 				ForgeDirection dir = sides.get(i);
@@ -249,6 +248,8 @@ public class RFNetwork implements NetworkObject {
 		}
 
 		public int getTotalInsertible() {
+			if (!(tile instanceof IEnergyReceiver))
+				return 0;
 			int total = 0;
 			for (int i = 0; i < sides.size(); i++) {
 				ForgeDirection dir = sides.get(i);

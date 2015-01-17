@@ -10,6 +10,7 @@
 package Reika.ElectriCraft.Network;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 
 import net.minecraft.tileentity.TileEntity;
@@ -30,16 +31,16 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public final class WireNetwork implements NetworkObject {
 
-	private ArrayList<WiringTile> wires = new ArrayList();
-	private ArrayList<WireReceiver> sinks = new ArrayList();
-	private ArrayList<WireEmitter> sources = new ArrayList();
-	private HashMap<Coordinate, NetworkNode> nodes = new HashMap();
-	private ArrayList<WirePath> paths = new ArrayList();
-	private HashMap<WiringTile, Integer> pointVoltages = new HashMap();
-	private HashMap<WiringTile, Integer> pointCurrents = new HashMap();
-	private HashMap<WireReceiver, Integer> terminalVoltages = new HashMap();
-	private HashMap<WireReceiver, Integer> terminalCurrents = new HashMap();
-	private HashMap<WireReceiver, Integer> avgCurrents = new HashMap();
+	private final Collection<WiringTile> wires = new ArrayList();
+	private final Collection<WireReceiver> sinks = new ArrayList();
+	private final Collection<WireEmitter> sources = new ArrayList();
+	private final HashMap<Coordinate, NetworkNode> nodes = new HashMap();
+	private final Collection<WirePath> paths = new ArrayList();
+	private final HashMap<WiringTile, Integer> pointVoltages = new HashMap();
+	private final HashMap<WiringTile, Integer> pointCurrents = new HashMap();
+	private final HashMap<WireReceiver, Integer> terminalVoltages = new HashMap();
+	private final HashMap<WireReceiver, Integer> terminalCurrents = new HashMap();
+	private final HashMap<WireReceiver, Integer> avgCurrents = new HashMap();
 
 	private boolean shorted = false;
 
@@ -70,8 +71,7 @@ public final class WireNetwork implements NetworkObject {
 
 	private int getMaxInputVoltage() {
 		int max = 0;
-		for (int i = 0; i < sources.size(); i++) {
-			WireEmitter e = sources.get(i);
+		for (WireEmitter e : sources) {
 			max = Math.max(max, e.getGenVoltage());
 		}
 		return max;
@@ -91,12 +91,10 @@ public final class WireNetwork implements NetworkObject {
 
 	@SubscribeEvent
 	public void tick(ElectriNetworkTickEvent evt) {
-		for (int i = 0; i < paths.size(); i++) {
-			WirePath path = paths.get(i);
+		for (WirePath path : paths) {
 			path.tick(evt);
 		}
-		for (int i = 0; i < wires.size(); i++) {
-			WiringTile w = wires.get(i);
+		for (WiringTile w : wires) {
 			if (w instanceof TileEntityWire) {
 				int current = this.getPointCurrent(w);
 				if (current > w.getCurrentLimit()) {
@@ -139,12 +137,11 @@ public final class WireNetwork implements NetworkObject {
 	private int calcPointVoltage(WiringTile te) {
 		if (paths.isEmpty())
 			return 0;
-		int sv = 0;
-		for (int i = 0; i < paths.size(); i++) {
-			WirePath path = paths.get(i);
+		int sv = Integer.MAX_VALUE;
+		for (WirePath path : paths) {
 			if (path.containsBlock(te)) {
 				int v = path.getVoltageAt(te);
-				if (v > sv)
+				if (v < sv)
 					sv = v;
 			}
 		}
@@ -155,8 +152,7 @@ public final class WireNetwork implements NetworkObject {
 		if (paths.isEmpty())
 			return 0;
 		int sa = 0;
-		for (int i = 0; i < paths.size(); i++) {
-			WirePath path = paths.get(i);
+		for (WirePath path : paths) {
 			if (path.containsBlock(te)) {
 				int a = path.getPathCurrent();
 				sa += a;
@@ -268,18 +264,16 @@ public final class WireNetwork implements NetworkObject {
 
 	public void updateWires() {
 		this.recalculatePaths();
-		for (int i = 0; i < wires.size(); i++) {
-			wires.get(i).onNetworkChanged();
+		for (WiringTile w : wires) {
+			w.onNetworkChanged();
 		}
 	}
 
 	private void recalculatePaths() {
 		paths.clear();
 		this.clearCache();
-		for (int i = 0; i < sources.size(); i++) {
-			for (int k = 0; k < sinks.size(); k++) {
-				WireEmitter src = sources.get(i);
-				WireReceiver sink = sinks.get(k);
+		for (WireEmitter src : sources) {
+			for (WireReceiver sink : sinks) {
 				if (src != sink) {
 					PathCalculator pc = new PathCalculator(src, sink, this);
 					pc.calculatePaths();
@@ -327,8 +321,7 @@ public final class WireNetwork implements NetworkObject {
 
 	private int calcTerminalCurrent(WireReceiver te) {
 		int a = 0;
-		for (int i = 0; i < paths.size(); i++) {
-			WirePath path = paths.get(i);
+		for (WirePath path : paths) {
 			if (path.endsAt(te.getX(), te.getY(), te.getZ())) {
 				int pa = path.getPathCurrent();
 				a += pa;
@@ -340,8 +333,7 @@ public final class WireNetwork implements NetworkObject {
 	private int calcAvgCurrent(WireReceiver te) {
 		int a = 0;
 		int c = 0;
-		for (int i = 0; i < paths.size(); i++) {
-			WirePath path = paths.get(i);
+		for (WirePath path : paths) {
 			if (path.endsAt(te.getX(), te.getY(), te.getZ())) {
 				int pa = path.getPathCurrent();
 				a += pa;
@@ -365,8 +357,7 @@ public final class WireNetwork implements NetworkObject {
 		if (paths.isEmpty())
 			return 0;
 		boolean someV = false;
-		for (int i = 0; i < paths.size(); i++) {
-			WirePath path = paths.get(i);
+		for (WirePath path : paths) {
 			if (path.endsAt(te.getX(), te.getY(), te.getZ())) {
 				int pv = path.getTerminalVoltage();
 				if (pv != 0) {
@@ -384,8 +375,7 @@ public final class WireNetwork implements NetworkObject {
 		int c = 0;
 		if (paths.isEmpty())
 			return 0;
-		for (int i = 0; i < paths.size(); i++) {
-			WirePath path = paths.get(i);
+		for (WirePath path : paths) {
 			if (path.endsAt(te.getX(), te.getY(), te.getZ())) {
 				int pv = path.getTerminalVoltage();
 				v += pv;
@@ -451,8 +441,7 @@ public final class WireNetwork implements NetworkObject {
 
 	ArrayList<WirePath> getPathsStartingAt(WireEmitter start) {
 		ArrayList<WirePath> li = new ArrayList();
-		for (int i = 0; i < paths.size(); i++) {
-			WirePath path = paths.get(i);
+		for (WirePath path : paths) {
 			if (path.startsAt(start.getX(), start.getY(), start.getZ())) {
 				li.add(path);
 			}
