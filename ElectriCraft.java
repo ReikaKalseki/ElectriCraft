@@ -60,7 +60,7 @@ public class ElectriCraft extends DragonAPIMod {
 	@Instance("ElectriCraft")
 	public static ElectriCraft instance = new ElectriCraft();
 
-	public static CreativeTabs tabElectri = new ElectriTab(CreativeTabs.getNextID(), "ElectriCraft");
+	public static CreativeTabs tabElectri = new ElectriTab("ElectriCraft");
 
 	public static final Block[] blocks = new Block[ElectriBlocks.blockList.length];
 	public static final Item[] items = new Item[ElectriItems.itemList.length];
@@ -75,7 +75,7 @@ public class ElectriCraft extends DragonAPIMod {
 	@EventHandler
 	public void preload(FMLPreInitializationEvent evt) {
 		this.startTiming(LoadPhase.PRELOAD);
-		this.verifyVersions();
+		this.verifyInstallation();
 		config.loadSubfolderedConfigFile(evt);
 		config.initProps(evt);
 

@@ -9,34 +9,22 @@
  ******************************************************************************/
 package Reika.ElectriCraft.Auxiliary;
 
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import Reika.DragonAPI.Instantiable.GUI.EnumCreativeTab;
 import Reika.ElectriCraft.Registry.ElectriTiles;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ElectriTab extends CreativeTabs {
+public class ElectriTab extends EnumCreativeTab {
 
-	public ElectriTab(int position, String tabID) {
-		super(position, tabID);
+	public ElectriTab(String tabID) {
+		super(tabID);
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public ItemStack getIconItemStack() {
 		return ElectriTiles.WIRE.getCraftedProduct();
-	}
-
-	@Override
-	public String getTranslatedTabLabel() {
-		return "ElectriCraft";
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public Item getTabIconItem() {
-		return null;
 	}
 
 }
