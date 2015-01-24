@@ -21,6 +21,7 @@ import Reika.ChromatiCraft.API.AcceleratorBlacklist;
 import Reika.ChromatiCraft.API.AcceleratorBlacklist.BlacklistReason;
 import Reika.DragonAPI.DragonAPICore;
 import Reika.DragonAPI.ModList;
+import Reika.DragonAPI.Auxiliary.CreativeTabSorter;
 import Reika.DragonAPI.Auxiliary.NEI_DragonAPI_Config;
 import Reika.DragonAPI.Auxiliary.Trackers.CommandableUpdateChecker;
 import Reika.DragonAPI.Auxiliary.Trackers.IntegrityChecker;
@@ -87,6 +88,8 @@ public class ElectriCraft extends DragonAPIMod {
 		ElectriTiles.loadMappings();
 
 		ReikaPacketHelper.registerPacketHandler(instance, packetChannel, new ElectriPacketCore());
+
+		CreativeTabSorter.instance.registerCreativeTabAfter(tabElectri, RotaryCraft.tabRotary);
 
 		this.basicSetup(evt);
 		this.finishTiming();
