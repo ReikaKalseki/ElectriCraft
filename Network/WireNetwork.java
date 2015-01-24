@@ -26,7 +26,11 @@ import Reika.ElectriCraft.Auxiliary.WireEmitter;
 import Reika.ElectriCraft.Auxiliary.WireReceiver;
 import Reika.ElectriCraft.Base.NetworkTileEntity;
 import Reika.ElectriCraft.Base.WiringTile;
+import Reika.ElectriCraft.TileEntities.TileEntityGenerator;
 import Reika.ElectriCraft.TileEntities.TileEntityWire;
+import Reika.RotaryCraft.API.Power.ShaftMerger;
+import Reika.RotaryCraft.Auxiliary.PowerSourceList;
+import Reika.RotaryCraft.Auxiliary.Interfaces.PowerSourceTracker;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public final class WireNetwork implements NetworkObject {
@@ -451,6 +455,16 @@ public final class WireNetwork implements NetworkObject {
 
 	public int getNumberPathsStartingAt(WireEmitter start) {
 		return this.getPathsStartingAt(start).size();
+	}
+
+	public PowerSourceList getInputSources(PowerSourceTracker io, ShaftMerger caller) {
+		PowerSourceList p = new PowerSourceList();
+		for (WireEmitter w : sources) {
+			if (w instanceof TileEntityGenerator) {
+				p.addAll(((TileEntityGenerator)w).getPowerSources(io, caller));
+			}
+		}
+		return p;
 	}
 
 }

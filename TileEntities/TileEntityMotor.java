@@ -31,15 +31,18 @@ import Reika.ElectriCraft.Base.ElectricalReceiver;
 import Reika.ElectriCraft.Network.WireNetwork;
 import Reika.ElectriCraft.Registry.ElectriTiles;
 import Reika.RotaryCraft.API.Interfaces.Screwdriverable;
+import Reika.RotaryCraft.API.Power.ShaftMerger;
 import Reika.RotaryCraft.API.Power.ShaftPowerEmitter;
 import Reika.RotaryCraft.API.Power.ShaftPowerReceiver;
 import Reika.RotaryCraft.Auxiliary.ItemStacks;
+import Reika.RotaryCraft.Auxiliary.PowerSourceList;
 import Reika.RotaryCraft.Auxiliary.Interfaces.NBTMachine;
+import Reika.RotaryCraft.Auxiliary.Interfaces.PowerSourceTracker;
 import Reika.RotaryCraft.Registry.ConfigRegistry;
 import Reika.RotaryCraft.Registry.EngineType;
 import Reika.RotaryCraft.Registry.SoundRegistry;
 
-public class TileEntityMotor extends ElectricalReceiver implements Screwdriverable, ShaftPowerEmitter, ConversionTile, NBTMachine {
+public class TileEntityMotor extends ElectricalReceiver implements Screwdriverable, ShaftPowerEmitter, ConversionTile, NBTMachine, PowerSourceTracker {
 
 	private static final int soundtime = (int)(EngineType.DC.getSoundLength()*2.04F);
 	private StepTimer soundTimer = new StepTimer(soundtime);
@@ -325,5 +328,25 @@ public class TileEntityMotor extends ElectricalReceiver implements Screwdriverab
 			li.add(String.format("Contains a %dx amplifier", amp));
 		}
 		return li;
+	}
+
+	@Override
+	public PowerSourceList getPowerSources(PowerSourceTracker io, ShaftMerger caller) {
+		return network != null ? network.getInputSources(io, caller) : new PowerSourceList();
+	}
+
+	@Override
+	public int getIoOffsetX() {
+		return 0;
+	}
+
+	@Override
+	public int getIoOffsetY() {
+		return 0;
+	}
+
+	@Override
+	public int getIoOffsetZ() {
+		return 0;
 	}
 }

@@ -10,12 +10,12 @@
 package Reika.ElectriCraft.Auxiliary;
 
 import net.minecraft.item.ItemStack;
-import Reika.DragonAPI.Instantiable.GUI.EnumCreativeTab;
+import Reika.DragonAPI.Instantiable.GUI.RegistryEnumCreativeTab;
 import Reika.ElectriCraft.Registry.ElectriTiles;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ElectriTab extends EnumCreativeTab {
+public class ElectriTab extends RegistryEnumCreativeTab {
 
 	public ElectriTab(String tabID) {
 		super(tabID);

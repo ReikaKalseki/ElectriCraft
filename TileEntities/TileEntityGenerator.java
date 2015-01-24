@@ -19,9 +19,12 @@ import Reika.ElectriCraft.Network.WireNetwork;
 import Reika.ElectriCraft.Registry.ElectriTiles;
 import Reika.RotaryCraft.API.Interfaces.Screwdriverable;
 import Reika.RotaryCraft.API.Power.PowerTransferHelper;
+import Reika.RotaryCraft.API.Power.ShaftMerger;
 import Reika.RotaryCraft.API.Power.ShaftPowerReceiver;
+import Reika.RotaryCraft.Auxiliary.PowerSourceList;
+import Reika.RotaryCraft.Auxiliary.Interfaces.PowerSourceTracker;
 
-public class TileEntityGenerator extends ElectricalEmitter implements Screwdriverable, ShaftPowerReceiver, ConversionTile {
+public class TileEntityGenerator extends ElectricalEmitter implements Screwdriverable, ShaftPowerReceiver, ConversionTile, PowerSourceTracker {
 
 	private int lastomega;
 	private int lasttorque;
@@ -221,5 +224,26 @@ public class TileEntityGenerator extends ElectricalEmitter implements Screwdrive
 	@Override
 	public int getMinTorque(int available) {
 		return torque;
+	}
+
+	@Override
+	public PowerSourceList getPowerSources(PowerSourceTracker io, ShaftMerger caller) {
+		ForgeDirection dir = this.getFacing();
+		return PowerSourceList.getAllFrom(worldObj, dir, xCoord+dir.offsetX, yCoord+dir.offsetY, zCoord+dir.offsetZ, this, caller);
+	}
+
+	@Override
+	public int getIoOffsetX() {
+		return 0;
+	}
+
+	@Override
+	public int getIoOffsetY() {
+		return 0;
+	}
+
+	@Override
+	public int getIoOffsetZ() {
+		return 0;
 	}
 }
