@@ -46,6 +46,7 @@ import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLInterModComms;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
@@ -90,6 +91,8 @@ public class ElectriCraft extends DragonAPIMod {
 		ReikaPacketHelper.registerPacketHandler(instance, packetChannel, new ElectriPacketCore());
 
 		CreativeTabSorter.instance.registerCreativeTabAfter(tabElectri, RotaryCraft.tabRotary);
+
+		FMLInterModComms.sendMessage("CustomConfigs", "blacklist-mod-as-output", this.getModContainer().getModId());
 
 		this.basicSetup(evt);
 		this.finishTiming();
