@@ -11,9 +11,12 @@ package Reika.ElectriCraft.Network.RF;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 
+import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
+import Reika.DragonAPI.Instantiable.Data.Immutable.WorldLocation;
 import Reika.ElectriCraft.ElectriCraft;
 import Reika.ElectriCraft.NetworkObject;
 import Reika.ElectriCraft.Auxiliary.ElectriNetworkTickEvent;
@@ -26,7 +29,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 public class RFNetwork implements NetworkObject {
 
 	private final Collection<TileEntityRFCable> cables = new ArrayList();
-	private final Collection<EnergyInteraction> endpoints = new ArrayList();
+	private final HashMap<WorldLocation, EnergyInteraction> endpoints = new HashMap();
 	private int energy = 0;
 	private int networkLimit;
 
@@ -58,7 +61,7 @@ public class RFNetwork implements NetworkObject {
 			ArrayList<EnergyInteraction> insertibles = new ArrayList();
 			int maxCanPush = energy;
 			//ReikaJavaLibrary.pConsole(this.getIOLimit(), Side.SERVER);
-			for (EnergyInteraction ei : endpoints) {
+			for (EnergyInteraction ei : endpoints.values()) {
 				maxCanPush += ei.getTotalInsertible();
 				if (ei.isCollectible()) {
 					collectibles.add(ei);
@@ -112,7 +115,7 @@ public class RFNetwork implements NetworkObject {
 			return;
 		EnergyInteraction has = this.getInteractionFor(ih);
 		if (has == null) {
-			endpoints.add(new EnergyInteraction(ih, dir));
+			endpoints.put(new WorldLocation((TileEntity)ih), new EnergyInteraction(ih, dir));
 		}
 		else {
 			has.addSide(dir);
@@ -125,10 +128,10 @@ public class RFNetwork implements NetworkObject {
 			for (TileEntityRFCable wire : cables) {
 				li.add(wire);
 			}
-			for (EnergyInteraction ei : endpoints) {
+			for (EnergyInteraction ei : endpoints.values()) {
 				EnergyInteraction has = this.getInteractionFor(ei.tile);
 				if (has == null) {
-					endpoints.add(ei);
+					endpoints.put(new WorldLocation((TileEntity)ei.tile), ei);
 				}
 				else {
 					has.merge(ei);
@@ -146,11 +149,7 @@ public class RFNetwork implements NetworkObject {
 	}
 
 	private EnergyInteraction getInteractionFor(IEnergyHandler tile) {
-		for (EnergyInteraction ei : endpoints) {
-			if (ei.contains(tile))
-				return ei;
-		}
-		return null;
+		return endpoints.get(new WorldLocation((TileEntity)tile));
 	}
 
 	private void updateWires() {
@@ -174,6 +173,29 @@ public class RFNetwork implements NetworkObject {
 		catch (Exception e) { //randomly??
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public String toString() {
+		return cables.size()+": "+endpoints.toString();
+	}
+
+	public int drainEnergy(int maxReceive, boolean simulate) {
+		maxReceive = Math.min(maxReceive, this.getIOLimit());
+		int drain = Math.min(maxReceive, energy);
+		if (!simulate)
+			energy -= drain;
+		return drain;
+	}
+
+	public int addEnergy(int maxAdd, boolean simulate) {
+		//ReikaJavaLibrary.pConsole(this.getIOLimit()+"/"+energy, Side.SERVER);
+		if (energy >= this.getIOLimit())
+			return 0;
+		maxAdd = Math.min(this.getIOLimit(), maxAdd);
+		if (!simulate)
+			energy += maxAdd;
+		return maxAdd;
 	}
 
 	private static class EnergyInteraction {
@@ -264,29 +286,20 @@ public class RFNetwork implements NetworkObject {
 		public String toString() {
 			return tile+" @ "+sides;
 		}
-	}
 
-	@Override
-	public String toString() {
-		return cables.size()+": "+endpoints.toString();
-	}
+		@Override
+		public boolean equals(Object o) {
+			if (o instanceof EnergyInteraction) {
+				EnergyInteraction ei = (EnergyInteraction)o;
+				return ei.tile.equals(tile) && ei.sides.equals(sides);
+			}
+			return false;
+		}
 
-	public int drainEnergy(int maxReceive, boolean simulate) {
-		maxReceive = Math.min(maxReceive, this.getIOLimit());
-		int drain = Math.min(maxReceive, energy);
-		if (!simulate)
-			energy -= drain;
-		return drain;
-	}
-
-	public int addEnergy(int maxAdd, boolean simulate) {
-		//ReikaJavaLibrary.pConsole(this.getIOLimit()+"/"+energy, Side.SERVER);
-		if (energy >= this.getIOLimit())
-			return 0;
-		maxAdd = Math.min(this.getIOLimit(), maxAdd);
-		if (!simulate)
-			energy += maxAdd;
-		return maxAdd;
+		@Override
+		public int hashCode() {
+			return tile.hashCode()^sides.hashCode();
+		}
 	}
 
 }

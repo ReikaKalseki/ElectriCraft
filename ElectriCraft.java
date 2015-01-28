@@ -21,6 +21,7 @@ import Reika.ChromatiCraft.API.AcceleratorBlacklist;
 import Reika.ChromatiCraft.API.AcceleratorBlacklist.BlacklistReason;
 import Reika.DragonAPI.DragonAPICore;
 import Reika.DragonAPI.ModList;
+import Reika.DragonAPI.ASM.DependentMethodStripper.ModDependent;
 import Reika.DragonAPI.Auxiliary.CreativeTabSorter;
 import Reika.DragonAPI.Auxiliary.NEI_DragonAPI_Config;
 import Reika.DragonAPI.Auxiliary.Trackers.CommandableUpdateChecker;
@@ -35,12 +36,14 @@ import Reika.DragonAPI.Libraries.Java.ReikaJavaLibrary;
 import Reika.DragonAPI.ModInteract.ReikaEEHelper;
 import Reika.DragonAPI.ModInteract.ReikaThaumHelper;
 import Reika.ElectriCraft.Auxiliary.ElectriTab;
+import Reika.ElectriCraft.Base.NetworkTileEntity;
 import Reika.ElectriCraft.Registry.ElectriBlocks;
 import Reika.ElectriCraft.Registry.ElectriItems;
 import Reika.ElectriCraft.Registry.ElectriOptions;
 import Reika.ElectriCraft.Registry.ElectriOres;
 import Reika.ElectriCraft.Registry.ElectriTiles;
 import Reika.RotaryCraft.RotaryCraft;
+import WayofTime.alchemicalWizardry.api.event.TeleposeEvent;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -49,6 +52,8 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLInterModComms;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.eventhandler.EventPriority;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -92,7 +97,7 @@ public class ElectriCraft extends DragonAPIMod {
 
 		CreativeTabSorter.instance.registerCreativeTabAfter(tabElectri, RotaryCraft.tabRotary);
 
-		FMLInterModComms.sendMessage("CustomConfigs", "blacklist-mod-as-output", this.getModContainer().getModId());
+		FMLInterModComms.sendMessage("zzzzzcustomconfigs", "blacklist-mod-as-output", this.getModContainer().getModId());
 
 		this.basicSetup(evt);
 		this.finishTiming();
@@ -169,6 +174,13 @@ public class ElectriCraft extends DragonAPIMod {
 			ReikaThaumHelper.addAspects(ElectriOres.NICKEL.getProduct(), Aspect.METAL, 2);
 		}
 		this.finishTiming();
+	}
+
+	@SubscribeEvent(priority = EventPriority.LOWEST)
+	@ModDependent(ModList.BLOODMAGIC)
+	public void noTelepose(TeleposeEvent evt) {
+		if (evt.getInitialTile() instanceof NetworkTileEntity || evt.getFinalTile() instanceof NetworkTileEntity)
+			evt.setCanceled(true);
 	}
 
 	@Override
