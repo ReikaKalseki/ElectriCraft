@@ -129,7 +129,7 @@ public class ElectriCraft extends DragonAPIMod {
 		proxy.registerRenderers();
 		GameRegistry.registerWorldGenerator(new ElectriOreGenerator(), 0);
 
-		TickRegistry.instance.registerTickHandler(new NetworkTicker(), Side.SERVER);
+		TickRegistry.instance.registerTickHandler(ElectriNetworkManager.instance, Side.SERVER);
 
 		IntegrityChecker.instance.addMod(instance, ElectriBlocks.blockList, ElectriItems.itemList);
 

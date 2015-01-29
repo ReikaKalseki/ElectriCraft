@@ -18,6 +18,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
 import Reika.DragonAPI.Instantiable.Data.Immutable.WorldLocation;
 import Reika.ElectriCraft.ElectriCraft;
+import Reika.ElectriCraft.ElectriNetworkManager;
 import Reika.ElectriCraft.NetworkObject;
 import Reika.ElectriCraft.Auxiliary.ElectriNetworkTickEvent;
 import Reika.ElectriCraft.TileEntities.TileEntityRFCable;
@@ -167,12 +168,7 @@ public class RFNetwork implements NetworkObject {
 		endpoints.clear();
 		energy = 0;
 
-		try {
-			MinecraftForge.EVENT_BUS.unregister(this);
-		}
-		catch (Exception e) { //randomly??
-			e.printStackTrace();
-		}
+		ElectriNetworkManager.instance.scheduleNetworkDiscard(this);
 	}
 
 	@Override
