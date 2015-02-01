@@ -34,6 +34,7 @@ import Reika.DragonAPI.Instantiable.IO.ModLogger;
 import Reika.DragonAPI.Libraries.ReikaRegistryHelper;
 import Reika.DragonAPI.Libraries.IO.ReikaPacketHelper;
 import Reika.DragonAPI.Libraries.Java.ReikaJavaLibrary;
+import Reika.DragonAPI.ModInteract.MTInteractionManager;
 import Reika.DragonAPI.ModInteract.ReikaEEHelper;
 import Reika.DragonAPI.ModInteract.ReikaThaumHelper;
 import Reika.ElectriCraft.Auxiliary.ElectriTab;
@@ -43,6 +44,7 @@ import Reika.ElectriCraft.Registry.ElectriItems;
 import Reika.ElectriCraft.Registry.ElectriOptions;
 import Reika.ElectriCraft.Registry.ElectriOres;
 import Reika.ElectriCraft.Registry.ElectriTiles;
+import Reika.ElectriCraft.Registry.WireType;
 import Reika.RotaryCraft.RotaryCraft;
 import WayofTime.alchemicalWizardry.api.event.TeleposeEvent;
 import cpw.mods.fml.common.Mod;
@@ -145,6 +147,13 @@ public class ElectriCraft extends DragonAPIMod {
 
 		ReikaEEHelper.blacklistRegistry(ElectriBlocks.blockList);
 		ReikaEEHelper.blacklistRegistry(ElectriItems.itemList);
+
+		MTInteractionManager.instance.blacklistNewRecipesFor(ElectriItems.PLACER.getItemInstance());
+		MTInteractionManager.instance.blacklistNewRecipesFor(ElectriItems.BATTERY.getItemInstance());
+		MTInteractionManager.instance.blacklistNewRecipesFor(ElectriItems.RFBATTERY.getItemInstance());
+
+		MTInteractionManager.instance.blacklistNewRecipesFor(WireType.SUPERCONDUCTOR.getCraftedProduct());
+		MTInteractionManager.instance.blacklistNewRecipesFor(WireType.SUPERCONDUCTOR.getCraftedInsulatedProduct());
 
 		this.finishTiming();
 	}
