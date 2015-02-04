@@ -15,10 +15,16 @@ import net.minecraft.block.Block;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.feature.WorldGenMinable;
+import Reika.DragonAPI.Interfaces.RetroactiveGenerator;
 import Reika.ElectriCraft.Registry.ElectriOres;
-import cpw.mods.fml.common.IWorldGenerator;
 
-public class ElectriOreGenerator implements IWorldGenerator {
+public class ElectriOreGenerator implements RetroactiveGenerator {
+
+	public static final ElectriOreGenerator instance = new ElectriOreGenerator();
+
+	private ElectriOreGenerator() {
+
+	}
 
 	@Override
 	public void generate(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkgen, IChunkProvider provider) {
@@ -47,6 +53,16 @@ public class ElectriOreGenerator implements IWorldGenerator {
 					;//ReikaJavaLibrary.pConsole(ore+" @ "+posX+", "+posY+", "+posZ, ore == ElectriOres.MAGNETITE);
 			}
 		}
+	}
+
+	@Override
+	public boolean canGenerateAt(Random rand, World world, int chunkX, int chunkZ) {
+		return true;
+	}
+
+	@Override
+	public String getIDString() {
+		return "ElectriCraft Ores";
 	}
 
 }

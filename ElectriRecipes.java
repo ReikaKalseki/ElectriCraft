@@ -20,7 +20,7 @@ import net.minecraftforge.oredict.ShapelessOreRecipe;
 import Reika.DragonAPI.ModList;
 import Reika.DragonAPI.Libraries.ReikaRecipeHelper;
 import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
-import Reika.DragonAPI.ModInteract.ThermalRecipeHelper;
+import Reika.DragonAPI.ModInteract.RecipeHandlers.ThermalRecipeHelper;
 import Reika.DragonAPI.ModRegistry.PowerTypes;
 import Reika.ElectriCraft.Items.ItemWirePlacer;
 import Reika.ElectriCraft.Registry.BatteryType;

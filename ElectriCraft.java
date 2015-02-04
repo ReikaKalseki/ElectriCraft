@@ -16,6 +16,7 @@ import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import thaumcraft.api.aspects.Aspect;
 import Reika.ChromatiCraft.API.AcceleratorBlacklist;
 import Reika.ChromatiCraft.API.AcceleratorBlacklist.BlacklistReason;
@@ -27,6 +28,7 @@ import Reika.DragonAPI.Auxiliary.CreativeTabSorter;
 import Reika.DragonAPI.Auxiliary.NEI_DragonAPI_Config;
 import Reika.DragonAPI.Auxiliary.Trackers.CommandableUpdateChecker;
 import Reika.DragonAPI.Auxiliary.Trackers.IntegrityChecker;
+import Reika.DragonAPI.Auxiliary.Trackers.RetroGenController;
 import Reika.DragonAPI.Auxiliary.Trackers.TickRegistry;
 import Reika.DragonAPI.Base.DragonAPIMod;
 import Reika.DragonAPI.Base.DragonAPIMod.LoadProfiler.LoadPhase;
@@ -34,9 +36,10 @@ import Reika.DragonAPI.Instantiable.IO.ModLogger;
 import Reika.DragonAPI.Libraries.ReikaRegistryHelper;
 import Reika.DragonAPI.Libraries.IO.ReikaPacketHelper;
 import Reika.DragonAPI.Libraries.Java.ReikaJavaLibrary;
+import Reika.DragonAPI.ModInteract.FrameBlacklist.FrameUsageEvent;
 import Reika.DragonAPI.ModInteract.MTInteractionManager;
 import Reika.DragonAPI.ModInteract.ReikaEEHelper;
-import Reika.DragonAPI.ModInteract.ReikaThaumHelper;
+import Reika.DragonAPI.ModInteract.DeepInteract.ReikaThaumHelper;
 import Reika.ElectriCraft.Auxiliary.ElectriTab;
 import Reika.ElectriCraft.Base.NetworkTileEntity;
 import Reika.ElectriCraft.Registry.ElectriBlocks;
@@ -130,7 +133,7 @@ public class ElectriCraft extends DragonAPIMod {
 	public void load(FMLInitializationEvent event) {
 		this.startTiming(LoadPhase.LOAD);
 		proxy.registerRenderers();
-		GameRegistry.registerWorldGenerator(new ElectriOreGenerator(), 0);
+		RetroGenController.instance.addHybridGenerator(ElectriOreGenerator.instance, 0, ElectriOptions.RETROGEN.getState());
 
 		TickRegistry.instance.registerTickHandler(ElectriNetworkManager.instance, Side.SERVER);
 
@@ -148,12 +151,14 @@ public class ElectriCraft extends DragonAPIMod {
 		ReikaEEHelper.blacklistRegistry(ElectriBlocks.blockList);
 		ReikaEEHelper.blacklistRegistry(ElectriItems.itemList);
 
-		MTInteractionManager.instance.blacklistNewRecipesFor(ElectriItems.PLACER.getItemInstance());
-		MTInteractionManager.instance.blacklistNewRecipesFor(ElectriItems.BATTERY.getItemInstance());
-		MTInteractionManager.instance.blacklistNewRecipesFor(ElectriItems.RFBATTERY.getItemInstance());
+		if (MTInteractionManager.isMTLoaded()) {
+			MTInteractionManager.instance.blacklistNewRecipesFor(ElectriItems.PLACER.getItemInstance());
+			MTInteractionManager.instance.blacklistNewRecipesFor(ElectriItems.BATTERY.getItemInstance());
+			MTInteractionManager.instance.blacklistNewRecipesFor(ElectriItems.RFBATTERY.getItemInstance());
 
-		MTInteractionManager.instance.blacklistNewRecipesFor(WireType.SUPERCONDUCTOR.getCraftedProduct());
-		MTInteractionManager.instance.blacklistNewRecipesFor(WireType.SUPERCONDUCTOR.getCraftedInsulatedProduct());
+			MTInteractionManager.instance.blacklistNewRecipesFor(WireType.SUPERCONDUCTOR.getCraftedProduct());
+			MTInteractionManager.instance.blacklistNewRecipesFor(WireType.SUPERCONDUCTOR.getCraftedInsulatedProduct());
+		}
 
 		this.finishTiming();
 	}
@@ -186,12 +191,23 @@ public class ElectriCraft extends DragonAPIMod {
 		this.finishTiming();
 	}
 
+	@SubscribeEvent
+	public void cancelFramez(FrameUsageEvent evt) {
+		if (!this.isMovable(evt.tile)) {
+			evt.setCanceled(true);
+		}
+	}
+
 	@SubscribeEvent(priority = EventPriority.LOWEST)
 	@ModDependent(ModList.BLOODMAGIC)
 	@ClassDependent("WayofTime.alchemicalWizardry.api.event.TeleposeEvent")
 	public void noTelepose(TeleposeEvent evt) {
-		if (evt.getInitialTile() instanceof NetworkTileEntity || evt.getFinalTile() instanceof NetworkTileEntity)
+		if (!this.isMovable(evt.getInitialTile()) || !this.isMovable(evt.getFinalTile()))
 			evt.setCanceled(true);
+	}
+
+	private boolean isMovable(TileEntity te) {
+		return !(te instanceof NetworkTileEntity);
 	}
 
 	@Override
