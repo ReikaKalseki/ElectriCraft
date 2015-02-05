@@ -22,7 +22,7 @@ import Reika.DragonAPI.ModList;
 import Reika.DragonAPI.ASM.APIStripper.Strippable;
 import Reika.DragonAPI.ASM.DependentMethodStripper.ModDependent;
 import Reika.DragonAPI.Libraries.World.ReikaWorldHelper;
-import Reika.DragonAPI.ModInteract.ReikaEUHelper;
+import Reika.DragonAPI.ModInteract.Power.ReikaEUHelper;
 import Reika.ElectriCraft.Base.ElectriTileEntity;
 import Reika.ElectriCraft.Registry.ElectriTiles;
 import Reika.RotaryCraft.API.Interfaces.Screwdriverable;
