@@ -36,7 +36,12 @@ public class ElectriNetworkManager implements TickHandler {
 	@Override
 	public void tick(TickType type, Object... tickData) {
 		for (NetworkObject o : discard) {
-			MinecraftForge.EVENT_BUS.unregister(o);
+			try {
+				MinecraftForge.EVENT_BUS.unregister(o);
+			}
+			catch (Exception e) { //WHY
+				ElectriCraft.logger.logError("Forge Event Bus registration error, network "+o+" could not be cleaned. Consider restarting soon.");
+			}
 		}
 		discard.clear();
 		World world = (World)tickData[0];
