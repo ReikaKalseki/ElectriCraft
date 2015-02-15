@@ -37,9 +37,8 @@ import Reika.DragonAPI.Libraries.ReikaRegistryHelper;
 import Reika.DragonAPI.Libraries.IO.ReikaPacketHelper;
 import Reika.DragonAPI.Libraries.Java.ReikaJavaLibrary;
 import Reika.DragonAPI.ModInteract.MTInteractionManager;
-import Reika.DragonAPI.ModInteract.ReikaEEHelper;
-import Reika.DragonAPI.ModInteract.DeepInteract.ReikaThaumHelper;
 import Reika.DragonAPI.ModInteract.DeepInteract.FrameBlacklist.FrameUsageEvent;
+import Reika.DragonAPI.ModInteract.DeepInteract.ReikaThaumHelper;
 import Reika.ElectriCraft.Auxiliary.ElectriTab;
 import Reika.ElectriCraft.Base.NetworkTileEntity;
 import Reika.ElectriCraft.Registry.ElectriBlocks;
@@ -148,8 +147,8 @@ public class ElectriCraft extends DragonAPIMod {
 			NEI_DragonAPI_Config.hideBlocks(blocks);
 		}
 
-		ReikaEEHelper.blacklistRegistry(ElectriBlocks.blockList);
-		ReikaEEHelper.blacklistRegistry(ElectriItems.itemList);
+		//ReikaEEHelper.blacklistRegistry(ElectriBlocks.blockList);
+		//ReikaEEHelper.blacklistRegistry(ElectriItems.itemList);
 
 		if (MTInteractionManager.isMTLoaded()) {
 			MTInteractionManager.instance.blacklistNewRecipesFor(ElectriItems.PLACER.getItemInstance());
