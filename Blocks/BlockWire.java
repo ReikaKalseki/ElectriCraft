@@ -39,6 +39,7 @@ import Reika.DragonAPI.ModList;
 import Reika.DragonAPI.ASM.APIStripper.Strippable;
 import Reika.DragonAPI.ASM.DependentMethodStripper.ModDependent;
 import Reika.DragonAPI.Libraries.ReikaEntityHelper;
+import Reika.DragonAPI.Libraries.Java.ReikaJavaLibrary;
 import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
 import Reika.ElectriCraft.ElectriCraft;
 import Reika.ElectriCraft.Base.ElectriBlock;
@@ -53,11 +54,13 @@ import Reika.RotaryCraft.Registry.SoundRegistry;
 @Strippable(value = {"mcp.mobius.waila.api.IWailaDataProvider"})
 public class BlockWire extends ElectriBlock implements IWailaDataProvider {
 
-	private static final IIcon[] textures = new IIcon[WireType.wireList.length];
-	private static final IIcon[] insulTextures = new IIcon[WireType.wireList.length];
+	private static final int nWires = ReikaJavaLibrary.getEnumLengthWithoutInitializing(WireType.class);
 
-	private static final IIcon[] texturesEnd = new IIcon[WireType.wireList.length];
-	private static final IIcon[] insulTexturesEnd = new IIcon[WireType.wireList.length];
+	private static final IIcon[] textures = new IIcon[nWires];
+	private static final IIcon[] insulTextures = new IIcon[nWires];
+
+	private static final IIcon[] texturesEnd = new IIcon[nWires];
+	private static final IIcon[] insulTexturesEnd = new IIcon[nWires];
 
 	public BlockWire(Material par2Material) {
 		super(par2Material);

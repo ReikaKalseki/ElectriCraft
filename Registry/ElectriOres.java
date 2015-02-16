@@ -108,17 +108,11 @@ public enum ElectriOres {
 	}
 
 	public ItemStack getProduct() {
-		switch(this) {
-		default:
-			return ElectriItems.INGOTS.getStackOfMetadata(this.ordinal());
-		}
+		return ElectriItems.INGOTS.getStackOfMetadata(this.ordinal());
 	}
 
 	public List<ItemStack> getOreDrop(int meta) {
-		switch(this) {
-		default:
-			return ReikaJavaLibrary.makeListFrom(new ItemStack(ElectriBlocks.ORE.getBlockInstance(), 1, meta));
-		}
+		return ReikaJavaLibrary.makeListFrom(new ItemStack(ElectriBlocks.ORE.getBlockInstance(), 1, meta));
 	}
 
 	public String getProductName() {

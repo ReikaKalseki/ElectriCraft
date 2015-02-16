@@ -27,13 +27,13 @@ import cpw.mods.fml.common.registry.GameRegistry;
 public enum WireType {
 
 	STEEL(			16, 				64, ItemStacks.steelingot),
-	TIN(			64, 				32, ElectriStacks.tinIngot, ModOreList.TIN, ModOreList.NETHERTIN),
-	NICKEL(			256, 				16, ElectriStacks.nickelIngot, ModOreList.NICKEL, ModOreList.NETHERNICKEL),
+	TIN(			64, 				32, ElectriStacks.tinIngot, ModOreList.TIN),
+	NICKEL(			256, 				16, ElectriStacks.nickelIngot, ModOreList.NICKEL),
 	ALUMINUM(		1024, 				8, 	ElectriStacks.aluminumIngot, ModOreList.ALUMINUM),
-	COPPER(			4096, 				2, 	ElectriStacks.copperIngot, ModOreList.COPPER, ModOreList.NETHERCOPPER),
-	SILVER(			32768, 				1, 	ElectriStacks.silverIngot, ModOreList.SILVER, ModOreList.NETHERSILVER),
+	COPPER(			4096, 				2, 	ElectriStacks.copperIngot, ModOreList.COPPER),
+	SILVER(			32768, 				1, 	ElectriStacks.silverIngot, ModOreList.SILVER),
 	GOLD(			65536, 				4, 	new ItemStack(Items.gold_ingot)),
-	PLATINUM(		131072, 			16, ElectriStacks.platinumIngot, ModOreList.PLATINUM, ModOreList.NETHERPLATINUM),
+	PLATINUM(		131072, 			16, ElectriStacks.platinumIngot, ModOreList.PLATINUM),
 	SUPERCONDUCTOR(	Integer.MAX_VALUE, 	0, 	null);
 
 	private final ItemStack material;
@@ -47,6 +47,8 @@ public enum WireType {
 	public static final WireType[] wireList = values();
 
 	private WireType(int max, int res, ItemStack mat, ModOreList... ores) {
+		if (mat != null && mat.getItem() == null)
+			throw new IllegalArgumentException("Null wire item!");
 		material = mat;
 		resistance = res;
 		maxCurrent = max;
@@ -84,7 +86,11 @@ public enum WireType {
 		li.add(material);
 		for (int i = 0; i < oreTypes.length; i++) {
 			String s = oreTypes[i];
-			li.addAll(OreDictionary.getOres(s));
+			ArrayList<ItemStack> li2 = OreDictionary.getOres(s);
+			for (ItemStack is2 : li2) {
+				if (!ReikaItemHelper.collectionContainsItemStack(li, is2))
+					li.add(is2);
+			}
 		}
 		return li;
 	}
@@ -96,8 +102,7 @@ public enum WireType {
 		ItemStack is = ReikaItemHelper.getSizedItemStack(this.getCraftedProduct(), amt);
 		ItemStack is2 = ReikaItemHelper.getSizedItemStack(this.getCraftedInsulatedProduct(), amt);
 		ArrayList<ItemStack> li = this.getAllValidCraftingIngots();
-		for (int i = 0; i < li.size(); i++) {
-			ItemStack in = li.get(i);
+		for (ItemStack in : li) {
 			Object[] obj2 = {"WIW", "WIW", "WIW", 'W', Blocks.wool, 'I', in};
 			Object[] obj = {"I", "I", "I", 'I', in};
 			WorktableRecipes.getInstance().addRecipe(is, obj);
