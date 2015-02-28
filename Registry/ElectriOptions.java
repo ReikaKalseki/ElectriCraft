@@ -14,7 +14,8 @@ import Reika.ElectriCraft.ElectriCraft;
 
 public enum ElectriOptions implements ConfigList {
 
-	RETROGEN("Retrogenerate Ores", false);
+	RETROGEN("Retrogenerate Ores", false),
+	DISCRETE("Ore Discretization", 1);
 
 	private String label;
 	private boolean defaultState;

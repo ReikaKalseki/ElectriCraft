@@ -16,6 +16,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.feature.WorldGenMinable;
 import Reika.DragonAPI.Interfaces.RetroactiveGenerator;
+import Reika.ElectriCraft.Registry.ElectriOptions;
 import Reika.ElectriCraft.Registry.ElectriOres;
 
 public class ElectriOreGenerator implements RetroactiveGenerator {
@@ -30,7 +31,7 @@ public class ElectriOreGenerator implements RetroactiveGenerator {
 	public void generate(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkgen, IChunkProvider provider) {
 		for (int i = 0; i < ElectriOres.oreList.length; i++) {
 			ElectriOres ore = ElectriOres.oreList[i];
-			if (ore.canGenerateInChunk(world, chunkX, chunkZ)) {
+			if (ore.canGenerateInChunk(world, chunkX, chunkZ) && random.nextInt(ElectriOptions.DISCRETE.getValue()) == 0) {
 				this.generate(ore, world, random, chunkX*16, chunkZ*16);
 			}
 		}
@@ -41,7 +42,7 @@ public class ElectriOreGenerator implements RetroactiveGenerator {
 		//ReikaJavaLibrary.pConsole(chunkX+", "+chunkZ);
 		Block id = ore.getBlock();
 		int meta = ore.getBlockMetadata();
-		int passes = ore.perChunk;
+		int passes = ore.perChunk*ElectriOptions.DISCRETE.getValue();
 		for (int i = 0; i < passes; i++) {
 			int posX = chunkX + random.nextInt(16);
 			int posZ = chunkZ + random.nextInt(16);
