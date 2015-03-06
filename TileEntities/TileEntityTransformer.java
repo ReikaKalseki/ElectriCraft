@@ -390,4 +390,9 @@ IFluidHandler, PipeConnector {
 		return new FluidTankInfo[0];
 	}
 
+	@Override
+	public boolean canBeCooledWithFins() {
+		return true;
+	}
+
 }
