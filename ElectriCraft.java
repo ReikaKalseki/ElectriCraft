@@ -36,9 +36,9 @@ import Reika.DragonAPI.Instantiable.IO.ModLogger;
 import Reika.DragonAPI.Libraries.ReikaRegistryHelper;
 import Reika.DragonAPI.Libraries.IO.ReikaPacketHelper;
 import Reika.DragonAPI.Libraries.Java.ReikaJavaLibrary;
-import Reika.DragonAPI.ModInteract.MTInteractionManager;
 import Reika.DragonAPI.ModInteract.DeepInteract.FrameBlacklist.FrameUsageEvent;
 import Reika.DragonAPI.ModInteract.DeepInteract.ReikaThaumHelper;
+import Reika.DragonAPI.ModInteract.DeepInteract.SensitiveItemRegistry;
 import Reika.ElectriCraft.Auxiliary.ElectriTab;
 import Reika.ElectriCraft.Base.NetworkTileEntity;
 import Reika.ElectriCraft.Registry.ElectriBlocks;
@@ -150,14 +150,12 @@ public class ElectriCraft extends DragonAPIMod {
 		//ReikaEEHelper.blacklistRegistry(ElectriBlocks.blockList);
 		//ReikaEEHelper.blacklistRegistry(ElectriItems.itemList);
 
-		if (MTInteractionManager.isMTLoaded()) {
-			MTInteractionManager.instance.blacklistNewRecipesFor(ElectriItems.PLACER.getItemInstance());
-			MTInteractionManager.instance.blacklistNewRecipesFor(ElectriItems.BATTERY.getItemInstance());
-			MTInteractionManager.instance.blacklistNewRecipesFor(ElectriItems.RFBATTERY.getItemInstance());
+		SensitiveItemRegistry.registerItem(ElectriItems.PLACER.getItemInstance());
+		SensitiveItemRegistry.registerItem(ElectriItems.BATTERY.getItemInstance());
+		SensitiveItemRegistry.registerItem(ElectriItems.RFBATTERY.getItemInstance());
 
-			MTInteractionManager.instance.blacklistNewRecipesFor(WireType.SUPERCONDUCTOR.getCraftedProduct());
-			MTInteractionManager.instance.blacklistNewRecipesFor(WireType.SUPERCONDUCTOR.getCraftedInsulatedProduct());
-		}
+		SensitiveItemRegistry.registerItem(WireType.SUPERCONDUCTOR.getCraftedProduct());
+		SensitiveItemRegistry.registerItem(WireType.SUPERCONDUCTOR.getCraftedInsulatedProduct());
 
 		this.finishTiming();
 	}

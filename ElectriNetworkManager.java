@@ -40,7 +40,7 @@ public class ElectriNetworkManager implements TickHandler {
 				MinecraftForge.EVENT_BUS.unregister(o);
 			}
 			catch (Exception e) { //WHY
-				ElectriCraft.logger.logError("Forge Event Bus registration error, network "+o+" could not be cleaned. Consider restarting soon.");
+				ElectriCraft.logger.logError("Forge Event Bus unregistration error, network "+o+" could not be cleaned. If you see many of these messages, consider restarting soon.");
 			}
 		}
 		discard.clear();
