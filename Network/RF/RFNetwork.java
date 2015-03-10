@@ -126,11 +126,11 @@ public class RFNetwork implements NetworkObject {
 	public void merge(RFNetwork n) {
 		if (n != this) {
 			ArrayList<TileEntityRFCable> li = new ArrayList();
-			for (TileEntityRFCable wire : cables) {
+			for (TileEntityRFCable wire : n.cables) {
 				li.add(wire);
 			}
-			for (EnergyInteraction ei : endpoints.values()) {
-				EnergyInteraction has = this.getInteractionFor(ei.tile);
+			for (EnergyInteraction ei : n.endpoints.values()) {
+				EnergyInteraction has = n.getInteractionFor(ei.tile);
 				if (has == null) {
 					endpoints.put(new WorldLocation((TileEntity)ei.tile), ei);
 				}
@@ -139,8 +139,7 @@ public class RFNetwork implements NetworkObject {
 				}
 			}
 			n.clear(false);
-			for (int i = 0; i < li.size(); i++) {
-				TileEntityRFCable wire = li.get(i);
+			for (TileEntityRFCable wire : li) {
 				wire.setNetwork(this);
 			}
 			if (n.getIOLimit() != 0 && n.networkLimit != networkLimit)
