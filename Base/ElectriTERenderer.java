@@ -14,6 +14,7 @@ import net.minecraftforge.client.MinecraftForgeClient;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
+import Reika.DragonAPI.Base.TileEntityBase;
 import Reika.DragonAPI.Base.TileEntityRenderBase;
 import Reika.DragonAPI.Interfaces.TextureFetcher;
 import Reika.ElectriCraft.ElectriCraft;
@@ -53,5 +54,10 @@ public abstract class ElectriTERenderer extends TileEntityRenderBase implements 
 			GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 		GL11.glPopMatrix();
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+	}
+
+	@Override
+	protected final boolean doRenderModel(TileEntityBase te) {
+		return this.isValidMachineRenderPass(te);
 	}
 }

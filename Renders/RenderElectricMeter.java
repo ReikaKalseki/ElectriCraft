@@ -90,7 +90,7 @@ public class RenderElectricMeter extends ElectriTERenderer
 	@Override
 	public void renderTileEntityAt(TileEntity tile, double par2, double par4, double par6, float par8)
 	{
-		if (this.isValidMachineRenderpass((TileEntityMeter)tile))
+		if (this.doRenderModel((TileEntityMeter)tile))
 			this.renderTileEntityMeterAt((TileEntityMeter)tile, par2, par4, par6, par8);
 		if (((TileEntityMeter) tile).isInWorld() && MinecraftForgeClient.getRenderPass() == 1) {
 			IORenderer.renderIO(tile, par2, par4, par6);
