@@ -39,6 +39,7 @@ import Reika.DragonAPI.Libraries.Java.ReikaJavaLibrary;
 import Reika.DragonAPI.ModInteract.DeepInteract.FrameBlacklist.FrameUsageEvent;
 import Reika.DragonAPI.ModInteract.DeepInteract.ReikaThaumHelper;
 import Reika.DragonAPI.ModInteract.DeepInteract.SensitiveItemRegistry;
+import Reika.DragonAPI.ModInteract.DeepInteract.TimeTorchHelper;
 import Reika.ElectriCraft.Auxiliary.ElectriTab;
 import Reika.ElectriCraft.Base.NetworkTileEntity;
 import Reika.ElectriCraft.Registry.ElectriBlocks;
@@ -168,6 +169,7 @@ public class ElectriCraft extends DragonAPIMod {
 			for (int i = 0; i < ElectriTiles.TEList.length; i++) {
 				ElectriTiles m = ElectriTiles.TEList[i];
 				AcceleratorBlacklist.addBlacklist(m.getTEClass(), m.getName(), BlacklistReason.EXPLOIT);
+				TimeTorchHelper.blacklistTileEntity(m.getTEClass());
 			}
 		}
 
