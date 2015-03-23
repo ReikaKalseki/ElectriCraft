@@ -11,6 +11,7 @@ package Reika.ElectriCraft.TileEntities;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import Reika.DragonAPI.Libraries.MathSci.ReikaEngLibrary;
@@ -19,7 +20,9 @@ import Reika.ElectriCraft.Auxiliary.BatteryTile;
 import Reika.ElectriCraft.Base.ElectriTileEntity;
 import Reika.ElectriCraft.Registry.ElectriItems;
 import Reika.ElectriCraft.Registry.ElectriTiles;
+import cofh.api.energy.IEnergyConnection;
 import cofh.api.energy.IEnergyHandler;
+import cofh.api.energy.IEnergyReceiver;
 
 public class TileEntityRFBattery extends ElectriTileEntity implements BatteryTile, IEnergyHandler {
 
@@ -59,6 +62,27 @@ public class TileEntityRFBattery extends ElectriTileEntity implements BatteryTil
 	public void updateEntity(World world, int x, int y, int z, int meta) {
 		if (world.getTotalWorldTime()%64 == 0) {
 			world.markBlockForUpdate(x, y, z);
+		}
+
+		if (world.isBlockIndirectlyGettingPowered(x, y, z)) {
+			int exp = (int)Math.min(energy, Integer.MAX_VALUE);
+			if (exp > 0) {
+				TileEntity te = this.getAdjacentTileEntity(ForgeDirection.UP);
+				if (te instanceof IEnergyConnection) {
+					if (((IEnergyConnection)te).canConnectEnergy(ForgeDirection.DOWN)) {
+						if (te instanceof IEnergyReceiver) {
+							IEnergyReceiver ier = (IEnergyReceiver)te;
+							int added = ier.receiveEnergy(ForgeDirection.DOWN, exp, false);
+							energy -= added;
+						}
+						else if (te instanceof IEnergyHandler) {
+							IEnergyHandler ieh = (IEnergyHandler)te;
+							int added = ieh.receiveEnergy(ForgeDirection.DOWN, exp, false);
+							energy -= added;
+						}
+					}
+				}
+			}
 		}
 	}
 

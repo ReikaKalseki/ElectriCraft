@@ -151,12 +151,12 @@ public class ElectriCraft extends DragonAPIMod {
 		//ReikaEEHelper.blacklistRegistry(ElectriBlocks.blockList);
 		//ReikaEEHelper.blacklistRegistry(ElectriItems.itemList);
 
-		SensitiveItemRegistry.registerItem(ElectriItems.PLACER.getItemInstance());
-		SensitiveItemRegistry.registerItem(ElectriItems.BATTERY.getItemInstance());
-		SensitiveItemRegistry.registerItem(ElectriItems.RFBATTERY.getItemInstance());
+		SensitiveItemRegistry.instance.registerItem(ElectriItems.PLACER.getItemInstance());
+		SensitiveItemRegistry.instance.registerItem(ElectriItems.BATTERY.getItemInstance());
+		SensitiveItemRegistry.instance.registerItem(ElectriItems.RFBATTERY.getItemInstance());
 
-		SensitiveItemRegistry.registerItem(WireType.SUPERCONDUCTOR.getCraftedProduct());
-		SensitiveItemRegistry.registerItem(WireType.SUPERCONDUCTOR.getCraftedInsulatedProduct());
+		SensitiveItemRegistry.instance.registerItem(WireType.SUPERCONDUCTOR.getCraftedProduct());
+		SensitiveItemRegistry.instance.registerItem(WireType.SUPERCONDUCTOR.getCraftedInsulatedProduct());
 
 		this.finishTiming();
 	}
