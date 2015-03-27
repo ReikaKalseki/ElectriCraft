@@ -67,6 +67,8 @@ build/
 *.sbr
 *.tlb
 *.tcn
+*.pdn
+*.rar
 *.tli
 *.tlh
 *.tmp
