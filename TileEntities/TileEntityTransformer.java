@@ -395,4 +395,8 @@ IFluidHandler, PipeConnector {
 		return true;
 	}
 
+	public void setTemperature(int temp) {
+
+	}
+
 }
