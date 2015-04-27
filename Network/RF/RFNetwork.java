@@ -33,6 +33,7 @@ public class RFNetwork implements NetworkObject {
 	private final HashMap<WorldLocation, EnergyInteraction> endpoints = new HashMap();
 	private int energy = 0;
 	private int networkLimit;
+	private boolean disabled;
 
 	public void setIOLimit(int limit) {
 		if (networkLimit != limit) {
@@ -57,7 +58,7 @@ public class RFNetwork implements NetworkObject {
 
 	@SubscribeEvent
 	public void tick(ElectriNetworkTickEvent evt) {
-		if (!cables.isEmpty()) {
+		if (!disabled && !cables.isEmpty() && !endpoints.isEmpty()) {
 			ArrayList<EnergyInteraction> collectibles = new ArrayList();
 			ArrayList<EnergyInteraction> insertibles = new ArrayList();
 			int maxCanPush = energy;
@@ -71,6 +72,8 @@ public class RFNetwork implements NetworkObject {
 					insertibles.add(ei);
 				}
 			}
+
+			//ReikaJavaLibrary.pConsole(endpoints);
 
 			//ReikaJavaLibrary.pConsole(this.getIOLimit(), Side.SERVER);
 			maxCanPush = Math.min(this.getIOLimit(), maxCanPush);
@@ -130,7 +133,7 @@ public class RFNetwork implements NetworkObject {
 				li.add(wire);
 			}
 			for (EnergyInteraction ei : n.endpoints.values()) {
-				EnergyInteraction has = n.getInteractionFor(ei.tile);
+				EnergyInteraction has = this.getInteractionFor(ei.tile);
 				if (has == null) {
 					endpoints.put(new WorldLocation((TileEntity)ei.tile), ei);
 				}
@@ -166,6 +169,7 @@ public class RFNetwork implements NetworkObject {
 		cables.clear();
 		endpoints.clear();
 		energy = 0;
+		disabled = true;
 
 		ElectriNetworkManager.instance.scheduleNetworkDiscard(this);
 	}
