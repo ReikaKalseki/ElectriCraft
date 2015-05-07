@@ -31,16 +31,19 @@ public abstract class NetworkTileEntity extends ElectriTileEntity implements Net
 	}
 
 	public final void findAndJoinNetwork(World world, int x, int y, int z) {
-		network = new WireNetwork();
-		network.addElement(this);
-		for (int i = 0; i < 6; i++) {
-			ForgeDirection dir = dirs[i];
-			if (this.canNetworkOnSide(dir)) {
-				TileEntity te = this.getAdjacentTileEntity(dir);
-				this.linkTile(te, dir);
+		network = null;
+		if (world.checkChunksExist(x, y, z, x, y, z)) {
+			network = new WireNetwork();
+			network.addElement(this);
+			for (int i = 0; i < 6; i++) {
+				ForgeDirection dir = dirs[i];
+				if (this.canNetworkOnSide(dir)) {
+					TileEntity te = this.getAdjacentTileEntity(dir);
+					this.linkTile(te, dir);
+				}
 			}
+			this.onJoinNetwork();
 		}
-		this.onJoinNetwork();
 	}
 
 	private void linkTile(TileEntity te, ForgeDirection dir) {

@@ -21,7 +21,8 @@ import Reika.DragonAPI.Instantiable.Data.Immutable.Coordinate;
 import Reika.ElectriCraft.ElectriCraft;
 import Reika.ElectriCraft.ElectriNetworkManager;
 import Reika.ElectriCraft.NetworkObject;
-import Reika.ElectriCraft.Auxiliary.ElectriNetworkTickEvent;
+import Reika.ElectriCraft.Auxiliary.ElectriNetworkEvent.ElectriNetworkRepathEvent;
+import Reika.ElectriCraft.Auxiliary.ElectriNetworkEvent.ElectriNetworkTickEvent;
 import Reika.ElectriCraft.Auxiliary.NetworkTile;
 import Reika.ElectriCraft.Auxiliary.WireEmitter;
 import Reika.ElectriCraft.Auxiliary.WireReceiver;
@@ -48,6 +49,7 @@ public final class WireNetwork implements NetworkObject {
 	private final HashMap<WireReceiver, Integer> avgCurrents = new HashMap();
 
 	private boolean shorted = false;
+	private boolean reUpdateThisTick;
 
 	static final ForgeDirection[] dirs = ForgeDirection.values();
 
@@ -113,7 +115,22 @@ public final class WireNetwork implements NetworkObject {
 
 		if (shorted) {
 			shorted = false;
-			this.updateWires();
+			this.updateWires(false);
+		}
+	}
+
+	@SubscribeEvent
+	public void repath(ElectriNetworkRepathEvent evt) {
+		if (reUpdateThisTick) {
+			this.doRepath();
+			reUpdateThisTick = false;
+		}
+	}
+
+	private void doRepath() {
+		this.recalculatePaths();
+		for (WiringTile w : wires) {
+			w.onNetworkChanged();
 		}
 	}
 
@@ -204,7 +221,7 @@ public final class WireNetwork implements NetworkObject {
 			}
 			n.clear(false);
 		}
-		this.updateWires();
+		this.updateWires(true);
 	}
 
 	private void clear(boolean clearTiles) {
@@ -259,13 +276,19 @@ public final class WireNetwork implements NetworkObject {
 				}
 			}
 		}
-		this.updateWires();
+		this.updateWires(true);
 	}
 
 	public void updateWires() {
-		this.recalculatePaths();
-		for (WiringTile w : wires) {
-			w.onNetworkChanged();
+		this.updateWires(false);
+	}
+
+	void updateWires(boolean force) {
+		if (force) {
+			this.doRepath();
+		}
+		else {
+			reUpdateThisTick = true;
 		}
 	}
 
@@ -395,7 +418,7 @@ public final class WireNetwork implements NetworkObject {
 
 	public void shortNetwork() {
 		shorted = true;
-		this.updateWires();
+		this.updateWires(false);
 	}
 
 	@Override

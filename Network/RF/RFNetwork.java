@@ -20,7 +20,8 @@ import Reika.DragonAPI.Instantiable.Data.Immutable.WorldLocation;
 import Reika.ElectriCraft.ElectriCraft;
 import Reika.ElectriCraft.ElectriNetworkManager;
 import Reika.ElectriCraft.NetworkObject;
-import Reika.ElectriCraft.Auxiliary.ElectriNetworkTickEvent;
+import Reika.ElectriCraft.Auxiliary.ElectriNetworkEvent.ElectriNetworkRepathEvent;
+import Reika.ElectriCraft.Auxiliary.ElectriNetworkEvent.ElectriNetworkTickEvent;
 import Reika.ElectriCraft.TileEntities.TileEntityRFCable;
 import cofh.api.energy.IEnergyHandler;
 import cofh.api.energy.IEnergyProvider;
@@ -90,6 +91,12 @@ public class RFNetwork implements NetworkObject {
 				energy -= ei.addEnergy(add);
 			}
 		}
+	}
+
+	@Override
+	@SubscribeEvent
+	public void repath(ElectriNetworkRepathEvent evt) {
+
 	}
 
 	public void addElement(TileEntityRFCable te) {

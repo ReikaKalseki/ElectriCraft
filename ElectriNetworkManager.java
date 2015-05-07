@@ -16,7 +16,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import Reika.DragonAPI.Auxiliary.Trackers.TickRegistry.TickHandler;
 import Reika.DragonAPI.Auxiliary.Trackers.TickRegistry.TickType;
-import Reika.ElectriCraft.Auxiliary.ElectriNetworkTickEvent;
+import Reika.ElectriCraft.Auxiliary.ElectriNetworkEvent.ElectriNetworkRepathEvent;
+import Reika.ElectriCraft.Auxiliary.ElectriNetworkEvent.ElectriNetworkTickEvent;
 import cpw.mods.fml.common.gameevent.TickEvent.Phase;
 
 public class ElectriNetworkManager implements TickHandler {
@@ -35,18 +36,25 @@ public class ElectriNetworkManager implements TickHandler {
 
 	@Override
 	public void tick(TickType type, Object... tickData) {
-		for (NetworkObject o : discard) {
-			try {
-				MinecraftForge.EVENT_BUS.unregister(o);
-			}
-			catch (Exception e) { //WHY
-				ElectriCraft.logger.logError("Forge Event Bus unregistration error, network "+o+" could not be cleaned. If you see many of these messages, consider restarting soon.");
-			}
-		}
-		discard.clear();
 		World world = (World)tickData[0];
-		if (world != null)
-			MinecraftForge.EVENT_BUS.post(new ElectriNetworkTickEvent(world));
+		Phase phase = (Phase)tickData[1];
+		if (phase == Phase.START) {
+			for (NetworkObject o : discard) {
+				try {
+					MinecraftForge.EVENT_BUS.unregister(o);
+				}
+				catch (Exception e) { //WHY
+					ElectriCraft.logger.logError("Forge Event Bus unregistration error, network "+o+" could not be cleaned. If you see many of these messages, consider restarting soon.");
+				}
+			}
+			discard.clear();
+			if (world != null)
+				MinecraftForge.EVENT_BUS.post(new ElectriNetworkTickEvent(world));
+		}
+		else if (phase == Phase.END) {
+			if (world != null)
+				MinecraftForge.EVENT_BUS.post(new ElectriNetworkRepathEvent(world));
+		}
 	}
 
 	@Override
@@ -56,7 +64,7 @@ public class ElectriNetworkManager implements TickHandler {
 
 	@Override
 	public boolean canFire(Phase p) {
-		return p == Phase.START;
+		return p == Phase.START || p == Phase.END;
 	}
 
 	@Override
