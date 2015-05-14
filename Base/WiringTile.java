@@ -42,6 +42,10 @@ public abstract class WiringTile extends NetworkTileEntity {
 		return current;
 	}
 
+	public final long getWirePower() {
+		return (long)current*(long)voltage;
+	}
+
 	@Override
 	protected void readSyncTag(NBTTagCompound NBT)
 	{

@@ -15,5 +15,6 @@ public class ElectricLuaMethods {
 
 	private static final LuaMethod getVoltage = new LuaGetVoltage();
 	private static final LuaMethod getCurrent = new LuaGetCurrent();
+	private static final LuaMethod getElectricPower = new LuaGetElectricPower();
 
 }
