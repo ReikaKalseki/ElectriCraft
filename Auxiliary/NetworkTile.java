@@ -25,6 +25,8 @@ public interface NetworkTile {
 
 	public void resetNetwork();
 
+	public boolean isConnectable();
+
 	public abstract boolean canNetworkOnSide(ForgeDirection dir);
 
 	public World getWorld();

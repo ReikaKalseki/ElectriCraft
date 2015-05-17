@@ -21,6 +21,7 @@ import Reika.ElectriCraft.Network.WireNetwork;
 public abstract class NetworkTileEntity extends ElectriTileEntity implements NetworkTile {
 
 	protected WireNetwork network;
+	private boolean isConnectable = true;
 
 	@Override
 	public void updateEntity(World world, int x, int y, int z, int meta) {
@@ -30,20 +31,31 @@ public abstract class NetworkTileEntity extends ElectriTileEntity implements Net
 		}
 	}
 
+	@Override
+	public final void onInvalidateOrUnload(World world, int x, int y, int z, boolean invalid) {
+		isConnectable = false;
+		if (network != null)
+			network.removeElement(this);
+	}
+
+	public final boolean isConnectable() {
+		return isConnectable && !worldObj.isRemote && worldObj.checkChunksExist(xCoord, yCoord, zCoord, xCoord, yCoord, zCoord);
+	}
+
 	public final void findAndJoinNetwork(World world, int x, int y, int z) {
 		network = null;
-		if (world.checkChunksExist(x, y, z, x, y, z)) {
-			network = new WireNetwork();
-			network.addElement(this);
-			for (int i = 0; i < 6; i++) {
-				ForgeDirection dir = dirs[i];
-				if (this.canNetworkOnSide(dir)) {
-					TileEntity te = this.getAdjacentTileEntity(dir);
-					this.linkTile(te, dir);
-				}
+		if (!isConnectable)
+			return;
+		network = new WireNetwork();
+		network.addElement(this);
+		for (int i = 0; i < 6; i++) {
+			ForgeDirection dir = dirs[i];
+			if (this.canNetworkOnSide(dir)) {
+				TileEntity te = this.getAdjacentTileEntity(dir);
+				this.linkTile(te, dir);
 			}
-			this.onJoinNetwork();
 		}
+		this.onJoinNetwork();
 	}
 
 	private void linkTile(TileEntity te, ForgeDirection dir) {

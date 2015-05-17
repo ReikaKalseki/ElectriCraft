@@ -10,10 +10,12 @@
 package Reika.ElectriCraft.Network;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedList;
 
-import net.minecraft.world.World;
-import Reika.DragonAPI.Instantiable.Data.Immutable.Coordinate;
+import Reika.DragonAPI.Instantiable.Data.Immutable.WorldLocation;
 import Reika.ElectriCraft.Auxiliary.ElectriNetworkEvent.ElectriNetworkTickEvent;
 import Reika.ElectriCraft.Auxiliary.WireEmitter;
 import Reika.ElectriCraft.Auxiliary.WireReceiver;
@@ -30,17 +32,19 @@ public final class WirePath {
 	public final int resistance;
 	private final int currentLimit;
 
-	public WirePath(World world, LinkedList<Coordinate> points, WireEmitter start, WireReceiver end, WireNetwork net) {
+	private final HashSet<Integer> dimensions = new HashSet();
+
+	public WirePath(LinkedList<WorldLocation> points, WireEmitter start, WireReceiver end, WireNetwork net) {
 		this.start = start;
 		this.end = end;
 		this.net = net;
 		this.verify();
 		int maxcurrent = Integer.MAX_VALUE;
 		int r = 0;
-		for (int i = 0; i < points.size(); i++) {
-			Coordinate li = points.get(i);
-			WiringTile te = (WiringTile)li.getTileEntity(world);
+		for (WorldLocation loc : points) {
+			WiringTile te = (WiringTile)loc.getTileEntity();
 			nodes.addLast(te);
+			dimensions.add(loc.dimensionID);
 			r += te.getResistance();
 			if (te instanceof TileEntityWireComponent) {
 				int max = te.getCurrentLimit();
@@ -57,7 +61,7 @@ public final class WirePath {
 		if (start == null || end == null)
 			throw new IllegalArgumentException("Cannot connect null points!");
 		if (start.getWorld() != end.getWorld())
-			throw new IllegalArgumentException("Cannot connect points across dimensions!");
+			;//throw new IllegalArgumentException("Cannot connect points across dimensions!");
 	}
 
 	public int getLength() {
@@ -156,6 +160,10 @@ public final class WirePath {
 		}
 		int frac2 = num2 > 0 ? bonus/num2 : 0;
 		return this.isLimitedCurrent() ? Math.min(frac, currentLimit) : frac+frac2;
+	}
+
+	Collection<Integer> getDimensions() {
+		return Collections.unmodifiableSet(dimensions);
 	}
 
 }

@@ -12,6 +12,7 @@ package Reika.ElectriCraft.Network;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.MinecraftForge;
@@ -47,6 +48,8 @@ public final class WireNetwork implements NetworkObject {
 	private final HashMap<WireReceiver, Integer> terminalVoltages = new HashMap();
 	private final HashMap<WireReceiver, Integer> terminalCurrents = new HashMap();
 	private final HashMap<WireReceiver, Integer> avgCurrents = new HashMap();
+	private final HashSet<Integer> dimIDs = new HashSet();
+	private final HashSet<Integer> loadedDimIDs = new HashSet();
 
 	private boolean shorted = false;
 	private boolean reUpdateThisTick;
@@ -74,6 +77,10 @@ public final class WireNetwork implements NetworkObject {
 		pointCurrents.clear();
 		pointVoltages.clear();
 		avgCurrents.clear();
+	}
+
+	public boolean isMultiWorld() {
+		return dimIDs.size() > 1;
 	}
 
 	private int getMaxInputVoltage() {
@@ -184,8 +191,16 @@ public final class WireNetwork implements NetworkObject {
 	}
 
 	@SubscribeEvent
+	public void onAddWorld(WorldEvent.Load evt) {
+		if (dimIDs.contains(evt.world.provider.dimensionId))
+			loadedDimIDs.add(evt.world.provider.dimensionId);
+	}
+
+	@SubscribeEvent
 	public void onRemoveWorld(WorldEvent.Unload evt) {
-		this.clear(true);
+		loadedDimIDs.remove(evt.world.provider.dimensionId);
+		if (loadedDimIDs.isEmpty())
+			this.clear(true);
 	}
 
 	public boolean isEmpty() {
@@ -242,12 +257,16 @@ public final class WireNetwork implements NetworkObject {
 		sources.clear();
 		nodes.clear();
 		paths.clear();
+		dimIDs.clear();
+		loadedDimIDs.clear();
 		this.clearCache();
 
 		ElectriNetworkManager.instance.scheduleNetworkDiscard(this);
 	}
 
 	public void addElement(NetworkTile te) {
+		if (!te.isConnectable())
+			return;
 		if (te instanceof WireEmitter)
 			sources.add((WireEmitter)te);
 		if (te instanceof WireReceiver)
@@ -276,6 +295,7 @@ public final class WireNetwork implements NetworkObject {
 				}
 			}
 		}
+		dimIDs.add(te.getWorld().provider.dimensionId);
 		this.updateWires(true);
 	}
 
@@ -294,6 +314,8 @@ public final class WireNetwork implements NetworkObject {
 
 	private void recalculatePaths() {
 		paths.clear();
+		dimIDs.clear();
+		loadedDimIDs.clear();
 		this.clearCache();
 		for (WireEmitter src : sources) {
 			for (WireReceiver sink : sinks) {
@@ -301,8 +323,11 @@ public final class WireNetwork implements NetworkObject {
 					PathCalculator pc = new PathCalculator(src, sink, this);
 					pc.calculatePaths();
 					WirePath path = pc.getShortestPath();
-					if (path != null)
+					if (path != null) {
 						paths.add(path);
+						dimIDs.addAll(path.getDimensions());
+						loadedDimIDs.addAll(dimIDs);
+					}
 				}
 			}
 		}
@@ -427,8 +452,10 @@ public final class WireNetwork implements NetworkObject {
 		//sb.append(this.getInputCurrent()+"A @ "+this.getNetworkVoltage()+"V");
 		//sb.append(" ");
 		//sb.append(wires.size()+" wires, "+sinks.size()+" emitters, "+sources.size()+" generators");
+		sb.append(sources.size()+"/"+wires.size()+"/"+sinks.size()+"#");
 		sb.append(paths);
 		sb.append(";{"+this.hashCode()+"}");
+		sb.append("$["+dimIDs+"]");
 		return sb.toString();
 	}
 
