@@ -61,6 +61,9 @@ public class RenderMotor extends ElectriTERenderer
 		}
 
 		GL11.glRotatef(var11, 0.0F, 1.0F, 0.0F);
+		if (tile.isFlipped && tile.getFacing().offsetZ != 0) {
+			GL11.glRotated(180, 0, 1, 0);
+		}
 		int num = tile.isInWorld() ? 5 : 5;
 		var14.renderAll(tile, ReikaJavaLibrary.makeListFrom(num), tile.phi, 0);
 
