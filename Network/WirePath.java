@@ -73,7 +73,7 @@ public final class WirePath {
 	}
 
 	public int getVoltageAt(WiringTile wire) {
-		return start.canEmitPower() ? start.getGenVoltage() > 0 ? start.getGenVoltage()-this.getResistanceTo(wire) : 0 : 0;
+		return start.canEmitPower() ? start.getGenVoltage() > 0 ? Math.max(0, start.getGenVoltage()-this.getResistanceTo(wire)) : 0 : 0;
 	}
 
 	private int getResistanceTo(WiringTile wire) {
