@@ -28,6 +28,7 @@ import Reika.DragonAPI.Auxiliary.CreativeTabSorter;
 import Reika.DragonAPI.Auxiliary.NEI_DragonAPI_Config;
 import Reika.DragonAPI.Auxiliary.Trackers.CommandableUpdateChecker;
 import Reika.DragonAPI.Auxiliary.Trackers.IntegrityChecker;
+import Reika.DragonAPI.Auxiliary.Trackers.PackModificationTracker;
 import Reika.DragonAPI.Auxiliary.Trackers.RetroGenController;
 import Reika.DragonAPI.Auxiliary.Trackers.TickRegistry;
 import Reika.DragonAPI.Base.DragonAPIMod;
@@ -147,6 +148,8 @@ public class ElectriCraft extends DragonAPIMod {
 		if (ModList.NEI.isLoaded()) {
 			NEI_DragonAPI_Config.hideBlocks(blocks);
 		}
+
+		PackModificationTracker.instance.addMod(this, config);
 
 		//ReikaEEHelper.blacklistRegistry(ElectriBlocks.blockList);
 		//ReikaEEHelper.blacklistRegistry(ElectriItems.itemList);
