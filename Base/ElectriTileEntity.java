@@ -44,6 +44,11 @@ public abstract class ElectriTileEntity extends TileEntityBase implements Render
 	}
 
 	@Override
+	public final boolean allowTickAcceleration() {
+		return false;
+	}
+
+	@Override
 	public Block getTileEntityBlockID() {
 		return ElectriTiles.TEList[this.getIndex()].getBlock();
 	}

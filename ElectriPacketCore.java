@@ -51,6 +51,8 @@ public class ElectriPacketCore implements IPacketHandler {
 			//ReikaJavaLibrary.pConsole(inputStream.readInt()+":"+inputStream.readInt()+":"+inputStream.readInt()+":"+inputStream.readInt()+":"+inputStream.readInt()+":"+inputStream.readInt()+":"+inputStream.readInt());
 			PacketTypes packetType = packet.getType();
 			switch(packetType) {
+			case FULLSOUND:
+				break;
 			case SOUND:
 				return;
 			case STRING:
