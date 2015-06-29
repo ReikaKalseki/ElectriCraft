@@ -1,0 +1,21 @@
+﻿<?xml version="1.0"?>
+<categories>
+	<intro>
+		
+	</intro>
+	<convdesc>
+		These machines are used to convert to and from electrical power.
+	</convdesc>
+	<transdesc>
+		These are used to transport and manipulate electrical power.
+	</transdesc>
+	<storagedesc>
+		These are the tools used to store electrical power.
+	</storagedesc>
+	<utildesc>
+		These are utility blocks used for specialized purposes.
+	</utildesc>
+	<moddesc>
+		These devices interface with other mods.
+	</moddesc>
+</categories>

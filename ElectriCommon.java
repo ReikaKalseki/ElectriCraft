@@ -15,6 +15,7 @@ public class ElectriCommon
 {
 	public static int wireRender;
 	public static int cableRender;
+	public static int batteryRender;
 
 	/**
 	 * Client side only register stuff...

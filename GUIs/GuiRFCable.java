@@ -7,7 +7,7 @@
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
  ******************************************************************************/
-package Reika.ElectriCraft;
+package Reika.ElectriCraft.GUIs;
 
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -23,6 +23,7 @@ import Reika.DragonAPI.Libraries.IO.ReikaPacketHelper;
 import Reika.DragonAPI.Libraries.IO.ReikaTextureHelper;
 import Reika.DragonAPI.Libraries.MathSci.ReikaEngLibrary;
 import Reika.DragonAPI.Libraries.MathSci.ReikaMathLibrary;
+import Reika.ElectriCraft.ElectriCraft;
 import Reika.ElectriCraft.Registry.ElectriPackets;
 import Reika.ElectriCraft.TileEntities.TileEntityRFCable;
 import Reika.RotaryCraft.RotaryCraft;

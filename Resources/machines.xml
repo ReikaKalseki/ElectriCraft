@@ -1,0 +1,112 @@
+﻿<?xml version="1.0"?>
+<machines>
+	<generator>
+		<desc>
+			The generator converts rotational shaft power to electric power. The magnitude of input torque is proportional to the current output, while the magnitude of the input speed is proportional to the voltage output. The total power remains the same. The machine operates losslessly.
+		</desc>
+		<note>
+			Requires %d Nm/A, generates %dV per rad/s
+		</note>
+	</generator>
+	<motor>
+		<desc>
+			The motor converts electric power back into shaft power using the inverse of the ratios seen in the generator. Like the generator, the motor is usually lossless; putting power into a generator and then directly into a motor yields the original torque and speed values. The one exception is that motors can only connect to a finite number of power sources; exceeding this wastes power and generates heat.
+		</desc>
+		<note>
+			Source limits:
+			Default: 1
+			Inductive upgrade: 2
+			Tungsten upgrade: 4
+		</note>
+	</motor>
+	<wire>
+		<desc>
+			Wires actually transport the electrical power. They must form a continuous path from a power source to a power sink for any current to flow. For a given wire path, current remains constant, but most wires have a nonzero resistance and thus a nonzero voltage loss over distance. They also tend to have current limits, as the lost power generates heat that can melt the wire. The only exception to this is the superconducting wire, which has zero electrical resistance, and thus has both zero loss and no current limits.
+		</desc>
+		<note>
+			Uninsulated wires are very dangerous, and can deliver strong or even lethal shocks at high voltages
+		</note>
+	</wire>
+	<relay>
+		<desc>
+			The relay is a redstone-controlled electrical switch. Applying electrical power connects it and allows current to flow; shutting off the signal severs the path. It has no loss or limit on the power.
+		</desc>
+		<note>
+			
+		</note>
+	</relay>
+	<resistor>
+		<desc>
+			Resistors act as current limiters for a path. If the path current would normally be larger than permitted by the resistor, the surplus is redirected to other paths if possible. Resistor values are determined by the three bands on the resistor; each color corresponds to a value from 0 to 9. The first two bands are the 10s and 1s places respectively; the third band is a multiplier, adding its value in zeros to the end. Use dye to color the bands.
+		</desc>
+		<note>
+			Color values:
+			Black = 0
+			Brown = 1
+			Red = 2
+			Orange = 3
+			Yellow = 4
+			Green = 5
+			Blue = 6
+			Purple = 7
+			Gray = 8
+			White = 9
+		</note>
+	</resistor>
+	<battery>
+		<desc>
+			Batteries store electrical power, acting as a buffer or long-term storage. There are several tiers of batteries; each tier has more capacity and output power than the last. The output current, voltage, and power of a battery are constant. Batteries retain their charge when moved. They can take power in the sides, and will output it from their top when supplied with a redstone signal.
+		</desc>
+		<note>
+			
+		</note>
+	</battery>
+	<transformer>
+		<desc>
+			Using coils on each side, the transformer changes the ratio of voltage to current across it. The ratio of coils on the input side to the output side determines the change in voltage/current; ratios larger than one, such as 1:8, favor an increased current, while ratios less than one, such as 2:5, favor increased voltage. Note that as the ratio gets farther from one, the efficiency drops and the wasted energy is dissipated as heat. Excessive temperatures (larger than %dC) or excessive currents (larger than %dA) will cause the transformer to violently fail.
+		</desc>
+		<note>
+			Can be cooled with fins or liquid nitrogen
+		</note>
+	</transformer>
+	<meter>
+		<desc>
+			The electric meter, if spliced into a wire, will display the current, voltage, and power flowing through that wire. It has no effect on the actual power throughput, making it function similarly to a dynamometer.
+		</desc>
+		<note>
+			
+		</note>
+	</meter>
+	<rfbattery>
+		<desc>
+			The RF battery stores RF like any other RF storage device. However, unlike other devices, its specialized energy crystal allows it to store an enormous amount of energy, up to %d RF. It can take RF in the sides, and will output it out the top. Power can always be "pulled" out the top, but a redstone signal will make the battery try and push power to any available receivers.
+		</desc>
+		<note>
+			The bar on the side is a fill bar with logarithmic scaling
+		</note>
+	</rfbattery>
+	<cable>
+		<desc>
+			The RF Transfer cable is a specialized wire for transferring RF energy. It can transmit an unlimited amount of RF per tick, with the actual maximum of the network being fully customizable.
+		</desc>
+		<note>
+			
+		</note>
+	</cable>
+	<eusplit>
+		<desc>
+			The EU splitter is designed to take extremely large EU power sources, such as turbine generators, and split them into smaller, more managable current (EU/t) levels to avoid melting the more delicate wires like the glass fiber cable.
+		</desc>
+		<note>
+			Multiple yellow dots marks the input; Orange dots mark output sides. Use the screwdriver to toggle sides between output and paneling
+		</note>
+	</eusplit>
+	<name>
+		<desc>
+			
+		</desc>
+		<note>
+			
+		</note>
+	</name>
+</machines>

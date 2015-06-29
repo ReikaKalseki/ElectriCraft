@@ -44,17 +44,17 @@ import cpw.mods.fml.common.registry.GameRegistry;
 
 public enum ElectriTiles {
 
-	WIRE("electri.wire", ElectriBlocks.WIRE,	TileEntityWire.class, 0, "RenderWire"),
-	GENERATOR("machine.electrigenerator", ElectriBlocks.MACHINE, TileEntityGenerator.class, 0, "RenderGenerator"),
-	MOTOR("machine.electrimotor", ElectriBlocks.MACHINE, TileEntityMotor.class, 1, "RenderMotor"),
-	RESISTOR("machine.electriresistor", ElectriBlocks.MACHINE, TileEntityResistor.class, 2, "RenderResistor"),
-	RELAY("machine.electrirelay", ElectriBlocks.MACHINE, TileEntityRelay.class, 3, "RenderRelay"),
-	BATTERY("machine.electribattery", ElectriBlocks.BATTERY, TileEntityBattery.class, 4),
-	CABLE("machine.rfcable", ElectriBlocks.CABLE, TileEntityRFCable.class, 0, "RenderCable"),
-	METER("machine.wiremeter", ElectriBlocks.MACHINE, TileEntityMeter.class, 4, "RenderElectricMeter"),
-	RFBATTERY("machine.rfbattery", ElectriBlocks.RFBATTERY, TileEntityRFBattery.class, 1, "RenderRFBattery"),
-	TRANSFORMER("machine.transformer", ElectriBlocks.MACHINE, TileEntityTransformer.class, 5, "RenderTransformer"),
-	EUSPLIT("machine.eusplit", ElectriBlocks.EUSPLIT, TileEntityEUSplitter.class, 6);
+	WIRE("electri.wire", 					ElectriBlocks.WIRE,			TileEntityWire.class, 			0, "RenderWire"),
+	GENERATOR("machine.electrigenerator", 	ElectriBlocks.MACHINE, 		TileEntityGenerator.class, 		0, "RenderGenerator"),
+	MOTOR("machine.electrimotor", 			ElectriBlocks.MACHINE, 		TileEntityMotor.class, 			1, "RenderMotor"),
+	RESISTOR("machine.electriresistor", 	ElectriBlocks.MACHINE, 		TileEntityResistor.class, 		2, "RenderResistor"),
+	RELAY("machine.electrirelay", 			ElectriBlocks.MACHINE, 		TileEntityRelay.class, 			3, "RenderRelay"),
+	BATTERY("machine.electribattery", 		ElectriBlocks.BATTERY, 		TileEntityBattery.class, 		4),
+	CABLE("machine.rfcable", 				ElectriBlocks.CABLE, 		TileEntityRFCable.class, 		0, "RenderCable"),
+	METER("machine.wiremeter", 				ElectriBlocks.MACHINE, 		TileEntityMeter.class, 			4, "RenderElectricMeter"),
+	RFBATTERY("machine.rfbattery", 			ElectriBlocks.RFBATTERY, 	TileEntityRFBattery.class, 		0, "RenderRFBattery"),
+	TRANSFORMER("machine.transformer", 		ElectriBlocks.MACHINE, 		TileEntityTransformer.class, 	5, "RenderTransformer"),
+	EUSPLIT("machine.eusplit", 				ElectriBlocks.EUSPLIT, 		TileEntityEUSplitter.class, 	0);
 
 	private String name;
 	private final Class teClass;

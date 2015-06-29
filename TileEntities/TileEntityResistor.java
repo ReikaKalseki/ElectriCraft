@@ -9,13 +9,14 @@
  ******************************************************************************/
 package Reika.ElectriCraft.TileEntities;
 
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import Reika.DragonAPI.Libraries.MathSci.ReikaMathLibrary;
 import Reika.DragonAPI.Libraries.Registry.ReikaDyeHelper;
 import Reika.ElectriCraft.Base.TileEntityWireComponent;
 import Reika.ElectriCraft.Registry.ElectriTiles;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class TileEntityResistor extends TileEntityWireComponent {
 
@@ -26,7 +27,7 @@ public class TileEntityResistor extends TileEntityWireComponent {
 	private ColorBand b2 = ColorBand.BLACK;
 	private ColorBand b3 = ColorBand.BLACK;
 
-	private static enum ColorBand {
+	public static enum ColorBand {
 		BLACK(ReikaDyeHelper.BLACK),
 		BROWN(ReikaDyeHelper.BROWN),
 		RED(ReikaDyeHelper.RED),
@@ -70,8 +71,8 @@ public class TileEntityResistor extends TileEntityWireComponent {
 		return selectedCurrent;
 	}
 
-	public void setColor(ItemStack is, int digit) {
-		ColorBand band = this.getBandFromDyeItem(is);
+	public void setColor(ReikaDyeHelper color, int digit) {
+		ColorBand band = color != null ? ColorBand.getBandFromColor(color) : null;
 		if (band == null)
 			return;
 		//ReikaJavaLibrary.pConsole(band);
@@ -86,12 +87,6 @@ public class TileEntityResistor extends TileEntityWireComponent {
 		selectedCurrent = this.calculateCurrentLimit(b1, b2, b3);
 		if (!worldObj.isRemote && network != null)
 			network.updateWires();
-	}
-
-	private ColorBand getBandFromDyeItem(ItemStack is) {
-		ReikaDyeHelper color = ReikaDyeHelper.getColorFromItem(is);
-		ColorBand band = ColorBand.getBandFromColor(color);
-		return band;
 	}
 
 	private int calculateCurrentLimit(ColorBand b1, ColorBand b2, ColorBand b3) {
@@ -157,6 +152,21 @@ public class TileEntityResistor extends TileEntityWireComponent {
 	@Override
 	public boolean canConnect() {
 		return selectedCurrent > 0;
+	}
+
+	@SideOnly(Side.CLIENT)
+	public void setColor(ColorBand band, int digit) {
+		switch(digit) {
+		case 1:
+			b1 = band;
+			break;
+		case 2:
+			b2 = band;
+			break;
+		case 3:
+			b3 = band;
+			break;
+		}
 	}
 
 }

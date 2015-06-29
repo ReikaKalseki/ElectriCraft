@@ -160,7 +160,7 @@ public class BlockElectricMachine extends ElectriBlock implements IWailaDataProv
 			else if (ReikaMathLibrary.isValueInsideBoundsIncl(0.5, 0.625, inc))
 				band = 3;
 			if (band > 0) {
-				te.setColor(is, band);
+				te.setColor(ReikaDyeHelper.getColorFromItem(is), band);
 				if (!ep.capabilities.isCreativeMode)
 					is.stackSize--;
 				return true;

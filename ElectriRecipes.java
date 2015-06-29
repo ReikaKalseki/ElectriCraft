@@ -72,6 +72,8 @@ public class ElectriRecipes {
 			ReikaRecipeHelper.addSmelting(ore.getOreBlock(), ore.getProduct(), ore.xpDropped);
 		}
 
+		GameRegistry.addRecipe(new ShapedOreRecipe(ElectriItems.BOOK.getStackOf(), "RSR", "PPP", "PPP", 'R', "ingotGold", 'S', ItemStacks.steelingot, 'P', Items.paper));
+
 		GrinderAPI.addRecipe(new ItemStack(Items.diamond), ElectriCrafting.DIAMONDDUST.getItem());
 		GrinderAPI.addRecipe(ReikaItemHelper.lapisDye, ElectriCrafting.BLUEDUST.getItem());
 		GrinderAPI.addRecipe(new ItemStack(Items.quartz), ElectriCrafting.QUARTZDUST.getItem());

@@ -17,6 +17,7 @@ import Reika.ElectriCraft.Auxiliary.ElectriRenderList;
 import Reika.ElectriCraft.Base.ElectriTERenderer;
 import Reika.ElectriCraft.Registry.ElectriItems;
 import Reika.ElectriCraft.Registry.ElectriTiles;
+import Reika.ElectriCraft.Renders.BatteryRenderer;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -32,6 +33,7 @@ public class ElectriClient extends ElectriCommon
 
 	public static WireRenderer wire;
 	public static CableRenderer cable;
+	public static BatteryRenderer battery;
 
 	@Override
 	public void registerSounds() {
@@ -47,6 +49,10 @@ public class ElectriClient extends ElectriCommon
 		cableRender = RenderingRegistry.getNextAvailableRenderId();
 		cable = new CableRenderer(cableRender);
 		RenderingRegistry.registerBlockHandler(cableRender, cable);
+
+		batteryRender = RenderingRegistry.getNextAvailableRenderId();
+		battery = new BatteryRenderer();
+		RenderingRegistry.registerBlockHandler(batteryRender, battery);
 
 		if (DragonOptions.NORENDERS.getState()) {
 			ElectriCraft.logger.log("Disabling all machine renders for FPS and lag profiling.");

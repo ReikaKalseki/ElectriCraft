@@ -9,8 +9,10 @@
  ******************************************************************************/
 package Reika.ElectriCraft.Registry;
 
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import Reika.DragonAPI.Libraries.MathSci.ReikaEngLibrary;
@@ -19,6 +21,8 @@ import Reika.RotaryCraft.Auxiliary.ItemStacks;
 import Reika.RotaryCraft.Auxiliary.RecipeManagers.WorktableRecipes;
 import Reika.RotaryCraft.Registry.ConfigRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public enum BatteryType {
 
@@ -32,6 +36,8 @@ public enum BatteryType {
 	public final long maxCapacity;
 	public final int outputVoltage;
 	public final int outputCurrent;
+
+	private IIcon icon;
 
 	private BatteryType(int cap, int v, int a) {
 		maxCapacity = ReikaMathLibrary.longpow(2, cap);
@@ -89,6 +95,16 @@ public enum BatteryType {
 
 	public ItemStack getCraftedProduct() {
 		return ElectriItems.BATTERY.getStackOfMetadata(this.ordinal());
+	}
+
+	@SideOnly(Side.CLIENT)
+	public void loadIcon(IIconRegister ico) {
+		icon = ico.registerIcon("electricraft:battery/"+this.name().toLowerCase()+"_glow");
+	}
+
+	@SideOnly(Side.CLIENT)
+	public IIcon getGlowingIcon() {
+		return icon;
 	}
 
 }

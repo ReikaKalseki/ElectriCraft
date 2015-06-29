@@ -52,7 +52,8 @@ IFluidHandler, PipeConnector {
 
 	private ForgeDirection facing;
 
-	public static int MAXTEMP = 1000;
+	public static final int MAXTEMP = 1000;
+	public static final int MAXCURRENT = 4096;
 
 	private int temperature;
 	private StepTimer tempTimer = new StepTimer(20);
@@ -85,7 +86,7 @@ IFluidHandler, PipeConnector {
 
 	@Override
 	public int getCurrentLimit() {
-		return 4096;
+		return MAXCURRENT;
 	}
 
 	@Override

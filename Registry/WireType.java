@@ -15,6 +15,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
+import Reika.DragonAPI.Libraries.Java.ReikaStringParser;
 import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
 import Reika.DragonAPI.ModRegistry.ModOreList;
 import Reika.ElectriCraft.Auxiliary.ElectriStacks;
@@ -112,6 +113,18 @@ public enum WireType {
 				GameRegistry.addRecipe(is2, obj2);
 			}
 		}
+	}
+
+	public static String getLimitsForDisplay() {
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < WireType.wireList.length; i++) {
+			WireType type = WireType.wireList[i];
+			if (type.resistance > 0) {
+				sb.append(ReikaStringParser.capFirstChar(type.name())+" - Resistance: "+type.resistance+" V/m;   Limit: "+type.maxCurrent+" A");
+				sb.append("\n");
+			}
+		}
+		return sb.toString();
 	}
 
 }

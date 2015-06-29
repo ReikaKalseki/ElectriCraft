@@ -17,6 +17,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.client.event.TextureStitchEvent;
 import thaumcraft.api.aspects.Aspect;
 import Reika.ChromatiCraft.API.AcceleratorBlacklist;
 import Reika.ChromatiCraft.API.AcceleratorBlacklist.BlacklistReason;
@@ -29,6 +30,7 @@ import Reika.DragonAPI.Auxiliary.NEI_DragonAPI_Config;
 import Reika.DragonAPI.Auxiliary.Trackers.CommandableUpdateChecker;
 import Reika.DragonAPI.Auxiliary.Trackers.IntegrityChecker;
 import Reika.DragonAPI.Auxiliary.Trackers.PackModificationTracker;
+import Reika.DragonAPI.Auxiliary.Trackers.PlayerFirstTimeTracker;
 import Reika.DragonAPI.Auxiliary.Trackers.RetroGenController;
 import Reika.DragonAPI.Auxiliary.Trackers.TickRegistry;
 import Reika.DragonAPI.Base.DragonAPIMod;
@@ -41,8 +43,11 @@ import Reika.DragonAPI.ModInteract.DeepInteract.FrameBlacklist.FrameUsageEvent;
 import Reika.DragonAPI.ModInteract.DeepInteract.ReikaThaumHelper;
 import Reika.DragonAPI.ModInteract.DeepInteract.SensitiveItemRegistry;
 import Reika.DragonAPI.ModInteract.DeepInteract.TimeTorchHelper;
+import Reika.ElectriCraft.Auxiliary.ElectriBookTracker;
+import Reika.ElectriCraft.Auxiliary.ElectriDescriptions;
 import Reika.ElectriCraft.Auxiliary.ElectriTab;
 import Reika.ElectriCraft.Base.NetworkTileEntity;
+import Reika.ElectriCraft.Registry.BatteryType;
 import Reika.ElectriCraft.Registry.ElectriBlocks;
 import Reika.ElectriCraft.Registry.ElectriItems;
 import Reika.ElectriCraft.Registry.ElectriOptions;
@@ -50,7 +55,9 @@ import Reika.ElectriCraft.Registry.ElectriOres;
 import Reika.ElectriCraft.Registry.ElectriTiles;
 import Reika.ElectriCraft.Registry.WireType;
 import Reika.RotaryCraft.RotaryCraft;
+import Reika.RotaryCraft.Registry.ConfigRegistry;
 import WayofTime.alchemicalWizardry.api.event.TeleposeEvent;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -64,6 +71,7 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 @Mod( modid = "ElectriCraft", name="ElectriCraft", version="beta", certificateFingerprint = "@GET_FINGERPRINT@", dependencies="required-after:DragonAPI;required-after:RotaryCraft")
 
@@ -142,12 +150,18 @@ public class ElectriCraft extends DragonAPIMod {
 
 		NetworkRegistry.INSTANCE.registerGuiHandler(this, new ElectriGuiHandler());
 
+		if (ConfigRegistry.HANDBOOK.getState())
+			PlayerFirstTimeTracker.addTracker(new ElectriBookTracker());
+
 		ElectriRecipes.loadOreDict();
 		ElectriRecipes.addRecipes();
 
 		if (ModList.NEI.isLoaded()) {
 			NEI_DragonAPI_Config.hideBlocks(blocks);
 		}
+
+		if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
+			ElectriDescriptions.loadData();
 
 		PackModificationTracker.instance.addMod(this, config);
 
@@ -197,6 +211,17 @@ public class ElectriCraft extends DragonAPIMod {
 	public void cancelFramez(FrameUsageEvent evt) {
 		if (!this.isMovable(evt.tile)) {
 			evt.setCanceled(true);
+		}
+	}
+
+	@SubscribeEvent
+	@SideOnly(Side.CLIENT)
+	public void loadTextures(TextureStitchEvent.Pre evt) {
+		if (evt.map.getTextureType() == 0) {
+			for (int i = 0; i < BatteryType.batteryList.length; i++) {
+				BatteryType type = BatteryType.batteryList[i];
+				type.loadIcon(evt.map);
+			}
 		}
 	}
 

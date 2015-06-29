@@ -22,6 +22,7 @@ import Reika.DragonAPI.Libraries.MathSci.ReikaMathLibrary;
 import Reika.ElectriCraft.ElectriCraft;
 import Reika.ElectriCraft.Base.ElectriItemBase;
 import Reika.ElectriCraft.Items.ItemBatteryPlacer;
+import Reika.ElectriCraft.Items.ItemElectriBook;
 import Reika.ElectriCraft.Items.ItemElectriPlacer;
 import Reika.ElectriCraft.Items.ItemRFBatteryPlacer;
 import Reika.ElectriCraft.Items.ItemWirePlacer;
@@ -36,7 +37,8 @@ public enum ElectriItems implements ItemEnum {
 	BATTERY(2, true, "machine.battery", ItemBatteryPlacer.class),
 	CRAFTING(32, true, "item.crafting", ElectriItemBase.class),
 	CRYSTAL(48, true, "item.electricrystal", ElectriItemBase.class),
-	RFBATTERY(3, false, "machine.rfbattery", ItemRFBatteryPlacer.class);
+	RFBATTERY(3, false, "machine.rfbattery", ItemRFBatteryPlacer.class),
+	BOOK(4,	false, "item.electribook", ItemElectriBook.class);
 
 	private int index;
 	private boolean hasSubtypes;
