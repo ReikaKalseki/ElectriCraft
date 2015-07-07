@@ -48,6 +48,7 @@ public final class WireNetwork implements NetworkObject {
 	private final HashMap<WireReceiver, Integer> terminalVoltages = new HashMap();
 	private final HashMap<WireReceiver, Integer> terminalCurrents = new HashMap();
 	private final HashMap<WireReceiver, Integer> avgCurrents = new HashMap();
+	private final HashMap<WireReceiver, Float> numSources = new HashMap();
 	private final HashSet<Integer> dimIDs = new HashSet();
 	private final HashSet<Integer> loadedDimIDs = new HashSet();
 
@@ -334,6 +335,17 @@ public final class WireNetwork implements NetworkObject {
 		ElectriCraft.logger.debug("Remapped network "+this);
 	}
 
+	public float getNumberSourcesPer(WireReceiver te) {
+		if (shorted)
+			return 0;
+		Float val = numSources.get(te);
+		if (val == null) {
+			val = this.calcNumberSourcesPer(te);
+			numSources.put(te, val);
+		}
+		return val.floatValue();
+	}
+
 	public int getAverageCurrent(WireReceiver te) {
 		if (shorted)
 			return 0;
@@ -390,6 +402,16 @@ public final class WireNetwork implements NetworkObject {
 		}
 		//ReikaJavaLibrary.pConsole(a+":"+c+" @ "+te);
 		return c > 0 ? a/c : 0;
+	}
+
+	private float calcNumberSourcesPer(WireReceiver te) {
+		float f = 0;
+		for (WirePath path : paths) {
+			if (path.endsAt(te.getX(), te.getY(), te.getZ())) {
+				f += 1F/this.getNumberPathsStartingAt(path.start);
+			}
+		}
+		return f;
 	}
 
 	private int calcTerminalVoltage(WireReceiver te) {

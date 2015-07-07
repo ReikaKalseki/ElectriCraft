@@ -39,12 +39,14 @@ import Reika.DragonAPI.Instantiable.IO.ModLogger;
 import Reika.DragonAPI.Libraries.ReikaRegistryHelper;
 import Reika.DragonAPI.Libraries.IO.ReikaPacketHelper;
 import Reika.DragonAPI.Libraries.Java.ReikaJavaLibrary;
+import Reika.DragonAPI.ModInteract.ItemStackRepository;
 import Reika.DragonAPI.ModInteract.DeepInteract.FrameBlacklist.FrameUsageEvent;
 import Reika.DragonAPI.ModInteract.DeepInteract.ReikaThaumHelper;
 import Reika.DragonAPI.ModInteract.DeepInteract.SensitiveItemRegistry;
 import Reika.DragonAPI.ModInteract.DeepInteract.TimeTorchHelper;
 import Reika.ElectriCraft.Auxiliary.ElectriBookTracker;
 import Reika.ElectriCraft.Auxiliary.ElectriDescriptions;
+import Reika.ElectriCraft.Auxiliary.ElectriStacks;
 import Reika.ElectriCraft.Auxiliary.ElectriTab;
 import Reika.ElectriCraft.Base.NetworkTileEntity;
 import Reika.ElectriCraft.Registry.BatteryType;
@@ -73,7 +75,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-@Mod( modid = "ElectriCraft", name="ElectriCraft", version="beta", certificateFingerprint = "@GET_FINGERPRINT@", dependencies="required-after:DragonAPI;required-after:RotaryCraft")
+@Mod( modid = "ElectriCraft", name="ElectriCraft", certificateFingerprint = "@GET_FINGERPRINT@", dependencies="required-after:DragonAPI;required-after:RotaryCraft")
 
 public class ElectriCraft extends DragonAPIMod {
 
@@ -143,6 +145,8 @@ public class ElectriCraft extends DragonAPIMod {
 		this.startTiming(LoadPhase.LOAD);
 		proxy.registerRenderers();
 		RetroGenController.instance.addHybridGenerator(ElectriOreGenerator.instance, 0, ElectriOptions.RETROGEN.getState());
+
+		ItemStackRepository.instance.registerClass(this, ElectriStacks.class);
 
 		TickRegistry.instance.registerTickHandler(ElectriNetworkManager.instance, Side.SERVER);
 

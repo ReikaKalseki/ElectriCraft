@@ -25,8 +25,8 @@ import Reika.ElectriCraft.Base.WiringTile;
 public final class WirePath {
 
 	private final LinkedList<WiringTile> nodes = new LinkedList();
-	private final WireEmitter start;
-	private final WireReceiver end;
+	final WireEmitter start;
+	final WireReceiver end;
 	private final WireNetwork net;
 
 	public final int resistance;

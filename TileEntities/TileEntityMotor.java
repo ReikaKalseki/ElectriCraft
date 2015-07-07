@@ -89,7 +89,7 @@ public class TileEntityMotor extends ElectricalReceiver implements Screwdriverab
 	private int getEffectiveCurrent(World world, int x, int y, int z) {
 		int in = network.getTerminalCurrent(this);
 		int max = maxAmp*network.getAverageCurrent(this);
-		if (in > max) {
+		if (network.getNumberSourcesPer(this) > maxAmp) { //was (in > max)
 			if (rand.nextInt(10) == 0) {
 				ReikaSoundHelper.playSoundAtBlock(world, x, y, z, "random.fizz");
 				//ReikaParticleHelper.SMOKE.spawnAroundBlock(world, x, y, z, 2);

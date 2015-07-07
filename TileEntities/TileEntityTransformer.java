@@ -400,4 +400,9 @@ IFluidHandler, PipeConnector {
 
 	}
 
+	@Override
+	public int getMaxTemperature() {
+		return MAXTEMP;
+	}
+
 }

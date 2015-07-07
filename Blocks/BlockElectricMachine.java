@@ -33,6 +33,7 @@ import Reika.DragonAPI.ASM.DependentMethodStripper.ModDependent;
 import Reika.DragonAPI.Libraries.MathSci.ReikaMathLibrary;
 import Reika.DragonAPI.Libraries.Registry.ReikaDyeHelper;
 import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
+import Reika.DragonAPI.ModInteract.LegacyWailaHelper;
 import Reika.ElectriCraft.ElectriCraft;
 import Reika.ElectriCraft.Base.ElectriBlock;
 import Reika.ElectriCraft.Base.TileEntityWireComponent;
@@ -203,6 +204,8 @@ public class BlockElectricMachine extends ElectriBlock implements IWailaDataProv
 	@Override
 	@ModDependent(ModList.WAILA)
 	public List<String> getWailaBody(ItemStack is, List<String> tip, IWailaDataAccessor acc, IWailaConfigHandler config) {
+		if (LegacyWailaHelper.cacheAndReturn(acc))
+			return tip;
 		TileEntity te = acc.getTileEntity();
 		if (te instanceof TileEntityResistor) {
 			int limit = ((TileEntityResistor) te).getCurrentLimit();
