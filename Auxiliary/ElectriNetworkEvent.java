@@ -10,9 +10,8 @@
 package Reika.ElectriCraft.Auxiliary;
 
 import net.minecraft.world.World;
-import cpw.mods.fml.common.eventhandler.Event;
 
-public class ElectriNetworkEvent extends Event {
+public class ElectriNetworkEvent {
 
 	public final World networkWorld;
 	public final long worldTime;

@@ -15,7 +15,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.world.WorldEvent;
 import Reika.DragonAPI.Instantiable.Data.Immutable.Coordinate;
@@ -60,7 +59,7 @@ public final class WireNetwork implements NetworkObject {
 	public static final int TORQUE_PER_AMP = 8;
 
 	public WireNetwork() {
-		MinecraftForge.EVENT_BUS.register(this);
+		ElectriNetworkManager.instance.addNetwork(this);
 
 		/* Debugging
 		try {
@@ -104,7 +103,6 @@ public final class WireNetwork implements NetworkObject {
 		return sinks.size();
 	}
 
-	@SubscribeEvent
 	public void tick(ElectriNetworkTickEvent evt) {
 		for (WirePath path : paths) {
 			path.tick(evt);
@@ -127,7 +125,6 @@ public final class WireNetwork implements NetworkObject {
 		}
 	}
 
-	@SubscribeEvent
 	public void repath(ElectriNetworkRepathEvent evt) {
 		if (reUpdateThisTick) {
 			this.doRepath();

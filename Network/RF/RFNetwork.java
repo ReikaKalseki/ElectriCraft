@@ -14,7 +14,6 @@ import java.util.Collection;
 import java.util.HashMap;
 
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
 import Reika.DragonAPI.Instantiable.Data.Immutable.WorldLocation;
 import Reika.ElectriCraft.ElectriCraft;
@@ -26,7 +25,6 @@ import Reika.ElectriCraft.TileEntities.TileEntityRFCable;
 import cofh.api.energy.IEnergyHandler;
 import cofh.api.energy.IEnergyProvider;
 import cofh.api.energy.IEnergyReceiver;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class RFNetwork implements NetworkObject {
 
@@ -54,10 +52,9 @@ public class RFNetwork implements NetworkObject {
 	}
 
 	public RFNetwork() {
-		MinecraftForge.EVENT_BUS.register(this);
+		ElectriNetworkManager.instance.addNetwork(this);
 	}
 
-	@SubscribeEvent
 	public void tick(ElectriNetworkTickEvent evt) {
 		if (!disabled && !cables.isEmpty() && !endpoints.isEmpty()) {
 			ArrayList<EnergyInteraction> collectibles = new ArrayList();
@@ -94,7 +91,6 @@ public class RFNetwork implements NetworkObject {
 	}
 
 	@Override
-	@SubscribeEvent
 	public void repath(ElectriNetworkRepathEvent evt) {
 
 	}
