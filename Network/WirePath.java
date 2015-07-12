@@ -105,7 +105,7 @@ public final class WirePath {
 		}
 		sb.append(">");
 		return sb.toString();*/
-		return start+":"+end;
+		return start+":"+end+"{"+this.hashCode()+"}";
 	}
 
 	public boolean containsBlock(WiringTile te) {

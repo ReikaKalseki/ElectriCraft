@@ -20,6 +20,7 @@ import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.util.ForgeDirection;
 import Reika.ChromatiCraft.API.WorldRift;
 import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
+import Reika.DragonAPI.Libraries.Java.ReikaArrayHelper;
 import Reika.DragonAPI.Libraries.Registry.ReikaParticleHelper;
 import Reika.ElectriCraft.Auxiliary.WireEmitter;
 import Reika.ElectriCraft.Auxiliary.WireReceiver;
@@ -94,9 +95,7 @@ public class TileEntityWire extends WiringTile {
 	{
 		super.readSyncTag(NBT);
 
-		for (int i = 0; i < 6; i++) {
-			connections[i] = NBT.getBoolean("conn"+i);
-		}
+		connections = ReikaArrayHelper.booleanFromByteBitflags(NBT.getByte("conn"), 6);
 
 		insulated = NBT.getBoolean("insul");
 
@@ -108,9 +107,7 @@ public class TileEntityWire extends WiringTile {
 	{
 		super.writeSyncTag(NBT);
 
-		for (int i = 0; i < 6; i++) {
-			NBT.setBoolean("conn"+i, connections[i]);
-		}
+		NBT.setByte("conn", ReikaArrayHelper.booleanToByteBitflags(connections));
 
 		NBT.setBoolean("insul", insulated);
 

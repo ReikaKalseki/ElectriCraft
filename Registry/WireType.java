@@ -127,4 +127,8 @@ public enum WireType {
 		return sb.toString();
 	}
 
+	public boolean hasGlowLayer() {
+		return this == SUPERCONDUCTOR;
+	}
+
 }

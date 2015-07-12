@@ -77,6 +77,7 @@ public final class WireNetwork implements NetworkObject {
 		pointCurrents.clear();
 		pointVoltages.clear();
 		avgCurrents.clear();
+		numSources.clear();
 	}
 
 	public boolean isMultiWorld() {
@@ -166,13 +167,13 @@ public final class WireNetwork implements NetworkObject {
 			return 0;
 		int sv = Integer.MAX_VALUE;
 		for (WirePath path : paths) {
-			if (path.containsBlock(te)) {
+			if (path.containsBlock(te) && path.start.getGenVoltage() > 0) {
 				int v = path.getVoltageAt(te);
 				if (v < sv)
 					sv = v;
 			}
 		}
-		return sv;
+		return sv == Integer.MAX_VALUE ? 0 : sv;
 	}
 
 	private int calcPointCurrent(WiringTile te) {
@@ -381,6 +382,7 @@ public final class WireNetwork implements NetworkObject {
 		for (WirePath path : paths) {
 			if (path.endsAt(te.getX(), te.getY(), te.getZ())) {
 				int pa = path.getPathCurrent();
+				//ReikaJavaLibrary.pConsole(pa+" @ "+path+"/"+te, Side.SERVER);
 				a += pa;
 			}
 		}
@@ -395,6 +397,7 @@ public final class WireNetwork implements NetworkObject {
 				int pa = path.getPathCurrent();
 				a += pa;
 				c++;
+				//ReikaJavaLibrary.pConsole(pa+" @ "+path+" > "+te, Side.SERVER);
 			}
 		}
 		//ReikaJavaLibrary.pConsole(a+":"+c+" @ "+te);

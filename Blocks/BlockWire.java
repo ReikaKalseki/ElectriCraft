@@ -119,11 +119,11 @@ public class BlockWire extends ElectriBlock implements IWailaDataProvider {
 	public void registerBlockIcons(IIconRegister ico) {
 		for (int i = 0; i < WireType.wireList.length; i++) {
 			WireType wire = WireType.wireList[i];
-			textures[i] = ico.registerIcon("ElectriCraft:"+wire.getIconTexture());
-			insulTextures[i] = ico.registerIcon("ElectriCraft:"+wire.getIconTexture()+"_ins");
+			textures[i] = ico.registerIcon("ElectriCraft:wire/"+wire.getIconTexture());
+			insulTextures[i] = ico.registerIcon("ElectriCraft:wire/"+wire.getIconTexture()+"_ins");
 
-			texturesEnd[i] = ico.registerIcon("ElectriCraft:"+wire.getIconTexture()+"_end");
-			insulTexturesEnd[i] = ico.registerIcon("ElectriCraft:"+wire.getIconTexture()+"_ins_end");
+			texturesEnd[i] = ico.registerIcon("ElectriCraft:wire/"+wire.getIconTexture()+"_end");
+			insulTexturesEnd[i] = ico.registerIcon("ElectriCraft:wire/"+wire.getIconTexture()+"_ins_end");
 		}
 	}
 
