@@ -29,8 +29,8 @@ import Reika.ElectriCraft.Registry.ElectriItems;
 import Reika.ElectriCraft.Registry.ElectriOres;
 import Reika.ElectriCraft.Registry.ElectriTiles;
 import Reika.ElectriCraft.Registry.WireType;
-import Reika.RotaryCraft.API.GrinderAPI;
 import Reika.RotaryCraft.Auxiliary.ItemStacks;
+import Reika.RotaryCraft.Auxiliary.RecipeManagers.RecipesGrinder;
 import Reika.RotaryCraft.Auxiliary.RecipeManagers.WorktableRecipes;
 import Reika.RotaryCraft.Registry.BlockRegistry;
 import Reika.RotaryCraft.Registry.ConfigRegistry;
@@ -74,9 +74,9 @@ public class ElectriRecipes {
 
 		GameRegistry.addRecipe(new ShapedOreRecipe(ElectriItems.BOOK.getStackOf(), "RSR", "PPP", "PPP", 'R', "ingotGold", 'S', ItemStacks.steelingot, 'P', Items.paper));
 
-		GrinderAPI.addRecipe(new ItemStack(Items.diamond), ElectriCrafting.DIAMONDDUST.getItem());
-		GrinderAPI.addRecipe(ReikaItemHelper.lapisDye, ElectriCrafting.BLUEDUST.getItem());
-		GrinderAPI.addRecipe(new ItemStack(Items.quartz), ElectriCrafting.QUARTZDUST.getItem());
+		RecipesGrinder.getRecipes().addRecipe(new ItemStack(Items.diamond), ElectriCrafting.DIAMONDDUST.getItem());
+		RecipesGrinder.getRecipes().addRecipe(ReikaItemHelper.lapisDye, ElectriCrafting.BLUEDUST.getItem());
+		RecipesGrinder.getRecipes().addRecipe(new ItemStack(Items.quartz), ElectriCrafting.QUARTZDUST.getItem());
 
 		ReikaRecipeHelper.addSmelting(ElectriCrafting.CRYSTALDUST.getItem(), ElectriItems.CRYSTAL.getStackOf(), 1F);
 		GameRegistry.addRecipe(new ShapelessOreRecipe(ElectriCrafting.CRYSTALDUST.getItem(2), ElectriCrafting.BLUEDUST.oreDictName, ElectriCrafting.DIAMONDDUST.oreDictName, ElectriCrafting.QUARTZDUST.oreDictName, "dustGlowstone", "dustRedstone", "dustRedstone", "dustRedstone", "dustRedstone"));
