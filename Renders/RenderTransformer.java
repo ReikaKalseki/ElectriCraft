@@ -9,12 +9,14 @@
  ******************************************************************************/
 package Reika.ElectriCraft.Renders;
 
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.client.MinecraftForgeClient;
 
 import org.lwjgl.opengl.GL11;
 
 import Reika.DragonAPI.Interfaces.RenderFetcher;
+import Reika.DragonAPI.Libraries.IO.ReikaRenderHelper;
 import Reika.DragonAPI.Libraries.Java.ReikaJavaLibrary;
 import Reika.ElectriCraft.Base.ElectriTERenderer;
 import Reika.ElectriCraft.TileEntities.TileEntityTransformer;
@@ -68,11 +70,49 @@ public class RenderTransformer extends ElectriTERenderer
 	@Override
 	public void renderTileEntityAt(TileEntity tile, double par2, double par4, double par6, float par8)
 	{
-		if (this.doRenderModel((TileEntityTransformer)tile))
-			this.renderTileEntityTransformerAt((TileEntityTransformer)tile, par2, par4, par6, par8);
-		if (((TileEntityTransformer) tile).isInWorld() && MinecraftForgeClient.getRenderPass() == 1) {
+		TileEntityTransformer te = (TileEntityTransformer)tile;
+		if (this.doRenderModel(te))
+			this.renderTileEntityTransformerAt(te, par2, par4, par6, par8);
+		if (te.isInWorld() && MinecraftForgeClient.getRenderPass() == 1) {
 			IORenderer.renderIO(tile, par2, par4, par6);
+
+			this.renderArrow(te, par2, par4, par6);
 		}
+	}
+
+	private void renderArrow(TileEntityTransformer te, double par2, double par4, double par6) {
+		GL11.glPushMatrix();
+		GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
+
+		GL11.glTranslated(par2, par4, par6);
+		GL11.glDisable(GL11.GL_LIGHTING);
+		GL11.glDisable(GL11.GL_TEXTURE_2D);
+		ReikaRenderHelper.disableEntityLighting();
+
+		Tessellator v5 = Tessellator.instance;
+		v5.setBrightness(240);
+		v5.setColorOpaque_I(0x77afff);
+		v5.startDrawing(GL11.GL_LINES);
+
+		double h = 1.1;
+		v5.addVertex(0.5, h, 0.5);
+		double dr = 0.125;
+		double r = 0.375;
+		double w = 0.08;
+		double dx = 0.5+te.getFacing().offsetX*r;
+		double dz = 0.5+te.getFacing().offsetZ*r;
+		v5.addVertex(dx, h, dz);
+
+		v5.addVertex(dx, h, dz);
+		v5.addVertex(dx-te.getFacing().offsetX*dr+te.getFacing().offsetZ*w, h, dz-te.getFacing().offsetZ*dr+te.getFacing().offsetX*w);
+
+		v5.addVertex(dx, h, dz);
+		v5.addVertex(dx-te.getFacing().offsetX*dr-te.getFacing().offsetZ*w, h, dz-te.getFacing().offsetZ*dr-te.getFacing().offsetX*w);
+
+		v5.draw();
+
+		GL11.glPopMatrix();
+		GL11.glPopAttrib();
 	}
 
 	@Override

@@ -199,6 +199,8 @@ public enum ElectriTiles {
 
 	public boolean renderInPass1() {
 		switch(this) {
+		case TRANSFORMER:
+			return true;
 		default:
 			return false;
 		}
