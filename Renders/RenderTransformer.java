@@ -17,6 +17,7 @@ import org.lwjgl.opengl.GL11;
 
 import Reika.DragonAPI.Interfaces.RenderFetcher;
 import Reika.DragonAPI.Libraries.IO.ReikaRenderHelper;
+import Reika.DragonAPI.Libraries.Java.ReikaGLHelper.BlendMode;
 import Reika.DragonAPI.Libraries.Java.ReikaJavaLibrary;
 import Reika.ElectriCraft.Base.ElectriTERenderer;
 import Reika.ElectriCraft.TileEntities.TileEntityTransformer;
@@ -81,38 +82,47 @@ public class RenderTransformer extends ElectriTERenderer
 	}
 
 	private void renderArrow(TileEntityTransformer te, double par2, double par4, double par6) {
-		GL11.glPushMatrix();
-		GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
+		int a = Math.max(0, 512-te.getTicksExisted()*8);
+		if (a > 0) {
+			GL11.glPushMatrix();
+			GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
 
-		GL11.glTranslated(par2, par4, par6);
-		GL11.glDisable(GL11.GL_LIGHTING);
-		GL11.glDisable(GL11.GL_TEXTURE_2D);
-		ReikaRenderHelper.disableEntityLighting();
+			GL11.glTranslated(par2, par4, par6);
+			GL11.glDisable(GL11.GL_LIGHTING);
+			GL11.glEnable(GL11.GL_BLEND);
+			BlendMode.DEFAULT.apply();
+			GL11.glDisable(GL11.GL_TEXTURE_2D);
+			ReikaRenderHelper.disableEntityLighting();
+			float lw = GL11.glGetFloat(GL11.GL_LINE_WIDTH);
+			GL11.glLineWidth(5);
 
-		Tessellator v5 = Tessellator.instance;
-		v5.setBrightness(240);
-		v5.setColorOpaque_I(0x77afff);
-		v5.startDrawing(GL11.GL_LINES);
+			Tessellator v5 = Tessellator.instance;
+			v5.setBrightness(240);
+			v5.startDrawing(GL11.GL_LINES);
+			v5.setColorRGBA_I(0xffffff, a);
 
-		double h = 1.1;
-		v5.addVertex(0.5, h, 0.5);
-		double dr = 0.125;
-		double r = 0.375;
-		double w = 0.08;
-		double dx = 0.5+te.getFacing().offsetX*r;
-		double dz = 0.5+te.getFacing().offsetZ*r;
-		v5.addVertex(dx, h, dz);
+			double h = 1.1;
+			v5.addVertex(0.5, h, 0.5);
+			double dr = 0.125;
+			double r = 0.375;
+			double w = 0.08;
+			double dx = 0.5+te.getFacing().offsetX*r;
+			double dz = 0.5+te.getFacing().offsetZ*r;
+			v5.addVertex(dx, h, dz);
 
-		v5.addVertex(dx, h, dz);
-		v5.addVertex(dx-te.getFacing().offsetX*dr+te.getFacing().offsetZ*w, h, dz-te.getFacing().offsetZ*dr+te.getFacing().offsetX*w);
+			v5.addVertex(dx, h, dz);
+			v5.addVertex(dx-te.getFacing().offsetX*dr+te.getFacing().offsetZ*w, h, dz-te.getFacing().offsetZ*dr+te.getFacing().offsetX*w);
 
-		v5.addVertex(dx, h, dz);
-		v5.addVertex(dx-te.getFacing().offsetX*dr-te.getFacing().offsetZ*w, h, dz-te.getFacing().offsetZ*dr-te.getFacing().offsetX*w);
+			v5.addVertex(dx, h, dz);
+			v5.addVertex(dx-te.getFacing().offsetX*dr-te.getFacing().offsetZ*w, h, dz-te.getFacing().offsetZ*dr-te.getFacing().offsetX*w);
 
-		v5.draw();
+			v5.draw();
 
-		GL11.glPopMatrix();
-		GL11.glPopAttrib();
+			GL11.glLineWidth(lw);
+
+			GL11.glPopMatrix();
+			GL11.glPopAttrib();
+		}
 	}
 
 	@Override
