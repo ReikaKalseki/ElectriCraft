@@ -16,6 +16,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 
 import Reika.DragonAPI.Instantiable.Data.Immutable.WorldLocation;
+import Reika.DragonAPI.Libraries.Java.ReikaJavaLibrary;
 import Reika.ElectriCraft.Auxiliary.ElectriNetworkEvent.ElectriNetworkTickEvent;
 import Reika.ElectriCraft.Auxiliary.WireEmitter;
 import Reika.ElectriCraft.Auxiliary.WireReceiver;
@@ -141,25 +142,29 @@ public final class WirePath {
 	public int getPathCurrent() {
 		if (!start.canEmitPower())
 			return 0;
-		ArrayList<WirePath> li = net.getPathsStartingAt(start);
 		int total = start.getGenCurrent();
 		int num = net.getNumberPathsStartingAt(start);
 		int frac = total/num;
 		int bonus = 0;
 		int num2 = 0;
-		for (int i = 0; i < li.size(); i++) {
-			WirePath path = li.get(i);
+		ArrayList<WirePath> li = net.getPathsStartingAt(start);
+		for (WirePath path : li) {
 			if (path.isLimitedCurrent()) {
 				int max = path.currentLimit;
 				if (max < frac) {
 					bonus += frac-max;
 				}
+				else {
+					num2++;
+				}
 			}
-			else
+			else {
 				num2++;
+			}
 		}
 		int frac2 = num2 > 0 ? bonus/num2 : 0;
-		return this.isLimitedCurrent() ? Math.min(frac, currentLimit) : frac+frac2;
+		ReikaJavaLibrary.pConsole(bonus+"/"+num2+"="+frac2, currentLimit == 2000);
+		return Math.min(frac+frac2, currentLimit);
 	}
 
 	Collection<Integer> getDimensions() {
