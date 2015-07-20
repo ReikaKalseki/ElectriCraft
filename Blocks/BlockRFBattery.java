@@ -23,7 +23,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
@@ -141,6 +140,7 @@ public class BlockRFBattery extends Block implements IWailaDataProvider {
 
 	@ModDependent(ModList.WAILA)
 	public List<String> getWailaHead(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor acc, IWailaConfigHandler config) {
+		/*
 		World world = acc.getWorld();
 		TileEntity te = acc.getTileEntity();
 		MovingObjectPosition mov = acc.getPosition();
@@ -149,7 +149,7 @@ public class BlockRFBattery extends Block implements IWailaDataProvider {
 			int y = mov.blockY;
 			int z = mov.blockZ;
 			currenttip.add(EnumChatFormatting.WHITE+this.getPickBlock(mov, world, x, y, z).getDisplayName());
-		}
+		}*/
 		return currenttip;
 	}
 
@@ -165,9 +165,10 @@ public class BlockRFBattery extends Block implements IWailaDataProvider {
 
 	@ModDependent(ModList.WAILA)
 	public List<String> getWailaTail(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor acc, IWailaConfigHandler config) {
+		/*
 		String s1 = EnumChatFormatting.ITALIC.toString();
 		String s2 = EnumChatFormatting.BLUE.toString();
-		currenttip.add(s2+s1+"ElectriCraft");
+		currenttip.add(s2+s1+"ElectriCraft");*/
 		return currenttip;
 	}
 

@@ -190,6 +190,7 @@ public class BlockElectricMachine extends ElectriBlock implements IWailaDataProv
 
 	@ModDependent(ModList.WAILA)
 	public List<String> getWailaHead(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor acc, IWailaConfigHandler config) {
+		/*
 		World world = acc.getWorld();
 		MovingObjectPosition mov = acc.getPosition();
 		if (mov != null) {
@@ -198,6 +199,7 @@ public class BlockElectricMachine extends ElectriBlock implements IWailaDataProv
 			int z = mov.blockZ;
 			currenttip.add(EnumChatFormatting.WHITE+this.getPickBlock(mov, world, x, y, z).getDisplayName());
 		}
+		 */
 		return currenttip;
 	}
 
@@ -225,9 +227,10 @@ public class BlockElectricMachine extends ElectriBlock implements IWailaDataProv
 
 	@ModDependent(ModList.WAILA)
 	public List<String> getWailaTail(ItemStack itemStack, List<String> currenttip, IWailaDataAccessor acc, IWailaConfigHandler config) {
+		/*
 		String s1 = EnumChatFormatting.ITALIC.toString();
 		String s2 = EnumChatFormatting.BLUE.toString();
-		currenttip.add(s2+s1+"ElectriCraft");
+		currenttip.add(s2+s1+"ElectriCraft");*/
 		return currenttip;
 	}
 

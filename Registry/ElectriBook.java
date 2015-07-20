@@ -208,7 +208,7 @@ public enum ElectriBook implements HandbookEntry {
 		return ElectriDescriptions.getData(this);
 	}
 
-	public String getNotes() {
+	public String getNotes(int subpage) {
 		return ElectriDescriptions.getNotes(this);
 	}
 
