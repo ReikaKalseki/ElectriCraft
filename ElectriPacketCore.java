@@ -17,7 +17,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import Reika.DragonAPI.Auxiliary.PacketTypes;
-import Reika.DragonAPI.Interfaces.IPacketHandler;
+import Reika.DragonAPI.Interfaces.PacketHandler;
 import Reika.DragonAPI.Libraries.IO.ReikaChatHelper;
 import Reika.DragonAPI.Libraries.IO.ReikaPacketHelper;
 import Reika.DragonAPI.Libraries.IO.ReikaPacketHelper.PacketObj;
@@ -27,7 +27,7 @@ import Reika.ElectriCraft.TileEntities.TileEntityRFCable;
 import Reika.ElectriCraft.TileEntities.TileEntityTransformer;
 
 
-public class ElectriPacketCore implements IPacketHandler {
+public class ElectriPacketCore implements PacketHandler {
 
 	public void handleData(PacketObj packet, World world, EntityPlayer ep) {
 		DataInputStream inputStream = packet.getDataIn();

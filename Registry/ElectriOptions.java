@@ -9,10 +9,11 @@
  ******************************************************************************/
 package Reika.ElectriCraft.Registry;
 
-import Reika.DragonAPI.Interfaces.ConfigList;
+import Reika.DragonAPI.Interfaces.Configuration.BooleanConfig;
+import Reika.DragonAPI.Interfaces.Configuration.IntegerConfig;
 import Reika.ElectriCraft.ElectriCraft;
 
-public enum ElectriOptions implements ConfigList {
+public enum ElectriOptions implements IntegerConfig, BooleanConfig {
 
 	RETROGEN("Retrogenerate Ores", false),
 	DISCRETE("Ore Discretization", 1);
@@ -20,7 +21,6 @@ public enum ElectriOptions implements ConfigList {
 	private String label;
 	private boolean defaultState;
 	private int defaultValue;
-	private float defaultFloat;
 	private Class type;
 	private boolean enforcing = false;
 
@@ -45,22 +45,12 @@ public enum ElectriOptions implements ConfigList {
 		type = int.class;
 	}
 
-	private ElectriOptions(String l, float d) {
-		label = l;
-		defaultFloat = d;
-		type = float.class;
-	}
-
 	public boolean isBoolean() {
 		return type == boolean.class;
 	}
 
 	public boolean isNumeric() {
 		return type == int.class;
-	}
-
-	public boolean isDecimal() {
-		return type == float.class;
 	}
 
 	public Class getPropertyType() {
@@ -79,10 +69,6 @@ public enum ElectriOptions implements ConfigList {
 		return (Integer)ElectriCraft.config.getControl(this.ordinal());
 	}
 
-	public float getFloat() {
-		return (Float)ElectriCraft.config.getControl(this.ordinal());
-	}
-
 	public boolean isDummiedOut() {
 		return type == null;
 	}
@@ -95,11 +81,6 @@ public enum ElectriOptions implements ConfigList {
 	@Override
 	public int getDefaultValue() {
 		return defaultValue;
-	}
-
-	@Override
-	public float getDefaultFloat() {
-		return defaultFloat;
 	}
 
 	@Override
