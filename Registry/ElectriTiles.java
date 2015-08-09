@@ -38,6 +38,7 @@ import Reika.ElectriCraft.TileEntities.TileEntityResistor;
 import Reika.ElectriCraft.TileEntities.TileEntityTransformer;
 import Reika.ElectriCraft.TileEntities.TileEntityWire;
 import Reika.RotaryCraft.Auxiliary.Interfaces.NBTMachine;
+import Reika.RotaryCraft.Auxiliary.RecipeManagers.RecipeHandler.RecipeLevel;
 import Reika.RotaryCraft.Auxiliary.RecipeManagers.WorktableRecipes;
 import Reika.RotaryCraft.Registry.ConfigRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -199,10 +200,10 @@ public enum ElectriTiles {
 
 	public boolean renderInPass1() {
 		switch(this) {
-		case TRANSFORMER:
-			return true;
-		default:
-			return false;
+			case TRANSFORMER:
+				return true;
+			default:
+				return false;
 		}
 	}
 
@@ -216,7 +217,7 @@ public enum ElectriTiles {
 
 	public void addRecipe(IRecipe ir) {
 		if (!this.isDummiedOut()) {
-			WorktableRecipes.getInstance().addRecipe(ir);
+			WorktableRecipes.getInstance().addRecipe(ir, RecipeLevel.CORE);
 			if (ConfigRegistry.TABLEMACHINES.getState()) {
 				GameRegistry.addRecipe(ir);
 			}
@@ -225,7 +226,7 @@ public enum ElectriTiles {
 
 	public void addRecipe(ItemStack is, Object... obj) {
 		if (!this.isDummiedOut()) {
-			WorktableRecipes.getInstance().addRecipe(is, obj);
+			WorktableRecipes.getInstance().addRecipe(is, RecipeLevel.CORE, obj);
 			if (ConfigRegistry.TABLEMACHINES.getState()) {
 				GameRegistry.addRecipe(is, obj);
 			}
@@ -234,7 +235,7 @@ public enum ElectriTiles {
 
 	public void addCrafting(Object... obj) {
 		if (!this.isDummiedOut()) {
-			WorktableRecipes.getInstance().addRecipe(this.getCraftedProduct(), obj);
+			WorktableRecipes.getInstance().addRecipe(this.getCraftedProduct(), RecipeLevel.CORE, obj);
 			if (ConfigRegistry.TABLEMACHINES.getState()) {
 				GameRegistry.addRecipe(this.getCraftedProduct(), obj);
 			}
@@ -245,7 +246,7 @@ public enum ElectriTiles {
 		ItemStack is = this.getCraftedProduct();
 		ShapedOreRecipe ir = new ShapedOreRecipe(ReikaItemHelper.getSizedItemStack(is, size), obj);
 		if (!this.isDummiedOut()) {
-			WorktableRecipes.getInstance().addRecipe(ir);
+			WorktableRecipes.getInstance().addRecipe(ir, RecipeLevel.CORE);
 			if (ConfigRegistry.TABLEMACHINES.getState()) {
 				GameRegistry.addRecipe(ir);
 			}
@@ -256,7 +257,7 @@ public enum ElectriTiles {
 		ItemStack is = this.getCraftedProduct();
 		ShapedOreRecipe ir = new ShapedOreRecipe(is, obj);
 		if (!this.isDummiedOut()) {
-			WorktableRecipes.getInstance().addRecipe(ir);
+			WorktableRecipes.getInstance().addRecipe(ir, RecipeLevel.CORE);
 			if (ConfigRegistry.TABLEMACHINES.getState()) {
 				GameRegistry.addRecipe(ir);
 			}
@@ -265,7 +266,7 @@ public enum ElectriTiles {
 
 	public void addSizedCrafting(int num, Object... obj) {
 		if (!this.isDummiedOut()) {
-			WorktableRecipes.getInstance().addRecipe(ReikaItemHelper.getSizedItemStack(this.getCraftedProduct(), num), obj);
+			WorktableRecipes.getInstance().addRecipe(ReikaItemHelper.getSizedItemStack(this.getCraftedProduct(), num), RecipeLevel.CORE, obj);
 			if (ConfigRegistry.TABLEMACHINES.getState()) {
 				GameRegistry.addRecipe(ReikaItemHelper.getSizedItemStack(this.getCraftedProduct(), num), obj);
 			}
@@ -283,11 +284,11 @@ public enum ElectriTiles {
 
 	public String getPlaceSound() {
 		switch(this) {
-		case WIRE:
-		case CABLE:
-			return "step.cloth";
-		default:
-			return "step.stone";
+			case WIRE:
+			case CABLE:
+				return "step.cloth";
+			default:
+				return "step.stone";
 		}
 	}
 

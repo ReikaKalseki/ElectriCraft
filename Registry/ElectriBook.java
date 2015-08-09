@@ -23,6 +23,7 @@ import Reika.ElectriCraft.Auxiliary.ElectriBookData;
 import Reika.ElectriCraft.Auxiliary.ElectriDescriptions;
 import Reika.RotaryCraft.RotaryCraft;
 import Reika.RotaryCraft.Auxiliary.Interfaces.HandbookEntry;
+import Reika.RotaryCraft.GUIs.GuiHandbook;
 
 public enum ElectriBook implements HandbookEntry {
 
@@ -243,7 +244,7 @@ public enum ElectriBook implements HandbookEntry {
 
 	public int getRelativeScreen() {
 		int offset = this.ordinal()-this.getParent().ordinal();
-		return offset/8;
+		return offset/GuiHandbook.PAGES_PER_SCREEN;
 	}
 
 	public ElectriBook getParent() {
@@ -268,7 +269,7 @@ public enum ElectriBook implements HandbookEntry {
 		for (int i = 0; i < this.ordinal(); i++) {
 			ElectriBook h = tabList[i];
 			if (h.isParent) {
-				sc += h.getNumberChildren()/8+1;
+				sc += h.getNumberChildren()/GuiHandbook.PAGES_PER_SCREEN+1;
 			}
 		}
 		return sc;
@@ -297,7 +298,7 @@ public enum ElectriBook implements HandbookEntry {
 
 	public int getRelativeTabPosn() {
 		int offset = this.ordinal()-this.getParent().ordinal();
-		return offset-this.getRelativeScreen()*8;
+		return offset-this.getRelativeScreen()*GuiHandbook.PAGES_PER_SCREEN;
 	}
 
 	public int getScreen() {
@@ -305,7 +306,7 @@ public enum ElectriBook implements HandbookEntry {
 	}
 
 	public int getPage() {
-		return (this.ordinal()-this.getParent().ordinal())%8;
+		return (this.ordinal()-this.getParent().ordinal())%GuiHandbook.PAGES_PER_SCREEN;
 	}
 
 	@Override

@@ -11,6 +11,7 @@ package Reika.ElectriCraft;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.EnumSet;
 
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
@@ -58,8 +59,8 @@ public class ElectriNetworkManager implements TickHandler {
 	}
 
 	@Override
-	public TickType getType() {
-		return TickType.SERVER;
+	public EnumSet<TickType> getType() {
+		return EnumSet.of(TickType.SERVER);
 	}
 
 	@Override

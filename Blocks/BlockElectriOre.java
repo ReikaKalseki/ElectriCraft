@@ -42,6 +42,11 @@ public class BlockElectriOre extends Block {
 	}
 
 	@Override
+	public final int getHarvestLevel(int meta) {
+		return ElectriOres.oreList[meta].harvestLevel;
+	}
+
+	@Override
 	public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune)
 	{
 		ArrayList<ItemStack> li = new ArrayList<ItemStack>();

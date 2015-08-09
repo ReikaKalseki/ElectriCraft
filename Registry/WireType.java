@@ -20,6 +20,7 @@ import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
 import Reika.DragonAPI.ModRegistry.ModOreList;
 import Reika.ElectriCraft.Auxiliary.ElectriStacks;
 import Reika.RotaryCraft.Auxiliary.ItemStacks;
+import Reika.RotaryCraft.Auxiliary.RecipeManagers.RecipeHandler.RecipeLevel;
 import Reika.RotaryCraft.Auxiliary.RecipeManagers.WorktableRecipes;
 import Reika.RotaryCraft.Registry.ConfigRegistry;
 import Reika.RotaryCraft.Registry.DifficultyEffects;
@@ -106,8 +107,8 @@ public enum WireType {
 		for (ItemStack in : li) {
 			Object[] obj2 = {"WIW", "WIW", "WIW", 'W', Blocks.wool, 'I', in};
 			Object[] obj = {"I", "I", "I", 'I', in};
-			WorktableRecipes.getInstance().addRecipe(is, obj);
-			WorktableRecipes.getInstance().addRecipe(is2, obj2);
+			WorktableRecipes.getInstance().addRecipe(is, RecipeLevel.CORE, obj);
+			WorktableRecipes.getInstance().addRecipe(is2, RecipeLevel.CORE, obj2);
 			if (ConfigRegistry.TABLEMACHINES.getState()) {
 				GameRegistry.addRecipe(is, obj);
 				GameRegistry.addRecipe(is2, obj2);

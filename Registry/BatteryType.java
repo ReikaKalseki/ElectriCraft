@@ -18,6 +18,7 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 import Reika.DragonAPI.Libraries.MathSci.ReikaEngLibrary;
 import Reika.DragonAPI.Libraries.MathSci.ReikaMathLibrary;
 import Reika.RotaryCraft.Auxiliary.ItemStacks;
+import Reika.RotaryCraft.Auxiliary.RecipeManagers.RecipeHandler.RecipeLevel;
 import Reika.RotaryCraft.Auxiliary.RecipeManagers.WorktableRecipes;
 import Reika.RotaryCraft.Registry.ConfigRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -62,7 +63,7 @@ public enum BatteryType {
 		ItemStack in = ElectriItems.CRYSTAL.getStackOfMetadata(this.ordinal());
 		Object[] obj = {"ScS", "WCW", "SPS", 'W', Blocks.wool, 'c', this.getTopMaterial(), 'C', in, 'P', this.getBottomMaterial(), 'S', ItemStacks.steelingot};
 		ShapedOreRecipe ir = new ShapedOreRecipe(is, obj);
-		WorktableRecipes.getInstance().addRecipe(ir);
+		WorktableRecipes.getInstance().addRecipe(ir, RecipeLevel.CORE);
 		if (ConfigRegistry.TABLEMACHINES.getState()) {
 			GameRegistry.addRecipe(ir);
 		}
@@ -70,26 +71,26 @@ public enum BatteryType {
 
 	private Object getBottomMaterial() {
 		switch(this) {
-		case STAR:
-			return ItemStacks.bedingot;
-		case DIAMOND:
-			return ItemStacks.tungsteningot;
-		default:
-			return ItemStacks.basepanel;
+			case STAR:
+				return ItemStacks.bedingot;
+			case DIAMOND:
+				return ItemStacks.tungsteningot;
+			default:
+				return ItemStacks.basepanel;
 		}
 	}
 
 	private Object getTopMaterial() {
 		switch(this) {
-		case GLOWSTONE:
-		case LAPIS:
-			return "ingotSilver";
-		case ENDER:
-		case STAR:
-		case DIAMOND:
-			return ItemStacks.redgoldingot;
-		default:
-			return "ingotCopper";
+			case GLOWSTONE:
+			case LAPIS:
+				return "ingotSilver";
+			case ENDER:
+			case STAR:
+			case DIAMOND:
+				return ItemStacks.redgoldingot;
+			default:
+				return "ingotCopper";
 		}
 	}
 

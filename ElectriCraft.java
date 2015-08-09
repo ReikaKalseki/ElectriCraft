@@ -22,6 +22,7 @@ import thaumcraft.api.aspects.Aspect;
 import Reika.ChromatiCraft.API.AcceleratorBlacklist;
 import Reika.ChromatiCraft.API.AcceleratorBlacklist.BlacklistReason;
 import Reika.DragonAPI.DragonAPICore;
+import Reika.DragonAPI.DragonOptions;
 import Reika.DragonAPI.ModList;
 import Reika.DragonAPI.ASM.DependentMethodStripper.ClassDependent;
 import Reika.DragonAPI.ASM.DependentMethodStripper.ModDependent;
@@ -104,6 +105,8 @@ public class ElectriCraft extends DragonAPIMod {
 		config.initProps(evt);
 
 		logger = new ModLogger(instance, false);
+		if (DragonOptions.FILELOG.getState())
+			logger.setOutput("**_Loading_Log.log");
 		proxy.registerSounds();
 
 		this.addBlocks();
@@ -148,7 +151,7 @@ public class ElectriCraft extends DragonAPIMod {
 
 		ItemStackRepository.instance.registerClass(this, ElectriStacks.class);
 
-		TickRegistry.instance.registerTickHandler(ElectriNetworkManager.instance, Side.SERVER);
+		TickRegistry.instance.registerTickHandler(ElectriNetworkManager.instance);
 
 		IntegrityChecker.instance.addMod(instance, ElectriBlocks.blockList, ElectriItems.itemList);
 

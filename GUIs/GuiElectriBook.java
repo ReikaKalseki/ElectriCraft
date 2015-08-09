@@ -62,8 +62,8 @@ public class GuiElectriBook extends GuiHandbook {
 	}
 
 	@Override
-	public int getMaxPage() {
-		return ElectriBook.MODDESC.getScreen()+ElectriBook.MODDESC.getNumberChildren()/8;
+	public int getMaxScreen() {
+		return ElectriBook.MODDESC.getScreen()+ElectriBook.MODDESC.getNumberChildren()/GuiHandbook.PAGES_PER_SCREEN;
 	}
 
 	@Override
@@ -75,18 +75,18 @@ public class GuiElectriBook extends GuiHandbook {
 	@Override
 	protected int getNewScreenByTOCButton(int id) {
 		switch(id) {
-		case 1:
-			return ElectriBook.INTRO.getScreen();
-		case 2:
-			return ElectriBook.CONVDESC.getScreen();
-		case 3:
-			return ElectriBook.TRANSDESC.getScreen();
-		case 4:
-			return ElectriBook.STORAGEDESC.getScreen();
-		case 5:
-			return ElectriBook.UTILDESC.getScreen();
-		case 6:
-			return ElectriBook.MODDESC.getScreen();
+			case 1:
+				return ElectriBook.INTRO.getScreen();
+			case 2:
+				return ElectriBook.CONVDESC.getScreen();
+			case 3:
+				return ElectriBook.TRANSDESC.getScreen();
+			case 4:
+				return ElectriBook.STORAGEDESC.getScreen();
+			case 5:
+				return ElectriBook.UTILDESC.getScreen();
+			case 6:
+				return ElectriBook.MODDESC.getScreen();
 		}
 		return 0;
 	}

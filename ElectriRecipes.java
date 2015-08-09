@@ -30,6 +30,7 @@ import Reika.ElectriCraft.Registry.ElectriOres;
 import Reika.ElectriCraft.Registry.ElectriTiles;
 import Reika.ElectriCraft.Registry.WireType;
 import Reika.RotaryCraft.Auxiliary.ItemStacks;
+import Reika.RotaryCraft.Auxiliary.RecipeManagers.RecipeHandler.RecipeLevel;
 import Reika.RotaryCraft.Auxiliary.RecipeManagers.RecipesGrinder;
 import Reika.RotaryCraft.Auxiliary.RecipeManagers.WorktableRecipes;
 import Reika.RotaryCraft.Registry.BlockRegistry;
@@ -96,8 +97,8 @@ public class ElectriRecipes {
 		ItemStack w2 = ReikaItemHelper.getSizedItemStack(WireType.SUPERCONDUCTOR.getCraftedInsulatedProduct(), 3);
 		ShapedOreRecipe ir = new ShapedOreRecipe(w, "IGI", "SRS", "tgt", 't', ItemStacks.tungsteningot, 'I', ItemStacks.steelingot, 'G', BlockRegistry.BLASTGLASS.getBlockInstance(), 'S', "ingotSilver", 'g', "ingotGold", 'R', Items.redstone);
 		Object[] obj2 = {"WwW", "WwW", "WwW", 'W', Blocks.wool, 'w', w};
-		WorktableRecipes.getInstance().addRecipe(ir);
-		WorktableRecipes.getInstance().addRecipe(w2, obj2);
+		WorktableRecipes.getInstance().addRecipe(ir, RecipeLevel.CORE);
+		WorktableRecipes.getInstance().addRecipe(w2, RecipeLevel.CORE, obj2);
 		if (ConfigRegistry.TABLEMACHINES.getState()) {
 			GameRegistry.addRecipe(ir);
 			GameRegistry.addRecipe(w2, obj2);
@@ -115,7 +116,7 @@ public class ElectriRecipes {
 
 			Object[] obj = {"ScS", "WCW", "tPt", 't', ItemStacks.tungsteningot, 'W', Blocks.wool, 'c', ItemStacks.redgoldingot, 'C', ElectriItems.CRYSTAL.getStackOfMetadata(BatteryType.batteryList.length), 'P', ItemStacks.bedingot, 'S', ItemStacks.steelingot};
 			ShapedOreRecipe ir2 = new ShapedOreRecipe(ElectriTiles.RFBATTERY.getCraftedProduct(), obj);
-			WorktableRecipes.getInstance().addRecipe(ir2);
+			WorktableRecipes.getInstance().addRecipe(ir2, RecipeLevel.CORE);
 			if (ConfigRegistry.TABLEMACHINES.getState()) {
 				GameRegistry.addRecipe(ir2);
 			}

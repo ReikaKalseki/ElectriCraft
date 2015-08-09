@@ -26,6 +26,7 @@ import Reika.ElectriCraft.Items.ItemElectriBook;
 import Reika.ElectriCraft.Items.ItemElectriPlacer;
 import Reika.ElectriCraft.Items.ItemRFBatteryPlacer;
 import Reika.ElectriCraft.Items.ItemWirePlacer;
+import Reika.RotaryCraft.Auxiliary.RecipeManagers.RecipeHandler.RecipeLevel;
 import Reika.RotaryCraft.Auxiliary.RecipeManagers.WorktableRecipes;
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -109,24 +110,24 @@ public enum ElectriItems implements ItemEnum {
 		if (!this.hasMultiValuedName())
 			throw new RuntimeException("Item "+name+" was called for a multi-name, yet does not have one!");
 		switch(this) {
-		case INGOTS:
-			return StatCollector.translateToLocal("ingot."+ElectriOres.oreList[dmg].name().toLowerCase());
-		case CRAFTING:
-			return ElectriCrafting.craftingList[dmg].getName();
-		case CRYSTAL:
-			if (dmg == BatteryType.batteryList.length)
-				return StatCollector.translateToLocal("energycrystal.rf");
-			return StatCollector.translateToLocal("energycrystal."+BatteryType.batteryList[dmg].name().toLowerCase());
-		case BATTERY:
-			return BatteryType.batteryList[dmg].getName();
-		case PLACER:
-			return ElectriTiles.TEList[dmg].getName();
-		case WIRE:
-			int d = dmg%WireType.INS_OFFSET;
-			String s = dmg >= WireType.INS_OFFSET ? "wire.insulated." : "wire.";
-			return d < WireType.wireList.length ? StatCollector.translateToLocal(s+WireType.wireList[d].name().toLowerCase()) : "";
-		default:
-			throw new RuntimeException("Item "+name+" was called for a multi-name, but it was not registered!");
+			case INGOTS:
+				return StatCollector.translateToLocal("ingot."+ElectriOres.oreList[dmg].name().toLowerCase());
+			case CRAFTING:
+				return ElectriCrafting.craftingList[dmg].getName();
+			case CRYSTAL:
+				if (dmg == BatteryType.batteryList.length)
+					return StatCollector.translateToLocal("energycrystal.rf");
+				return StatCollector.translateToLocal("energycrystal."+BatteryType.batteryList[dmg].name().toLowerCase());
+			case BATTERY:
+				return BatteryType.batteryList[dmg].getName();
+			case PLACER:
+				return ElectriTiles.TEList[dmg].getName();
+			case WIRE:
+				int d = dmg%WireType.INS_OFFSET;
+				String s = dmg >= WireType.INS_OFFSET ? "wire.insulated." : "wire.";
+				return d < WireType.wireList.length ? StatCollector.translateToLocal(s+WireType.wireList[d].name().toLowerCase()) : "";
+			default:
+				throw new RuntimeException("Item "+name+" was called for a multi-name, but it was not registered!");
 		}
 	}
 
@@ -150,18 +151,18 @@ public enum ElectriItems implements ItemEnum {
 		if (!hasSubtypes)
 			return 1;
 		switch(this) {
-		case INGOTS:
-			return ElectriOres.oreList.length;
-		case WIRE:
-			return WireType.INS_OFFSET*2;
-		case CRAFTING:
-			return ElectriCrafting.craftingList.length;
-		case CRYSTAL:
-			return BatteryType.batteryList.length+1;
-		case BATTERY:
-			return BatteryType.batteryList.length;
-		default:
-			throw new RegistrationException(ElectriCraft.instance, "Item "+name+" has subtypes but the number was not specified!");
+			case INGOTS:
+				return ElectriOres.oreList.length;
+			case WIRE:
+				return WireType.INS_OFFSET*2;
+			case CRAFTING:
+				return ElectriCrafting.craftingList.length;
+			case CRYSTAL:
+				return BatteryType.batteryList.length+1;
+			case BATTERY:
+				return BatteryType.batteryList.length;
+			default:
+				throw new RegistrationException(ElectriCraft.instance, "Item "+name+" has subtypes but the number was not specified!");
 		}
 	}
 
@@ -183,8 +184,8 @@ public enum ElectriItems implements ItemEnum {
 
 	public boolean overridesRightClick(ItemStack is) {
 		switch(this) {
-		default:
-			return false;
+			default:
+				return false;
 		}
 	}
 
@@ -200,42 +201,42 @@ public enum ElectriItems implements ItemEnum {
 	public void addRecipe(Object... params) {
 		if (!this.isDummiedOut()) {
 			GameRegistry.addRecipe(this.getStackOf(), params);
-			WorktableRecipes.getInstance().addRecipe(this.getStackOf(), params);
+			WorktableRecipes.getInstance().addRecipe(this.getStackOf(), RecipeLevel.CORE, params);
 		}
 	}
 
 	public void addSizedRecipe(int num, Object... params) {
 		if (!this.isDummiedOut()) {
 			GameRegistry.addRecipe(this.getCraftedProduct(num), params);
-			WorktableRecipes.getInstance().addRecipe(this.getCraftedProduct(num), params);
+			WorktableRecipes.getInstance().addRecipe(this.getCraftedProduct(num), RecipeLevel.CORE, params);
 		}
 	}
 
 	public void addMetaRecipe(int meta, Object... params) {
 		if (!this.isDummiedOut()) {
 			GameRegistry.addRecipe(this.getStackOfMetadata(meta), params);
-			WorktableRecipes.getInstance().addRecipe(this.getStackOfMetadata(meta), params);
+			WorktableRecipes.getInstance().addRecipe(this.getStackOfMetadata(meta), RecipeLevel.CORE, params);
 		}
 	}
 
 	public void addSizedMetaRecipe(int meta, int num, Object... params) {
 		if (!this.isDummiedOut()) {
 			GameRegistry.addRecipe(this.getCraftedMetadataProduct(num, meta), params);
-			WorktableRecipes.getInstance().addRecipe(this.getCraftedMetadataProduct(num, meta), params);
+			WorktableRecipes.getInstance().addRecipe(this.getCraftedMetadataProduct(num, meta), RecipeLevel.CORE, params);
 		}
 	}
 
 	public void addShapelessRecipe(Object... params) {
 		if (!this.isDummiedOut()) {
 			GameRegistry.addShapelessRecipe(this.getStackOf(), params);
-			WorktableRecipes.getInstance().addShapelessRecipe(this.getStackOf(), params);
+			WorktableRecipes.getInstance().addShapelessRecipe(this.getStackOf(), RecipeLevel.CORE, params);
 		}
 	}
 
 	public void addRecipe(IRecipe ir) {
 		if (!this.isDummiedOut()) {
 			GameRegistry.addRecipe(ir);
-			WorktableRecipes.getInstance().addRecipe(ir);
+			WorktableRecipes.getInstance().addRecipe(ir, RecipeLevel.CORE);
 		}
 	}
 
@@ -244,7 +245,7 @@ public enum ElectriItems implements ItemEnum {
 			ItemStack out = this.getStackOf();
 			boolean added = ReikaRecipeHelper.addOreRecipe(out, in);
 			if (added)
-				WorktableRecipes.getInstance().addRecipe(new ShapedOreRecipe(out, in));
+				WorktableRecipes.getInstance().addRecipe(new ShapedOreRecipe(out, in), RecipeLevel.CORE);
 		}
 	}
 
@@ -256,12 +257,12 @@ public enum ElectriItems implements ItemEnum {
 
 	public boolean isAvailableInCreative(ItemStack item) {
 		switch(this) {
-		case WIRE:
-			if (item.getItemDamage() < WireType.wireList.length)
+			case WIRE:
+				if (item.getItemDamage() < WireType.wireList.length)
+					return true;
+				return ReikaMathLibrary.isValueInsideBoundsIncl(16, 16+WireType.wireList.length-1, item.getItemDamage());
+			default:
 				return true;
-			return ReikaMathLibrary.isValueInsideBoundsIncl(16, 16+WireType.wireList.length-1, item.getItemDamage());
-		default:
-			return true;
 		}
 	}
 
@@ -272,13 +273,13 @@ public enum ElectriItems implements ItemEnum {
 
 	public boolean isPlacerItem() {
 		switch(this) {
-		case WIRE:
-		case PLACER:
-		case BATTERY:
-		case RFBATTERY:
-			return true;
-		default:
-			return false;
+			case WIRE:
+			case PLACER:
+			case BATTERY:
+			case RFBATTERY:
+				return true;
+			default:
+				return false;
 		}
 	}
 }
