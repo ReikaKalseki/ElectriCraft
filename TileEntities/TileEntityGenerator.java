@@ -117,6 +117,8 @@ public class TileEntityGenerator extends ElectricalEmitter implements Screwdrive
 		omega = NBT.getInteger("omg");
 		torque = NBT.getInteger("tq");
 		power = NBT.getLong("pwr");
+
+		iotick = NBT.getInteger("io");
 	}
 
 	@Override
@@ -128,6 +130,8 @@ public class TileEntityGenerator extends ElectricalEmitter implements Screwdrive
 		NBT.setInteger("omg", omega);
 		NBT.setInteger("tq", torque);
 		NBT.setLong("pwr", power);
+
+		NBT.setInteger("io", iotick);
 	}
 
 	@Override

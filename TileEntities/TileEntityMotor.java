@@ -196,6 +196,8 @@ public class TileEntityMotor extends ElectricalReceiver implements Screwdriverab
 		power = NBT.getLong("pwr");
 
 		maxAmp = NBT.getInteger("amp");
+
+		iotick = NBT.getInteger("io");
 	}
 
 	@Override
@@ -209,6 +211,8 @@ public class TileEntityMotor extends ElectricalReceiver implements Screwdriverab
 		NBT.setLong("pwr", power);
 
 		NBT.setInteger("amp", maxAmp);
+
+		NBT.setInteger("io", iotick);
 	}
 
 	@Override

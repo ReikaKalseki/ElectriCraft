@@ -23,7 +23,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -33,7 +32,6 @@ import Reika.DragonAPI.ASM.DependentMethodStripper.ModDependent;
 import Reika.DragonAPI.Libraries.MathSci.ReikaMathLibrary;
 import Reika.DragonAPI.Libraries.Registry.ReikaDyeHelper;
 import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
-import Reika.DragonAPI.ModInteract.LegacyWailaHelper;
 import Reika.ElectriCraft.ElectriCraft;
 import Reika.ElectriCraft.Base.ElectriBlock;
 import Reika.ElectriCraft.Base.TileEntityWireComponent;
@@ -206,7 +204,7 @@ public class BlockElectricMachine extends ElectriBlock implements IWailaDataProv
 	@Override
 	@ModDependent(ModList.WAILA)
 	public List<String> getWailaBody(ItemStack is, List<String> tip, IWailaDataAccessor acc, IWailaConfigHandler config) {
-		if (LegacyWailaHelper.cacheAndReturn(acc))
+		if (/*LegacyWailaHelper.cacheAndReturn(acc)*/!tip.isEmpty())
 			return tip;
 		TileEntity te = acc.getTileEntity();
 		if (te instanceof TileEntityResistor) {

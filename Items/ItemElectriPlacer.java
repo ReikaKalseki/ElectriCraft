@@ -25,7 +25,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import Reika.DragonAPI.Libraries.ReikaDirectionHelper;
-import Reika.DragonAPI.Libraries.ReikaPlayerAPI;
+import Reika.DragonAPI.Libraries.ReikaEntityHelper;
 import Reika.DragonAPI.Libraries.World.ReikaWorldHelper;
 import Reika.ElectriCraft.ElectriCraft;
 import Reika.ElectriCraft.Auxiliary.ConversionTile;
@@ -96,17 +96,17 @@ public class ItemElectriPlacer extends Item {
 			((NBTMachine)te).setDataFromItemStackTag(is.stackTagCompound);
 		}
 		if (te instanceof TileEntityWireComponent) {
-			ForgeDirection dir = ReikaPlayerAPI.getDirectionFromPlayerLook(ep, false);
+			ForgeDirection dir = ReikaEntityHelper.getDirectionFromEntityLook(ep, false);
 			//ReikaJavaLibrary.pConsole(dir+":"+te, Side.SERVER);
 			((TileEntityWireComponent)te).setFacing(dir);
 		}
 		if (te instanceof TileEntityTransformer) {
-			ForgeDirection dir = ReikaDirectionHelper.getRightBy90(ReikaPlayerAPI.getDirectionFromPlayerLook(ep, false));
+			ForgeDirection dir = ReikaDirectionHelper.getRightBy90(ReikaEntityHelper.getDirectionFromEntityLook(ep, false));
 			//ReikaJavaLibrary.pConsole(dir+":"+te, Side.SERVER);
 			((TileEntityTransformer)te).setFacing(dir);
 		}
 		if (te instanceof ConversionTile) {
-			ForgeDirection dir = ReikaPlayerAPI.getDirectionFromPlayerLook(ep, false);
+			ForgeDirection dir = ReikaEntityHelper.getDirectionFromEntityLook(ep, false);
 			((ConversionTile)te).setFacing(dir);
 		}
 
