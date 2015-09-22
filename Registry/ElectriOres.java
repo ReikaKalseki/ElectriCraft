@@ -21,13 +21,14 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.oredict.OreDictionary;
+import Reika.DragonAPI.Interfaces.Registry.OreEnum;
 import Reika.DragonAPI.Libraries.Java.ReikaJavaLibrary;
 import Reika.DragonAPI.Libraries.Java.ReikaStringParser;
 import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
 import Reika.DragonAPI.ModInteract.ReikaTwilightHelper;
 import Reika.ElectriCraft.ElectriCraft;
 
-public enum ElectriOres {
+public enum ElectriOres implements OreEnum {
 
 	COPPER(		32, 64, 	6, 	8, 	0, 	0.5F,	1,	"ore.copper"),
 	TIN(		48, 72, 	8, 	8,	0, 	0.2F,	1,	"ore.tin"),
@@ -76,7 +77,7 @@ public enum ElectriOres {
 	public static ElectriOres getOre(Block id, int meta) {
 		if (id != ElectriBlocks.ORE.getBlockInstance())
 			return null;
-		return oreList[meta];
+		return meta < oreList.length ? oreList[meta] : null;
 	}
 
 	public String getTextureName() {
@@ -89,8 +90,8 @@ public enum ElectriOres {
 
 	public String getProductDictionaryName() {
 		switch(this) {
-		default:
-			return "ingot"+ReikaStringParser.capFirstChar(this.name());
+			default:
+				return "ingot"+ReikaStringParser.capFirstChar(this.name());
 		}
 	}
 
@@ -117,23 +118,23 @@ public enum ElectriOres {
 
 	public String getProductName() {
 		switch(this) {
-		default:
-			return StatCollector.translateToLocal("Items."+this.name().toLowerCase());
+			default:
+				return StatCollector.translateToLocal("Items."+this.name().toLowerCase());
 		}
 	}
 
 	public Block getReplaceableBlock() {
 		switch(dimensionID) {
-		case 0:
-			return Blocks.stone;
-		case 1:
-			return Blocks.end_stone;
-		case -1:
-			return Blocks.netherrack;
-		case 7:
-			return Blocks.stone;
-		default:
-			return Blocks.stone;
+			case 0:
+				return Blocks.stone;
+			case 1:
+				return Blocks.end_stone;
+			case -1:
+				return Blocks.netherrack;
+			case 7:
+				return Blocks.stone;
+			default:
+				return Blocks.stone;
 		}
 	}
 
@@ -149,8 +150,8 @@ public enum ElectriOres {
 
 	public boolean isValidBiome(BiomeGenBase biome) {
 		switch(this) {
-		default:
-			return true;
+			default:
+				return true;
 		}
 	}
 
@@ -200,5 +201,30 @@ public enum ElectriOres {
 	public boolean dropsSelf(int meta) {
 		List<ItemStack> li = this.getOreDrop(meta);
 		return li.size() == 1 && ReikaItemHelper.matchStackWithBlock(li.get(0), ElectriBlocks.ORE.getBlockInstance()) && li.get(0).getItemDamage() == meta;
+	}
+
+	@Override
+	public int getHarvestLevel() {
+		return harvestLevel;
+	}
+
+	@Override
+	public float getXPDropped(World world, int x, int y, int z) {
+		return xpDropped;
+	}
+
+	@Override
+	public boolean dropsSelf(World world, int x, int y, int z) {
+		return this.dropsSelf(world.getBlockMetadata(x, y, z));
+	}
+
+	@Override
+	public String getHarvestTool() {
+		return "pickaxe";
+	}
+
+	@Override
+	public boolean enforceHarvestLevel() {
+		return false;
 	}
 }

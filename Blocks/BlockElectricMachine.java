@@ -204,8 +204,8 @@ public class BlockElectricMachine extends ElectriBlock implements IWailaDataProv
 	@Override
 	@ModDependent(ModList.WAILA)
 	public List<String> getWailaBody(ItemStack is, List<String> tip, IWailaDataAccessor acc, IWailaConfigHandler config) {
-		if (/*LegacyWailaHelper.cacheAndReturn(acc)*/!tip.isEmpty())
-			return tip;
+		//if (/*LegacyWailaHelper.cacheAndReturn(acc)*/!tip.isEmpty())
+		//	return tip;
 		TileEntity te = acc.getTileEntity();
 		if (te instanceof TileEntityResistor) {
 			int limit = ((TileEntityResistor) te).getCurrentLimit();

@@ -11,21 +11,19 @@ package Reika.ElectriCraft.Blocks;
 
 import java.util.ArrayList;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
-import Reika.DragonAPI.Libraries.Java.ReikaRandomHelper;
-import Reika.DragonAPI.Libraries.World.ReikaWorldHelper;
+import Reika.DragonAPI.Base.EnumOreBlock;
+import Reika.DragonAPI.Interfaces.Registry.OreEnum;
 import Reika.ElectriCraft.ElectriCraft;
 import Reika.ElectriCraft.Registry.ElectriBlocks;
 import Reika.ElectriCraft.Registry.ElectriOres;
 
-public class BlockElectriOre extends Block {
+public class BlockElectriOre extends EnumOreBlock {
 
 	private IIcon[] icons = new IIcon[ElectriOres.oreList.length];
 
@@ -42,31 +40,13 @@ public class BlockElectriOre extends Block {
 	}
 
 	@Override
-	public final int getHarvestLevel(int meta) {
-		return ElectriOres.oreList[meta].harvestLevel;
-	}
-
-	@Override
 	public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune)
 	{
-		ArrayList<ItemStack> li = new ArrayList<ItemStack>();
+		ArrayList<ItemStack> li = new ArrayList();
 		//ItemStack is = new ItemStack(ElectriBlocks.ORE.getBlock(), 1, metadata);
 		ElectriOres ore = ElectriOres.getOre(this, metadata);
 		li.addAll(ore.getOreDrop(metadata));
-		if (!ore.dropsSelf(metadata))
-			ReikaWorldHelper.splitAndSpawnXP(world, x+0.5F, y+0.5F, z+0.5F, this.droppedXP(ore));
 		return li;
-	}
-
-	private int droppedXP(ElectriOres ore) {
-		return ReikaRandomHelper.doWithChance(ore.xpDropped) ? 1 : 0;
-	}
-
-	@Override
-	public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z, boolean harv)
-	{
-		ElectriOres ore = ElectriOres.getOre(world, x, y, z);
-		return super.removedByPlayer(world, player, x, y, z, harv);
 	}
 
 	@Override
@@ -86,6 +66,11 @@ public class BlockElectriOre extends Block {
 	@Override
 	public IIcon getIcon(int s, int meta) {
 		return icons[meta];
+	}
+
+	@Override
+	public OreEnum getOre(int meta) {
+		return ElectriOres.getOre(this, meta);
 	}
 
 }

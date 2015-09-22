@@ -36,6 +36,7 @@ import Reika.DragonAPI.Auxiliary.Trackers.RetroGenController;
 import Reika.DragonAPI.Auxiliary.Trackers.TickRegistry;
 import Reika.DragonAPI.Base.DragonAPIMod;
 import Reika.DragonAPI.Base.DragonAPIMod.LoadProfiler.LoadPhase;
+import Reika.DragonAPI.Base.EnumOreBlock;
 import Reika.DragonAPI.Instantiable.IO.ModLogger;
 import Reika.DragonAPI.Libraries.ReikaRegistryHelper;
 import Reika.DragonAPI.Libraries.IO.ReikaPacketHelper;
@@ -111,6 +112,7 @@ public class ElectriCraft extends DragonAPIMod {
 
 		this.addBlocks();
 		this.addItems();
+		((EnumOreBlock)ElectriBlocks.ORE.getBlockInstance()).register();
 		ElectriTiles.loadMappings();
 
 		ReikaPacketHelper.registerPacketHandler(instance, packetChannel, new ElectriPacketCore());
