@@ -18,7 +18,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.util.ForgeDirection;
-import Reika.ChromatiCraft.API.WorldRift;
+import Reika.ChromatiCraft.API.Interfaces.WorldRift;
 import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
 import Reika.DragonAPI.Libraries.Java.ReikaArrayHelper;
 import Reika.DragonAPI.Libraries.Registry.ReikaParticleHelper;
