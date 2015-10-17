@@ -176,18 +176,6 @@ public class BlockElectricBattery extends NetworkBlock implements IWailaDataProv
 	}
 
 	@Override
-	public final boolean hasComparatorInputOverride()
-	{
-		return true;
-	}
-
-	@Override
-	public final int getComparatorInputOverride(World world, int x, int y, int z, int par5)
-	{
-		return ((TileEntityBase)world.getTileEntity(x, y, z)).getRedstoneOverride();
-	}
-
-	@Override
 	public int getRenderType() {
 		return ElectriCraft.proxy.batteryRender;
 	}

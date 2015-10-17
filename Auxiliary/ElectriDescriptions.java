@@ -51,16 +51,14 @@ public final class ElectriDescriptions {
 	private static String getParent() {
 		Language language = Minecraft.getMinecraft().getLanguageManager().getCurrentLanguage();
 		String lang = language.getLanguageCode();
-		String sg = lang.toUpperCase().substring(0, 2)+"/";
-		if (hasLocalizedFor(language) && !"EN".equals(sg))
-			return "Resources/"+sg;
+		if (hasLocalizedFor(language) && !"en_US".equals(lang))
+			return "Resources/"+lang+"/";
 		return "Resources/";
 	}
 
 	private static boolean hasLocalizedFor(Language language) {
 		String lang = language.getLanguageCode();
-		String sg = lang.toUpperCase().substring(0, 2)+"/";
-		Object o = ElectriCraft.class.getResourceAsStream("Resources/"+sg+"categories.xml");
+		Object o = ElectriCraft.class.getResourceAsStream("Resources/"+lang+"/categories.xml");
 		return o != null;
 	}
 

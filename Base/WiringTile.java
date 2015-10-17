@@ -19,7 +19,7 @@ public abstract class WiringTile extends NetworkTileEntity {
 	public abstract int getResistance();
 
 	@Override
-	public final int getRedstoneOverride() {
+	public int getRedstoneOverride() {
 		return 0;
 	}
 

@@ -130,7 +130,7 @@ public class ElectriRecipes {
 			ItemStack is = WireType.SUPERCONDUCTOR.getCraftedProduct();
 			ItemStack is2 = WireType.SUPERCONDUCTOR.getCraftedInsulatedProduct();
 			ItemWirePlacer item = (ItemWirePlacer)ElectriItems.WIRE.getItemInstance();
-			FluidStack f1 = new FluidStack(FluidRegistry.getFluid("liquid nitrogen"), item.getCapacity(is));
+			FluidStack f1 = new FluidStack(FluidRegistry.getFluid("rc liquid nitrogen"), item.getCapacity(is));
 			FluidStack f2 = new FluidStack(FluidRegistry.getFluid("cryotheum"), item.getCapacity(is));
 			ThermalRecipeHelper.addFluidTransposerFill(is, item.getFilledSuperconductor(false), 200, f1);
 			ThermalRecipeHelper.addFluidTransposerFill(is, item.getFilledSuperconductor(false), 200, f2);

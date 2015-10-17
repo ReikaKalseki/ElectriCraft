@@ -238,7 +238,7 @@ public class GuiElectriBook extends GuiHandbook {
 	}
 
 	@Override
-	protected void drawAuxGraphics(int posX, int posY) {
+	protected void drawAuxGraphics(int posX, int posY, float ptick) {
 		ElectriBook h = (ElectriBook)this.getEntry();
 		ReikaGuiAPI api = ReikaGuiAPI.instance;
 

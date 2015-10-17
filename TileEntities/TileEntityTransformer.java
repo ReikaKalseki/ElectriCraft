@@ -58,7 +58,7 @@ IFluidHandler, PipeConnector {
 	private int temperature;
 	private StepTimer tempTimer = new StepTimer(20);
 
-	private HybridTank tank = new HybridTank("transformer", 200);
+	private final HybridTank tank = new HybridTank("transformer", 200);
 
 	@Override
 	public void updateEntity(World world, int x, int y, int z, int meta) {
@@ -378,7 +378,7 @@ IFluidHandler, PipeConnector {
 
 	@Override
 	public boolean canFill(ForgeDirection from, Fluid fluid) {
-		return this.canIntake(from) && fluid.equals(FluidRegistry.getFluid("liquid nitrogen"));
+		return this.canIntake(from) && fluid.equals(FluidRegistry.getFluid("rc liquid nitrogen"));
 	}
 
 	@Override

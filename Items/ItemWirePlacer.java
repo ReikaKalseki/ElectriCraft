@@ -166,7 +166,7 @@ public class ItemWirePlacer extends Item implements Fillable {
 	}
 
 	private boolean isColdFluid(Fluid f) {
-		if (f.equals(FluidRegistry.getFluid("liquid nitrogen")))
+		if (f.equals(FluidRegistry.getFluid("rc liquid nitrogen")))
 			return true;
 		if (f.equals(FluidRegistry.getFluid("cryotheum")))
 			return true;
@@ -214,7 +214,7 @@ public class ItemWirePlacer extends Item implements Fillable {
 
 	@Override
 	public Fluid getCurrentFluid(ItemStack is) {
-		return this.getCurrentFillLevel(is) > 0 ? FluidRegistry.getFluid("liquid nitrogen") : null;
+		return this.getCurrentFillLevel(is) > 0 ? FluidRegistry.getFluid("rc liquid nitrogen") : null;
 	}
 
 	@Override

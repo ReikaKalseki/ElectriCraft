@@ -12,6 +12,7 @@ package Reika.ElectriCraft.Base;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.world.World;
+import Reika.DragonAPI.Base.TileEntityBase;
 
 public abstract class NetworkBlock extends Block {
 
@@ -28,5 +29,18 @@ public abstract class NetworkBlock extends Block {
 			te.removeFromNetwork();
 		super.breakBlock(world, x, y, z, oldid, oldmeta);
 	}
+
+	@Override
+	public final boolean hasComparatorInputOverride()
+	{
+		return true;
+	}
+
+	@Override
+	public final int getComparatorInputOverride(World world, int x, int y, int z, int par5)
+	{
+		return ((TileEntityBase)world.getTileEntity(x, y, z)).getRedstoneOverride();
+	}
+
 
 }

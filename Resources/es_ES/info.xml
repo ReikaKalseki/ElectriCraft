@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<info>
+	<physics>
+		La potencia electrica se mide con dos parametros, tension e intensidad.
+		
+		El voltaje es la "fuerza motriz" de la electricidad. Es consumida para realizar trabajo, y varia de punto a punto a lo largo del circuito. En la analogia tradicional del agua, es similar a la presion del agua.
+		
+		La intensidad es la cantidad de electricidad fluyendo actualmente. No se consume a lo largo del circuito, ya que la intensidad total permanece constante de principio a fin y puede dividirse en multiples caminos. En la analogia del agua, corresponde al caudal.
+	</physics>
+	<sourcesink>
+		Los puntos terminales de un cable pueden ser agrupados en dos categorias. Las 'fuentes' proporcionan potencia al cable, mientras que los 'consumidores' la consumen. La potencia siempre fluye de las fuentes a los consumidores. 
+	</sourcesink>
+	<networks>
+		Una red cableada consiste en un grupo contiguo de cables, y pueden tener una o mas fuentes y/o consumidores conectados. Cada fuente crea un camino para cada consumidor, y distribuye su capacidad de generacion de corriente entre ellos, normalmente de manera equilibrada. A lo largo del cable, la intensidad permanece constante, pero el voltaje puede variar. Cada consumidor puede recibir de uno o mas caminos, su voltaje sera el del mas bajo de ellos y la corriente sera la suma de las corrientes individuales.
+	</networks>
+	<limits>
+		La mayoria de los cables tienen resistencias, y debido a que ello produce calor, tienen limitaciones de intensidad. Estos varian dependiendo del material del que este hecho el cable.
+		
+		%s
+	</limits>
+</info>

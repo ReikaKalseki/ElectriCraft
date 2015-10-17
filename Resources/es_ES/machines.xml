@@ -1,0 +1,114 @@
+<?xml version="1.0"?>
+<machines>
+	<generator>
+		<desc>
+			El generador convierte energia rotacional del eje en energia electrica. El par de entrada es proporcional a la intensidad de salida, mientras que la velocidad de entrada es proporcional al voltaje de salida. El total de potencia permanece constante. La maquina opera sin perdidas.
+		</desc>
+		<note>
+			Requiere %d Nm/A, genera %dV por rad/s
+		</note>
+	</generator>
+	<motor>
+		<desc>
+			El motor convierte energia electrica de vuelta en energia rotacional en el eje usando los ratios inversos del generador. Como el generador, el motor opera sin perdidas; poniendo a funcionar un generador  directamente conectado a un motor proporciona los valores originales de par y velocidad. La unica excepcion es que los motores solo se pueden conectar a un numero finito de fuentes de potencia; exceder ese numero produce calor como forma de perdida en el motor.
+		</desc>
+		<note>
+			Limite de fuentes:
+			Default: 1
+			Mejora inductiva: 2
+			Mejora de tungsteno: 4
+		</note>
+	</motor>
+	<wire>
+		<desc>
+			Los cables transportan la energia electrica en si. Deben formar un camino continuo del generador al consumidor para que la corriente fluya. Para un camino dado, la intensidad permanece constante, pero la mayoria de los cables tienen una resistencia distinta de 0, y por lo tanto tienen caidas de tension a lo largo del cable. Tambien tienden a tener limite de intensidad, ya que la potencia perdida se convierte en calor que puede llegar a fundir el cable. La unica excepciona  esto es el cable superconductor, que tiene 0 de resistencia electrica, y por lo tanto 0 perdidas y sin limite de corriente.
+		</desc>
+		<note>
+			Los cables sin aislar son muy peligrosos, y pueden producir un fuerte o incluso mortal choque electrico a altos voltajes.
+		</note>
+	</wire>
+	<relay>
+		<desc>
+			El relay es un interruptor electrico controlado por redstone. Aplicando una señal electrica de redstone conecta los dos extremos entre si, permitiendo que la corriente fluya; desactivando la señal separa los contactos y desconecta los extremos. No tiene perdidas o limites de potencia.
+		</desc>
+		<note>
+			
+		</note>
+	</relay>
+	<resistor>
+		<desc>
+			Los resistors actuan como limitador de corriente para el camino del que forman parte. Si la intensidad que circularia fuese superior a la permitida por la resistencia, el exceso es redirigido a otros caminos si fuese posible. Los valores del resistor son determinados por las tres bandas del resistor; cada color corresponde a un valor del 0 al 9. Las dos primeras bandas son las decenas y las unidades respectivamente; la tercera banda es un multiplicador, indicando cuantos 0s despues del valor de resistencia. Usa tintes para colorear las bandas.
+		</desc>
+		<note>
+			Color values:
+			Negro = 0
+			Marron = 1
+			Rojo = 2
+			Naranja = 3
+			Amarillo = 4
+			Verde = 5
+			Azul = 6
+			Purpura = 7
+			Gris = 8
+			Blanco = 9
+			
+			Ten en cuenta que el valor de la resistencia indicara directamente la intensidad que dejara pasar, no hay que hacer el calculo de la ley de ohm.
+		</note>
+	</resistor>
+	<battery>
+		<desc>
+			Las baterias almacenan energia electrica, actuando como buffers o almacenes a largo plazo. Hay diferentes niveles de baterias; cada nivel tiene mas capacidad y potencia de salida que el anterior. La intensidad de salida, voltaje y potencia de una bateria son constantes. Las baterias mantienen su carga cuando se mueven. Pueden aceptar potencia de los laterales, y su salida de potencia se encuentra en la cara superior, que se activa cuando se le suministra una señal de redstone.
+		</desc>
+		<note>
+			
+		</note>
+	</battery>
+	<transformer>
+		<desc>
+			Usando bobinas a ambos lados, el transformador cambia el ratio de voltaje/intensidad que lo atraviesa. El ratio de las bobinas de entrada respecto de salida determina el cambio en voltaje/intensidad; ratios superiores a uno, como 1:8, aumentan la intensidad, mientras que ratios mas pequeños de uno, como 2:5, incrementan el voltaje. Ten en cuenta que a medida que el ratio se aleja de 1, la eficiencia cae y presenta perdidas de potencia en forma de calor. Temperaturas excesivas (por encima de %dC) o intensidades excesivas (mas grandes de %dA) causaran que el transformador falle violentamente. 
+		</desc>
+		<note>
+			Puede ser enfriado con disipadores o nitrogeno liquido.
+		</note>
+	</transformer>
+	<meter>
+		<desc>
+			El electric meter, si se conecta entre dos cables, indicara la intensidad, el voltaje, y la potencia que atraviesa ese cable. No tiene efecto alguno sobre la potencia medida, haciendo su funcion similar a la del dynamometer.
+		</desc>
+		<note>
+			
+		</note>
+	</meter>
+	<rfbattery>
+		<desc>
+			La RF battery almacena RF como cualquier otro sistema de almacenamiento de RF. Sin embargo, a diferencia de otros dispositivos, su cristal especializado le permite almacenar una cantidad tremenda de energia, hasta %d RF. Puede aceptar RF de los laterales, y lo extraera por la cara superior. El RF siempre puede ser extraido de lacara superior, pero una señal de redstone hara a la bateria intentar emitir potencia a todos los receptores disponibles.
+		</desc>
+		<note>
+			La barra dellateral se llena en una escala logaritmica.
+		</note>
+	</rfbattery>
+	<cable>
+		<desc>
+			El RF Transfer cable es un cable especializado para transmitir energia en RF. Puede manejar una cantidad ilimitada de RF por tick, permitiendo personalizar el maximo de la red por completo.
+		</desc>
+		<note>
+			
+		</note>
+	</cable>
+	<eusplit>
+		<desc>
+			Rl EU splitter esta diseñado para tomar ingentes cantidades de EU, como en los generadores de turbina, y dividirlos en paquetes mas reducidos (EU/t) para evitar fundir los cables mas delicados, como la fibra de vidrio.
+		</desc>
+		<note>
+			Los puntos amarillos indican la entrada; naranja marca la salida. Usa un screwdriver para cambiar las caras entre salida y panel.
+		</note>
+	</eusplit>
+	<name>
+		<desc>
+			
+		</desc>
+		<note>
+			
+		</note>
+	</name>
+</machines>
