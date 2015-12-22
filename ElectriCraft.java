@@ -91,7 +91,7 @@ public class ElectriCraft extends DragonAPIMod {
 
 	public static final Block[] blocks = new Block[ElectriBlocks.blockList.length];
 	public static final Item[] items = new Item[ElectriItems.itemList.length];
-	public static final ElectriConfig config = new ElectriConfig(instance, ElectriOptions.optionList, null, 0);
+	public static final ElectriConfig config = new ElectriConfig(instance, ElectriOptions.optionList, null);
 
 	public static ModLogger logger;
 
