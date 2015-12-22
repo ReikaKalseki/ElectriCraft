@@ -107,7 +107,7 @@ public class ElectriRecipes {
 		ElectriTiles.GENERATOR.addOreCrafting("gts", "iGn", "ppp", 'n', "ingotNickel", 't', "ingotTin", 'p', ItemStacks.basepanel, 'g', "ingotCopper", 's', ItemStacks.steelingot, 'G', ItemStacks.generator, 'i', ItemStacks.impeller);
 		ElectriTiles.MOTOR.addOreCrafting("scs", "gCg", "BcB", 'g', ItemStacks.goldcoil, 'c', "ingotCopper", 's', "ingotSilver", 'S', ItemStacks.steelingot, 'B', ItemStacks.basepanel, 'C', ItemStacks.shaftcore);
 		ElectriTiles.RELAY.addSizedOreCrafting(4, "SCS", "CPC", 'C', "ingotCopper", 'P', ItemStacks.basepanel, 'S', ItemStacks.steelingot);
-		ElectriTiles.RESISTOR.addSizedCrafting(4, "SCS", "PCP", 'C', ItemStacks.coaldust, 'S', ItemStacks.steelingot, 'P', ItemStacks.basepanel);
+		ElectriTiles.RESISTOR.addSizedOreCrafting(4, "SCS", "PCP", 'C', "dustCoal", 'S', ItemStacks.steelingot, 'P', ItemStacks.basepanel);
 		ElectriTiles.METER.addCrafting("SsS", "wCw", "SbS", 'S', ItemStacks.steelingot, 'w', WireType.SILVER.getCraftedProduct(), 'C', ItemStacks.pcb, 's', ItemStacks.screen, 'b', ItemStacks.basepanel);
 		ElectriTiles.TRANSFORMER.addCrafting("SSS", "I I", "SSS", 'S', ItemStacks.basepanel, 'I', ItemStacks.redgoldingot);
 

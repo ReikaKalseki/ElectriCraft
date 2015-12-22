@@ -28,7 +28,9 @@ public final class NetworkNode {
 
 	private final ArrayList<ForgeDirection> connections = new ArrayList();
 
-	public NetworkNode(WireNetwork w, WiringTile te, ArrayList sides) {
+	private final ArrayList<WirePath> paths = new ArrayList();
+
+	NetworkNode(WireNetwork w, WiringTile te, Collection<ForgeDirection> sides) {
 		network = w;
 		x = te.xCoord;
 		y = te.yCoord;
@@ -36,6 +38,14 @@ public final class NetworkNode {
 
 		wire = te;
 		connections.addAll(sides);
+	}
+
+	void addPath(WirePath p) {
+		paths.add(p);
+	}
+
+	void removePath(WirePath p) {
+		paths.remove(p);
 	}
 
 	public boolean connectsToSide(ForgeDirection dir) {
@@ -58,6 +68,10 @@ public final class NetworkNode {
 
 	public Collection<ForgeDirection> getDirections() {
 		return Collections.unmodifiableCollection(connections);
+	}
+
+	public int getPaths() {
+		return paths.size();
 	}
 
 }

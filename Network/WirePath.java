@@ -16,7 +16,6 @@ import java.util.HashSet;
 import java.util.LinkedList;
 
 import Reika.DragonAPI.Instantiable.Data.Immutable.WorldLocation;
-import Reika.DragonAPI.Libraries.Java.ReikaJavaLibrary;
 import Reika.ElectriCraft.Auxiliary.ElectriNetworkEvent.ElectriNetworkTickEvent;
 import Reika.ElectriCraft.Auxiliary.WireEmitter;
 import Reika.ElectriCraft.Auxiliary.WireReceiver;
@@ -25,7 +24,7 @@ import Reika.ElectriCraft.Base.WiringTile;
 
 public final class WirePath {
 
-	private final LinkedList<WiringTile> nodes = new LinkedList();
+	final LinkedList<WiringTile> nodes = new LinkedList();
 	final WireEmitter start;
 	final WireReceiver end;
 	private final WireNetwork net;
@@ -63,6 +62,14 @@ public final class WirePath {
 			throw new IllegalArgumentException("Cannot connect null points!");
 		if (start.getWorld() != end.getWorld())
 			;//throw new IllegalArgumentException("Cannot connect points across dimensions!");
+	}
+
+	public void overload(boolean intersect) {
+		for (WiringTile w : nodes) {
+			if (intersect || net.getNodeAt(w).getPaths() == 1) {
+				w.overCurrent();
+			}
+		}
 	}
 
 	public int getLength() {
@@ -146,24 +153,24 @@ public final class WirePath {
 		int num = net.getNumberPathsStartingAt(start);
 		int frac = total/num;
 		int bonus = 0;
-		int num2 = 0;
+		int unfilled = 0;
 		ArrayList<WirePath> li = net.getPathsStartingAt(start);
 		for (WirePath path : li) {
 			if (path.isLimitedCurrent()) {
 				int max = path.currentLimit;
-				if (max < frac) {
+				if (max <= frac) {
 					bonus += frac-max;
 				}
 				else {
-					num2++;
+					unfilled++;
 				}
 			}
 			else {
-				num2++;
+				unfilled++;
 			}
 		}
-		int frac2 = num2 > 0 ? bonus/num2 : 0;
-		ReikaJavaLibrary.pConsole(bonus+"/"+num2+"="+frac2, currentLimit == 2000);
+		int frac2 = unfilled > 0 ? bonus/unfilled : 0;
+		//ReikaJavaLibrary.pConsole(bonus+"/"+num2+"="+frac2, currentLimit == 2000);
 		return Math.min(frac+frac2, currentLimit);
 	}
 

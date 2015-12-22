@@ -108,6 +108,7 @@ public class PathCalculator {
 		}
 		//ReikaJavaLibrary.pConsole(paths, Side.SERVER);
 	}
+
 	//check direction code!!
 	private void recursiveCalculate(World world, int x, int y, int z, LinkedList<WorldLocation> li) {
 		if (li.contains(new WorldLocation(world, x, y, z))) {

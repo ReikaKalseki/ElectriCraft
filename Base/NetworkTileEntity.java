@@ -42,6 +42,10 @@ public abstract class NetworkTileEntity extends ElectriTileEntity implements Net
 		return isConnectable && !worldObj.isRemote && worldObj.checkChunksExist(xCoord, yCoord, zCoord, xCoord, yCoord, zCoord);
 	}
 
+	public void onNetworkChanged() {
+
+	}
+
 	public final void findAndJoinNetwork(World world, int x, int y, int z) {
 		network = null;
 		if (!isConnectable)

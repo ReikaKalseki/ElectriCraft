@@ -51,12 +51,17 @@ public final class WireNetwork implements NetworkObject {
 	private final HashSet<Integer> dimIDs = new HashSet();
 	private final HashSet<Integer> loadedDimIDs = new HashSet();
 
+	private int interWireConnections;
+
 	private boolean shorted = false;
 	private boolean reUpdateThisTick;
 
 	static final ForgeDirection[] dirs = ForgeDirection.values();
 
 	public static final int TORQUE_PER_AMP = 8;
+
+	private static final int MAX_PATHS = 500;
+	private static final int MAX_INTERWIRE = 500;
 
 	public WireNetwork() {
 		ElectriNetworkManager.instance.addNetwork(this);
@@ -136,6 +141,12 @@ public final class WireNetwork implements NetworkObject {
 	private void doRepath() {
 		this.recalculatePaths();
 		for (WiringTile w : wires) {
+			w.onNetworkChanged();
+		}
+		for (WireEmitter w : sources) {
+			w.onNetworkChanged();
+		}
+		for (WireReceiver w : sinks) {
 			w.onNetworkChanged();
 		}
 	}
@@ -233,6 +244,9 @@ public final class WireNetwork implements NetworkObject {
 				NetworkNode node = n.nodes.get(key);
 				nodes.put(key, node);
 			}
+
+			interWireConnections += n.interWireConnections;
+
 			n.clear(false);
 		}
 		this.updateWires(true);
@@ -290,6 +304,7 @@ public final class WireNetwork implements NetworkObject {
 					}
 					if (sides.size() > 2 && !this.hasNode(wire2.xCoord, wire2.yCoord, wire2.zCoord)) {
 						nodes.put(new Coordinate(wire2.xCoord, wire2.yCoord, wire2.zCoord), new NetworkNode(this, wire2, sides));
+						interWireConnections += sides.size()-2;
 					}
 				}
 			}
@@ -326,11 +341,24 @@ public final class WireNetwork implements NetworkObject {
 						paths.add(path);
 						dimIDs.addAll(path.getDimensions());
 						loadedDimIDs.addAll(dimIDs);
+						this.validatePathLimit();
 					}
 				}
 			}
 		}
 		ElectriCraft.logger.debug("Remapped network "+this);
+	}
+
+	private void validatePathLimit() {
+		//ReikaJavaLibrary.pConsole(paths.size()+"|"+nodes.size()+"/"+wires.size()+"#"+interWireConnections);
+		if (paths.size() >= MAX_PATHS || interWireConnections > MAX_INTERWIRE/* || (wires.size() > 20 && nodes.size() >= wires.size()*3/4)*/) {
+			//for (WirePath p : paths) {
+			//	p.overload(true);
+			//}
+			for (WiringTile w : wires) {
+				w.overCurrent();
+			}
+		}
 	}
 
 	public float getNumberSourcesPer(WireReceiver te) {
@@ -461,6 +489,10 @@ public final class WireNetwork implements NetworkObject {
 
 	NetworkNode getNodeAt(int x, int y, int z) {
 		return nodes.get(new Coordinate(x, y, z));
+	}
+
+	NetworkNode getNodeAt(WiringTile w) {
+		return this.getNodeAt(w.xCoord, w.yCoord, w.zCoord);
 	}
 
 	public void shortNetwork() {

@@ -71,13 +71,13 @@ public class TileEntityResistor extends TileEntityWireComponent {
 		return selectedCurrent;
 	}
 
-	public void setColor(ReikaDyeHelper color, int digit) {
+	public boolean setColor(ReikaDyeHelper color, int digit) {
 		ColorBand band = color != null ? ColorBand.getBandFromColor(color) : null;
 		if (band == null)
-			return;
+			return false;
 		//ReikaJavaLibrary.pConsole(band);
 		if (band.ordinal() > 7 && digit == 3)
-			return;
+			return false;
 		if (digit == 1)
 			b1 = band;
 		if (digit == 2)
@@ -87,6 +87,7 @@ public class TileEntityResistor extends TileEntityWireComponent {
 		selectedCurrent = this.calculateCurrentLimit(b1, b2, b3);
 		if (!worldObj.isRemote && network != null)
 			network.updateWires();
+		return true;
 	}
 
 	private int calculateCurrentLimit(ColorBand b1, ColorBand b2, ColorBand b3) {
@@ -157,15 +158,15 @@ public class TileEntityResistor extends TileEntityWireComponent {
 	@SideOnly(Side.CLIENT)
 	public void setColor(ColorBand band, int digit) {
 		switch(digit) {
-		case 1:
-			b1 = band;
-			break;
-		case 2:
-			b2 = band;
-			break;
-		case 3:
-			b3 = band;
-			break;
+			case 1:
+				b1 = band;
+				break;
+			case 2:
+				b2 = band;
+				break;
+			case 3:
+				b3 = band;
+				break;
 		}
 	}
 

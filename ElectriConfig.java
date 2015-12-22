@@ -21,22 +21,19 @@ import Reika.ElectriCraft.Registry.ElectriOres;
 public class ElectriConfig extends ControlledConfig {
 
 	private static final ArrayList<String> entries = ReikaJavaLibrary.getEnumEntriesWithoutInitializing(ElectriOres.class);
-	private boolean[] ores = new boolean[entries.size()];
+	private DataElement<Boolean>[] ores = new DataElement[entries.size()];
 
 	public ElectriConfig(DragonAPIMod mod, ConfigList[] option, IDRegistry[] id, int cfg) {
 		super(mod, option, id, cfg);
-	}
 
-	@Override
-	protected void loadAdditionalData() {
 		for (int i = 0; i < entries.size(); i++) {
 			String name = entries.get(i);
-			ores[i] = config.get("Ore Control", name, true).getBoolean(true);
+			ores[i] = this.registerAdditionalOption("Ore Control", name, true);
 		}
 	}
 
 	public boolean isOreGenEnabled(ElectriOres ore) {
-		return ores[ore.ordinal()];
+		return ores[ore.ordinal()].getData();
 	}
 
 }

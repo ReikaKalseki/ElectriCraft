@@ -38,7 +38,6 @@ import Reika.RotaryCraft.Auxiliary.PowerSourceList;
 import Reika.RotaryCraft.Auxiliary.ShaftPowerEmitter;
 import Reika.RotaryCraft.Auxiliary.Interfaces.NBTMachine;
 import Reika.RotaryCraft.Auxiliary.Interfaces.PowerSourceTracker;
-import Reika.RotaryCraft.Registry.ConfigRegistry;
 import Reika.RotaryCraft.Registry.EngineType;
 import Reika.RotaryCraft.Registry.SoundRegistry;
 
@@ -57,6 +56,8 @@ public class TileEntityMotor extends ElectricalReceiver implements Screwdriverab
 
 	private int maxAmp = 1;
 
+	private float sourceSize;
+
 	@Override
 	public void updateEntity(World world, int x, int y, int z, int meta) {
 		super.updateEntity(world, x, y, z, meta);
@@ -72,7 +73,7 @@ public class TileEntityMotor extends ElectricalReceiver implements Screwdriverab
 		if (power > 0) {
 			soundTimer.update();
 			if (soundTimer.checkCap())
-				SoundRegistry.ELECTRIC.playSoundAtBlock(world, x, y, z, this.getTrueVolume(world, x, y, z), 0.333F);
+				SoundRegistry.ELECTRIC.playSoundAtBlock(world, x, y, z, this.getSoundVolume(world, x, y, z), 0.333F);
 		}
 		else {
 			torque = omega = 0;
@@ -86,11 +87,14 @@ public class TileEntityMotor extends ElectricalReceiver implements Screwdriverab
 		}
 	}
 
+	public void onNetworkChanged() {
+		sourceSize = Math.max(network.getNumberSourcesPer(this), this.getPowerSources(this, null).size());
+	}
+
 	private int getEffectiveCurrent(World world, int x, int y, int z) {
 		int in = network.getTerminalCurrent(this);
-		float n = network.getNumberSourcesPer(this);
-		float f = Math.min(1, maxAmp/n);
-		if (n > maxAmp) { //was (in > max)
+		float f = Math.min(1, maxAmp/sourceSize);
+		if (sourceSize > maxAmp && in > 0) { //was (in > max)
 			if (rand.nextInt(10) == 0) {
 				ReikaSoundHelper.playSoundAtBlock(world, x, y, z, "random.fizz");
 				//ReikaParticleHelper.SMOKE.spawnAroundBlock(world, x, y, z, 2);
@@ -117,10 +121,6 @@ public class TileEntityMotor extends ElectricalReceiver implements Screwdriverab
 			}
 		}
 		return flag;
-	}
-
-	private float getTrueVolume(World world, int x, int y, int z) {
-		return ConfigRegistry.ENGINEVOLUME.getFloat()*this.getSoundVolume(world, x, y, z);
 	}
 
 	private float getSoundVolume(World world, int x, int y, int z) {
@@ -337,6 +337,8 @@ public class TileEntityMotor extends ElectricalReceiver implements Screwdriverab
 
 	@Override
 	public PowerSourceList getPowerSources(PowerSourceTracker io, ShaftMerger caller) {
+		//if (!worldObj.isRemote)
+		//	ReikaJavaLibrary.pConsole(this+": "+network.getInputSources(io, caller).size()+":"+network.getInputSources(io, caller));
 		return network != null ? network.getInputSources(io, caller) : new PowerSourceList();
 	}
 

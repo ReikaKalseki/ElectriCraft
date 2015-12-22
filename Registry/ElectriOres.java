@@ -12,10 +12,12 @@ package Reika.ElectriCraft.Registry;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
+import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -226,5 +228,15 @@ public enum ElectriOres implements OreEnum {
 	@Override
 	public boolean enforceHarvestLevel() {
 		return false;
+	}
+
+	@Override
+	public TileEntity getTileEntity(World world, int x, int y, int z) {
+		return null;
+	}
+
+	@Override
+	public int getRandomGeneratedYCoord(World world, int posX, int posZ, Random random) {
+		return minY+random.nextInt(maxY-minY+1);
 	}
 }

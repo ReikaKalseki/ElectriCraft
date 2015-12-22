@@ -58,6 +58,7 @@ import Reika.ElectriCraft.Registry.ElectriOptions;
 import Reika.ElectriCraft.Registry.ElectriOres;
 import Reika.ElectriCraft.Registry.ElectriTiles;
 import Reika.ElectriCraft.Registry.WireType;
+import Reika.ElectriCraft.World.ElectriOreGenerator;
 import Reika.RotaryCraft.RotaryCraft;
 import Reika.RotaryCraft.Registry.ConfigRegistry;
 import WayofTime.alchemicalWizardry.api.event.TeleposeEvent;
