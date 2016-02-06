@@ -14,15 +14,19 @@ import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import Reika.DragonAPI.Interfaces.MachineRegistryBlock;
+import Reika.DragonAPI.Interfaces.Registry.TileEnum;
 import Reika.DragonAPI.Libraries.IO.ReikaRenderHelper;
 import Reika.DragonAPI.Libraries.Java.ReikaJavaLibrary;
 import Reika.ElectriCraft.ElectriCraft;
 import Reika.ElectriCraft.Registry.ElectriBlocks;
+import Reika.ElectriCraft.Registry.ElectriTiles;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public abstract class ElectriBlock extends NetworkBlock {
+public abstract class ElectriBlock extends NetworkBlock implements MachineRegistryBlock {
 
 	public ElectriBlock(Material par2Material) {
 		super(par2Material);
@@ -76,6 +80,11 @@ public abstract class ElectriBlock extends NetworkBlock {
 		if (this == ElectriBlocks.WIRE.getBlockInstance() || this == ElectriBlocks.CABLE.getBlockInstance())
 			return super.addHitEffects(world, tg, eff);
 		return ReikaRenderHelper.addModelledBlockParticles("/Reika/ElectriCraft/Textures/", world, tg, this, eff, ReikaJavaLibrary.makeListFrom(new double[]{0,0,1,1}), ElectriCraft.class);
+	}
+
+	@Override
+	public final TileEnum getMachine(IBlockAccess world, int x, int y, int z) {
+		return ElectriTiles.getTE(world, x, y, z);
 	}
 
 }

@@ -21,6 +21,7 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 import Reika.DragonAPI.DragonAPICore;
 import Reika.DragonAPI.Exception.RegistrationException;
 import Reika.DragonAPI.Instantiable.Data.Maps.BlockMap;
+import Reika.DragonAPI.Interfaces.Registry.TileEnum;
 import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
 import Reika.DragonAPI.ModRegistry.PowerTypes;
 import Reika.ElectriCraft.ElectriCraft;
@@ -43,7 +44,7 @@ import Reika.RotaryCraft.Auxiliary.RecipeManagers.WorktableRecipes;
 import Reika.RotaryCraft.Registry.ConfigRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-public enum ElectriTiles {
+public enum ElectriTiles implements TileEnum {
 
 	WIRE("electri.wire", 					ElectriBlocks.WIRE,			TileEntityWire.class, 			0, "RenderWire"),
 	GENERATOR("machine.electrigenerator", 	ElectriBlocks.MACHINE, 		TileEntityGenerator.class, 		0, "RenderGenerator"),
