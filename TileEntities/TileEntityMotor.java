@@ -87,8 +87,9 @@ public class TileEntityMotor extends ElectricalReceiver implements Screwdriverab
 		}
 	}
 
+	@Override
 	public void onNetworkChanged() {
-		sourceSize = Math.max(network.getNumberSourcesPer(this), this.getPowerSources(this, null).size());
+		sourceSize = Math.max(network.getNumberSourcesPer(this), this.getPowerSources(this, null).size()/network.getNumberSinks());
 	}
 
 	private int getEffectiveCurrent(World world, int x, int y, int z) {

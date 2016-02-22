@@ -219,7 +219,7 @@ public class GuiElectriBook extends GuiHandbook {
 				GL11.glTranslated(a, b, c);
 				int meta = et.getBlockMetadata();
 				if (et == ElectriTiles.BATTERY) {
-					meta = (int)(System.currentTimeMillis()/2000)%BatteryType.batteryList.length;
+					meta = (int)(-1+System.currentTimeMillis()/2000)%BatteryType.batteryList.length;
 				}
 				rb.renderBlockAsItem(et.getBlockInstance(), meta, 1);
 				GL11.glTranslated(-a, -b, -c);
