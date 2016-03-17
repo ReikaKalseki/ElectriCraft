@@ -11,6 +11,7 @@ package Reika.ElectriCraft.Blocks;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
@@ -64,7 +65,7 @@ public class BlockElectricBattery extends NetworkBlock implements IWailaDataProv
 	public void registerBlockIcons(IIconRegister ico) {
 		for (int i = 0; i < BatteryType.batteryList.length; i++) {
 			BatteryType b = BatteryType.batteryList[i];
-			String s = b.name().toLowerCase();
+			String s = b.name().toLowerCase(Locale.ENGLISH);
 			sideTex[i] = ico.registerIcon("electricraft:battery/"+s);
 			s = "";
 			topTex[i] = ico.registerIcon("electricraft:battery/"+s+"_top");

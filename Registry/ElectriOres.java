@@ -12,6 +12,7 @@ package Reika.ElectriCraft.Registry;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
 import net.minecraft.block.Block;
@@ -121,7 +122,7 @@ public enum ElectriOres implements OreEnum {
 	public String getProductName() {
 		switch(this) {
 			default:
-				return StatCollector.translateToLocal("Items."+this.name().toLowerCase());
+				return StatCollector.translateToLocal("Items."+this.name().toLowerCase(Locale.ENGLISH));
 		}
 	}
 

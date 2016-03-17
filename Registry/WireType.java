@@ -10,6 +10,7 @@
 package Reika.ElectriCraft.Registry;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -72,7 +73,7 @@ public enum WireType {
 	}
 
 	public String getIconTexture() {
-		return this.name().toLowerCase();
+		return this.name().toLowerCase(Locale.ENGLISH);
 	}
 
 	public ItemStack getCraftedProduct() {

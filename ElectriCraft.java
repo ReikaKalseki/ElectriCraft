@@ -50,6 +50,7 @@ import Reika.ElectriCraft.Auxiliary.ElectriBookTracker;
 import Reika.ElectriCraft.Auxiliary.ElectriDescriptions;
 import Reika.ElectriCraft.Auxiliary.ElectriStacks;
 import Reika.ElectriCraft.Auxiliary.ElectriTab;
+import Reika.ElectriCraft.Auxiliary.Lua.ElectricLuaMethods;
 import Reika.ElectriCraft.Base.NetworkTileEntity;
 import Reika.ElectriCraft.Registry.BatteryType;
 import Reika.ElectriCraft.Registry.ElectriBlocks;
@@ -199,6 +200,8 @@ public class ElectriCraft extends DragonAPIMod {
 				TimeTorchHelper.blacklistTileEntity(m.getTEClass());
 			}
 		}
+
+		ReikaJavaLibrary.initClass(ElectricLuaMethods.class);
 
 		if (ModList.THAUMCRAFT.isLoaded()) {
 			for (int i = 0; i < ElectriOres.oreList.length; i++) {

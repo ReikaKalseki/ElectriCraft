@@ -9,6 +9,8 @@
  ******************************************************************************/
 package Reika.ElectriCraft.Registry;
 
+import java.util.Locale;
+
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -111,13 +113,13 @@ public enum ElectriItems implements ItemEnum {
 			throw new RuntimeException("Item "+name+" was called for a multi-name, yet does not have one!");
 		switch(this) {
 			case INGOTS:
-				return StatCollector.translateToLocal("ingot."+ElectriOres.oreList[dmg].name().toLowerCase());
+				return StatCollector.translateToLocal("ingot."+ElectriOres.oreList[dmg].name().toLowerCase(Locale.ENGLISH));
 			case CRAFTING:
 				return ElectriCrafting.craftingList[dmg].getName();
 			case CRYSTAL:
 				if (dmg == BatteryType.batteryList.length)
 					return StatCollector.translateToLocal("energycrystal.rf");
-				return StatCollector.translateToLocal("energycrystal."+BatteryType.batteryList[dmg].name().toLowerCase());
+				return StatCollector.translateToLocal("energycrystal."+BatteryType.batteryList[dmg].name().toLowerCase(Locale.ENGLISH));
 			case BATTERY:
 				return BatteryType.batteryList[dmg].getName();
 			case PLACER:
@@ -125,14 +127,14 @@ public enum ElectriItems implements ItemEnum {
 			case WIRE:
 				int d = dmg%WireType.INS_OFFSET;
 				String s = dmg >= WireType.INS_OFFSET ? "wire.insulated." : "wire.";
-				return d < WireType.wireList.length ? StatCollector.translateToLocal(s+WireType.wireList[d].name().toLowerCase()) : "";
+				return d < WireType.wireList.length ? StatCollector.translateToLocal(s+WireType.wireList[d].name().toLowerCase(Locale.ENGLISH)) : "";
 			default:
 				throw new RuntimeException("Item "+name+" was called for a multi-name, but it was not registered!");
 		}
 	}
 
 	public String getUnlocalizedName() {
-		return ReikaStringParser.stripSpaces(name).toLowerCase();
+		return ReikaStringParser.stripSpaces(name).toLowerCase(Locale.ENGLISH);
 	}
 
 	public Item getItemInstance() {

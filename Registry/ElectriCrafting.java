@@ -9,6 +9,8 @@
  ******************************************************************************/
 package Reika.ElectriCraft.Registry;
 
+import java.util.Locale;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.StatCollector;
 import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
@@ -41,7 +43,7 @@ public enum ElectriCrafting {
 	}
 
 	public String getName() {
-		return StatCollector.translateToLocal("electricrafting."+this.name().toLowerCase());
+		return StatCollector.translateToLocal("electricrafting."+this.name().toLowerCase(Locale.ENGLISH));
 	}
 
 	public ItemStack getItem(int amt) {

@@ -12,6 +12,7 @@ package Reika.ElectriCraft.Auxiliary;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.Language;
@@ -122,15 +123,15 @@ public final class ElectriDescriptions {
 
 		for (int i = 0; i < parenttabs.size(); i++) {
 			ElectriBook h = parenttabs.get(i);
-			String desc = parents.getValueAtNode("categories:"+h.name().toLowerCase());
+			String desc = parents.getValueAtNode("categories:"+h.name().toLowerCase(Locale.ENGLISH));
 			addEntry(h, desc);
 		}
 
 		for (int i = 0; i < machinetabs.size(); i++) {
 			ElectriBook h = machinetabs.get(i);
 			ElectriTiles m = h.getMachine();
-			String desc = machines.getValueAtNode("machines:"+m.name().toLowerCase()+DESC_SUFFIX);
-			String aux = machines.getValueAtNode("machines:"+m.name().toLowerCase()+NOTE_SUFFIX);
+			String desc = machines.getValueAtNode("machines:"+m.name().toLowerCase(Locale.ENGLISH)+DESC_SUFFIX);
+			String aux = machines.getValueAtNode("machines:"+m.name().toLowerCase(Locale.ENGLISH)+NOTE_SUFFIX);
 			desc = String.format(desc, machineData.get(m));
 			aux = String.format(aux, machineNotes.get(m));
 
@@ -148,7 +149,7 @@ public final class ElectriDescriptions {
 
 		for (int i = 0; i < infotabs.length; i++) {
 			ElectriBook h = infotabs[i];
-			String desc = infos.getValueAtNode("info:"+h.name().toLowerCase());
+			String desc = infos.getValueAtNode("info:"+h.name().toLowerCase(Locale.ENGLISH));
 			desc = String.format(desc, miscData.get(h));
 			addEntry(h, desc);
 		}

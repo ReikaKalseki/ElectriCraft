@@ -11,6 +11,7 @@ package Reika.ElectriCraft.Registry;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.GuiButton;
@@ -239,7 +240,7 @@ public enum ElectriBook implements HandbookEntry {
 
 	public String getTabImageFile() {
 		//return "/Reika/RotaryCraft/Textures/GUI/Handbook/tabs_"+this.getParent().name().toLowerCase()+".png";
-		return "/Reika/RotaryCraft/Textures/GUI/Handbook/tabs_"+TOC.name().toLowerCase()+".png";
+		return "/Reika/RotaryCraft/Textures/GUI/Handbook/tabs_"+TOC.name().toLowerCase(Locale.ENGLISH)+".png";
 	}
 
 	public int getRelativeScreen() {

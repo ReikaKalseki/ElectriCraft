@@ -9,6 +9,8 @@
  ******************************************************************************/
 package Reika.ElectriCraft.Registry;
 
+import java.util.Locale;
+
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -49,7 +51,7 @@ public enum BatteryType {
 	public static final BatteryType[] batteryList = values();
 
 	public String getName() {
-		return StatCollector.translateToLocal("battery."+this.name().toLowerCase());
+		return StatCollector.translateToLocal("battery."+this.name().toLowerCase(Locale.ENGLISH));
 	}
 
 	public String getFormattedCapacity() {
@@ -100,7 +102,7 @@ public enum BatteryType {
 
 	@SideOnly(Side.CLIENT)
 	public void loadIcon(IIconRegister ico) {
-		icon = ico.registerIcon("electricraft:battery/"+this.name().toLowerCase()+"_glow");
+		icon = ico.registerIcon("electricraft:battery/"+this.name().toLowerCase(Locale.ENGLISH)+"_glow");
 	}
 
 	@SideOnly(Side.CLIENT)
