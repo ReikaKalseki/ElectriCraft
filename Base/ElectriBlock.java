@@ -16,7 +16,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import Reika.DragonAPI.Interfaces.MachineRegistryBlock;
+import Reika.DragonAPI.Interfaces.Block.MachineRegistryBlock;
 import Reika.DragonAPI.Interfaces.Registry.TileEnum;
 import Reika.DragonAPI.Libraries.IO.ReikaRenderHelper;
 import Reika.DragonAPI.Libraries.Java.ReikaJavaLibrary;
