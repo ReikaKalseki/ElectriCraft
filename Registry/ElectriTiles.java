@@ -126,7 +126,7 @@ public enum ElectriTiles implements TileEnum {
 
 	public boolean isAvailableInCreativeInventory() {
 		if (this == CABLE || this == RFBATTERY)
-			return PowerTypes.RF.exists();
+			return PowerTypes.RF.isLoaded();
 		return true;
 	}
 
@@ -211,7 +211,7 @@ public enum ElectriTiles implements TileEnum {
 	public boolean isDummiedOut() {
 		if (DragonAPICore.isReikasComputer())
 			return false;
-		if (this == EUSPLIT && !PowerTypes.EU.exists())
+		if (this == EUSPLIT && !PowerTypes.EU.isLoaded())
 			return true;
 		return false;
 	}

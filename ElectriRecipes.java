@@ -111,7 +111,7 @@ public class ElectriRecipes {
 		ElectriTiles.METER.addCrafting("SsS", "wCw", "SbS", 'S', ItemStacks.steelingot, 'w', WireType.SILVER.getCraftedProduct(), 'C', ItemStacks.pcb, 's', ItemStacks.screen, 'b', ItemStacks.basepanel);
 		ElectriTiles.TRANSFORMER.addCrafting("SSS", "I I", "SSS", 'S', ItemStacks.basepanel, 'I', ItemStacks.redgoldingot);
 
-		if (PowerTypes.RF.exists()) {
+		if (PowerTypes.RF.isLoaded()) {
 			ElectriTiles.CABLE.addSizedCrafting(DifficultyEffects.PIPECRAFT.getInt(), "RDR", "BGB", "RER", 'D', Items.diamond, 'R', Blocks.redstone_block, 'G', Blocks.gold_block, 'E', Items.ender_pearl, 'B', BlockRegistry.BLASTGLASS.getStackOf());
 
 			Object[] obj = {"ScS", "WCW", "tPt", 't', ItemStacks.tungsteningot, 'W', Blocks.wool, 'c', ItemStacks.redgoldingot, 'C', ElectriItems.CRYSTAL.getStackOfMetadata(BatteryType.batteryList.length), 'P', ItemStacks.bedingot, 'S', ItemStacks.steelingot};
@@ -122,7 +122,7 @@ public class ElectriRecipes {
 			}
 		}
 
-		if (PowerTypes.EU.exists()) {
+		if (PowerTypes.EU.isLoaded()) {
 			ElectriTiles.EUSPLIT.addOreCrafting("PCP", "CcC", "PCP", 'P', ItemStacks.basepanel, 'C', "ingotCopper", 'c', ItemStacks.goldcoil);
 		}
 
