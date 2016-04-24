@@ -27,7 +27,7 @@ import cofh.api.energy.IEnergyReceiver;
 public class TileEntityRFBattery extends ElectriTileEntity implements BatteryTile, IEnergyHandler {
 
 	private long energy;
-	public static final long CAPACITY = 1200000000000L;//1099511627775L;//;
+	public static final long CAPACITY = 60000000000000L;//1099511627775L;//;
 
 	@Override
 	public String getDisplayEnergy() {

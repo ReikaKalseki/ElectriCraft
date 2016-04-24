@@ -11,9 +11,10 @@ package Reika.ElectriCraft.Registry;
 
 import Reika.DragonAPI.Interfaces.Configuration.BooleanConfig;
 import Reika.DragonAPI.Interfaces.Configuration.IntegerConfig;
+import Reika.DragonAPI.Interfaces.Configuration.UserSpecificConfig;
 import Reika.ElectriCraft.ElectriCraft;
 
-public enum ElectriOptions implements IntegerConfig, BooleanConfig {
+public enum ElectriOptions implements IntegerConfig, BooleanConfig, UserSpecificConfig {
 
 	RETROGEN("Retrogenerate Ores", false),
 	DISCRETE("Ore Discretization", 1);
@@ -91,6 +92,14 @@ public enum ElectriOptions implements IntegerConfig, BooleanConfig {
 	@Override
 	public boolean shouldLoad() {
 		return true;
+	}
+
+	@Override
+	public boolean isUserSpecific() {
+		switch(this) {
+			default:
+				return false;
+		}
 	}
 
 }
