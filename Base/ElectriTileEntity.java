@@ -87,11 +87,6 @@ public abstract class ElectriTileEntity extends TileEntityBase implements Render
 	}
 
 	@Override
-	public final String getName() {
-		return this.getTEName();
-	}
-
-	@Override
 	public boolean shouldRenderInPass(int pass) {
 		ElectriTiles r = ElectriTiles.TEList[this.getIndex()];
 		return pass == 0 || ((r.renderInPass1() || this instanceof ShaftMachine) && pass == 1);
