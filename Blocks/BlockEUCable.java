@@ -11,27 +11,23 @@ package Reika.ElectriCraft.Blocks;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
-import Reika.ElectriCraft.ElectriCraft;
 import Reika.ElectriCraft.Base.BlockElectriCable;
 import Reika.ElectriCraft.Registry.ElectriTiles;
-import Reika.ElectriCraft.TileEntities.TileEntityRFCable;
+import Reika.ElectriCraft.TileEntities.TileEntityEUCable;
 
-public class BlockRFCable extends BlockElectriCable {
+public class BlockEUCable extends BlockElectriCable {
 
-	public BlockRFCable(Material par2Material) {
+	public BlockEUCable(Material par2Material) {
 		super(par2Material);
 	}
 
 	@Override
 	public TileEntity createTileEntity(World world, int meta) {
-		return new TileEntityRFCable();
+		return new TileEntityEUCable();
 	}
-
+	/*
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer ep, int s, float a, float b, float c) {
 		ItemStack is = ep.getCurrentEquippedItem();
@@ -41,23 +37,21 @@ public class BlockRFCable extends BlockElectriCable {
 		}
 		return false;
 	}
-
+	 */
 	@Override
 	public void breakBlock(World world, int x, int y, int z, Block oldid, int oldmeta) {
-		TileEntityRFCable te = (TileEntityRFCable)world.getTileEntity(x, y, z);
-		if (!world.isRemote)
-			te.removeFromNetwork();
+		TileEntityEUCable te = (TileEntityEUCable)world.getTileEntity(x, y, z);
 		super.breakBlock(world, x, y, z, oldid, oldmeta);
 	}
 
 	@Override
 	protected String getTextureIcoName() {
-		return "rf";
+		return "eu";
 	}
 
 	@Override
 	public ElectriTiles getTile() {
-		return ElectriTiles.CABLE;
+		return ElectriTiles.EUCABLE;
 	}
 
 }

@@ -17,8 +17,8 @@ import org.lwjgl.opengl.GL11;
 
 import Reika.DragonAPI.Interfaces.TileEntity.RenderFetcher;
 import Reika.DragonAPI.Libraries.IO.ReikaTextureHelper;
+import Reika.ElectriCraft.Base.ElectriCable;
 import Reika.ElectriCraft.Base.ElectriTERenderer;
-import Reika.ElectriCraft.TileEntities.TileEntityRFCable;
 
 public class RenderCable extends ElectriTERenderer {
 
@@ -29,7 +29,7 @@ public class RenderCable extends ElectriTERenderer {
 
 	@Override
 	public void renderTileEntityAt(TileEntity tile, double par2, double par4, double par6, float f) {
-		TileEntityRFCable te = (TileEntityRFCable)tile;
+		ElectriCable te = (ElectriCable)tile;
 		if (tile.hasWorldObj()) {
 
 		}
@@ -41,7 +41,7 @@ public class RenderCable extends ElectriTERenderer {
 		}
 	}
 
-	private void renderBlock(TileEntityRFCable te, double par2, double par4, double par6, IIcon ico, IIcon ico2) {
+	private void renderBlock(ElectriCable te, double par2, double par4, double par6, IIcon ico, IIcon ico2) {
 		float u = ico.getMinU();
 		float v = ico.getMinV();
 		float du = ico.getMaxU();

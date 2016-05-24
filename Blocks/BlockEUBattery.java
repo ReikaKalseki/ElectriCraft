@@ -15,32 +15,32 @@ import net.minecraft.world.World;
 import Reika.ElectriCraft.Base.BatteryBlock;
 import Reika.ElectriCraft.Registry.ElectriItems;
 import Reika.ElectriCraft.Registry.ElectriTiles;
-import Reika.ElectriCraft.TileEntities.TileEntityRFBattery;
+import Reika.ElectriCraft.TileEntities.TileEntityEUBattery;
 
-public class BlockRFBattery extends BatteryBlock {
+public class BlockEUBattery extends BatteryBlock {
 
-	public BlockRFBattery(Material par2Material) {
+	public BlockEUBattery(Material par2Material) {
 		super(par2Material);
 	}
 
 	@Override
 	public TileEntity createTileEntity(World world, int meta) {
-		return new TileEntityRFBattery();
+		return new TileEntityEUBattery();
 	}
 
 	@Override
 	protected String getTextureSubstring() {
-		return "rf";
+		return "eu";
 	}
 
 	@Override
 	public ElectriTiles getTile() {
-		return ElectriTiles.RFBATTERY;
+		return ElectriTiles.EUBATTERY;
 	}
 
 	@Override
 	public ElectriItems getItem() {
-		return ElectriItems.RFBATTERY;
+		return ElectriItems.EUBATTERY;
 	}
 
 }

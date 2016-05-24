@@ -202,6 +202,7 @@ public class ElectriCraft extends DragonAPIMod {
 		}
 
 		ReikaJavaLibrary.initClass(ElectricLuaMethods.class);
+		ElectriRecipes.addPostLoadRecipes();
 
 		if (ModList.THAUMCRAFT.isLoaded()) {
 			for (int i = 0; i < ElectriOres.oreList.length; i++) {

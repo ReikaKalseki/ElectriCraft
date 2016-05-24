@@ -82,6 +82,7 @@ public class ElectriClient extends ElectriCommon
 		MinecraftForgeClient.registerItemRenderer(ElectriItems.WIRE.getItemInstance(), machineItems);
 		MinecraftForgeClient.registerItemRenderer(ElectriItems.BATTERY.getItemInstance(), machineItems);
 		MinecraftForgeClient.registerItemRenderer(ElectriItems.RFBATTERY.getItemInstance(), machineItems);
+		MinecraftForgeClient.registerItemRenderer(ElectriItems.EUBATTERY.getItemInstance(), machineItems);
 	}
 
 	private void registerSpriteSheets() {

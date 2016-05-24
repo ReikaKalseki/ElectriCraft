@@ -1,0 +1,106 @@
+package Reika.ElectriCraft.TileEntities;
+
+import ic2.api.energy.event.EnergyTileLoadEvent;
+import ic2.api.energy.event.EnergyTileUnloadEvent;
+import ic2.api.energy.tile.IEnergyAcceptor;
+import ic2.api.energy.tile.IEnergyConductor;
+import ic2.api.energy.tile.IEnergyEmitter;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.util.ForgeDirection;
+import Reika.DragonAPI.ModList;
+import Reika.DragonAPI.ASM.APIStripper.Strippable;
+import Reika.DragonAPI.ASM.DependentMethodStripper.ModDependent;
+import Reika.ElectriCraft.Base.ElectriCable;
+import Reika.ElectriCraft.Registry.ElectriTiles;
+
+@Strippable(value="ic2.api.energy.tile.IEnergyConductor")
+public class TileEntityEUCable extends ElectriCable implements IEnergyConductor {
+
+	@Override
+	public void onFirstTick(World world, int x, int y, int z) {
+		if (!world.isRemote && ModList.IC2.isLoaded())
+			this.addTileToNet();
+	}
+
+	@ModDependent(ModList.IC2)
+	private void addTileToNet() {
+		MinecraftForge.EVENT_BUS.post(new EnergyTileLoadEvent(this));
+	}
+
+	@Override
+	protected void onInvalidateOrUnload(World world, int x, int y, int z, boolean invalidate) {
+		if (!world.isRemote && ModList.IC2.isLoaded())
+			this.removeTileFromNet();
+	}
+
+	@ModDependent(ModList.IC2)
+	private void removeTileFromNet() {
+		MinecraftForge.EVENT_BUS.post(new EnergyTileUnloadEvent(this));
+	}
+
+	@Override
+	public boolean acceptsEnergyFrom(TileEntity emitter, ForgeDirection direction) {
+		return true;
+	}
+
+	@Override
+	public boolean emitsEnergyTo(TileEntity receiver, ForgeDirection direction) {
+		return true;
+	}
+
+	@Override
+	public double getConductionLoss() {
+		return 0;
+	}
+
+	@Override
+	public double getInsulationEnergyAbsorption() {
+		return 0;
+	}
+
+	@Override
+	public double getInsulationBreakdownEnergy() {
+		return Double.POSITIVE_INFINITY;
+	}
+
+	@Override
+	public double getConductorBreakdownEnergy() {
+		return Double.POSITIVE_INFINITY;
+	}
+
+	@Override
+	public void removeInsulation() {
+
+	}
+
+	@Override
+	public void removeConductor() {
+		this.delete();
+	}
+
+	@Override
+	public ElectriTiles getMachine() {
+		return ElectriTiles.EUCABLE;
+	}
+
+	@Override
+	public void updateEntity(World world, int x, int y, int z, int meta) {
+
+	}
+
+	@Override
+	protected void animateWithTick(World world, int x, int y, int z) {
+
+	}
+
+	@Override
+	protected boolean connectsToTile(TileEntity te, ForgeDirection dir) {
+		if (te instanceof IEnergyEmitter && ((IEnergyEmitter)te).emitsEnergyTo(this, dir.getOpposite()))
+			return true;
+		if (te instanceof IEnergyAcceptor && ((IEnergyAcceptor)te).acceptsEnergyFrom(this, dir.getOpposite()))
+			return true;
+		return false;
+	}
+}

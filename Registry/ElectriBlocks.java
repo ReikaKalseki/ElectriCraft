@@ -17,6 +17,8 @@ import net.minecraft.item.ItemStack;
 import Reika.DragonAPI.Interfaces.Registry.BlockEnum;
 import Reika.DragonAPI.Libraries.Java.ReikaStringParser;
 import Reika.ElectriCraft.ElectriCraft;
+import Reika.ElectriCraft.Blocks.BlockEUBattery;
+import Reika.ElectriCraft.Blocks.BlockEUCable;
 import Reika.ElectriCraft.Blocks.BlockEUSplitter;
 import Reika.ElectriCraft.Blocks.BlockElectriOre;
 import Reika.ElectriCraft.Blocks.BlockElectricBattery;
@@ -33,7 +35,9 @@ public enum ElectriBlocks implements BlockEnum {
 	BATTERY(BlockElectricBattery.class, "ElectriBattery", true),
 	CABLE(BlockRFCable.class, "RFCable", false),
 	RFBATTERY(BlockRFBattery.class, "ElectriRFBattery", true),
-	EUSPLIT(BlockEUSplitter.class, "EUSplitter", false);
+	EUSPLIT(BlockEUSplitter.class, "EUSplitter", false),
+	EUCABLE(BlockEUCable.class, "EUCable", false),
+	EUBATTERY(BlockEUBattery.class, "ElectriEUBattery", true);
 
 	private Class blockClass;
 	private String blockName;
@@ -93,8 +97,8 @@ public enum ElectriBlocks implements BlockEnum {
 	@Override
 	public String getMultiValuedName(int meta) {
 		switch(this) {
-		default:
-			return "";
+			default:
+				return "";
 		}
 	}
 
@@ -106,8 +110,8 @@ public enum ElectriBlocks implements BlockEnum {
 	@Override
 	public int getNumberMetadatas() {
 		switch(this) {
-		default:
-			return 1;
+			default:
+				return 1;
 		}
 	}
 

@@ -21,4 +21,6 @@ public interface BatteryTile {
 
 	public void setEnergyFromNBT(ItemStack is);
 
+	public int getEnergyColor();
+
 }

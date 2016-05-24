@@ -27,7 +27,10 @@ import Reika.DragonAPI.ModRegistry.PowerTypes;
 import Reika.ElectriCraft.ElectriCraft;
 import Reika.ElectriCraft.Base.TileEntityWireComponent;
 import Reika.ElectriCraft.Base.WiringTile;
+import Reika.ElectriCraft.Items.ItemWirePlacer;
 import Reika.ElectriCraft.TileEntities.TileEntityBattery;
+import Reika.ElectriCraft.TileEntities.TileEntityEUBattery;
+import Reika.ElectriCraft.TileEntities.TileEntityEUCable;
 import Reika.ElectriCraft.TileEntities.TileEntityEUSplitter;
 import Reika.ElectriCraft.TileEntities.TileEntityGenerator;
 import Reika.ElectriCraft.TileEntities.TileEntityMeter;
@@ -54,9 +57,11 @@ public enum ElectriTiles implements TileEnum {
 	BATTERY("machine.electribattery", 		ElectriBlocks.BATTERY, 		TileEntityBattery.class, 		4),
 	CABLE("machine.rfcable", 				ElectriBlocks.CABLE, 		TileEntityRFCable.class, 		0, "RenderCable"),
 	METER("machine.wiremeter", 				ElectriBlocks.MACHINE, 		TileEntityMeter.class, 			4, "RenderElectricMeter"),
-	RFBATTERY("machine.rfbattery", 			ElectriBlocks.RFBATTERY, 	TileEntityRFBattery.class, 		0, "RenderRFBattery"),
+	RFBATTERY("machine.rfbattery", 			ElectriBlocks.RFBATTERY, 	TileEntityRFBattery.class, 		0, "RenderModBattery"),
 	TRANSFORMER("machine.transformer", 		ElectriBlocks.MACHINE, 		TileEntityTransformer.class, 	5, "RenderTransformer"),
-	EUSPLIT("machine.eusplit", 				ElectriBlocks.EUSPLIT, 		TileEntityEUSplitter.class, 	0);
+	EUSPLIT("machine.eusplit", 				ElectriBlocks.EUSPLIT, 		TileEntityEUSplitter.class, 	0),
+	EUCABLE("machine.eucable", 				ElectriBlocks.EUCABLE, 		TileEntityEUCable.class, 		0, "RenderCable"),
+	EUBATTERY("machine.eubattery", 			ElectriBlocks.EUBATTERY, 	TileEntityEUBattery.class, 		0, "RenderModBattery");
 
 	private String name;
 	private final Class teClass;
@@ -127,11 +132,13 @@ public enum ElectriTiles implements TileEnum {
 	public boolean isAvailableInCreativeInventory() {
 		if (this == CABLE || this == RFBATTERY)
 			return PowerTypes.RF.isLoaded();
+		if (this == EUCABLE || this == EUBATTERY)
+			return PowerTypes.EU.isLoaded();
 		return true;
 	}
 
 	public boolean hasCustomItem() {
-		return this == WIRE || this == BATTERY || this == RFBATTERY;
+		return this == WIRE || this == BATTERY || this == RFBATTERY || this == EUBATTERY;
 	}
 
 	public boolean isWiring() {
@@ -146,6 +153,21 @@ public enum ElectriTiles implements TileEnum {
 		return getMachineFromIDandMetadata(id, meta);
 	}
 
+	public ItemStack getCraftedProduct(TileEntity te) {
+		if (this == WIRE) {
+			TileEntityWire tw = (TileEntityWire)te;
+			ItemStack is = tw.insulated ? tw.getWireType().getCraftedInsulatedProduct() : tw.getWireType().getCraftedProduct();
+			if (tw.getWireType() == WireType.SUPERCONDUCTOR) {
+				is = ((ItemWirePlacer)is.getItem()).getFilledSuperconductor(tw.insulated);
+			}
+			return is;
+		}
+		else if (this == BATTERY) {
+			return ((TileEntityBattery)te).getBatteryType().getCraftedProduct();
+		}
+		return this.getCraftedProduct();
+	}
+
 	public ItemStack getCraftedProduct() {
 		if (this == WIRE) {
 			return new ItemStack(ElectriItems.WIRE.getItemInstance());
@@ -155,6 +177,9 @@ public enum ElectriTiles implements TileEnum {
 		}
 		else if (this == RFBATTERY) {
 			return new ItemStack(ElectriItems.RFBATTERY.getItemInstance());
+		}
+		else if (this == EUBATTERY) {
+			return new ItemStack(ElectriItems.EUBATTERY.getItemInstance());
 		}
 		else
 			return new ItemStack(ElectriItems.PLACER.getItemInstance(), 1, this.ordinal());
@@ -308,6 +333,8 @@ public enum ElectriTiles implements TileEnum {
 			return BATTERY;
 		if (item.getItem() == ElectriItems.RFBATTERY.getItemInstance())
 			return RFBATTERY;
+		if (item.getItem() == ElectriItems.EUBATTERY.getItemInstance())
+			return EUBATTERY;
 		return TEList[item.getItemDamage()];
 	}
 

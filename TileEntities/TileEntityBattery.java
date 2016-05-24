@@ -193,4 +193,9 @@ public class TileEntityBattery extends NetworkTileEntity implements WireEmitter,
 		return this.getBatteryType().getFormattedCapacity();
 	}
 
+	@Override
+	public int getEnergyColor() {
+		return 0xffffff;
+	}
+
 }

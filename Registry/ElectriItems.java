@@ -24,8 +24,10 @@ import Reika.DragonAPI.Libraries.MathSci.ReikaMathLibrary;
 import Reika.ElectriCraft.ElectriCraft;
 import Reika.ElectriCraft.Base.ElectriItemBase;
 import Reika.ElectriCraft.Items.ItemBatteryPlacer;
+import Reika.ElectriCraft.Items.ItemEUBatteryPlacer;
 import Reika.ElectriCraft.Items.ItemElectriBook;
 import Reika.ElectriCraft.Items.ItemElectriPlacer;
+import Reika.ElectriCraft.Items.ItemEnergyCrystal;
 import Reika.ElectriCraft.Items.ItemRFBatteryPlacer;
 import Reika.ElectriCraft.Items.ItemWirePlacer;
 import Reika.RotaryCraft.Auxiliary.RecipeManagers.RecipeHandler.RecipeLevel;
@@ -39,9 +41,10 @@ public enum ElectriItems implements ItemEnum {
 	WIRE(1, true, "machine.wire", ItemWirePlacer.class),
 	BATTERY(2, true, "machine.battery", ItemBatteryPlacer.class),
 	CRAFTING(32, true, "item.crafting", ElectriItemBase.class),
-	CRYSTAL(48, true, "item.electricrystal", ElectriItemBase.class),
+	CRYSTAL(48, true, "item.electricrystal", ItemEnergyCrystal.class),
 	RFBATTERY(3, false, "machine.rfbattery", ItemRFBatteryPlacer.class),
-	BOOK(4,	false, "item.electribook", ItemElectriBook.class);
+	BOOK(4,	false, "item.electribook", ItemElectriBook.class),
+	EUBATTERY(5, false, "machine.eubattery", ItemEUBatteryPlacer.class);
 
 	private int index;
 	private boolean hasSubtypes;
@@ -117,6 +120,8 @@ public enum ElectriItems implements ItemEnum {
 			case CRAFTING:
 				return ElectriCrafting.craftingList[dmg].getName();
 			case CRYSTAL:
+				if (dmg == BatteryType.batteryList.length+1)
+					return StatCollector.translateToLocal("energycrystal.eu");
 				if (dmg == BatteryType.batteryList.length)
 					return StatCollector.translateToLocal("energycrystal.rf");
 				return StatCollector.translateToLocal("energycrystal."+BatteryType.batteryList[dmg].name().toLowerCase(Locale.ENGLISH));
@@ -160,7 +165,7 @@ public enum ElectriItems implements ItemEnum {
 			case CRAFTING:
 				return ElectriCrafting.craftingList.length;
 			case CRYSTAL:
-				return BatteryType.batteryList.length+1;
+				return BatteryType.batteryList.length+2;
 			case BATTERY:
 				return BatteryType.batteryList.length;
 			default:
@@ -279,6 +284,7 @@ public enum ElectriItems implements ItemEnum {
 			case PLACER:
 			case BATTERY:
 			case RFBATTERY:
+			case EUBATTERY:
 				return true;
 			default:
 				return false;

@@ -9,24 +9,17 @@
  ******************************************************************************/
 package Reika.ElectriCraft.TileEntities;
 
-import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
-import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.util.ForgeDirection;
 import Reika.ElectriCraft.ElectriCraft;
-import Reika.ElectriCraft.Base.ElectriTileEntity;
-import Reika.ElectriCraft.Blocks.BlockRFCable;
+import Reika.ElectriCraft.Base.ElectriCable;
 import Reika.ElectriCraft.Network.RF.RFNetwork;
 import Reika.ElectriCraft.Registry.ElectriTiles;
 import cofh.api.energy.IEnergyHandler;
 
-public class TileEntityRFCable extends ElectriTileEntity implements IEnergyHandler {
-
-	private boolean[] connections = new boolean[6];
+public class TileEntityRFCable extends ElectriCable implements IEnergyHandler {
 
 	protected RFNetwork network;
 	private int RFlimit;
@@ -155,10 +148,6 @@ public class TileEntityRFCable extends ElectriTileEntity implements IEnergyHandl
 	{
 		super.readSyncTag(NBT);
 
-		for (int i = 0; i < 6; i++) {
-			connections[i] = NBT.getBoolean("conn"+i);
-		}
-
 		if (NBT.hasKey("limit"))
 			this.setRFLimit(NBT.getInteger("limit"));
 	}
@@ -168,127 +157,25 @@ public class TileEntityRFCable extends ElectriTileEntity implements IEnergyHandl
 	{
 		super.writeSyncTag(NBT);
 
-		for (int i = 0; i < 6; i++) {
-			NBT.setBoolean("conn"+i, connections[i]);
-		}
-
 		NBT.setInteger("limit", RFlimit);
 	}
 
-	public boolean isConnectionValidForSide(ForgeDirection dir) {
-		if (dir.offsetX == 0 && MinecraftForgeClient.getRenderPass() != 1)
-			dir = dir.getOpposite();
-		return connections[dir.ordinal()];
+	@Override
+	protected boolean connectsToTile(TileEntity te, ForgeDirection dir) {
+		return ((IEnergyHandler)te).canConnectEnergy(dir.getOpposite());
 	}
 
 	@Override
-	public final AxisAlignedBB getRenderBoundingBox() {
-		return AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord+1, yCoord+1, zCoord+1);
-	}
-
-	public void recomputeConnections(World world, int x, int y, int z) {
-		for (int i = 0; i < 6; i++) {
-			ForgeDirection dir = dirs[i];
-			int dx = x+dir.offsetX;
-			int dy = y+dir.offsetY;
-			int dz = z+dir.offsetZ;
-			connections[i] = this.isConnected(dir);
-			world.func_147479_m(dx, dy, dz);
-			if (network != null) {
-				TileEntity te = this.getAdjacentTileEntity(dir);
-				if (te instanceof IEnergyHandler) {
-					IEnergyHandler ih = (IEnergyHandler)te;
-					if (ih.canConnectEnergy(dir.getOpposite())) {
-						network.addConnection(ih, dir.getOpposite());
-					}
+	protected void onNetworkUpdate(World world, int x, int y, int z, ForgeDirection dir) {
+		if (network != null) {
+			TileEntity te = this.getAdjacentTileEntity(dir);
+			if (te instanceof IEnergyHandler) {
+				IEnergyHandler ih = (IEnergyHandler)te;
+				if (ih.canConnectEnergy(dir.getOpposite())) {
+					network.addConnection(ih, dir.getOpposite());
 				}
 			}
 		}
-		world.func_147479_m(x, y, z);
-	}
-
-	public void deleteFromAdjacentConnections(World world, int x, int y, int z) {
-		for (int i = 0; i < 6; i++) {
-			ForgeDirection dir = dirs[i];
-			int dx = x+dir.offsetX;
-			int dy = x+dir.offsetY;
-			int dz = x+dir.offsetZ;
-			ElectriTiles m = ElectriTiles.getTE(world, dx, dy, dz);
-			if (m == this.getMachine()) {
-				TileEntityRFCable te = (TileEntityRFCable)world.getTileEntity(dx, dy, dz);
-				te.connections[dir.getOpposite().ordinal()] = false;
-				world.func_147479_m(dx, dy, dz);
-			}
-		}
-	}
-
-	public void addToAdjacentConnections(World world, int x, int y, int z) {
-		for (int i = 0; i < 6; i++) {
-			ForgeDirection dir = dirs[i];
-			int dx = x+dir.offsetX;
-			int dy = x+dir.offsetY;
-			int dz = x+dir.offsetZ;
-			ElectriTiles m = ElectriTiles.getTE(world, dx, dy, dz);
-			if (m == this.getMachine()) {
-				TileEntityRFCable te = (TileEntityRFCable)world.getTileEntity(dx, dy, dz);
-				te.connections[dir.getOpposite().ordinal()] = true;
-				world.func_147479_m(dx, dy, dz);
-			}
-		}
-	}
-
-	private boolean isConnected(ForgeDirection dir) {
-		int x = xCoord+dir.offsetX;
-		int y = yCoord+dir.offsetY;
-		int z = zCoord+dir.offsetZ;
-		ElectriTiles m = this.getMachine();
-		ElectriTiles m2 = ElectriTiles.getTE(worldObj, x, y, z);
-		if (m == m2)
-			return true;
-		//certain TEs
-		return false;
-	}
-
-	public boolean isConnectedOnSideAt(World world, int x, int y, int z, ForgeDirection dir) {
-		dir = dir.offsetX == 0 ? dir.getOpposite() : dir;
-		int dx = x+dir.offsetX;
-		int dy = y+dir.offsetY;
-		int dz = z+dir.offsetZ;
-		Block b = world.getBlock(dx, dy, dz);
-		int meta = world.getBlockMetadata(dx, dy, dz);
-		if (b == this.getTileEntityBlockID())
-			return true;
-		TileEntity te = world.getTileEntity(dx, dy, dz);
-		boolean flag = false;
-		if (te instanceof IEnergyHandler) {
-			flag = flag || ((IEnergyHandler)te).canConnectEnergy(dir.getOpposite());
-		}
-		return flag;
-	}
-
-	public IIcon getCenterIcon() {
-		return BlockRFCable.getCenterIcon();
-	}
-
-	public IIcon getEndIcon() {
-		return BlockRFCable.getEndIcon();
-	}
-
-	public boolean isConnectedToHandlerOnSideAt(World world, int x, int y, int z, ForgeDirection dir) {
-		dir = dir.offsetX == 0 ? dir.getOpposite() : dir;
-		int dx = x+dir.offsetX;
-		int dy = y+dir.offsetY;
-		int dz = z+dir.offsetZ;
-		Block b = world.getBlock(dx, dy, dz);
-		int meta = world.getBlockMetadata(dx, dy, dz);
-		if (b == this.getTileEntityBlockID())
-			return false;
-		TileEntity te = world.getTileEntity(dx, dy, dz);
-		boolean flag = false;
-		if (te instanceof IEnergyHandler) {
-			flag = flag || ((IEnergyHandler)te).canConnectEnergy(dir.getOpposite());
-		}
-		return flag;
 	}
 
 }
