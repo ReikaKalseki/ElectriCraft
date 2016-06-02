@@ -126,7 +126,7 @@ public class ElectriRecipes {
 			GameRegistry.addRecipe(out, "RRR", "RCR", "RRR", 'R', Blocks.redstone_block, 'C', cry);
 		}
 
-		if (PowerTypes.EU.isLoaded()) {
+		if (PowerTypes.EU.isLoaded() && ModList.IC2.isLoaded()) {
 			ElectriTiles.EUSPLIT.addOreCrafting("PCP", "CcC", "PCP", 'P', ItemStacks.basepanel, 'C', "ingotCopper", 'c', ItemStacks.goldcoil);
 			ItemStack dust = IC2Handler.IC2Stacks.ENERGIUM.getItem();
 			ElectriTiles.EUCABLE.addSizedCrafting(DifficultyEffects.PIPECRAFT.getInt(), "RDR", "BGB", "tEt", 'D', Items.diamond, 'R', dust, 't', ItemStacks.tungsteningot, 'G', Blocks.gold_block, 'E', Items.ender_pearl, 'B', BlockRegistry.BLASTGLASS.getStackOf());
@@ -141,7 +141,7 @@ public class ElectriRecipes {
 
 			ItemStack cry = ElectriItems.CRYSTAL.getStackOfMetadata(BatteryType.batteryList.length-1);
 			ItemStack out = ElectriItems.CRYSTAL.getStackOfMetadata(BatteryType.batteryList.length+1);
-			GameRegistry.addRecipe(out, "fLf", "LCL", "RLG", 'f', IC2Stacks.CARBONFIBER.getItem(), 'R', Blocks.redstone_block, 'G', Blocks.glowstone, 'C', cry, 'L', IC2Handler.IC2Stacks.LAPOTRON.getItem());
+			GameRegistry.addRecipe(out, "fLf", "LCL", "RLG", 'f', IC2Stacks.CARBONFIBER.getItem(), 'R', Blocks.redstone_block, 'G', Blocks.glowstone, 'C', cry, 'L', ReikaItemHelper.getAnyMetaStack(IC2Handler.IC2Stacks.LAPOTRON.getItem()));
 		}
 
 		if (ModList.THERMALFOUNDATION.isLoaded()) {

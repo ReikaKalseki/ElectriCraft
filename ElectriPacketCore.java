@@ -22,8 +22,8 @@ import Reika.DragonAPI.Libraries.IO.ReikaChatHelper;
 import Reika.DragonAPI.Libraries.IO.ReikaPacketHelper;
 import Reika.DragonAPI.Libraries.IO.ReikaPacketHelper.PacketObj;
 import Reika.ElectriCraft.Registry.ElectriPackets;
-import Reika.ElectriCraft.TileEntities.TileEntityRFCable;
 import Reika.ElectriCraft.TileEntities.TileEntityTransformer;
+import Reika.ElectriCraft.TileEntities.ModInterface.TileEntityRFCable;
 
 
 public class ElectriPacketCore implements PacketHandler {

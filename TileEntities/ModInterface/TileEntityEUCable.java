@@ -1,10 +1,11 @@
-package Reika.ElectriCraft.TileEntities;
+package Reika.ElectriCraft.TileEntities.ModInterface;
 
 import ic2.api.energy.event.EnergyTileLoadEvent;
 import ic2.api.energy.event.EnergyTileUnloadEvent;
 import ic2.api.energy.tile.IEnergyAcceptor;
 import ic2.api.energy.tile.IEnergyConductor;
 import ic2.api.energy.tile.IEnergyEmitter;
+import ic2.api.energy.tile.IEnergyTile;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
@@ -17,6 +18,8 @@ import Reika.ElectriCraft.Registry.ElectriTiles;
 
 @Strippable(value="ic2.api.energy.tile.IEnergyConductor")
 public class TileEntityEUCable extends ElectriCable implements IEnergyConductor {
+
+	public static final double CAPACITY = Double.MAX_VALUE;//10e9;//Double.POSITIVE_INFINITY;
 
 	@Override
 	public void onFirstTick(World world, int x, int y, int z) {
@@ -41,33 +44,37 @@ public class TileEntityEUCable extends ElectriCable implements IEnergyConductor 
 	}
 
 	@Override
-	public boolean acceptsEnergyFrom(TileEntity emitter, ForgeDirection direction) {
+	public boolean acceptsEnergyFrom(TileEntity te, ForgeDirection dir) {
+		if (!(te instanceof IEnergyTile))
+			return false;
 		return true;
 	}
 
 	@Override
-	public boolean emitsEnergyTo(TileEntity receiver, ForgeDirection direction) {
+	public boolean emitsEnergyTo(TileEntity te, ForgeDirection dir) {
+		if (!(te instanceof IEnergyTile))
+			return false;
 		return true;
 	}
 
 	@Override
 	public double getConductionLoss() {
-		return 0;
+		return 1e-12;
 	}
 
 	@Override
 	public double getInsulationEnergyAbsorption() {
-		return 0;
+		return Double.POSITIVE_INFINITY;
 	}
 
 	@Override
 	public double getInsulationBreakdownEnergy() {
-		return Double.POSITIVE_INFINITY;
+		return CAPACITY;
 	}
 
 	@Override
 	public double getConductorBreakdownEnergy() {
-		return Double.POSITIVE_INFINITY;
+		return CAPACITY;
 	}
 
 	@Override

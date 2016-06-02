@@ -25,8 +25,8 @@ import Reika.ElectriCraft.Network.WireNetwork;
 import Reika.ElectriCraft.Registry.ElectriBook;
 import Reika.ElectriCraft.Registry.ElectriTiles;
 import Reika.ElectriCraft.Registry.WireType;
-import Reika.ElectriCraft.TileEntities.TileEntityRFBattery;
 import Reika.ElectriCraft.TileEntities.TileEntityTransformer;
+import Reika.ElectriCraft.TileEntities.ModInterface.TileEntityRFBattery;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public final class ElectriDescriptions {

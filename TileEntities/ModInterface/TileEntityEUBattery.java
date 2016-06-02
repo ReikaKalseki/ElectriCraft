@@ -1,4 +1,4 @@
-package Reika.ElectriCraft.TileEntities;
+package Reika.ElectriCraft.TileEntities.ModInterface;
 
 import ic2.api.energy.event.EnergyTileLoadEvent;
 import ic2.api.energy.event.EnergyTileUnloadEvent;
@@ -7,6 +7,7 @@ import ic2.api.energy.tile.IEnergySource;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -22,7 +23,7 @@ import Reika.ElectriCraft.Registry.ElectriTiles;
 public class TileEntityEUBattery extends ElectriTileEntity implements IEnergySink, IEnergySource, BatteryTile {
 
 	public static final double CAPACITY = 600e6; //MFSU is 40M, each tier is 10x in IC2
-	public static final double THROUGHPUT = 65536; //MFSU is 2048, MFE is 512
+	public static final double THROUGHPUT = 65536*2; //MFSU is 2048, MFE is 512
 
 	private double energy;
 
@@ -132,12 +133,15 @@ public class TileEntityEUBattery extends ElectriTileEntity implements IEnergySin
 
 	@Override
 	public void drawEnergy(double amt) {
+		//if (amt > 0)
 		energy -= amt;
+		//ReikaJavaLibrary.pConsole("Drawing "+amt+" from "+this);
+		energy = MathHelper.clamp_double(energy, 0, CAPACITY);
 	}
 
 	@Override
 	public int getSourceTier() {
-		return 6;
+		return 4;
 	}
 
 	@Override
@@ -153,6 +157,7 @@ public class TileEntityEUBattery extends ElectriTileEntity implements IEnergySin
 	@Override
 	public double injectEnergy(ForgeDirection dir, double amt, double voltage) {
 		double add = Math.min(CAPACITY-energy, amt);
+		//ReikaJavaLibrary.pConsole("Injecting "+amt+" to "+this);
 		if (add > 0) {
 			energy += add;
 			return add;

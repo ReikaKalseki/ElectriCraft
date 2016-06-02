@@ -20,7 +20,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import Reika.DragonAPI.Libraries.MathSci.ReikaEngLibrary;
 import Reika.DragonAPI.Libraries.MathSci.ReikaMathLibrary;
 import Reika.ElectriCraft.Registry.ElectriBlocks;
-import Reika.ElectriCraft.TileEntities.TileEntityEUBattery;
+import Reika.ElectriCraft.TileEntities.ModInterface.TileEntityEUBattery;
 
 public class ItemEUBatteryPlacer extends ItemBatteryPlacer {
 

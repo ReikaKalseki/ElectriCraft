@@ -15,7 +15,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import Reika.ElectriCraft.Base.BlockElectriCable;
 import Reika.ElectriCraft.Registry.ElectriTiles;
-import Reika.ElectriCraft.TileEntities.TileEntityEUCable;
+import Reika.ElectriCraft.TileEntities.ModInterface.TileEntityEUCable;
 
 public class BlockEUCable extends BlockElectriCable {
 

@@ -23,7 +23,7 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import Reika.ElectriCraft.Registry.ElectriTiles;
-import Reika.ElectriCraft.TileEntities.TileEntityEUSplitter;
+import Reika.ElectriCraft.TileEntities.ModInterface.TileEntityEUSplitter;
 
 public class BlockEUSplitter extends Block {
 

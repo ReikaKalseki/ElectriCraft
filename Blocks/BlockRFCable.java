@@ -19,7 +19,7 @@ import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
 import Reika.ElectriCraft.ElectriCraft;
 import Reika.ElectriCraft.Base.BlockElectriCable;
 import Reika.ElectriCraft.Registry.ElectriTiles;
-import Reika.ElectriCraft.TileEntities.TileEntityRFCable;
+import Reika.ElectriCraft.TileEntities.ModInterface.TileEntityRFCable;
 
 public class BlockRFCable extends BlockElectriCable {
 

@@ -15,7 +15,7 @@ import net.minecraft.world.World;
 import Reika.ElectriCraft.Base.BatteryBlock;
 import Reika.ElectriCraft.Registry.ElectriItems;
 import Reika.ElectriCraft.Registry.ElectriTiles;
-import Reika.ElectriCraft.TileEntities.TileEntityEUBattery;
+import Reika.ElectriCraft.TileEntities.ModInterface.TileEntityEUBattery;
 
 public class BlockEUBattery extends BatteryBlock {
 

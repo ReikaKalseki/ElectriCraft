@@ -16,8 +16,8 @@ import Reika.DragonAPI.Base.CoreContainer;
 import Reika.ElectriCraft.GUIs.GuiElectriBook;
 import Reika.ElectriCraft.GUIs.GuiRFCable;
 import Reika.ElectriCraft.GUIs.GuiTransformer;
-import Reika.ElectriCraft.TileEntities.TileEntityRFCable;
 import Reika.ElectriCraft.TileEntities.TileEntityTransformer;
+import Reika.ElectriCraft.TileEntities.ModInterface.TileEntityRFCable;
 import cpw.mods.fml.common.network.IGuiHandler;
 
 public class ElectriGuiHandler implements IGuiHandler {

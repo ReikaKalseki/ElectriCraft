@@ -21,7 +21,7 @@ import Reika.ElectriCraft.ElectriNetworkManager;
 import Reika.ElectriCraft.NetworkObject;
 import Reika.ElectriCraft.Auxiliary.ElectriNetworkEvent.ElectriNetworkRepathEvent;
 import Reika.ElectriCraft.Auxiliary.ElectriNetworkEvent.ElectriNetworkTickEvent;
-import Reika.ElectriCraft.TileEntities.TileEntityRFCable;
+import Reika.ElectriCraft.TileEntities.ModInterface.TileEntityRFCable;
 import cofh.api.energy.IEnergyHandler;
 import cofh.api.energy.IEnergyProvider;
 import cofh.api.energy.IEnergyReceiver;

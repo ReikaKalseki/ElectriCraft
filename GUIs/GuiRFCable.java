@@ -25,7 +25,7 @@ import Reika.DragonAPI.Libraries.MathSci.ReikaEngLibrary;
 import Reika.DragonAPI.Libraries.MathSci.ReikaMathLibrary;
 import Reika.ElectriCraft.ElectriCraft;
 import Reika.ElectriCraft.Registry.ElectriPackets;
-import Reika.ElectriCraft.TileEntities.TileEntityRFCable;
+import Reika.ElectriCraft.TileEntities.ModInterface.TileEntityRFCable;
 import Reika.RotaryCraft.RotaryCraft;
 
 public class GuiRFCable extends GuiContainer {

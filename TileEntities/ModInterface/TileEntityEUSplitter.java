@@ -7,7 +7,7 @@
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
  ******************************************************************************/
-package Reika.ElectriCraft.TileEntities;
+package Reika.ElectriCraft.TileEntities.ModInterface;
 
 import ic2.api.energy.event.EnergyTileLoadEvent;
 import ic2.api.energy.event.EnergyTileUnloadEvent;
