@@ -125,7 +125,7 @@ public abstract class ElectriCable extends ElectriTileEntity {
 		if (b == this.getTileEntityBlockID())
 			return true;
 		TileEntity te = world.getTileEntity(dx, dy, dz);
-		return this.connectsToTile(te, dir);
+		return te != null && this.connectsToTile(te, dir);
 	}
 
 	public final boolean isConnectedToHandlerOnSideAt(World world, int x, int y, int z, ForgeDirection dir) {
@@ -138,7 +138,7 @@ public abstract class ElectriCable extends ElectriTileEntity {
 		if (b == this.getTileEntityBlockID())
 			return false;
 		TileEntity te = world.getTileEntity(dx, dy, dz);
-		return this.connectsToTile(te, dir);
+		return te != null && this.connectsToTile(te, dir);
 	}
 
 	protected abstract boolean connectsToTile(TileEntity te, ForgeDirection dir);
