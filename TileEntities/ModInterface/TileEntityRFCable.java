@@ -162,7 +162,7 @@ public class TileEntityRFCable extends ElectriCable implements IEnergyHandler {
 
 	@Override
 	protected boolean connectsToTile(TileEntity te, ForgeDirection dir) {
-		return ((IEnergyHandler)te).canConnectEnergy(dir.getOpposite());
+		return te instanceof IEnergyHandler && ((IEnergyHandler)te).canConnectEnergy(dir.getOpposite());
 	}
 
 	@Override
