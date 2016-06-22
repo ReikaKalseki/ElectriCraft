@@ -17,12 +17,12 @@ import net.minecraft.world.IBlockAccess;
 
 import org.lwjgl.opengl.GL11;
 
+import Reika.DragonAPI.Interfaces.ISBRH;
 import Reika.ElectriCraft.ElectriCraft;
 import Reika.ElectriCraft.Registry.BatteryType;
 import Reika.ElectriCraft.TileEntities.TileEntityBattery;
-import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
-public class BatteryRenderer implements ISimpleBlockRenderingHandler {
+public class BatteryRenderer implements ISBRH {
 
 	@Override
 	public void renderInventoryBlock(Block b, int metadata, int modelId, RenderBlocks rb) {
