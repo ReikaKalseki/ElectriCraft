@@ -23,6 +23,7 @@ import Reika.DragonAPI.Instantiable.StepTimer;
 import Reika.DragonAPI.Libraries.ReikaAABBHelper;
 import Reika.DragonAPI.Libraries.MathSci.ReikaMathLibrary;
 import Reika.DragonAPI.Libraries.World.ReikaWorldHelper;
+import Reika.ElectriCraft.Auxiliary.Overloadable;
 import Reika.ElectriCraft.Auxiliary.WireEmitter;
 import Reika.ElectriCraft.Auxiliary.WireReceiver;
 import Reika.ElectriCraft.Base.NetworkTileEntity;
@@ -34,7 +35,7 @@ import Reika.RotaryCraft.Base.TileEntity.TileEntityPiping.Flow;
 import Reika.RotaryCraft.Registry.MachineRegistry;
 
 public class TileEntityTransformer extends NetworkTileEntity implements WireEmitter, WireReceiver, Screwdriverable, TemperatureTE,
-IFluidHandler, PipeConnector {
+IFluidHandler, PipeConnector, Overloadable {
 
 	private int Vin = 0;
 	private int Ain = 0;
@@ -74,8 +75,8 @@ IFluidHandler, PipeConnector {
 			}
 			Vold = Vin;
 			Aold = Ain;
-			if (Ain > this.getCurrentLimit() || Aout > this.getCurrentLimit())
-				this.overCurrent();
+			if (Ain > this.getMaxCurrent() || Aout > this.getMaxCurrent())
+				this.overload(Math.max(Ain, Aout));
 		}
 
 		tempTimer.update();
@@ -85,12 +86,12 @@ IFluidHandler, PipeConnector {
 	}
 
 	@Override
-	public int getCurrentLimit() {
+	public int getMaxCurrent() {
 		return MAXCURRENT;
 	}
 
 	@Override
-	public void overCurrent() {
+	public void overload(int current) {
 		worldObj.createExplosion(null, xCoord+0.5, yCoord+0.5, zCoord+0.5, 12, true);
 	}
 
@@ -397,7 +398,12 @@ IFluidHandler, PipeConnector {
 	}
 
 	public void setTemperature(int temp) {
+		temperature = temp;
+	}
 
+	@Override
+	public boolean allowExternalHeating() {
+		return false;
 	}
 
 	@Override

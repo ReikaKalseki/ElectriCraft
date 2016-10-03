@@ -23,16 +23,6 @@ public class TileEntityMeter extends WiringTile {
 	}
 
 	@Override
-	public int getCurrentLimit() {
-		return Integer.MAX_VALUE;
-	}
-
-	@Override
-	public void overCurrent() {
-
-	}
-
-	@Override
 	public void onNetworkChanged() {
 		super.onNetworkChanged();
 		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);

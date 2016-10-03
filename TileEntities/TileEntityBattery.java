@@ -111,16 +111,6 @@ public class TileEntityBattery extends NetworkTileEntity implements WireEmitter,
 	}
 
 	@Override
-	public int getCurrentLimit() {
-		return 0;
-	}
-
-	@Override
-	public void overCurrent() {
-
-	}
-
-	@Override
 	public ElectriTiles getMachine() {
 		return ElectriTiles.BATTERY;
 	}

@@ -118,10 +118,6 @@ public abstract class NetworkTileEntity extends ElectriTileEntity implements Net
 		network = null;
 	}
 
-	public abstract int getCurrentLimit();
-
-	public abstract void overCurrent();
-
 	@Override
 	public final World getWorld() {
 		return worldObj;

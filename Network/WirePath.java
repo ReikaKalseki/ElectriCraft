@@ -16,15 +16,18 @@ import java.util.HashSet;
 import java.util.LinkedList;
 
 import Reika.DragonAPI.Instantiable.Data.Immutable.WorldLocation;
+import Reika.ElectriCraft.Auxiliary.CurrentThrottle;
 import Reika.ElectriCraft.Auxiliary.ElectriNetworkEvent.ElectriNetworkTickEvent;
+import Reika.ElectriCraft.Auxiliary.Overloadable;
 import Reika.ElectriCraft.Auxiliary.WireEmitter;
+import Reika.ElectriCraft.Auxiliary.WireFuse;
 import Reika.ElectriCraft.Auxiliary.WireReceiver;
-import Reika.ElectriCraft.Base.TileEntityWireComponent;
 import Reika.ElectriCraft.Base.WiringTile;
 
 public final class WirePath {
 
 	final LinkedList<WiringTile> nodes = new LinkedList();
+	final Collection<WireFuse> fuses = new ArrayList();
 	final WireEmitter start;
 	final WireReceiver end;
 	private final WireNetwork net;
@@ -46,10 +49,13 @@ public final class WirePath {
 			nodes.addLast(te);
 			dimensions.add(loc.dimensionID);
 			r += te.getResistance();
-			if (te instanceof TileEntityWireComponent) {
-				int max = te.getCurrentLimit();
+			if (te instanceof CurrentThrottle) {
+				int max = ((CurrentThrottle)te).getCurrentLimit();
 				if (max < maxcurrent)
 					maxcurrent = max;
+			}
+			if (te instanceof WireFuse) {
+				fuses.add((WireFuse)te);
 			}
 		}
 		resistance = r;
@@ -67,7 +73,8 @@ public final class WirePath {
 	public void overload(boolean intersect) {
 		for (WiringTile w : nodes) {
 			if (intersect || net.getNodeAt(w).getPaths() == 1) {
-				w.overCurrent();
+				if (w instanceof Overloadable)
+					((Overloadable)w).overload(this.getPathCurrent());
 			}
 		}
 	}
@@ -120,9 +127,16 @@ public final class WirePath {
 		return nodes.contains(te);
 	}
 
-	void tick(ElectriNetworkTickEvent evt) {
-		//int current = this.getPathCurrent();
-
+	boolean tick(ElectriNetworkTickEvent evt) {
+		int current = this.getPathCurrent();
+		boolean flag = false;
+		for (WireFuse f : fuses) {
+			if (current > f.getMaxCurrent()) {
+				f.overload(current);
+				flag = true;
+			}
+		}
+		return flag;
 	}
 
 	public boolean startsAt(int x, int y, int z) {

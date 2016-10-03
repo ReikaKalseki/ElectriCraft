@@ -22,6 +22,7 @@ import Reika.ChromatiCraft.API.Interfaces.WorldRift;
 import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
 import Reika.DragonAPI.Libraries.Java.ReikaArrayHelper;
 import Reika.DragonAPI.Libraries.Registry.ReikaParticleHelper;
+import Reika.ElectriCraft.Auxiliary.Overloadable;
 import Reika.ElectriCraft.Auxiliary.WireEmitter;
 import Reika.ElectriCraft.Auxiliary.WireReceiver;
 import Reika.ElectriCraft.Base.WiringTile;
@@ -29,7 +30,7 @@ import Reika.ElectriCraft.Blocks.BlockWire;
 import Reika.ElectriCraft.Registry.ElectriTiles;
 import Reika.ElectriCraft.Registry.WireType;
 
-public class TileEntityWire extends WiringTile {
+public class TileEntityWire extends WiringTile implements Overloadable {
 
 	private boolean[] connections = new boolean[6];
 	public boolean insulated;
@@ -176,7 +177,7 @@ public class TileEntityWire extends WiringTile {
 	}
 
 	@Override
-	public int getCurrentLimit() {
+	public int getMaxCurrent() {
 		return this.getWireType().maxCurrent;
 	}
 
@@ -187,7 +188,7 @@ public class TileEntityWire extends WiringTile {
 	}
 
 	@Override
-	public void overCurrent() {
+	public void overload(int current) {
 		shouldMelt = true;
 	}
 

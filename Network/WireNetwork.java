@@ -110,14 +110,22 @@ public final class WireNetwork implements NetworkObject {
 	}
 
 	public void tick(ElectriNetworkTickEvent evt) {
+		boolean flag = false;
 		for (WirePath path : paths) {
-			path.tick(evt);
+			if (path.tick(evt)) {
+				this.updateWires(false);
+				flag = true;
+			}
 		}
+		if (flag)
+			return;
+
 		for (WiringTile w : wires) {
 			if (w instanceof TileEntityWire) {
+				TileEntityWire te = (TileEntityWire)w;
 				int current = this.getPointCurrent(w);
-				if (current > w.getCurrentLimit()) {
-					w.overCurrent();
+				if (current > te.getMaxCurrent()) {
+					te.overload(current);
 				}
 			}
 		}
@@ -356,7 +364,8 @@ public final class WireNetwork implements NetworkObject {
 			//	p.overload(true);
 			//}
 			for (WiringTile w : wires) {
-				w.overCurrent();
+				if (w instanceof TileEntityWire)
+					((TileEntityWire)w).overload(Integer.MAX_VALUE);
 			}
 		}
 	}

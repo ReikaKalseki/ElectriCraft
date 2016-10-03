@@ -39,16 +39,6 @@ public class TileEntityRelay extends TileEntityWireComponent {
 	}
 
 	@Override
-	public int getCurrentLimit() {
-		return this.isEnabled() ? Integer.MAX_VALUE : 0;
-	}
-
-	@Override
-	public void overCurrent() {
-
-	}
-
-	@Override
 	public ElectriTiles getMachine() {
 		return ElectriTiles.RELAY;
 	}

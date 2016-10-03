@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.IBlockAccess;
@@ -29,6 +30,7 @@ import Reika.ElectriCraft.Base.TileEntityWireComponent;
 import Reika.ElectriCraft.Base.WiringTile;
 import Reika.ElectriCraft.Items.ItemWirePlacer;
 import Reika.ElectriCraft.TileEntities.TileEntityBattery;
+import Reika.ElectriCraft.TileEntities.TileEntityFuse;
 import Reika.ElectriCraft.TileEntities.TileEntityGenerator;
 import Reika.ElectriCraft.TileEntities.TileEntityMeter;
 import Reika.ElectriCraft.TileEntities.TileEntityMotor;
@@ -61,7 +63,8 @@ public enum ElectriTiles implements TileEnum {
 	TRANSFORMER("machine.transformer", 		ElectriBlocks.MACHINE, 		TileEntityTransformer.class, 	5, "RenderTransformer"),
 	EUSPLIT("machine.eusplit", 				ElectriBlocks.EUSPLIT, 		TileEntityEUSplitter.class, 	0),
 	EUCABLE("machine.eucable", 				ElectriBlocks.EUCABLE, 		TileEntityEUCable.class, 		0, "RenderCable"),
-	EUBATTERY("machine.eubattery", 			ElectriBlocks.EUBATTERY, 	TileEntityEUBattery.class, 		0, "RenderModBattery");
+	EUBATTERY("machine.eubattery", 			ElectriBlocks.EUBATTERY, 	TileEntityEUBattery.class, 		0, "RenderModBattery"),
+	FUSE("machine.fuse",					ElectriBlocks.MACHINE,		TileEntityFuse.class,			6, "RenderFuse");
 
 	private String name;
 	private final Class teClass;
@@ -270,6 +273,18 @@ public enum ElectriTiles implements TileEnum {
 
 	public void addSizedOreCrafting(int size, Object... obj) {
 		ItemStack is = this.getCraftedProduct();
+		ShapedOreRecipe ir = new ShapedOreRecipe(ReikaItemHelper.getSizedItemStack(is, size), obj);
+		if (!this.isDummiedOut()) {
+			WorktableRecipes.getInstance().addRecipe(ir, RecipeLevel.CORE);
+			if (ConfigRegistry.TABLEMACHINES.getState()) {
+				GameRegistry.addRecipe(ir);
+			}
+		}
+	}
+
+	public void addSizedOreNBTCrafting(int size, NBTTagCompound tag, Object... obj) {
+		ItemStack is = this.getCraftedProduct();
+		is.stackTagCompound = (NBTTagCompound)tag.copy();
 		ShapedOreRecipe ir = new ShapedOreRecipe(ReikaItemHelper.getSizedItemStack(is, size), obj);
 		if (!this.isDummiedOut()) {
 			WorktableRecipes.getInstance().addRecipe(ir, RecipeLevel.CORE);

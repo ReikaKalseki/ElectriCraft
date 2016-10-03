@@ -13,12 +13,13 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import Reika.DragonAPI.Libraries.MathSci.ReikaMathLibrary;
 import Reika.DragonAPI.Libraries.Registry.ReikaDyeHelper;
+import Reika.ElectriCraft.Auxiliary.CurrentThrottle;
 import Reika.ElectriCraft.Base.TileEntityWireComponent;
 import Reika.ElectriCraft.Registry.ElectriTiles;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class TileEntityResistor extends TileEntityWireComponent {
+public class TileEntityResistor extends TileEntityWireComponent implements CurrentThrottle {
 
 	private int selectedCurrent;
 
@@ -96,11 +97,6 @@ public class TileEntityResistor extends TileEntityWireComponent {
 		int multiplier = b3.ordinal();
 		int base = Integer.parseInt(String.format("%d%d", digit1, digit2));
 		return base*ReikaMathLibrary.intpow2(10, multiplier);
-	}
-
-	@Override
-	public void overCurrent() {
-
 	}
 
 	@Override

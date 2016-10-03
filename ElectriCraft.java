@@ -176,6 +176,8 @@ public class ElectriCraft extends DragonAPIMod {
 
 		PackModificationTracker.instance.addMod(this, config);
 
+		FMLInterModComms.sendMessage("Randomod", "blacklist", this.getModContainer().getModId());
+
 		//ReikaEEHelper.blacklistRegistry(ElectriBlocks.blockList);
 		//ReikaEEHelper.blacklistRegistry(ElectriItems.itemList);
 

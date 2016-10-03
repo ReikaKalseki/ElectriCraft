@@ -31,6 +31,7 @@ import Reika.ElectriCraft.Base.ElectricalReceiver;
 import Reika.ElectriCraft.Network.WireNetwork;
 import Reika.ElectriCraft.Registry.ElectriTiles;
 import Reika.RotaryCraft.API.Interfaces.Screwdriverable;
+import Reika.RotaryCraft.API.Power.PowerTracker;
 import Reika.RotaryCraft.API.Power.ShaftMerger;
 import Reika.RotaryCraft.API.Power.ShaftPowerReceiver;
 import Reika.RotaryCraft.Auxiliary.ItemStacks;
@@ -41,7 +42,7 @@ import Reika.RotaryCraft.Auxiliary.Interfaces.PowerSourceTracker;
 import Reika.RotaryCraft.Registry.EngineType;
 import Reika.RotaryCraft.Registry.SoundRegistry;
 
-public class TileEntityMotor extends ElectricalReceiver implements Screwdriverable, ShaftPowerEmitter, ConversionTile, NBTMachine, PowerSourceTracker {
+public class TileEntityMotor extends ElectricalReceiver implements Screwdriverable, ShaftPowerEmitter, ConversionTile, NBTMachine, PowerSourceTracker, ShaftMerger {
 
 	private static final int soundtime = (int)(EngineType.DC.getSoundLength()*2.04F);
 	private StepTimer soundTimer = new StepTimer(soundtime);
@@ -174,16 +175,6 @@ public class TileEntityMotor extends ElectricalReceiver implements Screwdriverab
 	@Override
 	public final void setIORenderAlpha(int io) {
 		iotick = io;
-	}
-
-	@Override
-	public int getCurrentLimit() {
-		return 0;
-	}
-
-	@Override
-	public void overCurrent() {
-
 	}
 
 	@Override
@@ -356,5 +347,16 @@ public class TileEntityMotor extends ElectricalReceiver implements Screwdriverab
 	@Override
 	public int getIoOffsetZ() {
 		return 0;
+	}
+
+	@Override
+	public void onPowerLooped(PowerTracker pwr) {
+		if (power > 0)
+			this.fail();
+	}
+
+	@Override
+	public void fail() {
+		this.delete();
 	}
 }

@@ -99,16 +99,6 @@ public class TileEntityGenerator extends ElectricalEmitter implements Screwdrive
 	}
 
 	@Override
-	public int getCurrentLimit() {
-		return 0;
-	}
-
-	@Override
-	public void overCurrent() {
-
-	}
-
-	@Override
 	public void readSyncTag(NBTTagCompound NBT) {
 		super.readSyncTag(NBT);
 

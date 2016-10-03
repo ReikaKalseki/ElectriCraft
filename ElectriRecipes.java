@@ -12,6 +12,7 @@ package Reika.ElectriCraft;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -24,6 +25,7 @@ import Reika.DragonAPI.ModInteract.ItemHandlers.IC2Handler;
 import Reika.DragonAPI.ModInteract.ItemHandlers.IC2Handler.IC2Stacks;
 import Reika.DragonAPI.ModInteract.RecipeHandlers.ThermalRecipeHelper;
 import Reika.DragonAPI.ModRegistry.PowerTypes;
+import Reika.ElectriCraft.Auxiliary.ElectriStacks;
 import Reika.ElectriCraft.Items.ItemWirePlacer;
 import Reika.ElectriCraft.Registry.BatteryType;
 import Reika.ElectriCraft.Registry.ElectriCrafting;
@@ -31,6 +33,7 @@ import Reika.ElectriCraft.Registry.ElectriItems;
 import Reika.ElectriCraft.Registry.ElectriOres;
 import Reika.ElectriCraft.Registry.ElectriTiles;
 import Reika.ElectriCraft.Registry.WireType;
+import Reika.ElectriCraft.TileEntities.TileEntityFuse;
 import Reika.RotaryCraft.Auxiliary.ItemStacks;
 import Reika.RotaryCraft.Auxiliary.RecipeManagers.RecipeHandler.RecipeLevel;
 import Reika.RotaryCraft.Auxiliary.RecipeManagers.RecipesGrinder;
@@ -108,6 +111,19 @@ public class ElectriRecipes {
 		ElectriTiles.RESISTOR.addSizedOreCrafting(4, "SCS", "PCP", 'C', "dustCoal", 'S', ItemStacks.steelingot, 'P', ItemStacks.basepanel);
 		ElectriTiles.METER.addCrafting("SsS", "wCw", "SbS", 'S', ItemStacks.steelingot, 'w', WireType.SILVER.getCraftedProduct(), 'C', ItemStacks.pcb, 's', ItemStacks.screen, 'b', ItemStacks.basepanel);
 		ElectriTiles.TRANSFORMER.addCrafting("SSS", "I I", "SSS", 'S', ItemStacks.basepanel, 'I', ItemStacks.redgoldingot);
+
+		ItemStack[] FUSE_INGOTS = {
+				ItemStacks.coaldust.copy(),
+				ItemStacks.steelingot.copy(),
+				ElectriStacks.copperIngot.copy(),
+				new ItemStack(Items.gold_ingot)
+		};
+
+		for (int i = 0; i < FUSE_INGOTS.length; i++) {
+			Object ingot = FUSE_INGOTS[i];
+			NBTTagCompound tag = new TileEntityFuse(TileEntityFuse.TIERS[i]).getTagsToWriteToStack();
+			ElectriTiles.FUSE.addSizedOreNBTCrafting(8, tag, " G ", "GCG", "PPP", 'G', Blocks.glass, 'C', ingot, 'P', ItemStacks.basepanel, 'S', ItemStacks.steelingot);
+		}
 	}
 
 	public static void addPostLoadRecipes() {

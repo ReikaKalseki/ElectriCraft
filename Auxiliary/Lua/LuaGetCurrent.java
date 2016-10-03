@@ -22,7 +22,7 @@ public class LuaGetCurrent extends LuaMethod {
 
 	@Override
 	public Object[] invoke(TileEntity te, Object[] args) throws LuaException, InterruptedException {
-		return new Object[]{((WiringTile)te).getWireVoltage()};
+		return new Object[]{((WiringTile)te).getWireCurrent()};
 	}
 
 	@Override

@@ -36,6 +36,7 @@ import Reika.ElectriCraft.ElectriCraft;
 import Reika.ElectriCraft.Base.ElectriBlock;
 import Reika.ElectriCraft.Base.TileEntityWireComponent;
 import Reika.ElectriCraft.Registry.ElectriTiles;
+import Reika.ElectriCraft.TileEntities.TileEntityFuse;
 import Reika.ElectriCraft.TileEntities.TileEntityMotor;
 import Reika.ElectriCraft.TileEntities.TileEntityRelay;
 import Reika.ElectriCraft.TileEntities.TileEntityResistor;
@@ -213,6 +214,10 @@ public class BlockElectricMachine extends ElectriBlock implements IWailaDataProv
 		TileEntity te = acc.getTileEntity();
 		if (te instanceof TileEntityResistor) {
 			int limit = ((TileEntityResistor) te).getCurrentLimit();
+			tip.add(String.format("Current Limit: %dA", limit));
+		}
+		if (te instanceof TileEntityFuse) {
+			int limit = ((TileEntityFuse) te).getMaxCurrent();
 			tip.add(String.format("Current Limit: %dA", limit));
 		}
 		if (te instanceof TileEntityRelay) {

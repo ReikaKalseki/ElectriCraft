@@ -29,6 +29,7 @@ public abstract class WiringTile extends NetworkTileEntity {
 		voltage = network.getPointVoltage(this);
 	}
 
+	@Override
 	public void onNetworkChanged() {
 		current = network.getPointCurrent(this);
 		voltage = network.getPointVoltage(this);
