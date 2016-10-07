@@ -54,7 +54,7 @@ public class TileEntityBattery extends NetworkTileEntity implements WireEmitter,
 					network.updateWires();
 				}
 			}
-			boolean flag = world.isBlockIndirectlyGettingPowered(x, y, z);
+			boolean flag = this.hasRedstoneSignal();
 			if (flag != lastPower) {
 				network.updateWires();
 			}
@@ -78,8 +78,7 @@ public class TileEntityBattery extends NetworkTileEntity implements WireEmitter,
 
 	@Override
 	public boolean canEmitPower() {
-		boolean red = worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord);
-		return energy > 0 && red && network.getNumberPathsStartingAt(this) > 0;
+		return energy > 0 && this.hasRedstoneSignal() && network.getNumberPathsStartingAt(this) > 0;
 	}
 
 	private long getGenPower() {

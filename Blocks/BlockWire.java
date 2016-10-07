@@ -178,6 +178,7 @@ public class BlockWire extends ElectriBlock implements IWailaDataProvider {
 
 	@Override
 	public void onNeighborBlockChange(World world, int x, int y, int z, Block id) {
+		super.onNeighborBlockChange(world, x, y, z, id);
 		TileEntityWire te = (TileEntityWire)world.getTileEntity(x, y, z);
 		te.recomputeConnections(world, x, y, z);
 	}
@@ -204,10 +205,6 @@ public class BlockWire extends ElectriBlock implements IWailaDataProvider {
 		AxisAlignedBB box = AxisAlignedBB.getBoundingBox(x+minx, y+miny, z+minz, x+maxx, y+maxy, z+maxz);
 		this.setBounds(box, x, y, z);
 		return box;
-	}
-
-	protected final void setBounds(AxisAlignedBB box, int x, int y, int z) {
-		this.setBlockBounds((float)box.minX-x, (float)box.minY-y, (float)box.minZ-z, (float)box.maxX-x, (float)box.maxY-y, (float)box.maxZ-z);
 	}
 
 	@Override

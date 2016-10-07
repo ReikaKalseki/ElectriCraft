@@ -21,7 +21,7 @@ public class TileEntityRelay extends TileEntityWireComponent {
 	public void updateEntity(World world, int x, int y, int z, int meta) {
 		super.updateEntity(world, x, y, z, meta);
 
-		boolean pwr = world.isBlockIndirectlyGettingPowered(x, y, z);
+		boolean pwr = this.hasRedstoneSignal();
 		if (!world.isRemote)
 			if (pwr != lastPower)
 				network.updateWires();
@@ -49,7 +49,7 @@ public class TileEntityRelay extends TileEntityWireComponent {
 	}
 
 	public boolean isEnabled() {
-		return worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord);
+		return this.hasRedstoneSignal();
 	}
 
 	@Override

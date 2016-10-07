@@ -64,7 +64,7 @@ public class TileEntityRFBattery extends ElectriTileEntity implements BatteryTil
 			world.markBlockForUpdate(x, y, z);
 		}
 
-		if (world.isBlockIndirectlyGettingPowered(x, y, z)) {
+		if (this.hasRedstoneSignal()) {
 			int exp = (int)Math.min(energy, Integer.MAX_VALUE);
 			if (exp > 0) {
 				TileEntity te = this.getAdjacentTileEntity(ForgeDirection.UP);

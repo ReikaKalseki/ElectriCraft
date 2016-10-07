@@ -137,7 +137,7 @@ public class TileEntityEUBattery extends ElectriTileEntity implements IEnergySin
 
 	@Override
 	public double getOfferedEnergy() {
-		return worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord) ? Math.min(THROUGHPUT, energy) : 0;
+		return this.hasRedstoneSignal() ? Math.min(THROUGHPUT, energy) : 0;
 	}
 
 	@Override

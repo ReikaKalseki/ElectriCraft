@@ -15,7 +15,6 @@ import java.util.List;
 import mcp.mobius.waila.api.IWailaConfigHandler;
 import mcp.mobius.waila.api.IWailaDataAccessor;
 import mcp.mobius.waila.api.IWailaDataProvider;
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
@@ -29,6 +28,7 @@ import net.minecraft.world.World;
 import Reika.DragonAPI.ModList;
 import Reika.DragonAPI.ASM.APIStripper.Strippable;
 import Reika.DragonAPI.ASM.DependentMethodStripper.ModDependent;
+import Reika.DragonAPI.Base.BlockTEBase;
 import Reika.DragonAPI.Base.TileEntityBase;
 import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
 import Reika.ElectriCraft.Auxiliary.BatteryTile;
@@ -37,7 +37,7 @@ import Reika.ElectriCraft.Registry.ElectriTiles;
 
 
 @Strippable(value = {"mcp.mobius.waila.api.IWailaDataProvider"})
-public abstract class BatteryBlock extends Block implements IWailaDataProvider {
+public abstract class BatteryBlock extends BlockTEBase implements IWailaDataProvider {
 
 	private final IIcon[] bottomTex = new IIcon[1];
 	private final IIcon[] sideTex = new IIcon[1];
@@ -91,18 +91,6 @@ public abstract class BatteryBlock extends Block implements IWailaDataProvider {
 		int meta = world.getBlockMetadata(x, y, z);
 		ItemStack is = this.getItem().getStackOfMetadata(meta);
 		return is;
-	}
-
-	@Override
-	public final boolean hasComparatorInputOverride()
-	{
-		return true;
-	}
-
-	@Override
-	public final int getComparatorInputOverride(World world, int x, int y, int z, int par5)
-	{
-		return ((TileEntityBase)world.getTileEntity(x, y, z)).getRedstoneOverride();
 	}
 
 	@Override
