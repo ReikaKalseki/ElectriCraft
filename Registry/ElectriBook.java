@@ -63,7 +63,8 @@ public enum ElectriBook implements HandbookEntry {
 	MODDESC("Mod Interaction Devices", ""),
 	RFBATT(ElectriTiles.RFBATTERY),
 	RFCABLE(ElectriTiles.CABLE),
-	EUSPLITTER(ElectriTiles.EUSPLIT);
+	EUSPLITTER(ElectriTiles.EUSPLIT),
+	EUBATT(ElectriTiles.EUBATTERY);
 
 	private final ItemStack iconItem;
 	private final String pageTitle;

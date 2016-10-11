@@ -58,12 +58,12 @@
 			Batteries store electrical power, acting as a buffer or long-term storage. There are several tiers of batteries; each tier has more capacity and output power than the last. The output current, voltage, and power of a battery are constant. Batteries retain their charge when moved. They can take power in the sides, and will output it from their top when supplied with a redstone signal.
 		</desc>
 		<note>
-			
+			%s
 		</note>
 	</battery>
 	<transformer>
 		<desc>
-			Using coils on each side, the transformer changes the ratio of voltage to current across it. The ratio of coils on the input side to the output side determines the change in voltage/current; ratios larger than one, such as 1:8, favor an increased current, while ratios less than one, such as 2:5, favor increased voltage. Note that as the ratio gets farther from one, the efficiency drops and the wasted energy is dissipated as heat. Excessive temperatures (larger than %dC) or excessive currents (larger than %dA) will cause the transformer to violently fail.
+			Using coils on each side, the transformer changes the ratio of voltage to current across it. The ratio of coils on the input side to the output side determines the change in voltage/current; ratios less than one, such as 1:8, favor an increased current, while ratios larger than one, such as 5:2, favor increased voltage. Note that as the ratio gets farther from one, the efficiency drops and the wasted energy is dissipated as heat. Excessive temperatures (larger than %dC) or excessive currents (larger than %dA) will cause the transformer to violently fail.
 		</desc>
 		<note>
 			Can be cooled with fins or liquid nitrogen
@@ -85,6 +85,14 @@
 			The bar on the side is a fill bar with logarithmic scaling
 		</note>
 	</rfbattery>
+	<eubattery>
+		<desc>
+			The EU battery, aka the RBSU, stores massive quantities of energy - up to %.0f EU - and can output it in a large current. It can take EU in the sides, and will output it out the top. Power can always be "pulled" out the top, but a redstone signal will make the battery try and push power to any available receivers.
+		</desc>
+		<note>
+			The bar on the side is a fill bar with logarithmic scaling
+		</note>
+	</eubattery>
 	<cable>
 		<desc>
 			The RF Transfer cable is a specialized wire for transferring RF energy. It can transmit an unlimited amount of RF per tick, with the actual maximum of the network being fully customizable.

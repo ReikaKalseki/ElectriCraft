@@ -110,4 +110,14 @@ public enum BatteryType {
 		return icon;
 	}
 
+	public static String getDataForDisplay() {
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < BatteryType.batteryList.length; i++) {
+			BatteryType type = BatteryType.batteryList[i];
+			sb.append(type.getName()+" - Capacity: "+type.getFormattedCapacity()+"; Output: "+type.outputCurrent+"A @ "+type.outputVoltage+"V");
+			sb.append("\n");
+		}
+		return sb.toString();
+	}
+
 }

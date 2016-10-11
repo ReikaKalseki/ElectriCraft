@@ -22,10 +22,12 @@ import Reika.DragonAPI.Instantiable.IO.XMLInterface;
 import Reika.DragonAPI.Libraries.Java.ReikaObfuscationHelper;
 import Reika.ElectriCraft.ElectriCraft;
 import Reika.ElectriCraft.Network.WireNetwork;
+import Reika.ElectriCraft.Registry.BatteryType;
 import Reika.ElectriCraft.Registry.ElectriBook;
 import Reika.ElectriCraft.Registry.ElectriTiles;
 import Reika.ElectriCraft.Registry.WireType;
 import Reika.ElectriCraft.TileEntities.TileEntityTransformer;
+import Reika.ElectriCraft.TileEntities.ModInterface.TileEntityEUBattery;
 import Reika.ElectriCraft.TileEntities.ModInterface.TileEntityRFBattery;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
@@ -187,5 +189,7 @@ public final class ElectriDescriptions {
 		addNotes(ElectriTiles.GENERATOR, WireNetwork.TORQUE_PER_AMP, WireNetwork.TORQUE_PER_AMP);
 		addData(ElectriTiles.TRANSFORMER, TileEntityTransformer.MAXTEMP, TileEntityTransformer.MAXCURRENT);
 		addData(ElectriTiles.RFBATTERY, TileEntityRFBattery.CAPACITY);
+		addData(ElectriTiles.EUBATTERY, TileEntityEUBattery.CAPACITY);
+		addNotes(ElectriTiles.BATTERY, BatteryType.getDataForDisplay());
 	}
 }
