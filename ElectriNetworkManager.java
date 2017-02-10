@@ -36,6 +36,7 @@ public class ElectriNetworkManager implements TickHandler {
 	public void tick(TickType type, Object... tickData) {
 		Phase phase = (Phase)tickData[0];
 		World world = DimensionManager.getWorld(0);
+		//ReikaJavaLibrary.pConsole(networks.size()+":"+networks);
 		if (phase == Phase.START) {
 			if (!discard.isEmpty()) {
 				networks.removeAll(discard);

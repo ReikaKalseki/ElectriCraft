@@ -8,7 +8,7 @@
 		The current is the amount of electricity actually flowing. It is not consumed along a circuit, but the total current remains constant from output to input and can be split into multiple paths. In the water analogy, it corresponds to the actual mass flow rate.
 	</physics>
 	<sourcesink>
-		Terminus points to a wire path can be grouped into two categories. 'Sources' supply power to a wire, while 'Sinks' consume it. Power always flows from source to sink.
+		Terminus points to a wire path can be grouped into two categories. 'Sources' supply power to a wire, while 'Sinks' consume it. Power always flows from source to sink. Note that engines are one source each; generators preserve the source information sent into them.
 	</sourcesink>
 	<networks>
 		A wire network consists of a contiguous group of wire pieces, and can have one or many sources and/or sinks connected. Each source creates a path to each sink, and splits its current generation capacity among them, normally equally. Along a wire path, the current remains constant but voltage may change. Each sink may receive from one or more paths, and its voltage will be the lowest of them, and the current will be the sum of their individual currents.

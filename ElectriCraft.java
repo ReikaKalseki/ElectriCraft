@@ -9,6 +9,7 @@
  ******************************************************************************/
 package Reika.ElectriCraft;
 
+import java.io.File;
 import java.net.URL;
 import java.util.HashMap;
 
@@ -281,5 +282,10 @@ public class ElectriCraft extends DragonAPIMod {
 	@Override
 	public ModLogger getModLogger() {
 		return logger;
+	}
+
+	@Override
+	public File getConfigFolder() {
+		return config.getConfigFolder();
 	}
 }

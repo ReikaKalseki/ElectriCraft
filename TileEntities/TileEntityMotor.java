@@ -95,15 +95,18 @@ public class TileEntityMotor extends ElectricalReceiver implements Screwdriverab
 
 	private int getEffectiveCurrent(World world, int x, int y, int z) {
 		int in = network.getTerminalCurrent(this);
+		if (network.getNumberSources() <= 1)
+			return in;
 		float f = Math.min(1, maxAmp/sourceSize);
-		if (sourceSize > maxAmp && in > 0) { //was (in > max)
+		int curlim = Math.min(in, network.getTotalCurrent()/network.getNumberSources()*maxAmp);
+		if ((sourceSize > maxAmp || in > curlim) && in > 0) { //was (in > max)
 			if (rand.nextInt(10) == 0) {
 				ReikaSoundHelper.playSoundAtBlock(world, x, y, z, "random.fizz");
 				//ReikaParticleHelper.SMOKE.spawnAroundBlock(world, x, y, z, 2);
 				ReikaPacketHelper.sendDataPacket(DragonAPIInit.packetChannel, PacketIDs.PARTICLE.ordinal(), this, ReikaParticleHelper.SMOKE.ordinal(), 1);
 			}
 		}
-		return (int)(in*f);
+		return (int)(curlim*f);
 	}
 
 	public boolean upgrade(ItemStack is) {

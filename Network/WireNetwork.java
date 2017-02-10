@@ -130,8 +130,10 @@ public final class WireNetwork implements NetworkObject {
 			}
 		}
 
-		if (this.isEmpty())
+		if (this.isEmpty()) {
 			this.clear(true);
+			ElectriNetworkManager.instance.scheduleNetworkDiscard(this);
+		}
 
 		if (shorted) {
 			shorted = false;
@@ -282,7 +284,7 @@ public final class WireNetwork implements NetworkObject {
 		loadedDimIDs.clear();
 		this.clearCache();
 
-		ElectriNetworkManager.instance.scheduleNetworkDiscard(this);
+		//ElectriNetworkManager.instance.scheduleNetworkDiscard(this);
 	}
 
 	public void addElement(NetworkTile te) {
@@ -338,6 +340,7 @@ public final class WireNetwork implements NetworkObject {
 		paths.clear();
 		dimIDs.clear();
 		loadedDimIDs.clear();
+		interWireConnections = 0;
 		this.clearCache();
 		for (WireEmitter src : sources) {
 			for (WireReceiver sink : sinks) {
@@ -515,7 +518,7 @@ public final class WireNetwork implements NetworkObject {
 		//sb.append(this.getInputCurrent()+"A @ "+this.getNetworkVoltage()+"V");
 		//sb.append(" ");
 		//sb.append(wires.size()+" wires, "+sinks.size()+" emitters, "+sources.size()+" generators");
-		sb.append(sources.size()+"/"+wires.size()+"/"+sinks.size()+"#");
+		sb.append(sources.size()+"SR/"+wires.size()+"W/"+sinks.size()+"SN-#");
 		sb.append(paths);
 		sb.append(";{"+this.hashCode()+"}");
 		sb.append("$["+dimIDs+"]");
@@ -574,6 +577,14 @@ public final class WireNetwork implements NetworkObject {
 			}
 		}
 		return p;
+	}
+
+	public int getTotalCurrent() {
+		int val = 0;
+		for (WirePath p : paths) {
+			val += p.getPathCurrent();
+		}
+		return val;
 	}
 
 }

@@ -120,7 +120,15 @@ public final class WirePath {
 		}
 		sb.append(">");
 		return sb.toString();*/
-		return start+":"+end+"{"+this.hashCode()+"}";
+		String s1 = start.toString().replaceAll("TileEntity", "").replaceAll("Tile Entity", "");
+		String s2 = end.toString().replaceAll("TileEntity", "").replaceAll("Tile Entity", "");
+		while (s1.charAt(0) == ' ') {
+			s1 = s1.substring(1);
+		}
+		while (s2.charAt(0) == ' ') {
+			s2 = s2.substring(1);
+		}
+		return "("+s1+") > ("+s2+") {"+this.hashCode()+"}";
 	}
 
 	public boolean containsBlock(WiringTile te) {

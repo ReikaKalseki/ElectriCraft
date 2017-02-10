@@ -21,6 +21,9 @@ public class TileEntityRelay extends TileEntityWireComponent {
 	public void updateEntity(World world, int x, int y, int z, int meta) {
 		super.updateEntity(world, x, y, z, meta);
 
+		if (!world.isRemote)
+			network.toString();
+
 		boolean pwr = this.hasRedstoneSignal();
 		if (!world.isRemote)
 			if (pwr != lastPower)

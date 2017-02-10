@@ -77,6 +77,8 @@ public enum BatteryType {
 				return ItemStacks.bedingot;
 			case DIAMOND:
 				return ItemStacks.tungsteningot;
+			case LAPIS:
+				return ItemStacks.silumin;
 			default:
 				return ItemStacks.basepanel;
 		}
