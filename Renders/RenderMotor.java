@@ -19,7 +19,7 @@ import Reika.DragonAPI.Libraries.Java.ReikaJavaLibrary;
 import Reika.ElectriCraft.Base.ElectriTERenderer;
 import Reika.ElectriCraft.TileEntities.TileEntityMotor;
 import Reika.RotaryCraft.Auxiliary.IORenderer;
-import Reika.RotaryCraft.ModInterface.ModelElecMotor;
+import Reika.RotaryCraft.ModInterface.Conversion.ModelElecMotor;
 
 public class RenderMotor extends ElectriTERenderer
 {
