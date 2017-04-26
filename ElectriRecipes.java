@@ -87,7 +87,7 @@ public class ElectriRecipes {
 		ReikaRecipeHelper.addSmelting(ElectriCrafting.CRYSTALDUST.getItem(), ElectriItems.CRYSTAL.getStackOf(), 1F);
 		GameRegistry.addRecipe(new ShapelessOreRecipe(ElectriCrafting.CRYSTALDUST.getItem(2), ElectriCrafting.BLUEDUST.oreDictName, ElectriCrafting.DIAMONDDUST.oreDictName, ElectriCrafting.QUARTZDUST.oreDictName, "dustGlowstone", "dustRedstone", "dustRedstone", "dustRedstone", "dustRedstone"));
 
-		Object[] ctr = {Blocks.glowstone, Blocks.lapis_block, Items.ender_eye, Items.diamond, Items.nether_star};
+		Object[] ctr = {Blocks.glowstone, Blocks.lapis_block, Items.ender_eye, Blocks.emerald_block, Items.nether_star};
 		for (int i = 1; i < BatteryType.batteryList.length; i++) {
 			ItemStack cry = ElectriItems.CRYSTAL.getStackOfMetadata(i-1);
 			ItemStack is = ElectriItems.CRYSTAL.getStackOfMetadata(i);
