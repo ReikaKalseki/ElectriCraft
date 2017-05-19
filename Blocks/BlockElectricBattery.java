@@ -158,6 +158,8 @@ public class BlockElectricBattery extends NetworkBlock implements IWailaDataProv
 		((TileEntityBase)te).syncAllData(false);
 		tip.add(String.format("Stored Energy: %s", te.getDisplayEnergy()));
 		tip.add(String.format("Capacity: %s", te.getFormattedCapacity()));
+		tip.add(te.getTracker().getAverageFlow(0)+" J/t");
+		tip.add(te.getTracker().getTimeUntilFullOrEmpty(te));
 		return tip;
 	}
 

@@ -164,6 +164,8 @@ public abstract class BatteryBlock extends BlockTEBase implements IWailaDataProv
 		((TileEntityBase)te).syncAllData(false);
 		tip.add(String.format("Stored Energy: %s", te.getDisplayEnergy()));
 		tip.add(String.format("Capacity: %s", te.getFormattedCapacity()));
+		tip.add(te.getTracker().getAverageFlow(te.isDecimalSystem() ? 2 : 0)+" "+te.getUnitName()+"/t");
+		tip.add(te.getTracker().getTimeUntilFullOrEmpty(te));
 		return tip;
 	}
 

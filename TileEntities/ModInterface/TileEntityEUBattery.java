@@ -24,6 +24,7 @@ import Reika.DragonAPI.ModList;
 import Reika.DragonAPI.ASM.APIStripper.Strippable;
 import Reika.DragonAPI.ASM.DependentMethodStripper.ModDependent;
 import Reika.ElectriCraft.Auxiliary.BatteryTile;
+import Reika.ElectriCraft.Auxiliary.BatteryTracker;
 import Reika.ElectriCraft.Base.ElectriTileEntity;
 import Reika.ElectriCraft.Registry.ElectriItems;
 import Reika.ElectriCraft.Registry.ElectriTiles;
@@ -35,6 +36,8 @@ public class TileEntityEUBattery extends ElectriTileEntity implements IEnergySin
 	public static final double THROUGHPUT = 65536*2; //MFSU is 2048, MFE is 512
 
 	private double energy;
+
+	private final BatteryTracker tracker = new BatteryTracker();
 
 	@Override
 	public String getDisplayEnergy() {
@@ -105,7 +108,7 @@ public class TileEntityEUBattery extends ElectriTileEntity implements IEnergySin
 
 	@Override
 	public void updateEntity(World world, int x, int y, int z, int meta) {
-
+		tracker.update(this);
 	}
 
 	@Override
@@ -172,6 +175,21 @@ public class TileEntityEUBattery extends ElectriTileEntity implements IEnergySin
 			return add;
 		}
 		return 0;
+	}
+
+	@Override
+	public BatteryTracker getTracker() {
+		return tracker;
+	}
+
+	@Override
+	public String getUnitName() {
+		return "EU";
+	}
+
+	@Override
+	public boolean isDecimalSystem() {
+		return true;
 	}
 
 }

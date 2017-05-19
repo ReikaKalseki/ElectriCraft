@@ -17,6 +17,7 @@ import Reika.DragonAPI.Libraries.MathSci.ReikaEngLibrary;
 import Reika.DragonAPI.Libraries.MathSci.ReikaMathLibrary;
 import Reika.DragonAPI.Libraries.World.ReikaWorldHelper;
 import Reika.ElectriCraft.Auxiliary.BatteryTile;
+import Reika.ElectriCraft.Auxiliary.BatteryTracker;
 import Reika.ElectriCraft.Auxiliary.WireEmitter;
 import Reika.ElectriCraft.Auxiliary.WireReceiver;
 import Reika.ElectriCraft.Base.NetworkTileEntity;
@@ -30,9 +31,13 @@ public class TileEntityBattery extends NetworkTileEntity implements WireEmitter,
 	private long lastE;
 	private boolean lastPower;
 
+	private final BatteryTracker tracker = new BatteryTracker();
+
 	@Override
 	public void updateEntity(World world, int x, int y, int z, int meta) {
 		super.updateEntity(world, x, y, z, meta);
+
+		tracker.update(this);
 
 		if (!world.isRemote && network != null) {/*
 			if ((world.getTotalWorldTime()&31) == 0) { what was this for
@@ -185,6 +190,21 @@ public class TileEntityBattery extends NetworkTileEntity implements WireEmitter,
 	@Override
 	public int getEnergyColor() {
 		return 0xffffff;
+	}
+
+	@Override
+	public BatteryTracker getTracker() {
+		return tracker;
+	}
+
+	@Override
+	public String getUnitName() {
+		return "J";
+	}
+
+	@Override
+	public boolean isDecimalSystem() {
+		return false;
 	}
 
 }

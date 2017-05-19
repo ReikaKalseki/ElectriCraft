@@ -17,6 +17,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import Reika.DragonAPI.Libraries.MathSci.ReikaEngLibrary;
 import Reika.DragonAPI.Libraries.MathSci.ReikaMathLibrary;
 import Reika.ElectriCraft.Auxiliary.BatteryTile;
+import Reika.ElectriCraft.Auxiliary.BatteryTracker;
 import Reika.ElectriCraft.Base.ElectriTileEntity;
 import Reika.ElectriCraft.Registry.ElectriItems;
 import Reika.ElectriCraft.Registry.ElectriTiles;
@@ -28,6 +29,8 @@ public class TileEntityRFBattery extends ElectriTileEntity implements BatteryTil
 
 	private long energy;
 	public static final long CAPACITY = 60000000000000L;//1099511627775L;//;
+
+	private final BatteryTracker tracker = new BatteryTracker();
 
 	@Override
 	public String getDisplayEnergy() {
@@ -60,6 +63,9 @@ public class TileEntityRFBattery extends ElectriTileEntity implements BatteryTil
 
 	@Override
 	public void updateEntity(World world, int x, int y, int z, int meta) {
+
+		tracker.update(this);
+
 		if (world.getTotalWorldTime()%64 == 0) {
 			world.markBlockForUpdate(x, y, z);
 		}
@@ -160,6 +166,21 @@ public class TileEntityRFBattery extends ElectriTileEntity implements BatteryTil
 	@Override
 	public int getEnergyColor() {
 		return 0xff1111;
+	}
+
+	@Override
+	public BatteryTracker getTracker() {
+		return tracker;
+	}
+
+	@Override
+	public String getUnitName() {
+		return "RF";
+	}
+
+	@Override
+	public boolean isDecimalSystem() {
+		return false;
 	}
 
 }
