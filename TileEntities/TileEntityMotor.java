@@ -119,6 +119,10 @@ public class TileEntityMotor extends ElectricalReceiver implements Screwdriverab
 			maxAmp = 4;
 			flag = true;
 		}
+		else if (ReikaItemHelper.matchStacks(is, ItemStacks.bedingot) && maxAmp < 1000) {
+			maxAmp = 1000;
+			flag = true;
+		}
 
 		if (flag) {
 			if (network != null) {

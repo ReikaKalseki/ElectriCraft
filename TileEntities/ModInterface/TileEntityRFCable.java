@@ -17,6 +17,7 @@ import Reika.ElectriCraft.ElectriCraft;
 import Reika.ElectriCraft.Base.ElectriCable;
 import Reika.ElectriCraft.Network.RF.RFNetwork;
 import Reika.ElectriCraft.Registry.ElectriTiles;
+import cofh.api.energy.IEnergyConnection;
 import cofh.api.energy.IEnergyHandler;
 
 public class TileEntityRFCable extends ElectriCable implements IEnergyHandler {
@@ -162,15 +163,15 @@ public class TileEntityRFCable extends ElectriCable implements IEnergyHandler {
 
 	@Override
 	protected boolean connectsToTile(TileEntity te, ForgeDirection dir) {
-		return te instanceof IEnergyHandler && ((IEnergyHandler)te).canConnectEnergy(dir.getOpposite());
+		return te instanceof IEnergyConnection && ((IEnergyConnection)te).canConnectEnergy(dir.getOpposite());
 	}
 
 	@Override
 	protected void onNetworkUpdate(World world, int x, int y, int z, ForgeDirection dir) {
 		if (network != null) {
 			TileEntity te = this.getAdjacentTileEntity(dir);
-			if (te instanceof IEnergyHandler) {
-				IEnergyHandler ih = (IEnergyHandler)te;
+			if (te instanceof IEnergyConnection) {
+				IEnergyConnection ih = (IEnergyConnection)te;
 				if (ih.canConnectEnergy(dir.getOpposite())) {
 					network.addConnection(ih, dir.getOpposite());
 				}

@@ -38,6 +38,7 @@ import Reika.ElectriCraft.TileEntities.TileEntityRelay;
 import Reika.ElectriCraft.TileEntities.TileEntityResistor;
 import Reika.ElectriCraft.TileEntities.TileEntityTransformer;
 import Reika.ElectriCraft.TileEntities.TileEntityWire;
+import Reika.ElectriCraft.TileEntities.TileEntityWirelessCharger;
 import Reika.ElectriCraft.TileEntities.ModInterface.TileEntityEUBattery;
 import Reika.ElectriCraft.TileEntities.ModInterface.TileEntityEUCable;
 import Reika.ElectriCraft.TileEntities.ModInterface.TileEntityEUSplitter;
@@ -64,7 +65,8 @@ public enum ElectriTiles implements TileEnum {
 	EUSPLIT("machine.eusplit", 				ElectriBlocks.EUSPLIT, 		TileEntityEUSplitter.class, 	0),
 	EUCABLE("machine.eucable", 				ElectriBlocks.EUCABLE, 		TileEntityEUCable.class, 		0, "RenderCable"),
 	EUBATTERY("machine.eubattery", 			ElectriBlocks.EUBATTERY, 	TileEntityEUBattery.class, 		0, "RenderModBattery"),
-	FUSE("machine.fuse",					ElectriBlocks.MACHINE,		TileEntityFuse.class,			6, "RenderFuse");
+	FUSE("machine.fuse",					ElectriBlocks.MACHINE,		TileEntityFuse.class,			6, "RenderFuse"),
+	WIRELESSPAD("machine.wirelesspad",		ElectriBlocks.CHARGEPAD,	TileEntityWirelessCharger.class,0);
 
 	private String name;
 	private final Class teClass;
@@ -355,5 +357,9 @@ public enum ElectriTiles implements TileEnum {
 
 	public boolean hasNBTVariants() {
 		return NBTMachine.class.isAssignableFrom(teClass);
+	}
+
+	public boolean is6Sided() {
+		return this == WIRELESSPAD;
 	}
 }

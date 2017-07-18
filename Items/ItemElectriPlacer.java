@@ -34,6 +34,7 @@ import Reika.ElectriCraft.Base.TileEntityWireComponent;
 import Reika.ElectriCraft.Registry.ElectriItems;
 import Reika.ElectriCraft.Registry.ElectriTiles;
 import Reika.ElectriCraft.TileEntities.TileEntityTransformer;
+import Reika.ElectriCraft.TileEntities.TileEntityWirelessCharger;
 import Reika.RotaryCraft.API.Power.ShaftMachine;
 import Reika.RotaryCraft.Auxiliary.RotaryAux;
 import Reika.RotaryCraft.Auxiliary.Interfaces.NBTMachine;
@@ -81,12 +82,12 @@ public class ItemElectriPlacer extends Item {
 		{
 			if (!ep.capabilities.isCreativeMode)
 				--is.stackSize;
-			world.setBlock(x, y, z, m.getBlock(), m.getBlockMetadata(), 3);
+			world.setBlock(x, y, z, m.getBlock(), this.getMeta(m, is), 3);
 		}
 		world.playSoundEffect(x+0.5, y+0.5, z+0.5, m.getPlaceSound(), 1F, 1.5F);
 		ElectriTileEntity te = (ElectriTileEntity)world.getTileEntity(x, y, z);
 		te.setPlacer(ep);
-		te.setBlockMetadata(RotaryAux.get4SidedMetadataFromPlayerLook(ep));
+		te.setBlockMetadata(m.is6Sided() ? RotaryAux.get6SidedMetadataFromPlayerLook(ep) : RotaryAux.get4SidedMetadataFromPlayerLook(ep));
 		te.isFlipped = RotaryAux.shouldSetFlipped(world, x, y, z);
 		if (te instanceof ShaftMachine) {
 			ShaftMachine sm = (ShaftMachine)te;
@@ -113,6 +114,14 @@ public class ItemElectriPlacer extends Item {
 		return true;
 	}
 
+	private int getMeta(ElectriTiles m, ItemStack is) {
+		if (m == ElectriTiles.WIRELESSPAD) {
+			int tier = is.stackTagCompound != null ? is.stackTagCompound.getInteger("tier") : 0;
+			return tier;
+		}
+		return m.getBlockMetadata();
+	}
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
@@ -131,6 +140,14 @@ public class ItemElectriPlacer extends Item {
 						par3List.add(is);
 					}
 				}
+				if (t == ElectriTiles.WIRELESSPAD) {
+					for (int k = 0; k < TileEntityWirelessCharger.ChargerTiers.tierList.length; k++) {
+						ItemStack is = item.copy();
+						is.stackTagCompound = new NBTTagCompound();
+						is.stackTagCompound.setInteger("tier", k);
+						par3List.add(is);
+					}
+				}
 			}
 		}
 	}
@@ -143,6 +160,9 @@ public class ItemElectriPlacer extends Item {
 		TileEntity te = m.createTEInstanceForRender();
 		if (m.hasNBTVariants() && is.stackTagCompound != null) {
 			li.addAll(((NBTMachine)te).getDisplayTags(is.stackTagCompound));
+		}
+		if (m == ElectriTiles.WIRELESSPAD && is.stackTagCompound != null) {
+			li.add(TileEntityWirelessCharger.ChargerTiers.tierList[is.stackTagCompound.getInteger("tier")].getLocalizedName());
 		}
 	}
 

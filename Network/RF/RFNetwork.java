@@ -22,7 +22,7 @@ import Reika.ElectriCraft.NetworkObject;
 import Reika.ElectriCraft.Auxiliary.ElectriNetworkEvent.ElectriNetworkRepathEvent;
 import Reika.ElectriCraft.Auxiliary.ElectriNetworkEvent.ElectriNetworkTickEvent;
 import Reika.ElectriCraft.TileEntities.ModInterface.TileEntityRFCable;
-import cofh.api.energy.IEnergyHandler;
+import cofh.api.energy.IEnergyConnection;
 import cofh.api.energy.IEnergyProvider;
 import cofh.api.energy.IEnergyReceiver;
 
@@ -117,7 +117,7 @@ public class RFNetwork implements NetworkObject {
 		this.clear(true);
 	}
 
-	public void addConnection(IEnergyHandler ih, ForgeDirection dir) {
+	public void addConnection(IEnergyConnection ih, ForgeDirection dir) {
 		if (ih instanceof TileEntityRFCable)
 			return;
 		EnergyInteraction has = this.getInteractionFor(ih);
@@ -154,7 +154,7 @@ public class RFNetwork implements NetworkObject {
 		this.updateWires();
 	}
 
-	private EnergyInteraction getInteractionFor(IEnergyHandler tile) {
+	private EnergyInteraction getInteractionFor(IEnergyConnection tile) {
 		return endpoints.get(new WorldLocation((TileEntity)tile));
 	}
 
@@ -201,14 +201,18 @@ public class RFNetwork implements NetworkObject {
 	}
 
 	private static class EnergyInteraction {
-		private final IEnergyHandler tile;
+		private final IEnergyConnection tile;
 		private final ArrayList<ForgeDirection> sides = new ArrayList();
+		private final boolean canExtract;
+		private final boolean canReceive;
 
-		private EnergyInteraction(IEnergyHandler ih, ForgeDirection... dirs) {
+		private EnergyInteraction(IEnergyConnection ih, ForgeDirection... dirs) {
 			tile = ih;
 			for (int i = 0; i < dirs.length; i++) {
 				this.addSide(dirs[i]);
 			}
+			canExtract = ih instanceof IEnergyProvider;
+			canReceive = ih instanceof IEnergyReceiver;
 		}
 
 		public boolean isInsertible() {
@@ -219,7 +223,7 @@ public class RFNetwork implements NetworkObject {
 			return this.getTotalCollectible() > 0;
 		}
 
-		public boolean contains(IEnergyHandler tile) {
+		public boolean contains(IEnergyConnection tile) {
 			return tile == this.tile;
 		}
 
@@ -235,50 +239,54 @@ public class RFNetwork implements NetworkObject {
 		}
 
 		public int collectEnergy(int max) {
+			if (!canExtract)
+				return 0;
 			int total = 0;
 			for (int i = 0; i < sides.size(); i++) {
 				ForgeDirection dir = sides.get(i);
 				if (tile.canConnectEnergy(dir)) {
 					int collect = max-total;
-					total += tile.extractEnergy(dir, collect, false);
+					total += ((IEnergyProvider)tile).extractEnergy(dir, collect, false);
 				}
 			}
 			return total;
 		}
 
 		public int addEnergy(int max) {
+			if (!canReceive)
+				return 0;
 			int total = 0;
 			for (int i = 0; i < sides.size(); i++) {
 				ForgeDirection dir = sides.get(i);
 				if (tile.canConnectEnergy(dir)) {
 					int add = max-total;
-					total += tile.receiveEnergy(dir, add, false);
+					total += ((IEnergyReceiver)tile).receiveEnergy(dir, add, false);
 				}
 			}
 			return total;
 		}
 
 		public int getTotalCollectible() {
-			if (!(tile instanceof IEnergyProvider))
+			if (!canExtract)
 				return 0;
 			int total = 0;
 			for (int i = 0; i < sides.size(); i++) {
 				ForgeDirection dir = sides.get(i);
 				if (tile.canConnectEnergy(dir)) {
-					total += tile.extractEnergy(dir, Integer.MAX_VALUE, true);
+					total += ((IEnergyProvider)tile).extractEnergy(dir, Integer.MAX_VALUE, true);
 				}
 			}
 			return total;
 		}
 
 		public int getTotalInsertible() {
-			if (!(tile instanceof IEnergyReceiver))
+			if (!canReceive)
 				return 0;
 			int total = 0;
 			for (int i = 0; i < sides.size(); i++) {
 				ForgeDirection dir = sides.get(i);
 				if (tile.canConnectEnergy(dir)) {
-					total += tile.receiveEnergy(dir, Integer.MAX_VALUE, true);
+					total += ((IEnergyReceiver)tile).receiveEnergy(dir, Integer.MAX_VALUE, true);
 				}
 			}
 			return total;

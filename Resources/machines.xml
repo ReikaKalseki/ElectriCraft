@@ -109,6 +109,14 @@
 			Multiple yellow dots marks the input; Orange dots mark output sides. Use the screwdriver to toggle sides between output and paneling
 		</note>
 	</eusplit>
+	<wirelesspad>
+		<desc>
+			The energy transfer pad wirelessly conducts RF energy from itself to a target block, allowing for conduits to remain below a floor or behind a wall. Better materials yield more throughput capacity and better efficiency.
+		</desc>
+		<note>
+			%s
+		</note>
+	</wirelesspad>
 	<name>
 		<desc>
 			

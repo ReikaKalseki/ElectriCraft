@@ -17,6 +17,7 @@ import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
@@ -26,6 +27,7 @@ import Reika.DragonAPI.Libraries.IO.ReikaGuiAPI;
 import Reika.DragonAPI.Libraries.IO.ReikaTextureHelper;
 import Reika.DragonAPI.Libraries.Java.ReikaJavaLibrary;
 import Reika.ElectriCraft.Auxiliary.ElectriDescriptions;
+import Reika.ElectriCraft.Blocks.BlockChargePad;
 import Reika.ElectriCraft.Registry.BatteryType;
 import Reika.ElectriCraft.Registry.ElectriBook;
 import Reika.ElectriCraft.Registry.ElectriTiles;
@@ -33,6 +35,7 @@ import Reika.ElectriCraft.Registry.WireType;
 import Reika.ElectriCraft.TileEntities.TileEntityResistor;
 import Reika.ElectriCraft.TileEntities.TileEntityResistor.ColorBand;
 import Reika.ElectriCraft.TileEntities.TileEntityWire;
+import Reika.ElectriCraft.TileEntities.TileEntityWirelessCharger.ChargerTiers;
 import Reika.RotaryCraft.Auxiliary.HandbookAuxData;
 import Reika.RotaryCraft.Auxiliary.Interfaces.HandbookEntry;
 import Reika.RotaryCraft.GUIs.GuiHandbook;
@@ -111,7 +114,10 @@ public class GuiElectriBook extends GuiHandbook {
 				ItemStack is = System.currentTimeMillis()%4000 >= 2000 ? type.getCraftedInsulatedProduct() : type.getCraftedProduct();
 				out.add(is);
 			}
-			ReikaGuiAPI.instance.drawCustomRecipes(ri, fontRendererObj, out, HandbookAuxData.getWorktable(), posX+72-18, posY+18, posX-1620, posY+32);
+			List<IRecipe> li = HandbookAuxData.getWorktable();
+			if (h == ElectriBook.EUBATT || h == ElectriBook.EUSPLITTER || h == ElectriBook.WIRELESSPAD)
+				li = CraftingManager.getInstance().getRecipeList();
+			ReikaGuiAPI.instance.drawCustomRecipes(ri, fontRendererObj, out, li, posX+72-18, posY+18, posX-1620, posY+32);
 		}
 		if (this.getGuiLayout() == PageType.CRAFTING) {
 			List<ItemStack> out = ReikaJavaLibrary.makeListFrom(h.getItem().getStackOf());
@@ -152,6 +158,8 @@ public class GuiElectriBook extends GuiHandbook {
 			double a = 0;
 			double b = 0;
 			double c = 0;
+			if (et == ElectriTiles.WIRELESSPAD)
+				BlockChargePad.itemRender = ChargerTiers.tierList[(int)((System.nanoTime()/2000000000)%ChargerTiers.tierList.length)];
 			if (et.isWiring()) {
 				double dx = -x;
 				double dy = -y-21;
@@ -228,6 +236,7 @@ public class GuiElectriBook extends GuiHandbook {
 				GL11.glScaled(1D/sc, -1D/sc, 1D/sc);
 				GL11.glTranslated(-dx, -dy, -dz);
 			}
+			BlockChargePad.itemRender = null;
 		}
 	}
 

@@ -114,8 +114,8 @@ public enum BatteryType {
 
 	public static String getDataForDisplay() {
 		StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < BatteryType.batteryList.length; i++) {
-			BatteryType type = BatteryType.batteryList[i];
+		for (int i = 0; i < batteryList.length; i++) {
+			BatteryType type = batteryList[i];
 			sb.append(type.getName()+" - Capacity: "+type.getFormattedCapacity()+"; Output: "+type.outputCurrent+"A @ "+type.outputVoltage+"V");
 			sb.append("\n");
 		}

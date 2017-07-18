@@ -17,6 +17,7 @@ import net.minecraft.item.ItemStack;
 import Reika.DragonAPI.Interfaces.Registry.BlockEnum;
 import Reika.DragonAPI.Libraries.Java.ReikaStringParser;
 import Reika.ElectriCraft.ElectriCraft;
+import Reika.ElectriCraft.Blocks.BlockChargePad;
 import Reika.ElectriCraft.Blocks.BlockEUBattery;
 import Reika.ElectriCraft.Blocks.BlockEUCable;
 import Reika.ElectriCraft.Blocks.BlockEUSplitter;
@@ -27,6 +28,7 @@ import Reika.ElectriCraft.Blocks.BlockRFBattery;
 import Reika.ElectriCraft.Blocks.BlockRFCable;
 import Reika.ElectriCraft.Blocks.BlockWire;
 import Reika.ElectriCraft.Items.ItemBlockElectriOre;
+import Reika.ElectriCraft.TileEntities.TileEntityWirelessCharger;
 
 public enum ElectriBlocks implements BlockEnum {
 	WIRE(BlockWire.class, "Wire", false),
@@ -37,7 +39,8 @@ public enum ElectriBlocks implements BlockEnum {
 	RFBATTERY(BlockRFBattery.class, "ElectriRFBattery", true),
 	EUSPLIT(BlockEUSplitter.class, "EUSplitter", false),
 	EUCABLE(BlockEUCable.class, "EUCable", false),
-	EUBATTERY(BlockEUBattery.class, "ElectriEUBattery", true);
+	EUBATTERY(BlockEUBattery.class, "ElectriEUBattery", true),
+	CHARGEPAD(BlockChargePad.class,	"ElectriChargePad", false);
 
 	private Class blockClass;
 	private String blockName;
@@ -97,6 +100,8 @@ public enum ElectriBlocks implements BlockEnum {
 	@Override
 	public String getMultiValuedName(int meta) {
 		switch(this) {
+			case CHARGEPAD:
+				return TileEntityWirelessCharger.ChargerTiers.tierList[meta].getLocalizedName()+" "+ElectriTiles.WIRELESSPAD.getName();
 			default:
 				return "";
 		}

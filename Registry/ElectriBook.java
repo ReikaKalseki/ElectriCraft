@@ -18,10 +18,12 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import Reika.DragonAPI.Instantiable.GUI.ImagedGuiButton;
 import Reika.DragonAPI.Libraries.Java.ReikaJavaLibrary;
 import Reika.ElectriCraft.Auxiliary.ElectriBookData;
 import Reika.ElectriCraft.Auxiliary.ElectriDescriptions;
+import Reika.ElectriCraft.TileEntities.TileEntityWirelessCharger;
 import Reika.RotaryCraft.RotaryCraft;
 import Reika.RotaryCraft.Auxiliary.Interfaces.HandbookEntry;
 import Reika.RotaryCraft.GUIs.GuiHandbook;
@@ -64,7 +66,8 @@ public enum ElectriBook implements HandbookEntry {
 	RFBATT(ElectriTiles.RFBATTERY),
 	RFCABLE(ElectriTiles.CABLE),
 	EUSPLITTER(ElectriTiles.EUSPLIT),
-	EUBATT(ElectriTiles.EUBATTERY);
+	EUBATT(ElectriTiles.EUBATTERY),
+	WIRELESSPAD(ElectriTiles.WIRELESSPAD);
 
 	private final ItemStack iconItem;
 	private final String pageTitle;
@@ -331,6 +334,22 @@ public enum ElectriBook implements HandbookEntry {
 			for (int i = 0; i < BatteryType.batteryList.length; i++) {
 				BatteryType w = BatteryType.batteryList[i];
 				li.add(w.getCraftedProduct());
+			}
+			return li;
+		}
+		if (this == EUSPLITTER) {
+			return ReikaJavaLibrary.makeListFrom(ElectriTiles.EUSPLIT.getCraftedProduct());
+		}
+		if (this == EUBATT) {
+			return ReikaJavaLibrary.makeListFrom(ElectriTiles.EUBATTERY.getCraftedProduct());
+		}
+		if (this == WIRELESSPAD) {
+			ArrayList<ItemStack> li = new ArrayList();
+			for (int i = 0; i < TileEntityWirelessCharger.ChargerTiers.tierList.length; i++) {
+				ItemStack is = ElectriTiles.WIRELESSPAD.getCraftedProduct();
+				is.stackTagCompound = new NBTTagCompound();
+				is.stackTagCompound.setInteger("tier", i);
+				li.add(is);
 			}
 			return li;
 		}

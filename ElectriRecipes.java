@@ -34,6 +34,8 @@ import Reika.ElectriCraft.Registry.ElectriOres;
 import Reika.ElectriCraft.Registry.ElectriTiles;
 import Reika.ElectriCraft.Registry.WireType;
 import Reika.ElectriCraft.TileEntities.TileEntityFuse;
+import Reika.ElectriCraft.TileEntities.TileEntityWirelessCharger;
+import Reika.ElectriCraft.TileEntities.TileEntityWirelessCharger.ChargerTiers;
 import Reika.RotaryCraft.Auxiliary.ItemStacks;
 import Reika.RotaryCraft.Auxiliary.RecipeManagers.RecipeHandler.RecipeLevel;
 import Reika.RotaryCraft.Auxiliary.RecipeManagers.RecipesGrinder;
@@ -72,6 +74,13 @@ public class ElectriRecipes {
 		for (int i = 0; i < BatteryType.batteryList.length; i++) {
 			BatteryType bat = BatteryType.batteryList[i];
 			bat.addCrafting();
+		}
+		for (int i = 0; i < TileEntityWirelessCharger.ChargerTiers.tierList.length; i++) {
+			ChargerTiers pad = TileEntityWirelessCharger.ChargerTiers.tierList[i];
+			ItemStack is = ElectriTiles.WIRELESSPAD.getCraftedProduct();
+			is.stackTagCompound = new NBTTagCompound();
+			is.stackTagCompound.setInteger("tier", i);
+			GameRegistry.addRecipe(new ShapedOreRecipe(is, pad.getRecipe()));
 		}
 		for (int i = 0; i < ElectriOres.oreList.length; i++) {
 			ElectriOres ore = ElectriOres.oreList[i];

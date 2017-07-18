@@ -27,6 +27,7 @@ import Reika.ElectriCraft.Registry.ElectriBook;
 import Reika.ElectriCraft.Registry.ElectriTiles;
 import Reika.ElectriCraft.Registry.WireType;
 import Reika.ElectriCraft.TileEntities.TileEntityTransformer;
+import Reika.ElectriCraft.TileEntities.TileEntityWirelessCharger;
 import Reika.ElectriCraft.TileEntities.ModInterface.TileEntityEUBattery;
 import Reika.ElectriCraft.TileEntities.ModInterface.TileEntityRFBattery;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -191,5 +192,6 @@ public final class ElectriDescriptions {
 		addData(ElectriTiles.RFBATTERY, TileEntityRFBattery.CAPACITY);
 		addData(ElectriTiles.EUBATTERY, TileEntityEUBattery.CAPACITY);
 		addNotes(ElectriTiles.BATTERY, BatteryType.getDataForDisplay());
+		addNotes(ElectriTiles.WIRELESSPAD, TileEntityWirelessCharger.ChargerTiers.getDataForDisplay());
 	}
 }
