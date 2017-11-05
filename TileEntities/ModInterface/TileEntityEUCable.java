@@ -19,6 +19,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
+import Reika.ChromatiCraft.API.Interfaces.WorldRift;
 import Reika.DragonAPI.ModList;
 import Reika.DragonAPI.ASM.APIStripper.Strippable;
 import Reika.DragonAPI.ASM.DependentMethodStripper.ModDependent;
@@ -116,6 +117,8 @@ public class TileEntityEUCable extends ElectriCable implements IEnergyConductor 
 		if (te instanceof IEnergyEmitter && ((IEnergyEmitter)te).emitsEnergyTo(this, dir.getOpposite()))
 			return true;
 		if (te instanceof IEnergyAcceptor && ((IEnergyAcceptor)te).acceptsEnergyFrom(this, dir.getOpposite()))
+			return true;
+		if (te instanceof WorldRift)
 			return true;
 		return false;
 	}

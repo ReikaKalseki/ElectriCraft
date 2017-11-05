@@ -115,7 +115,7 @@ public class GuiTransformer extends GuiContainer {
 	}
 
 	private void sendData() {
-		ReikaPacketHelper.sendDataPacket(ElectriCraft.packetChannel, ElectriPackets.TRANSFORMER.ordinal(), trans, n1, n2);
+		ReikaPacketHelper.sendPacketToServer(ElectriCraft.packetChannel, ElectriPackets.TRANSFORMER.ordinal(), trans, n1, n2);
 	}
 
 	@Override

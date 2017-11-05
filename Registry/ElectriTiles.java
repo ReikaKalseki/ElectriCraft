@@ -147,7 +147,7 @@ public enum ElectriTiles implements TileEnum {
 	}
 
 	public boolean isWiring() {
-		return this == WIRE || this == CABLE;
+		return this == WIRE || this == CABLE || this == EUCABLE;
 	}
 
 	public static ElectriTiles getTE(IBlockAccess iba, int x, int y, int z) {

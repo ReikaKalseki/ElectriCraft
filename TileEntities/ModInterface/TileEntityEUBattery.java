@@ -23,6 +23,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 import Reika.DragonAPI.ModList;
 import Reika.DragonAPI.ASM.APIStripper.Strippable;
 import Reika.DragonAPI.ASM.DependentMethodStripper.ModDependent;
+import Reika.DragonAPI.Libraries.MathSci.ReikaMathLibrary;
+import Reika.DragonAPI.ModInteract.ItemHandlers.IC2Handler;
 import Reika.ElectriCraft.Auxiliary.BatteryTile;
 import Reika.ElectriCraft.Auxiliary.BatteryTracker;
 import Reika.ElectriCraft.Base.ElectriTileEntity;
@@ -153,7 +155,7 @@ public class TileEntityEUBattery extends ElectriTileEntity implements IEnergySin
 
 	@Override
 	public int getSourceTier() {
-		return 4;
+		return IC2Handler.getInstance().isIC2Classic() ? 7 : 4;
 	}
 
 	@Override
@@ -190,6 +192,11 @@ public class TileEntityEUBattery extends ElectriTileEntity implements IEnergySin
 	@Override
 	public boolean isDecimalSystem() {
 		return true;
+	}
+
+	@Override
+	public int getRedstoneOverride() {
+		return (int)(15D*ReikaMathLibrary.logbase(this.getStoredEnergy(), 2)/ReikaMathLibrary.logbase(this.getMaxEnergy(), 2));
 	}
 
 }

@@ -13,6 +13,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import Reika.ChromatiCraft.API.Interfaces.WorldRift;
 import Reika.ElectriCraft.ElectriCraft;
 import Reika.ElectriCraft.Base.ElectriCable;
 import Reika.ElectriCraft.Network.RF.RFNetwork;
@@ -54,21 +55,23 @@ public class TileEntityRFCable extends ElectriCable implements IEnergyHandler {
 		network.addElement(this);
 		for (int i = 0; i < 6; i++) {
 			ForgeDirection dir = dirs[i];
-			TileEntity te = this.getAdjacentTileEntity(dir);
-			if (te instanceof TileEntityRFCable) {
-				//ReikaJavaLibrary.pConsole(te, Side.SERVER);
-				TileEntityRFCable n = (TileEntityRFCable)te;
-				RFNetwork w = n.network;
-				if (w != null) {
-					//ReikaJavaLibrary.pConsole(dir+":"+te, Side.SERVER);
-					w.merge(network);
+			if (isChunkLoadedOnSide(dir)) {
+				TileEntity te = this.getAdjacentTileEntity(dir);
+				if (te instanceof TileEntityRFCable) {
+					//ReikaJavaLibrary.pConsole(te, Side.SERVER);
+					TileEntityRFCable n = (TileEntityRFCable)te;
+					RFNetwork w = n.network;
+					if (w != null) {
+						//ReikaJavaLibrary.pConsole(dir+":"+te, Side.SERVER);
+						w.merge(network);
+					}
 				}
-			}
-			else if (te instanceof IEnergyHandler) {
-				//ReikaJavaLibrary.pConsole(te, Side.SERVER);
-				IEnergyHandler n = (IEnergyHandler)te;
-				if (n.canConnectEnergy(dir.getOpposite()))
-					network.addConnection(n, dir.getOpposite());
+				else if (te instanceof IEnergyHandler) {
+					//ReikaJavaLibrary.pConsole(te, Side.SERVER);
+					IEnergyHandler n = (IEnergyHandler)te;
+					if (n.canConnectEnergy(dir.getOpposite()))
+						network.addConnection(n, dir.getOpposite());
+				}
 			}
 		}
 		this.onJoinNetwork();
@@ -163,7 +166,7 @@ public class TileEntityRFCable extends ElectriCable implements IEnergyHandler {
 
 	@Override
 	protected boolean connectsToTile(TileEntity te, ForgeDirection dir) {
-		return te instanceof IEnergyConnection && ((IEnergyConnection)te).canConnectEnergy(dir.getOpposite());
+		return (te instanceof IEnergyConnection && ((IEnergyConnection)te).canConnectEnergy(dir.getOpposite())) || te instanceof WorldRift;
 	}
 
 	@Override

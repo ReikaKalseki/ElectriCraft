@@ -76,10 +76,11 @@ public class ItemElectriPlacer extends Item {
 		if (inblock.size() > 0)
 			return false;
 		ElectriTiles m = ElectriTiles.TEList[is.getItemDamage()];
+		if (m == ElectriTiles.MOTOR && (ElectriTiles.getTE(world, x, y+1, z) == m || ElectriTiles.getTE(world, x, y-1, z) == m))
+			return false;
 		if (!ep.canPlayerEdit(x, y, z, 0, is))
 			return false;
-		else
-		{
+		else {
 			if (!ep.capabilities.isCreativeMode)
 				--is.stackSize;
 			world.setBlock(x, y, z, m.getBlock(), this.getMeta(m, is), 3);
@@ -130,8 +131,16 @@ public class ItemElectriPlacer extends Item {
 			if (!t.hasCustomItem() && t.isAvailableInCreativeInventory()) {
 				TileEntity te = t.createTEInstanceForRender();
 				ItemStack item = t.getCraftedProduct();
-				par3List.add(item);
-				if (t.hasNBTVariants()) {
+				if (t == ElectriTiles.WIRELESSPAD) {
+					for (int k = 0; k < TileEntityWirelessCharger.ChargerTiers.tierList.length; k++) {
+						ItemStack is = item.copy();
+						is.stackTagCompound = new NBTTagCompound();
+						is.stackTagCompound.setInteger("tier", k);
+						par3List.add(is);
+					}
+					return;
+				}
+				else if (t.hasNBTVariants()) {
 					ArrayList<NBTTagCompound> li = ((NBTMachine)te).getCreativeModeVariants();
 					for (int k = 0; k < li.size(); k++) {
 						NBTTagCompound NBT = li.get(k);
@@ -140,14 +149,7 @@ public class ItemElectriPlacer extends Item {
 						par3List.add(is);
 					}
 				}
-				if (t == ElectriTiles.WIRELESSPAD) {
-					for (int k = 0; k < TileEntityWirelessCharger.ChargerTiers.tierList.length; k++) {
-						ItemStack is = item.copy();
-						is.stackTagCompound = new NBTTagCompound();
-						is.stackTagCompound.setInteger("tier", k);
-						par3List.add(is);
-					}
-				}
+				par3List.add(item);
 			}
 		}
 	}

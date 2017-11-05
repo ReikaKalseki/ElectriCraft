@@ -320,6 +320,7 @@ public final class WireNetwork implements NetworkObject {
 			}
 		}
 		dimIDs.add(te.getWorld().provider.dimensionId);
+		//ReikaJavaLibrary.pConsole("Added "+te+" to "+this);
 		this.updateWires(true);
 	}
 
@@ -361,7 +362,7 @@ public final class WireNetwork implements NetworkObject {
 	}
 
 	private void validatePathLimit() {
-		//ReikaJavaLibrary.pConsole(paths.size()+"|"+nodes.size()+"/"+wires.size()+"#"+interWireConnections);
+		//ReikaJavaLibrary.spamConsole(paths.size()+"|"+nodes.size()+"/"+wires.size()+"#"+interWireConnections);
 		if (paths.size() >= MAX_PATHS || interWireConnections > MAX_INTERWIRE/* || (wires.size() > 20 && nodes.size() >= wires.size()*3/4)*/) {
 			//for (WirePath p : paths) {
 			//	p.overload(true);

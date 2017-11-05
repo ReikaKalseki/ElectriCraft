@@ -44,20 +44,20 @@ public class RenderMotor extends ElectriTERenderer
 		int var11 = 0;
 		float var13;
 		switch(tile.getFacing()) {
-		case EAST:
-			var11 = 270;
-			break;
-		case WEST:
-			var11 = 90;
-			break;
-		case NORTH:
-			var11 = 180;
-			break;
-		case SOUTH:
-			var11 = 0;
-			break;
-		default:
-			break;
+			case EAST:
+				var11 = 270;
+				break;
+			case WEST:
+				var11 = 90;
+				break;
+			case NORTH:
+				var11 = 180;
+				break;
+			case SOUTH:
+				var11 = 0;
+				break;
+			default:
+				break;
 		}
 
 		GL11.glRotatef(var11, 0.0F, 1.0F, 0.0F);
@@ -65,7 +65,7 @@ public class RenderMotor extends ElectriTERenderer
 			GL11.glRotated(180, 0, 1, 0);
 		}
 		int num = tile.isInWorld() ? 5 : 5;
-		var14.renderAll(tile, ReikaJavaLibrary.makeListFrom(num), tile.phi, 0);
+		var14.renderAll(tile, ReikaJavaLibrary.makeListFrom(num, tile.getFinColor(), tile.getPower() > 0), tile.phi, 0);
 
 		this.closeGL(tile);
 	}

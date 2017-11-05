@@ -157,11 +157,6 @@ public class TileEntityRFBattery extends ElectriTileEntity implements BatteryTil
 	}
 
 	@Override
-	public int getRedstoneOverride() {
-		return (int)(15D*ReikaMathLibrary.logbase(this.getStoredEnergy(), 2)/ReikaMathLibrary.logbase(this.getMaxEnergy(), 2));
-	}
-
-	@Override
 	public int getEnergyColor() {
 		return 0xff1111;
 	}

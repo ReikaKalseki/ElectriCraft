@@ -153,7 +153,7 @@ public class ElectriRecipes {
 
 		if (PowerTypes.EU.isLoaded() && ModList.IC2.isLoaded()) {
 			ElectriTiles.EUSPLIT.addOreCrafting("PCP", "CcC", "PCP", 'P', ItemStacks.basepanel, 'C', "ingotCopper", 'c', ItemStacks.goldcoil);
-			ItemStack dust = IC2Handler.IC2Stacks.ENERGIUM.getItem();
+			ItemStack dust = IC2Handler.getInstance().isIC2Classic() ? IC2Handler.IC2Stacks.ADVANCEDALLOY.getItem() : IC2Handler.IC2Stacks.ENERGIUM.getItem();
 			ElectriTiles.EUCABLE.addSizedCrafting(DifficultyEffects.PIPECRAFT.getInt(), "RDR", "BGB", "tEt", 'D', Items.diamond, 'R', dust, 't', ItemStacks.tungsteningot, 'G', Blocks.gold_block, 'E', Items.ender_pearl, 'B', BlockRegistry.BLASTGLASS.getStackOf());
 
 			ItemStack plate = IC2Handler.IC2Stacks.ADVANCEDALLOY.getItem();

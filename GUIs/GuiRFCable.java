@@ -77,7 +77,7 @@ public class GuiRFCable extends GuiContainer {
 		}
 
 		cable.setRFLimit(limit);
-		ReikaPacketHelper.sendDataPacket(ElectriCraft.packetChannel, ElectriPackets.RFCABLE.ordinal(), cable, limit);
+		ReikaPacketHelper.sendPacketToServer(ElectriCraft.packetChannel, ElectriPackets.RFCABLE.ordinal(), cable, limit);
 		this.initGui();
 	}
 

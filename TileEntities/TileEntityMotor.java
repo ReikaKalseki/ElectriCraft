@@ -21,9 +21,11 @@ import net.minecraftforge.common.util.ForgeDirection;
 import Reika.DragonAPI.APIPacketHandler.PacketIDs;
 import Reika.DragonAPI.DragonAPIInit;
 import Reika.DragonAPI.Instantiable.StepTimer;
+import Reika.DragonAPI.Libraries.IO.ReikaColorAPI;
 import Reika.DragonAPI.Libraries.IO.ReikaPacketHelper;
 import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
 import Reika.DragonAPI.Libraries.MathSci.ReikaMathLibrary;
+import Reika.DragonAPI.Libraries.MathSci.ReikaPhysicsHelper;
 import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
 import Reika.DragonAPI.Libraries.Registry.ReikaParticleHelper;
 import Reika.ElectriCraft.Auxiliary.ConversionTile;
@@ -103,7 +105,7 @@ public class TileEntityMotor extends ElectricalReceiver implements Screwdriverab
 			if (rand.nextInt(10) == 0) {
 				ReikaSoundHelper.playSoundAtBlock(world, x, y, z, "random.fizz");
 				//ReikaParticleHelper.SMOKE.spawnAroundBlock(world, x, y, z, 2);
-				ReikaPacketHelper.sendDataPacket(DragonAPIInit.packetChannel, PacketIDs.PARTICLE.ordinal(), this, ReikaParticleHelper.SMOKE.ordinal(), 1);
+				ReikaPacketHelper.sendDataPacketWithRadius(DragonAPIInit.packetChannel, PacketIDs.PARTICLE.ordinal(), this, 32, ReikaParticleHelper.SMOKE.ordinal(), 1);
 			}
 		}
 		return (int)(curlim*f);
@@ -365,5 +367,13 @@ public class TileEntityMotor extends ElectricalReceiver implements Screwdriverab
 	@Override
 	public void fail() {
 		this.delete();
+	}
+
+	public int getFinColor() {
+		if (!this.isInWorld())
+			return 0x515168;
+		int c = ReikaPhysicsHelper.getColorForTemperature(400*ReikaMathLibrary.logbase2(power)-6500);
+		//ReikaJavaLibrary.pConsole(35*ReikaMathLibrary.logbase2(power));
+		return c == 0 ? 0x515168 : ReikaColorAPI.mixColors(c, 0x515168, 0.5F);
 	}
 }

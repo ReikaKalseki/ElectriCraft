@@ -33,6 +33,8 @@ import Reika.ElectriCraft.Registry.WireType;
 public class TileEntityWire extends WiringTile implements Overloadable {
 
 	private boolean[] connections = new boolean[6];
+	private int connectionCount = 0;
+
 	public boolean insulated;
 
 	private boolean shouldMelt;
@@ -62,9 +64,9 @@ public class TileEntityWire extends WiringTile implements Overloadable {
 		int dz = z+dir.offsetZ;
 		Block b = world.getBlock(dx, dy, dz);
 		int meta = world.getBlockMetadata(dx, dy, dz);
-		if (b == this.getTileEntityBlockID())
-			return true;
 		TileEntity te = world.getTileEntity(dx, dy, dz);
+		if (b == this.getTileEntityBlockID())
+			return true;//connections[dir.ordinal()] && ((TileEntityWire)te).connections[dir.getOpposite().ordinal()];
 		boolean flag = false;
 		if (te instanceof WiringTile) {
 			flag = flag || ((WiringTile) te).canNetworkOnSide(dir.getOpposite());
@@ -83,7 +85,7 @@ public class TileEntityWire extends WiringTile implements Overloadable {
 
 	@Override
 	public final boolean canNetworkOnSide(ForgeDirection dir) {
-		return true;
+		return true;//connections[dir.ordinal()];
 	}
 
 	public WireType getWireType() {
@@ -127,13 +129,18 @@ public class TileEntityWire extends WiringTile implements Overloadable {
 	}
 
 	public void recomputeConnections(World world, int x, int y, int z) {
+		connectionCount = 0;
 		for (int i = 0; i < 6; i++) {
 			connections[i] = this.isConnected(dirs[i]);
+			if (connections[i])
+				connectionCount++;
 			world.func_147479_m(x+dirs[i].offsetX, y+dirs[i].offsetY, z+dirs[i].offsetZ);
 		}
+		//world.markBlockForUpdate(x, y, z);
 		world.func_147479_m(x, y, z);
 	}
 
+	@Deprecated
 	public void deleteFromAdjacentConnections(World world, int x, int y, int z) {
 		for (int i = 0; i < 6; i++) {
 			ForgeDirection dir = dirs[i];
@@ -158,7 +165,7 @@ public class TileEntityWire extends WiringTile implements Overloadable {
 			ElectriTiles m = ElectriTiles.getTE(world, dx, dy, dz);
 			if (m == this.getMachine()) {
 				TileEntityWire te = (TileEntityWire)world.getTileEntity(dx, dy, dz);
-				te.connections[dir.getOpposite().ordinal()] = true;
+				te.connections[dir.getOpposite().ordinal()] = true;//te.isConnected(dir.getOpposite());
 				world.func_147479_m(dx, dy, dz);
 			}
 		}
@@ -171,7 +178,7 @@ public class TileEntityWire extends WiringTile implements Overloadable {
 		ElectriTiles m = this.getMachine();
 		ElectriTiles m2 = ElectriTiles.getTE(worldObj, x, y, z);
 		if (m == m2)
-			return true;
+			return true;//connectionCount < 3;
 		//certain TEs
 		return false;
 	}
