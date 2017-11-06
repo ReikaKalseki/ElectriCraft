@@ -40,7 +40,7 @@ public class RenderElectricMeter extends ElectriTERenderer
 
 		this.bindTextureByName("/Reika/ElectriCraft/Textures/metertex.png");
 
-		var14.renderAll(tile, null, tile.phi, 0);
+		var14.renderAll(tile, null, tile.phi);
 		if (tile.isInWorld())
 			this.renderText(tile, par2, par4, par6);
 

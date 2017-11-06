@@ -64,7 +64,7 @@ public class RenderGenerator extends ElectriTERenderer
 		if (tile.isFlipped && tile.getFacing().offsetZ != 0) {
 			GL11.glRotated(180, 0, 1, 0);
 		}
-		var14.renderAll(tile, null, 0, 0);
+		var14.renderAll(tile, null);
 
 		this.closeGL(tile);
 	}

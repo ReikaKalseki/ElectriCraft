@@ -80,7 +80,7 @@ public class RenderFuse extends ElectriTERenderer
 
 		GL11.glRotatef(var11, 0.0F, 1.0F, 0.0F);
 		//GL11.glTranslated(0, -0.1875, 0);
-		var14.renderAll(tile, null, tile.phi, 0);
+		var14.renderAll(tile, null, tile.phi);
 
 		GL11.glPopAttrib();
 		this.closeGL(tile);
