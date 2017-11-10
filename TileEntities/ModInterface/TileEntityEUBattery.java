@@ -174,7 +174,7 @@ public class TileEntityEUBattery extends ElectriTileEntity implements IEnergySin
 		//ReikaJavaLibrary.pConsole("Injecting "+amt+" to "+this);
 		if (add > 0) {
 			energy += add;
-			return add;
+			return amt-add;
 		}
 		return 0;
 	}

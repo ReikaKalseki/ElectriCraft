@@ -18,6 +18,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.world.WorldEvent;
 import Reika.DragonAPI.Instantiable.Data.Immutable.Coordinate;
+import Reika.DragonAPI.Instantiable.Data.Immutable.WorldLocation;
 import Reika.ElectriCraft.ElectriCraft;
 import Reika.ElectriCraft.ElectriNetworkManager;
 import Reika.ElectriCraft.NetworkObject;
@@ -26,6 +27,7 @@ import Reika.ElectriCraft.Auxiliary.ElectriNetworkEvent.ElectriNetworkTickEvent;
 import Reika.ElectriCraft.Auxiliary.NetworkTile;
 import Reika.ElectriCraft.Auxiliary.WireEmitter;
 import Reika.ElectriCraft.Auxiliary.WireReceiver;
+import Reika.ElectriCraft.Auxiliary.WrappedSource;
 import Reika.ElectriCraft.Base.NetworkTileEntity;
 import Reika.ElectriCraft.Base.WiringTile;
 import Reika.ElectriCraft.TileEntities.TileEntityGenerator;
@@ -37,9 +39,10 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public final class WireNetwork implements NetworkObject {
 
-	private final Collection<WiringTile> wires = new ArrayList();
-	private final Collection<WireReceiver> sinks = new ArrayList();
-	private final Collection<WireEmitter> sources = new ArrayList();
+	private final HashMap<WorldLocation, WiringTile> wires = new HashMap();
+	private final HashMap<WorldLocation, WireReceiver> sinks = new HashMap();
+	private final HashMap<WorldLocation, WireEmitter> sources = new HashMap();
+	private final HashMap<WorldLocation, WrappedSource> wrappers = new HashMap();
 	private final HashMap<Coordinate, NetworkNode> nodes = new HashMap();
 	private final Collection<WirePath> paths = new ArrayList();
 	private final HashMap<WiringTile, Integer> pointVoltages = new HashMap();
@@ -91,7 +94,7 @@ public final class WireNetwork implements NetworkObject {
 
 	private int getMaxInputVoltage() {
 		int max = 0;
-		for (WireEmitter e : sources) {
+		for (WireEmitter e : sources.values()) {
 			max = Math.max(max, e.getGenVoltage());
 		}
 		return max;
@@ -117,10 +120,18 @@ public final class WireNetwork implements NetworkObject {
 				flag = true;
 			}
 		}
+
+		for (WrappedSource src : wrappers.values()) {
+			if (src.needsUpdate()) {
+				this.updateWires(false);
+				flag = true;
+			}
+		}
+
 		if (flag)
 			return;
 
-		for (WiringTile w : wires) {
+		for (WiringTile w : wires.values()) {
 			if (w instanceof TileEntityWire) {
 				TileEntityWire te = (TileEntityWire)w;
 				int current = this.getPointCurrent(w);
@@ -150,13 +161,13 @@ public final class WireNetwork implements NetworkObject {
 
 	private void doRepath() {
 		this.recalculatePaths();
-		for (WiringTile w : wires) {
+		for (WiringTile w : wires.values()) {
 			w.onNetworkChanged();
 		}
-		for (WireEmitter w : sources) {
+		for (WireEmitter w : sources.values()) {
 			w.onNetworkChanged();
 		}
-		for (WireReceiver w : sinks) {
+		for (WireReceiver w : sinks.values()) {
 			w.onNetworkChanged();
 		}
 	}
@@ -234,17 +245,17 @@ public final class WireNetwork implements NetworkObject {
 	public void merge(WireNetwork n) {
 		if (n != this) {
 			ArrayList<NetworkTile> li = new ArrayList();
-			for (WiringTile wire : n.wires) {
+			for (WiringTile wire : n.wires.values()) {
 				wire.setNetwork(this);
 				li.add(wire);
 			}
-			for (WireReceiver emitter : n.sinks) {
+			for (WireReceiver emitter : n.sinks.values()) {
 				if (!li.contains(emitter)) {
 					emitter.setNetwork(this);
 					li.add(emitter);
 				}
 			}
-			for (WireEmitter source : n.sources) {
+			for (WireEmitter source : n.sources.values()) {
 				if (!li.contains(source)) {
 					source.setNetwork(this);
 					li.add(source);
@@ -264,13 +275,13 @@ public final class WireNetwork implements NetworkObject {
 
 	private void clear(boolean clearTiles) {
 		if (clearTiles) {
-			for (WiringTile te : wires) {
+			for (WiringTile te : wires.values()) {
 				te.resetNetwork();
 			}
-			for (WireReceiver te : sinks) {
+			for (WireReceiver te : sinks.values()) {
 				te.resetNetwork();
 			}
-			for (WireEmitter te : sources) {
+			for (WireEmitter te : sources.values()) {
 				te.resetNetwork();
 			}
 		}
@@ -278,6 +289,7 @@ public final class WireNetwork implements NetworkObject {
 		wires.clear();
 		sinks.clear();
 		sources.clear();
+		wrappers.clear();
 		nodes.clear();
 		paths.clear();
 		dimIDs.clear();
@@ -288,15 +300,17 @@ public final class WireNetwork implements NetworkObject {
 	}
 
 	public void addElement(NetworkTile te) {
+		boolean changed = false;
 		if (!te.isConnectable())
 			return;
 		if (te instanceof WireEmitter)
-			sources.add((WireEmitter)te);
-		if (te instanceof WireReceiver)
-			sinks.add((WireReceiver)te);
+			changed |= this.addSource((WireEmitter)te);
+		if (te instanceof WireReceiver) {
+			changed |= !te.equals(sinks.put(this.getLocation(te), (WireReceiver)te));
+		}
 		if (te instanceof WiringTile) {
 			WiringTile wire = (WiringTile)te;
-			wires.add(wire);
+			changed |= !te.equals(wires.put(this.getLocation(te), wire));
 			for (int k = 0; k < 6; k++) {
 				ForgeDirection side = dirs[k];
 				TileEntity adj2 = wire.getAdjacentTileEntity(side);
@@ -319,9 +333,28 @@ public final class WireNetwork implements NetworkObject {
 				}
 			}
 		}
-		dimIDs.add(te.getWorld().provider.dimensionId);
-		//ReikaJavaLibrary.pConsole("Added "+te+" to "+this);
-		this.updateWires(true);
+		if (changed) {
+			dimIDs.add(te.getWorld().provider.dimensionId);
+			//ReikaJavaLibrary.pConsole("Added "+te+" to "+this);
+			this.updateWires(true);
+		}
+	}
+
+	private boolean addSource(WireEmitter te) {
+		boolean flag = !te.equals(sources.put(this.getLocation(te), te));
+		if (te instanceof WrappedSource)
+			flag |= !te.equals(wrappers.put(this.getLocation(te), (WrappedSource)te));
+		return flag;
+	}
+
+	private WorldLocation getLocation(NetworkTile te) {
+		return new WorldLocation(te.getWorld(), te.getX(), te.getY(), te.getZ());
+	}
+
+	private void removeSource(WireEmitter te) {
+		sources.remove(te);
+		if (te instanceof WrappedSource)
+			wrappers.remove(te);
 	}
 
 	public void updateWires() {
@@ -343,8 +376,8 @@ public final class WireNetwork implements NetworkObject {
 		loadedDimIDs.clear();
 		interWireConnections = 0;
 		this.clearCache();
-		for (WireEmitter src : sources) {
-			for (WireReceiver sink : sinks) {
+		for (WireEmitter src : sources.values()) {
+			for (WireReceiver sink : sinks.values()) {
 				if (src != sink) {
 					PathCalculator pc = new PathCalculator(src, sink, this);
 					pc.calculatePaths();
@@ -367,7 +400,7 @@ public final class WireNetwork implements NetworkObject {
 			//for (WirePath p : paths) {
 			//	p.overload(true);
 			//}
-			for (WiringTile w : wires) {
+			for (WiringTile w : wires.values()) {
 				if (w instanceof TileEntityWire)
 					((TileEntityWire)w).overload(Integer.MAX_VALUE);
 			}
@@ -528,7 +561,7 @@ public final class WireNetwork implements NetworkObject {
 
 	public void removeElement(NetworkTileEntity te) {
 		if (te instanceof WireEmitter)
-			sources.remove(te);
+			this.removeSource((WireEmitter)te);
 		if (te instanceof WireReceiver)
 			sinks.remove(te);
 		if (te instanceof WiringTile)
@@ -538,14 +571,14 @@ public final class WireNetwork implements NetworkObject {
 
 	private void rebuild() {
 		ArrayList<NetworkTile> li = new ArrayList();
-		for (NetworkTile te : wires) {
+		for (NetworkTile te : wires.values()) {
 			li.add(te);
 		}
-		for (NetworkTile te : sinks) {
+		for (NetworkTile te : sinks.values()) {
 			if (!li.contains(te))
 				li.add(te);
 		}
-		for (NetworkTile te : sources) {
+		for (NetworkTile te : sources.values()) {
 			if (!li.contains(te))
 				li.add(te);
 		}
@@ -572,7 +605,7 @@ public final class WireNetwork implements NetworkObject {
 
 	public PowerSourceList getInputSources(PowerSourceTracker io, ShaftMerger caller) {
 		PowerSourceList p = new PowerSourceList();
-		for (WireEmitter w : sources) {
+		for (WireEmitter w : sources.values()) {
 			if (w instanceof TileEntityGenerator) {
 				p.addAll(((TileEntityGenerator)w).getPowerSources(io, caller));
 			}

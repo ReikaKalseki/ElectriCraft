@@ -54,7 +54,7 @@ public abstract class NetworkTileEntity extends ElectriTileEntity implements Net
 		network.addElement(this);
 		for (int i = 0; i < 6; i++) {
 			ForgeDirection dir = dirs[i];
-			if (this.canNetworkOnSide(dir) && isChunkLoadedOnSide(dir)) {
+			if (this.canNetworkOnSide(dir) && this.isChunkLoadedOnSide(dir)) {
 				TileEntity te = this.getAdjacentTileEntity(dir);
 				this.linkTile(te, dir);
 			}

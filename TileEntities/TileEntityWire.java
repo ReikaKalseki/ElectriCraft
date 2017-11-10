@@ -25,6 +25,8 @@ import Reika.DragonAPI.Libraries.Registry.ReikaParticleHelper;
 import Reika.ElectriCraft.Auxiliary.Overloadable;
 import Reika.ElectriCraft.Auxiliary.WireEmitter;
 import Reika.ElectriCraft.Auxiliary.WireReceiver;
+import Reika.ElectriCraft.Auxiliary.WrappedSource;
+import Reika.ElectriCraft.Auxiliary.WrappedSource.WrappableWireSource;
 import Reika.ElectriCraft.Base.WiringTile;
 import Reika.ElectriCraft.Blocks.BlockWire;
 import Reika.ElectriCraft.Registry.ElectriTiles;
@@ -57,6 +59,17 @@ public class TileEntityWire extends WiringTile implements Overloadable {
 		return ElectriTiles.WIRE;
 	}
 
+	@Override
+	protected void onJoinNetwork() {
+		this.checkForWrappables();
+	}
+
+	@Override
+	public void onNetworkChanged() {
+		super.onNetworkChanged();
+		this.checkForWrappables();
+	}
+
 	public boolean isConnectedOnSideAt(World world, int x, int y, int z, ForgeDirection dir) {
 		dir = dir.offsetX == 0 ? dir.getOpposite() : dir;
 		int dx = x+dir.offsetX;
@@ -79,6 +92,9 @@ public class TileEntityWire extends WiringTile implements Overloadable {
 		}
 		if (te instanceof WorldRift) {
 			flag = true;
+		}
+		if (te instanceof WrappableWireSource) {
+			flag = flag || ((WrappableWireSource) te).canConnectToSide(dir.getOpposite());
 		}
 		return flag;
 	}
@@ -136,8 +152,20 @@ public class TileEntityWire extends WiringTile implements Overloadable {
 				connectionCount++;
 			world.func_147479_m(x+dirs[i].offsetX, y+dirs[i].offsetY, z+dirs[i].offsetZ);
 		}
+		this.checkForWrappables();
 		//world.markBlockForUpdate(x, y, z);
 		world.func_147479_m(x, y, z);
+	}
+
+	private void checkForWrappables() {
+		if (network == null)
+			return;
+		for (int i = 0; i < 6; i++) {
+			TileEntity te = this.getAdjacentTileEntity(dirs[i]);
+			if (te instanceof WrappableWireSource) {
+				network.addElement(new WrappedSource((WrappableWireSource)te));
+			}
+		}
 	}
 
 	@Deprecated
