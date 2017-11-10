@@ -3,8 +3,8 @@ package Reika.ElectriCraft.Auxiliary;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import Reika.ElectriCraft.API.WrappableWireSource;
 import Reika.ElectriCraft.Network.WireNetwork;
-import Reika.RotaryCraft.API.Power.ShaftMachine;
 
 
 public final class WrappedSource implements WireEmitter {
@@ -16,6 +16,8 @@ public final class WrappedSource implements WireEmitter {
 		if (!(src instanceof TileEntity)) {
 			throw new IllegalArgumentException("You cannot wrap non-tile sources!");
 		}
+		if (!src.getClass().getName().startsWith("Reika"))
+			throw new IllegalArgumentException("This class is for internal use only!");
 	}
 
 	@Override
@@ -93,16 +95,6 @@ public final class WrappedSource implements WireEmitter {
 	@Override
 	public int hashCode() {
 		return source.hashCode();
-	}
-
-	public static interface WrappableWireSource extends ShaftMachine {
-
-		public boolean canConnectToSide(ForgeDirection dir);
-
-		public boolean isFunctional();
-
-		public boolean hasPowerStatusChangedSinceLastTick();
-
 	}
 
 }

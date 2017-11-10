@@ -35,7 +35,7 @@ import Reika.ElectriCraft.Registry.ElectriTiles;
 public class TileEntityEUBattery extends ElectriTileEntity implements IEnergySink, IEnergySource, BatteryTile {
 
 	public static final double CAPACITY = 600e6; //MFSU is 40M, each tier is 10x in IC2
-	public static final double THROUGHPUT = 65536*2; //MFSU is 2048, MFE is 512
+	public static final double THROUGHPUT = 1048576;//65536*2; //MFSU is 2048, MFE is 512
 
 	private double energy;
 
