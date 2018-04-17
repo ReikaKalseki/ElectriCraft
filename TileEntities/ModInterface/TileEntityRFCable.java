@@ -14,6 +14,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import Reika.ChromatiCraft.API.Interfaces.WorldRift;
+import Reika.DragonAPI.Interfaces.TileEntity.BreakAction;
 import Reika.ElectriCraft.ElectriCraft;
 import Reika.ElectriCraft.Base.ElectriCable;
 import Reika.ElectriCraft.Network.RF.RFNetwork;
@@ -21,7 +22,7 @@ import Reika.ElectriCraft.Registry.ElectriTiles;
 import cofh.api.energy.IEnergyConnection;
 import cofh.api.energy.IEnergyHandler;
 
-public class TileEntityRFCable extends ElectriCable implements IEnergyHandler {
+public class TileEntityRFCable extends ElectriCable implements IEnergyHandler, BreakAction {
 
 	protected RFNetwork network;
 	private int RFlimit;
@@ -55,7 +56,7 @@ public class TileEntityRFCable extends ElectriCable implements IEnergyHandler {
 		network.addElement(this);
 		for (int i = 0; i < 6; i++) {
 			ForgeDirection dir = dirs[i];
-			if (isChunkLoadedOnSide(dir)) {
+			if (this.isChunkLoadedOnSide(dir)) {
 				TileEntity te = this.getAdjacentTileEntity(dir);
 				if (te instanceof TileEntityRFCable) {
 					//ReikaJavaLibrary.pConsole(te, Side.SERVER);
@@ -179,6 +180,13 @@ public class TileEntityRFCable extends ElectriCable implements IEnergyHandler {
 					network.addConnection(ih, dir.getOpposite());
 				}
 			}
+		}
+	}
+
+	@Override
+	public void breakBlock() {
+		if (network != null) {
+			network.removeElement(this);
 		}
 	}
 

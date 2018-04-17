@@ -12,6 +12,7 @@ package Reika.ElectriCraft.Network.RF;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -33,6 +34,7 @@ public class RFNetwork implements NetworkObject {
 	private int energy = 0;
 	private int networkLimit;
 	private boolean disabled;
+	private int tick;
 
 	public void setIOLimit(int limit) {
 		if (networkLimit != limit) {
@@ -56,6 +58,10 @@ public class RFNetwork implements NetworkObject {
 	}
 
 	public void tick(ElectriNetworkTickEvent evt) {
+		tick++;
+		if (tick%1000 == 0)
+			this.checkValidity();
+
 		if (!disabled && !cables.isEmpty() && !endpoints.isEmpty()) {
 			ArrayList<EnergyInteraction> collectibles = new ArrayList();
 			ArrayList<EnergyInteraction> insertibles = new ArrayList();
@@ -88,6 +94,17 @@ public class RFNetwork implements NetworkObject {
 				energy -= ei.addEnergy(add);
 			}
 		}
+	}
+
+	public void checkValidity() {
+		Iterator<TileEntityRFCable> it = cables.iterator();
+		while (it.hasNext()) {
+			TileEntityRFCable te = it.next();
+			if (te.isInvalid())
+				it.remove();
+		}
+		if (cables.isEmpty())
+			this.clear(false);
 	}
 
 	@Override
