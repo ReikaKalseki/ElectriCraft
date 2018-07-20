@@ -169,7 +169,9 @@ public class ElectriCraft extends DragonAPIMod {
 		ElectriRecipes.addRecipes();
 
 		if (ModList.NEI.isLoaded()) {
-			NEI_DragonAPI_Config.hideBlocks(blocks);
+			for (ElectriBlocks block : ElectriBlocks.blockList)
+				if (block != ElectriBlocks.ORE)
+					NEI_DragonAPI_Config.hideBlock(block.getBlockInstance());
 		}
 
 		if (FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT)
