@@ -181,6 +181,7 @@ public class BlockWire extends ElectriBlock implements IWailaDataProvider {
 		super.onNeighborBlockChange(world, x, y, z, id);
 		TileEntityWire te = (TileEntityWire)world.getTileEntity(x, y, z);
 		te.recomputeConnections(world, x, y, z);
+		te.checkRiftConnections();
 	}
 
 	@Override

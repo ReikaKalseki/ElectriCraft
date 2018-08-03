@@ -114,7 +114,7 @@ public abstract class ElectriTileEntity extends TileEntityBase implements Render
 
 	@Override
 	@ModDependent(ModList.OPENCOMPUTERS)
-	protected final Visibility getOCNetworkVisibility() {
+	public final Visibility getOCNetworkVisibility() {
 		return this.getMachine().isWiring() ? Visibility.Neighbors : Visibility.Network;
 	}
 }

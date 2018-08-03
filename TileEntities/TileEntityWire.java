@@ -35,7 +35,6 @@ import Reika.ElectriCraft.Registry.WireType;
 public class TileEntityWire extends WiringTile implements Overloadable {
 
 	private boolean[] connections = new boolean[6];
-	private int connectionCount = 0;
 
 	public boolean insulated;
 
@@ -110,8 +109,7 @@ public class TileEntityWire extends WiringTile implements Overloadable {
 	}
 
 	@Override
-	protected void readSyncTag(NBTTagCompound NBT)
-	{
+	protected void readSyncTag(NBTTagCompound NBT) {
 		super.readSyncTag(NBT);
 
 		connections = ReikaArrayHelper.booleanFromByteBitflags(NBT.getByte("conn"), 6);
@@ -122,8 +120,7 @@ public class TileEntityWire extends WiringTile implements Overloadable {
 	}
 
 	@Override
-	protected void writeSyncTag(NBTTagCompound NBT)
-	{
+	protected void writeSyncTag(NBTTagCompound NBT) {
 		super.writeSyncTag(NBT);
 
 		NBT.setByte("conn", ReikaArrayHelper.booleanToByteBitflags(connections));
@@ -145,16 +142,28 @@ public class TileEntityWire extends WiringTile implements Overloadable {
 	}
 
 	public void recomputeConnections(World world, int x, int y, int z) {
-		connectionCount = 0;
+		boolean clear = false;
 		for (int i = 0; i < 6; i++) {
-			connections[i] = this.isConnected(dirs[i]);
-			if (connections[i])
-				connectionCount++;
+			boolean flag = this.isConnected(dirs[i]);
+			if (flag != connections[i]) {
+				clear = true;
+			}
+			connections[i] = flag;
 			world.func_147479_m(x+dirs[i].offsetX, y+dirs[i].offsetY, z+dirs[i].offsetZ);
 		}
 		this.checkForWrappables();
 		//world.markBlockForUpdate(x, y, z);
 		world.func_147479_m(x, y, z);
+		if (clear) {
+			if (network != null)
+				network.removeElement(this);
+			//this.findAndJoinNetwork(world, x, y, z);
+		}
+	}
+
+	public void checkRiftConnections() {
+		if (network != null)
+			network.checkRiftConnections();
 	}
 
 	private void checkForWrappables() {
@@ -164,22 +173,6 @@ public class TileEntityWire extends WiringTile implements Overloadable {
 			TileEntity te = this.getAdjacentTileEntity(dirs[i]);
 			if (te instanceof WrappableWireSource) {
 				network.addElement(new WrappedSource((WrappableWireSource)te));
-			}
-		}
-	}
-
-	@Deprecated
-	public void deleteFromAdjacentConnections(World world, int x, int y, int z) {
-		for (int i = 0; i < 6; i++) {
-			ForgeDirection dir = dirs[i];
-			int dx = x+dir.offsetX;
-			int dy = x+dir.offsetY;
-			int dz = x+dir.offsetZ;
-			ElectriTiles m = ElectriTiles.getTE(world, dx, dy, dz);
-			if (m == this.getMachine()) {
-				TileEntityWire te = (TileEntityWire)world.getTileEntity(dx, dy, dz);
-				te.connections[dir.getOpposite().ordinal()] = false;
-				world.func_147479_m(dx, dy, dz);
 			}
 		}
 	}

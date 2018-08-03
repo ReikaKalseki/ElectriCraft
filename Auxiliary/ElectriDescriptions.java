@@ -30,11 +30,14 @@ import Reika.ElectriCraft.TileEntities.TileEntityTransformer;
 import Reika.ElectriCraft.TileEntities.TileEntityWirelessCharger;
 import Reika.ElectriCraft.TileEntities.ModInterface.TileEntityEUBattery;
 import Reika.ElectriCraft.TileEntities.ModInterface.TileEntityRFBattery;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public final class ElectriDescriptions {
 
-	private static String PARENT = getParent();
+	private static String PARENT = getParent(true);
 	public static final String DESC_SUFFIX = ":desc";
 	public static final String NOTE_SUFFIX = ":note";
 
@@ -47,12 +50,23 @@ public final class ElectriDescriptions {
 
 	private static ArrayList<ElectriBook> categories = new ArrayList<ElectriBook>();
 
-	private static final boolean mustLoad = !ReikaObfuscationHelper.isDeObfEnvironment();
-	private static final XMLInterface parents = new XMLInterface(ElectriCraft.class, PARENT+"categories.xml", mustLoad);
-	private static final XMLInterface machines = new XMLInterface(ElectriCraft.class, PARENT+"machines.xml", mustLoad);
-	private static final XMLInterface infos = new XMLInterface(ElectriCraft.class, PARENT+"info.xml", mustLoad);
+	private static final XMLInterface parents = loadData("categories");
+	private static final XMLInterface machines = loadData("machines");
+	private static final XMLInterface infos = loadData("info");
 
-	private static String getParent() {
+	private static XMLInterface loadData(String name) {
+		XMLInterface xml = new XMLInterface(ElectriCraft.class, PARENT+name+".xml", !ReikaObfuscationHelper.isDeObfEnvironment());
+		xml.setFallback(getParent(false)+name+".xml");
+		xml.init();
+		return xml;
+	}
+
+	private static String getParent(boolean locale) {
+		return locale && FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT ? getLocalizedParent() : "Resources/";
+	}
+
+	@SideOnly(Side.CLIENT)
+	private static String getLocalizedParent() {
 		Language language = Minecraft.getMinecraft().getLanguageManager().getCurrentLanguage();
 		String lang = language.getLanguageCode();
 		if (hasLocalizedFor(language) && !"en_US".equals(lang))
@@ -101,7 +115,7 @@ public final class ElectriDescriptions {
 	}
 
 	public static void reload() {
-		PARENT = getParent();
+		PARENT = getParent(true);
 
 		data.clear();
 		loadNumericalData();

@@ -10,6 +10,8 @@
 package Reika.ElectriCraft.Network;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedList;
 
 import net.minecraft.tileentity.TileEntity;
@@ -30,6 +32,7 @@ public class PathCalculator {
 	private final WireNetwork net;
 
 	private ArrayList<WirePath> paths = new ArrayList();
+	private ArrayList<WorldLocation> rifts = new ArrayList();
 
 	public PathCalculator(WireEmitter start, WireReceiver end, WireNetwork w) {
 		this.start = start;
@@ -82,8 +85,10 @@ public class PathCalculator {
 							TileEntity te = world.getTileEntity(dx, dy, dz);
 							if (te instanceof WorldRift) {
 								WorldRift sr = (WorldRift)te;
+								rifts.add(new WorldLocation(te));
 								WorldLocation loc = sr.getLinkTarget();
 								if (loc != null) {
+									rifts.add(loc);
 									TileEntity other = sr.getTileEntityFrom(dir);
 									if (other instanceof WiringTile) {
 										if (((WiringTile)other).canNetworkOnSide(dir.getOpposite())) {
@@ -180,8 +185,12 @@ public class PathCalculator {
 		return end.getWorld() == world && x == end.getX() && y == end.getY() && z == end.getZ();
 	}
 
-	ArrayList<WirePath> getCalculatedPaths() {
-		return paths;
+	Collection<WirePath> getCalculatedPaths() {
+		return Collections.unmodifiableCollection(paths);
+	}
+
+	Collection<WorldLocation> getRifts() {
+		return Collections.unmodifiableCollection(rifts);
 	}
 
 	public WirePath getShortestPath() {

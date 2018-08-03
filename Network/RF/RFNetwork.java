@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map.Entry;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -67,13 +68,21 @@ public class RFNetwork implements NetworkObject {
 			ArrayList<EnergyInteraction> insertibles = new ArrayList();
 			int maxCanPush = energy;
 			//ReikaJavaLibrary.pConsole(this.getIOLimit(), Side.SERVER);
-			for (EnergyInteraction ei : endpoints.values()) {
-				maxCanPush += ei.getTotalInsertible();
-				if (ei.isCollectible()) {
-					collectibles.add(ei);
+			Iterator<Entry<WorldLocation, EnergyInteraction>> it = endpoints.entrySet().iterator();
+			while (it.hasNext()) {
+				Entry<WorldLocation, EnergyInteraction> e = it.next();
+				EnergyInteraction ei = e.getValue();
+				if (ei.valid()) {
+					maxCanPush += ei.getTotalInsertible();
+					if (ei.isCollectible()) {
+						collectibles.add(ei);
+					}
+					if (ei.isInsertible()) {
+						insertibles.add(ei);
+					}
 				}
-				if (ei.isInsertible()) {
-					insertibles.add(ei);
+				else {
+					it.remove();
 				}
 			}
 
@@ -103,7 +112,15 @@ public class RFNetwork implements NetworkObject {
 			if (te.isInvalid())
 				it.remove();
 		}
-		if (cables.isEmpty())
+		/*
+		Iterator<Entry<WorldLocation, EnergyInteraction>> it2 = endpoints.entrySet().iterator();
+		while (it2.hasNext()) {
+			Entry<WorldLocation, EnergyInteraction> e = it2.next();
+			EnergyInteraction ei = e.getValue();
+			if (!ei.valid())
+				it2.remove();
+		}*/
+		if (cables.isEmpty()/* || endpoints.isEmpty()*/)
 			this.clear(false);
 	}
 
@@ -153,9 +170,9 @@ public class RFNetwork implements NetworkObject {
 				li.add(wire);
 			}
 			for (EnergyInteraction ei : n.endpoints.values()) {
-				EnergyInteraction has = this.getInteractionFor(ei.tile);
+				EnergyInteraction has = this.getInteractionFor(ei.getTile());
 				if (has == null) {
-					endpoints.put(new WorldLocation((TileEntity)ei.tile), ei);
+					endpoints.put(ei.location, ei);
 				}
 				else {
 					has.merge(ei);
@@ -218,13 +235,14 @@ public class RFNetwork implements NetworkObject {
 	}
 
 	private static class EnergyInteraction {
-		private final IEnergyConnection tile;
+
+		private final WorldLocation location;
 		private final ArrayList<ForgeDirection> sides = new ArrayList();
 		private final boolean canExtract;
 		private final boolean canReceive;
 
 		private EnergyInteraction(IEnergyConnection ih, ForgeDirection... dirs) {
-			tile = ih;
+			location = new WorldLocation((TileEntity)ih);
 			for (int i = 0; i < dirs.length; i++) {
 				this.addSide(dirs[i]);
 			}
@@ -241,7 +259,7 @@ public class RFNetwork implements NetworkObject {
 		}
 
 		public boolean contains(IEnergyConnection tile) {
-			return tile == this.tile;
+			return tile == this.getTile();
 		}
 
 		public void addSide(ForgeDirection dir) {
@@ -259,6 +277,7 @@ public class RFNetwork implements NetworkObject {
 			if (!canExtract)
 				return 0;
 			int total = 0;
+			IEnergyConnection tile = this.getTile();
 			for (int i = 0; i < sides.size(); i++) {
 				ForgeDirection dir = sides.get(i);
 				if (tile.canConnectEnergy(dir)) {
@@ -273,6 +292,7 @@ public class RFNetwork implements NetworkObject {
 			if (!canReceive)
 				return 0;
 			int total = 0;
+			IEnergyConnection tile = this.getTile();
 			for (int i = 0; i < sides.size(); i++) {
 				ForgeDirection dir = sides.get(i);
 				if (tile.canConnectEnergy(dir)) {
@@ -287,6 +307,7 @@ public class RFNetwork implements NetworkObject {
 			if (!canExtract)
 				return 0;
 			int total = 0;
+			IEnergyConnection tile = this.getTile();
 			for (int i = 0; i < sides.size(); i++) {
 				ForgeDirection dir = sides.get(i);
 				if (tile.canConnectEnergy(dir)) {
@@ -300,6 +321,7 @@ public class RFNetwork implements NetworkObject {
 			if (!canReceive)
 				return 0;
 			int total = 0;
+			IEnergyConnection tile = this.getTile();
 			for (int i = 0; i < sides.size(); i++) {
 				ForgeDirection dir = sides.get(i);
 				if (tile.canConnectEnergy(dir)) {
@@ -311,21 +333,30 @@ public class RFNetwork implements NetworkObject {
 
 		@Override
 		public String toString() {
-			return tile+" @ "+sides;
+			return this.getTile()+" @ "+sides;
+		}
+
+		public boolean valid() {
+			return this.getTile() != null;
+		}
+
+		private IEnergyConnection getTile() {
+			TileEntity te = location.getTileEntity();
+			return te instanceof IEnergyConnection ? (IEnergyConnection)te : null;
 		}
 
 		@Override
 		public boolean equals(Object o) {
 			if (o instanceof EnergyInteraction) {
 				EnergyInteraction ei = (EnergyInteraction)o;
-				return ei.tile.equals(tile) && ei.sides.equals(sides);
+				return ei.location.equals(location) && ei.sides.equals(sides);
 			}
 			return false;
 		}
 
 		@Override
 		public int hashCode() {
-			return tile.hashCode()^sides.hashCode();
+			return location.hashCode()^sides.hashCode();
 		}
 	}
 

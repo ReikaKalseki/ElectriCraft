@@ -17,6 +17,7 @@ import java.util.HashSet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.world.WorldEvent;
+import Reika.ChromatiCraft.API.Interfaces.WorldRift;
 import Reika.DragonAPI.Instantiable.Data.Immutable.Coordinate;
 import Reika.DragonAPI.Instantiable.Data.Immutable.WorldLocation;
 import Reika.ElectriCraft.ElectriCraft;
@@ -45,6 +46,7 @@ public final class WireNetwork implements NetworkObject {
 	private final HashMap<WorldLocation, WrappedSource> wrappers = new HashMap();
 	private final HashMap<Coordinate, NetworkNode> nodes = new HashMap();
 	private final Collection<WirePath> paths = new ArrayList();
+	private final HashSet<WorldLocation> rifts = new HashSet();
 	private final HashMap<WiringTile, Integer> pointVoltages = new HashMap();
 	private final HashMap<WiringTile, Integer> pointCurrents = new HashMap();
 	private final HashMap<WireReceiver, Integer> terminalVoltages = new HashMap();
@@ -292,6 +294,7 @@ public final class WireNetwork implements NetworkObject {
 		wrappers.clear();
 		nodes.clear();
 		paths.clear();
+		rifts.clear();
 		dimIDs.clear();
 		loadedDimIDs.clear();
 		this.clearCache();
@@ -357,6 +360,19 @@ public final class WireNetwork implements NetworkObject {
 			wrappers.remove(te);
 	}
 
+	public void checkRiftConnections() {
+		boolean flag = true;
+		for (WorldLocation loc : rifts) {
+			if (!(loc.getTileEntity() instanceof WorldRift)) {
+				flag = true;
+				break;
+			}
+		}
+		if (flag) {
+			this.clear(true);
+		}
+	}
+
 	public void updateWires() {
 		this.updateWires(false);
 	}
@@ -372,6 +388,7 @@ public final class WireNetwork implements NetworkObject {
 
 	private void recalculatePaths() {
 		paths.clear();
+		rifts.clear();
 		dimIDs.clear();
 		loadedDimIDs.clear();
 		interWireConnections = 0;
@@ -387,6 +404,7 @@ public final class WireNetwork implements NetworkObject {
 						dimIDs.addAll(path.getDimensions());
 						loadedDimIDs.addAll(dimIDs);
 						this.validatePathLimit();
+						rifts.addAll(pc.getRifts());
 					}
 				}
 			}

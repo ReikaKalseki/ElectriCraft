@@ -24,6 +24,8 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.oredict.OreDictionary;
+import Reika.CondensedOres.API.CondensedOreAPI;
+import Reika.DragonAPI.ModList;
 import Reika.DragonAPI.Interfaces.Registry.OreEnum;
 import Reika.DragonAPI.Libraries.Java.ReikaJavaLibrary;
 import Reika.DragonAPI.Libraries.Java.ReikaStringParser;
@@ -164,7 +166,7 @@ public enum ElectriOres implements OreEnum {
 			return false;
 		if (!this.isValidDimension(id))
 			return false;
-		return this.isValidBiome(world.getBiomeGenForCoords(chunkX, chunkZ)) || id == ReikaTwilightHelper.getDimensionID();
+		return this.isValidBiome(world.getBiomeGenForCoords(chunkX << 4, chunkZ << 4)) || id == ReikaTwilightHelper.getDimensionID();
 	}
 
 	private boolean shouldGen() {
@@ -178,6 +180,8 @@ public enum ElectriOres implements OreEnum {
 	public boolean isOreEnabled() {
 		if (ElectriCraft.config.isOreGenEnabled(this))
 			return true;
+		if (ModList.CONDENSEDORES.isLoaded() && CondensedOreAPI.instance.doesBlockGenerate(this.getBlock(), this.getBlockMetadata()))
+			return false;
 		if (!this.hasEquivalents())
 			return true;
 		return false;
