@@ -19,7 +19,7 @@ import Reika.DragonAPI.Interfaces.TileEntity.RenderFetcher;
 import Reika.DragonAPI.Libraries.IO.ReikaColorAPI;
 import Reika.DragonAPI.Libraries.IO.ReikaRenderHelper;
 import Reika.DragonAPI.Libraries.MathSci.ReikaMathLibrary;
-import Reika.ElectriCraft.Auxiliary.BatteryTile;
+import Reika.ElectriCraft.Auxiliary.Interfaces.BatteryTile;
 import Reika.ElectriCraft.Base.ElectriTERenderer;
 
 public class RenderModBattery extends ElectriTERenderer {

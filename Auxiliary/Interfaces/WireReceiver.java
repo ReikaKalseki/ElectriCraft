@@ -7,13 +7,14 @@
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
  ******************************************************************************/
-package Reika.ElectriCraft.Auxiliary;
+package Reika.ElectriCraft.Auxiliary.Interfaces;
 
+import net.minecraftforge.common.util.ForgeDirection;
 
-public interface Overloadable {
+public interface WireReceiver extends WireTerminus {
 
-	public int getMaxCurrent();
+	public boolean canReceivePowerFromSide(ForgeDirection dir);
 
-	public void overload(int current);
+	public boolean canReceivePower();
 
 }

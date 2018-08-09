@@ -7,8 +7,9 @@
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
  ******************************************************************************/
-package Reika.ElectriCraft.Auxiliary;
+package Reika.ElectriCraft.Auxiliary.Interfaces;
 
+import Reika.ElectriCraft.Auxiliary.BatteryTracker;
 import net.minecraft.item.ItemStack;
 
 public interface BatteryTile {

@@ -9,7 +9,7 @@
  ******************************************************************************/
 package Reika.ElectriCraft.Base;
 
-import Reika.ElectriCraft.Auxiliary.WireReceiver;
+import Reika.ElectriCraft.Auxiliary.Interfaces.WireReceiver;
 
 public abstract class ElectricalReceiver extends NetworkTileEntity implements WireReceiver {
 

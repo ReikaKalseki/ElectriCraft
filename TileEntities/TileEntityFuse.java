@@ -18,7 +18,7 @@ import Reika.DragonAPI.APIPacketHandler.PacketIDs;
 import Reika.DragonAPI.DragonAPIInit;
 import Reika.DragonAPI.Libraries.IO.ReikaPacketHelper;
 import Reika.DragonAPI.Libraries.IO.ReikaSoundHelper;
-import Reika.ElectriCraft.Auxiliary.WireFuse;
+import Reika.ElectriCraft.Auxiliary.Interfaces.WireFuse;
 import Reika.ElectriCraft.Base.TileEntityWireComponent;
 import Reika.ElectriCraft.Registry.ElectriTiles;
 import Reika.RotaryCraft.Auxiliary.Interfaces.NBTMachine;

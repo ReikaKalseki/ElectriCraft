@@ -9,7 +9,7 @@
  ******************************************************************************/
 package Reika.ElectriCraft.Base;
 
-import Reika.ElectriCraft.Auxiliary.WireEmitter;
+import Reika.ElectriCraft.Auxiliary.Interfaces.WireEmitter;
 
 
 public abstract class ElectricalEmitter extends NetworkTileEntity implements WireEmitter {

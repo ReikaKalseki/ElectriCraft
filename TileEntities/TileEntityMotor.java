@@ -28,7 +28,7 @@ import Reika.DragonAPI.Libraries.MathSci.ReikaMathLibrary;
 import Reika.DragonAPI.Libraries.MathSci.ReikaPhysicsHelper;
 import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
 import Reika.DragonAPI.Libraries.Registry.ReikaParticleHelper;
-import Reika.ElectriCraft.Auxiliary.ConversionTile;
+import Reika.ElectriCraft.Auxiliary.Interfaces.ConversionTile;
 import Reika.ElectriCraft.Base.ElectricalReceiver;
 import Reika.ElectriCraft.Network.WireNetwork;
 import Reika.ElectriCraft.Registry.ElectriTiles;
@@ -92,7 +92,8 @@ public class TileEntityMotor extends ElectricalReceiver implements Screwdriverab
 
 	@Override
 	public void onNetworkChanged() {
-		sourceSize = Math.max(network.getNumberSourcesPer(this), this.getPowerSources(this, null).size()/network.getNumberSinks());
+		PowerSourceList pwr = this.getPowerSources(this, null);
+		sourceSize = Math.max(network.getNumberSourcesPer(this), pwr.isBedrock() ? 1 : pwr.size()/(float)network.getNumberSinks());
 	}
 
 	private int getEffectiveCurrent(World world, int x, int y, int z) {
@@ -340,7 +341,7 @@ public class TileEntityMotor extends ElectricalReceiver implements Screwdriverab
 	public PowerSourceList getPowerSources(PowerSourceTracker io, ShaftMerger caller) {
 		//if (!worldObj.isRemote)
 		//	ReikaJavaLibrary.pConsole(this+": "+network.getInputSources(io, caller).size()+":"+network.getInputSources(io, caller));
-		return network != null ? network.getInputSources(io, caller) : new PowerSourceList();
+		return network != null ? network.getInputSources(io, caller, this) : new PowerSourceList();
 	}
 
 	@Override

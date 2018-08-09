@@ -7,14 +7,15 @@
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
  ******************************************************************************/
-package Reika.ElectriCraft.Auxiliary;
+package Reika.ElectriCraft.Auxiliary.Interfaces;
 
 import net.minecraftforge.common.util.ForgeDirection;
+import Reika.RotaryCraft.API.Power.ShaftMachine;
 
-public interface WireReceiver extends WireTerminus {
+public interface ConversionTile extends ShaftMachine {
 
-	public boolean canReceivePowerFromSide(ForgeDirection dir);
+	public void setFacing(ForgeDirection dir);
 
-	public boolean canReceivePower();
+	public ForgeDirection getFacing();
 
 }

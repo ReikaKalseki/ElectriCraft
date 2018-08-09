@@ -7,15 +7,11 @@
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
  ******************************************************************************/
-package Reika.ElectriCraft.Auxiliary;
+package Reika.ElectriCraft.Auxiliary.Interfaces;
 
-import net.minecraftforge.common.util.ForgeDirection;
-import Reika.RotaryCraft.API.Power.ShaftMachine;
 
-public interface ConversionTile extends ShaftMachine {
+public interface CurrentThrottle {
 
-	public void setFacing(ForgeDirection dir);
-
-	public ForgeDirection getFacing();
+	public int getCurrentLimit();
 
 }

@@ -16,18 +16,20 @@ import java.util.HashSet;
 import java.util.LinkedList;
 
 import Reika.DragonAPI.Instantiable.Data.Immutable.WorldLocation;
-import Reika.ElectriCraft.Auxiliary.CurrentThrottle;
 import Reika.ElectriCraft.Auxiliary.ElectriNetworkEvent.ElectriNetworkTickEvent;
-import Reika.ElectriCraft.Auxiliary.Overloadable;
-import Reika.ElectriCraft.Auxiliary.WireEmitter;
-import Reika.ElectriCraft.Auxiliary.WireFuse;
-import Reika.ElectriCraft.Auxiliary.WireReceiver;
+import Reika.ElectriCraft.Auxiliary.Interfaces.CurrentThrottle;
+import Reika.ElectriCraft.Auxiliary.Interfaces.Overloadable;
+import Reika.ElectriCraft.Auxiliary.Interfaces.ToggledConnection;
+import Reika.ElectriCraft.Auxiliary.Interfaces.WireEmitter;
+import Reika.ElectriCraft.Auxiliary.Interfaces.WireFuse;
+import Reika.ElectriCraft.Auxiliary.Interfaces.WireReceiver;
 import Reika.ElectriCraft.Base.WiringTile;
 
 public final class WirePath {
 
 	final LinkedList<WiringTile> nodes = new LinkedList();
 	final Collection<WireFuse> fuses = new ArrayList();
+	final Collection<ToggledConnection> toggles = new ArrayList();
 	final WireEmitter start;
 	final WireReceiver end;
 	private final WireNetwork net;
@@ -56,6 +58,9 @@ public final class WirePath {
 			}
 			if (te instanceof WireFuse) {
 				fuses.add((WireFuse)te);
+			}
+			if (te instanceof ToggledConnection) {
+				toggles.add((ToggledConnection)te);
 			}
 		}
 		resistance = r;
@@ -198,6 +203,14 @@ public final class WirePath {
 
 	Collection<Integer> getDimensions() {
 		return Collections.unmodifiableSet(dimensions);
+	}
+
+	public boolean canConduct() {
+		for (ToggledConnection tc : toggles) {
+			if (!tc.canConnect())
+				return false;
+		}
+		return true;
 	}
 
 }

@@ -10,10 +10,11 @@
 package Reika.ElectriCraft.TileEntities;
 
 import net.minecraft.world.World;
+import Reika.ElectriCraft.Auxiliary.Interfaces.ToggledConnection;
 import Reika.ElectriCraft.Base.TileEntityWireComponent;
 import Reika.ElectriCraft.Registry.ElectriTiles;
 
-public class TileEntityRelay extends TileEntityWireComponent {
+public class TileEntityRelay extends TileEntityWireComponent implements ToggledConnection {
 
 	private boolean lastPower;
 

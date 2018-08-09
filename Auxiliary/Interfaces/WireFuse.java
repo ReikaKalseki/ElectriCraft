@@ -7,11 +7,9 @@
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
  ******************************************************************************/
-package Reika.ElectriCraft.Auxiliary;
+package Reika.ElectriCraft.Auxiliary.Interfaces;
 
 
-public interface CurrentThrottle {
-
-	public int getCurrentLimit();
+public interface WireFuse extends Overloadable, ToggledConnection {
 
 }

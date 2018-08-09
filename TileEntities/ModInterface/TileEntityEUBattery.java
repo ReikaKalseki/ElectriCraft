@@ -25,8 +25,9 @@ import Reika.DragonAPI.ASM.APIStripper.Strippable;
 import Reika.DragonAPI.ASM.DependentMethodStripper.ModDependent;
 import Reika.DragonAPI.Libraries.MathSci.ReikaMathLibrary;
 import Reika.DragonAPI.ModInteract.ItemHandlers.IC2Handler;
-import Reika.ElectriCraft.Auxiliary.BatteryTile;
+import Reika.DragonAPI.ModInteract.Power.ReikaEUHelper;
 import Reika.ElectriCraft.Auxiliary.BatteryTracker;
+import Reika.ElectriCraft.Auxiliary.Interfaces.BatteryTile;
 import Reika.ElectriCraft.Base.ElectriTileEntity;
 import Reika.ElectriCraft.Registry.ElectriItems;
 import Reika.ElectriCraft.Registry.ElectriTiles;
@@ -155,7 +156,7 @@ public class TileEntityEUBattery extends ElectriTileEntity implements IEnergySin
 
 	@Override
 	public int getSourceTier() {
-		return IC2Handler.getInstance().isIC2Classic() ? 7 : 4;
+		return IC2Handler.getInstance().isIC2Classic() ? ReikaEUHelper.getIC2TierFromEUVoltage(THROUGHPUT) : 4;
 	}
 
 	@Override

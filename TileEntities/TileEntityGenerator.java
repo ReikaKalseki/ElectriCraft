@@ -13,7 +13,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import Reika.DragonAPI.Libraries.MathSci.ReikaMathLibrary;
-import Reika.ElectriCraft.Auxiliary.ConversionTile;
+import Reika.ElectriCraft.Auxiliary.Interfaces.ConversionTile;
 import Reika.ElectriCraft.Base.ElectricalEmitter;
 import Reika.ElectriCraft.Network.WireNetwork;
 import Reika.ElectriCraft.Registry.ElectriTiles;
@@ -51,6 +51,11 @@ public class TileEntityGenerator extends ElectricalEmitter implements Screwdrive
 		if (power == 0 || omega == 0 || torque == 0) {
 			power = 0;
 			omega = torque = 0;
+		}
+
+		if (power > 800e6) {
+			this.delete();
+			world.newExplosion(null, x+0.5, y+0.5, z+0.5, 4, true, true);
 		}
 
 		//ReikaJavaLibrary.pConsole(network, Side.SERVER);

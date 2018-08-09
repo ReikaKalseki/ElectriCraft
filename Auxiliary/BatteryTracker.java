@@ -12,6 +12,7 @@ package Reika.ElectriCraft.Auxiliary;
 import net.minecraft.util.EnumChatFormatting;
 import Reika.DragonAPI.Instantiable.Math.MovingAverage;
 import Reika.DragonAPI.Libraries.IO.ReikaFormatHelper;
+import Reika.ElectriCraft.Auxiliary.Interfaces.BatteryTile;
 
 
 public class BatteryTracker {

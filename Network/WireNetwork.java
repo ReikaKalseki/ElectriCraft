@@ -25,10 +25,10 @@ import Reika.ElectriCraft.ElectriNetworkManager;
 import Reika.ElectriCraft.NetworkObject;
 import Reika.ElectriCraft.Auxiliary.ElectriNetworkEvent.ElectriNetworkRepathEvent;
 import Reika.ElectriCraft.Auxiliary.ElectriNetworkEvent.ElectriNetworkTickEvent;
-import Reika.ElectriCraft.Auxiliary.NetworkTile;
-import Reika.ElectriCraft.Auxiliary.WireEmitter;
-import Reika.ElectriCraft.Auxiliary.WireReceiver;
 import Reika.ElectriCraft.Auxiliary.WrappedSource;
+import Reika.ElectriCraft.Auxiliary.Interfaces.NetworkTile;
+import Reika.ElectriCraft.Auxiliary.Interfaces.WireEmitter;
+import Reika.ElectriCraft.Auxiliary.Interfaces.WireReceiver;
 import Reika.ElectriCraft.Base.NetworkTileEntity;
 import Reika.ElectriCraft.Base.WiringTile;
 import Reika.ElectriCraft.TileEntities.TileEntityGenerator;
@@ -499,7 +499,7 @@ public final class WireNetwork implements NetworkObject {
 	private float calcNumberSourcesPer(WireReceiver te) {
 		float f = 0;
 		for (WirePath path : paths) {
-			if (path.endsAt(te.getX(), te.getY(), te.getZ())) {
+			if (path.canConduct() && path.endsAt(te.getX(), te.getY(), te.getZ())) {
 				f += 1F/this.getNumberPathsStartingAt(path.start);
 			}
 		}
@@ -617,15 +617,38 @@ public final class WireNetwork implements NetworkObject {
 		return li;
 	}
 
+	ArrayList<WirePath> getPathsEndingAt(WireReceiver end) {
+		ArrayList<WirePath> li = new ArrayList();
+		for (WirePath path : paths) {
+			if (path.endsAt(end.getX(), end.getY(), end.getZ())) {
+				li.add(path);
+			}
+		}
+		return li;
+	}
+
 	public int getNumberPathsStartingAt(WireEmitter start) {
 		return this.getPathsStartingAt(start).size();
 	}
 
 	public PowerSourceList getInputSources(PowerSourceTracker io, ShaftMerger caller) {
+		return this.getInputSources(io, caller, null);
+	}
+
+	public PowerSourceList getInputSources(PowerSourceTracker io, ShaftMerger caller, WireReceiver terminus) {
 		PowerSourceList p = new PowerSourceList();
-		for (WireEmitter w : sources.values()) {
-			if (w instanceof TileEntityGenerator) {
-				p.addAll(((TileEntityGenerator)w).getPowerSources(io, caller));
+		if (terminus != null) {
+			for (WirePath path : this.getPathsEndingAt(terminus)) {
+				if (path.canConduct() && path.start instanceof TileEntityGenerator) {
+					p.addAll(((TileEntityGenerator)path.start).getPowerSources(io, caller));
+				}
+			}
+		}
+		else {
+			for (WireEmitter w : sources.values()) {
+				if (w instanceof TileEntityGenerator) {
+					p.addAll(((TileEntityGenerator)w).getPowerSources(io, caller));
+				}
 			}
 		}
 		return p;

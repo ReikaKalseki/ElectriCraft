@@ -15,7 +15,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import Reika.ChromatiCraft.API.Interfaces.WorldRift;
 import Reika.DragonAPI.Instantiable.Data.Immutable.WorldLocation;
 import Reika.ElectriCraft.ElectriCraft;
-import Reika.ElectriCraft.Auxiliary.NetworkTile;
+import Reika.ElectriCraft.Auxiliary.Interfaces.NetworkTile;
 import Reika.ElectriCraft.Network.WireNetwork;
 
 public abstract class NetworkTileEntity extends ElectriTileEntity implements NetworkTile {
