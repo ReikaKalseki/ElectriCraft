@@ -154,6 +154,7 @@ public class TileEntityWire extends WiringTile implements Overloadable {
 		this.checkForWrappables();
 		//world.markBlockForUpdate(x, y, z);
 		world.func_147479_m(x, y, z);
+
 		if (clear) {
 			if (network != null)
 				network.removeElement(this);

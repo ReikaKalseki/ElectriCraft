@@ -361,7 +361,7 @@ public final class WireNetwork implements NetworkObject {
 	}
 
 	public void checkRiftConnections() {
-		boolean flag = true;
+		boolean flag = false;
 		for (WorldLocation loc : rifts) {
 			if (!(loc.getTileEntity() instanceof WorldRift)) {
 				flag = true;
