@@ -1,4 +1,15 @@
+/*******************************************************************************
+ * @author Reika Kalseki
+ * 
+ * Copyright 2018
+ * 
+ * All rights reserved.
+ * Distribution of the software in any form is only allowed with
+ * explicit, prior permission from the owner.
+ ******************************************************************************/
 package Reika.ElectriCraft.Auxiliary;
+
+import java.util.Collection;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -6,9 +17,12 @@ import net.minecraftforge.common.util.ForgeDirection;
 import Reika.ElectriCraft.API.WrappableWireSource;
 import Reika.ElectriCraft.Auxiliary.Interfaces.WireEmitter;
 import Reika.ElectriCraft.Network.WireNetwork;
+import Reika.RotaryCraft.API.Power.ShaftMerger;
+import Reika.RotaryCraft.Auxiliary.PowerSourceList;
+import Reika.RotaryCraft.Auxiliary.Interfaces.PowerSourceTracker;
 
 
-public final class WrappedSource implements WireEmitter {
+public final class WrappedSource implements WireEmitter, PowerSourceTracker {
 
 	private final WrappableWireSource source;
 
@@ -96,6 +110,31 @@ public final class WrappedSource implements WireEmitter {
 	@Override
 	public int hashCode() {
 		return source.hashCode();
+	}
+
+	@Override
+	public PowerSourceList getPowerSources(PowerSourceTracker io, ShaftMerger caller) {
+		return source.getPowerSources(io, caller);
+	}
+
+	@Override
+	public void getAllOutputs(Collection<TileEntity> c, ForgeDirection dir) {
+		source.getAllOutputs(c, dir);
+	}
+
+	@Override
+	public int getIoOffsetX() {
+		return source.getIoOffsetX();
+	}
+
+	@Override
+	public int getIoOffsetY() {
+		return source.getIoOffsetY();
+	}
+
+	@Override
+	public int getIoOffsetZ() {
+		return source.getIoOffsetZ();
 	}
 
 }

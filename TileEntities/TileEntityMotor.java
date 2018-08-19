@@ -10,6 +10,7 @@
 package Reika.ElectriCraft.TileEntities;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -376,5 +377,10 @@ public class TileEntityMotor extends ElectricalReceiver implements Screwdriverab
 		int c = ReikaPhysicsHelper.getColorForTemperature(400*ReikaMathLibrary.logbase2(power)-6500);
 		//ReikaJavaLibrary.pConsole(35*ReikaMathLibrary.logbase2(power));
 		return c == 0 ? 0x515168 : ReikaColorAPI.mixColors(c, 0x515168, 0.5F);
+	}
+
+	@Override
+	public final void getAllOutputs(Collection<TileEntity> c, ForgeDirection dir) {
+		c.add(this.getAdjacentTileEntity(this.getFacing().getOpposite()));
 	}
 }

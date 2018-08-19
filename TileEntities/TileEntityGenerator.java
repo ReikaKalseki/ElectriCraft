@@ -9,7 +9,10 @@
  ******************************************************************************/
 package Reika.ElectriCraft.TileEntities;
 
+import java.util.Collection;
+
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import Reika.DragonAPI.Libraries.MathSci.ReikaMathLibrary;
@@ -53,7 +56,7 @@ public class TileEntityGenerator extends ElectricalEmitter implements Screwdrive
 			omega = torque = 0;
 		}
 
-		if (power > 800e6) {
+		if (power > 400e6) {
 			this.delete();
 			world.newExplosion(null, x+0.5, y+0.5, z+0.5, 4, true, true);
 		}
@@ -244,5 +247,10 @@ public class TileEntityGenerator extends ElectricalEmitter implements Screwdrive
 	@Override
 	public int getIoOffsetZ() {
 		return 0;
+	}
+
+	@Override
+	public void getAllOutputs(Collection<TileEntity> c, ForgeDirection dir) {
+
 	}
 }
