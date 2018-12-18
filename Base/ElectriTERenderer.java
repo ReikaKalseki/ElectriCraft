@@ -14,6 +14,7 @@ import net.minecraftforge.client.MinecraftForgeClient;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
+import Reika.DragonAPI.Base.DragonAPIMod;
 import Reika.DragonAPI.Base.TileEntityBase;
 import Reika.DragonAPI.Base.TileEntityRenderBase;
 import Reika.DragonAPI.Interfaces.TextureFetcher;
@@ -59,5 +60,10 @@ public abstract class ElectriTERenderer extends TileEntityRenderBase implements 
 	@Override
 	protected final boolean doRenderModel(TileEntityBase te) {
 		return this.isValidMachineRenderPass(te);
+	}
+
+	@Override
+	protected final DragonAPIMod getOwnerMod() {
+		return ElectriCraft.instance;
 	}
 }

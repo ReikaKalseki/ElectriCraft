@@ -56,7 +56,7 @@ public class TileEntityGenerator extends ElectricalEmitter implements Screwdrive
 			omega = torque = 0;
 		}
 
-		if (power > 400e6) {
+		if (power > 400e6 && !world.isRemote) {
 			this.delete();
 			world.newExplosion(null, x+0.5, y+0.5, z+0.5, 4, true, true);
 		}
