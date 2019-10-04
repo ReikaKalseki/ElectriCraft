@@ -17,6 +17,7 @@ import java.util.Locale;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.Language;
 import net.minecraftforge.common.MinecraftForge;
+
 import Reika.DragonAPI.Instantiable.Event.Client.ResourceReloadEvent;
 import Reika.DragonAPI.Instantiable.IO.XMLInterface;
 import Reika.DragonAPI.Libraries.Java.ReikaObfuscationHelper;
@@ -30,6 +31,7 @@ import Reika.ElectriCraft.TileEntities.TileEntityTransformer;
 import Reika.ElectriCraft.TileEntities.TileEntityWirelessCharger;
 import Reika.ElectriCraft.TileEntities.ModInterface.TileEntityEUBattery;
 import Reika.ElectriCraft.TileEntities.ModInterface.TileEntityRFBattery;
+
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;

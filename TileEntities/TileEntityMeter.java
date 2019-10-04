@@ -11,6 +11,7 @@ package Reika.ElectriCraft.TileEntities;
 
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
 import Reika.DragonAPI.Libraries.World.ReikaWorldHelper;
 import Reika.ElectriCraft.Base.WiringTile;
 import Reika.ElectriCraft.Registry.ElectriTiles;

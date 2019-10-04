@@ -13,6 +13,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
 import Reika.RotaryCraft.API.Interfaces.Screwdriverable;
 
 public abstract class TileEntityWireComponent extends WiringTile implements Screwdriverable {

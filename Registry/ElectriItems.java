@@ -16,6 +16,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.util.StatCollector;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+
 import Reika.DragonAPI.Exception.RegistrationException;
 import Reika.DragonAPI.Interfaces.Registry.ItemEnum;
 import Reika.DragonAPI.Libraries.ReikaRecipeHelper;
@@ -32,6 +33,7 @@ import Reika.ElectriCraft.Items.ItemRFBatteryPlacer;
 import Reika.ElectriCraft.Items.ItemWirePlacer;
 import Reika.RotaryCraft.Auxiliary.RecipeManagers.RecipeHandler.RecipeLevel;
 import Reika.RotaryCraft.Auxiliary.RecipeManagers.WorktableRecipes;
+
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public enum ElectriItems implements ItemEnum {

@@ -1,31 +1,34 @@
 /*******************************************************************************
  * @author Reika Kalseki
- * 
+ *
  * Copyright 2017
- * 
+ *
  * All rights reserved.
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
  ******************************************************************************/
 package Reika.ElectriCraft.TileEntities.ModInterface;
 
-import ic2.api.energy.event.EnergyTileLoadEvent;
-import ic2.api.energy.event.EnergyTileUnloadEvent;
-import ic2.api.energy.tile.IEnergySink;
-import ic2.api.energy.tile.IEnergySource;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
+
 import Reika.DragonAPI.ModList;
 import Reika.DragonAPI.ASM.APIStripper.Strippable;
 import Reika.DragonAPI.ASM.DependentMethodStripper.ModDependent;
 import Reika.DragonAPI.Libraries.World.ReikaWorldHelper;
+import Reika.DragonAPI.ModInteract.ItemHandlers.IC2Handler;
 import Reika.DragonAPI.ModInteract.Power.ReikaEUHelper;
 import Reika.ElectriCraft.Base.ElectriTileEntity;
 import Reika.ElectriCraft.Registry.ElectriTiles;
 import Reika.RotaryCraft.API.Interfaces.Screwdriverable;
+
+import ic2.api.energy.event.EnergyTileLoadEvent;
+import ic2.api.energy.event.EnergyTileUnloadEvent;
+import ic2.api.energy.tile.IEnergySink;
+import ic2.api.energy.tile.IEnergySource;
 
 @Strippable(value = {"ic2.api.energy.tile.IEnergySink", "ic2.api.energy.tile.IEnergySource"})
 public class TileEntityEUSplitter extends ElectriTileEntity implements IEnergySource, IEnergySink, Screwdriverable {
@@ -35,7 +38,6 @@ public class TileEntityEUSplitter extends ElectriTileEntity implements IEnergySo
 	private double EUin;
 	private double EUout;
 	private int tierout;
-	private int tierin;
 
 	private ForgeDirection facing;
 
@@ -49,7 +51,6 @@ public class TileEntityEUSplitter extends ElectriTileEntity implements IEnergySo
 		}
 		split = s;
 		EUout = split > 0 ? EUin/split : 0;
-		tierin = ReikaEUHelper.getIC2TierFromEUVoltage(EUin);
 		tierout = ReikaEUHelper.getIC2TierFromEUVoltage(EUout);
 	}
 
@@ -78,7 +79,7 @@ public class TileEntityEUSplitter extends ElectriTileEntity implements IEnergySo
 
 	@Override
 	public int getSinkTier() {
-		return tierin;
+		return IC2Handler.getInstance().isIC2Classic() ? 13 : Integer.MAX_VALUE;
 	}
 
 	@Override
@@ -160,7 +161,6 @@ public class TileEntityEUSplitter extends ElectriTileEntity implements IEnergySo
 
 		split = NBT.getInteger("split");
 		tierout = NBT.getInteger("tierout");
-		tierin = NBT.getInteger("tierin");
 		EUin = NBT.getDouble("in");
 		EUout = NBT.getDouble("out");
 	}
@@ -173,7 +173,6 @@ public class TileEntityEUSplitter extends ElectriTileEntity implements IEnergySo
 
 		NBT.setInteger("split", split);
 		NBT.setInteger("tierout", tierout);
-		NBT.setInteger("tierin", tierin);
 		NBT.setDouble("in", EUin);
 		NBT.setDouble("out", EUout);
 

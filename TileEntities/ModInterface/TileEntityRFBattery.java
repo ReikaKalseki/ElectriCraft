@@ -1,36 +1,34 @@
 /*******************************************************************************
  * @author Reika Kalseki
- * 
+ *
  * Copyright 2017
- * 
+ *
  * All rights reserved.
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
  ******************************************************************************/
 package Reika.ElectriCraft.TileEntities.ModInterface;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
 import Reika.DragonAPI.Libraries.MathSci.ReikaEngLibrary;
 import Reika.DragonAPI.Libraries.MathSci.ReikaMathLibrary;
-import Reika.ElectriCraft.Auxiliary.BatteryTracker;
-import Reika.ElectriCraft.Auxiliary.Interfaces.BatteryTile;
-import Reika.ElectriCraft.Base.ElectriTileEntity;
+import Reika.ElectriCraft.Base.BatteryTileBase;
 import Reika.ElectriCraft.Registry.ElectriItems;
 import Reika.ElectriCraft.Registry.ElectriTiles;
+
 import cofh.api.energy.IEnergyConnection;
 import cofh.api.energy.IEnergyHandler;
 import cofh.api.energy.IEnergyReceiver;
 
-public class TileEntityRFBattery extends ElectriTileEntity implements BatteryTile, IEnergyHandler {
+public class TileEntityRFBattery extends BatteryTileBase implements IEnergyHandler {
 
 	private long energy;
 	public static final long CAPACITY = 60000000000000L;//1099511627775L;//;
-
-	private final BatteryTracker tracker = new BatteryTracker();
 
 	@Override
 	public String getDisplayEnergy() {
@@ -63,8 +61,7 @@ public class TileEntityRFBattery extends ElectriTileEntity implements BatteryTil
 
 	@Override
 	public void updateEntity(World world, int x, int y, int z, int meta) {
-
-		tracker.update(this);
+		super.updateEntity(world, x, y, z, meta);
 
 		if (world.getTotalWorldTime()%64 == 0) {
 			world.markBlockForUpdate(x, y, z);
@@ -90,11 +87,6 @@ public class TileEntityRFBattery extends ElectriTileEntity implements BatteryTil
 				}
 			}
 		}
-	}
-
-	@Override
-	protected void animateWithTick(World world, int x, int y, int z) {
-
 	}
 
 	@Override
@@ -144,26 +136,9 @@ public class TileEntityRFBattery extends ElectriTileEntity implements BatteryTil
 		energy = NBT.getLong("e");
 	}
 
-	public void setEnergyFromNBT(ItemStack is) {
-		if (is.getItem() == ElectriItems.RFBATTERY.getItemInstance()) {
-			if (is.stackTagCompound != null)
-				energy = is.stackTagCompound.getLong("nrg");
-			else
-				energy = 0;
-		}
-		else {
-			energy = 0;
-		}
-	}
-
 	@Override
 	public int getEnergyColor() {
 		return 0xff1111;
-	}
-
-	@Override
-	public BatteryTracker getTracker() {
-		return tracker;
 	}
 
 	@Override
@@ -174,6 +149,16 @@ public class TileEntityRFBattery extends ElectriTileEntity implements BatteryTil
 	@Override
 	public boolean isDecimalSystem() {
 		return false;
+	}
+
+	@Override
+	protected Item getPlacerItem() {
+		return ElectriItems.RFBATTERY.getItemInstance();
+	}
+
+	@Override
+	protected void setEnergy(long val) {
+		energy = val;
 	}
 
 }

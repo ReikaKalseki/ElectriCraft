@@ -9,10 +9,10 @@
  ******************************************************************************/
 package Reika.ElectriCraft.Renders;
 
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.tileentity.TileEntity;
-
-import org.lwjgl.opengl.GL11;
 
 import Reika.DragonAPI.Base.TileEntityBase;
 import Reika.DragonAPI.Interfaces.TileEntity.RenderFetcher;

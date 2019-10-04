@@ -17,6 +17,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
+
 import Reika.DragonAPI.Base.EnumOreBlock;
 import Reika.DragonAPI.Interfaces.Registry.OreEnum;
 import Reika.ElectriCraft.ElectriCraft;

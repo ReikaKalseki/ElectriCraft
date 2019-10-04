@@ -12,6 +12,7 @@ package Reika.ElectriCraft.Base;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.world.World;
+
 import Reika.DragonAPI.Base.BlockTEBase;
 
 public abstract class NetworkBlock extends BlockTEBase {

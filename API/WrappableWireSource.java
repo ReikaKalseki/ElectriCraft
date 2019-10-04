@@ -10,6 +10,7 @@
 package Reika.ElectriCraft.API;
 
 import net.minecraftforge.common.util.ForgeDirection;
+
 import Reika.RotaryCraft.API.Power.ShaftMachine;
 import Reika.RotaryCraft.Auxiliary.Interfaces.PowerSourceTracker;
 

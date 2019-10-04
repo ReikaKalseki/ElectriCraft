@@ -10,6 +10,7 @@
 package Reika.ElectriCraft.Items;
 
 import net.minecraft.item.ItemStack;
+
 import Reika.ElectriCraft.Base.ElectriItemBase;
 import Reika.ElectriCraft.Registry.BatteryType;
 

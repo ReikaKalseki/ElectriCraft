@@ -12,6 +12,7 @@ package Reika.ElectriCraft.Blocks;
 import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+
 import Reika.ElectriCraft.Base.BatteryBlock;
 import Reika.ElectriCraft.Registry.ElectriItems;
 import Reika.ElectriCraft.Registry.ElectriTiles;

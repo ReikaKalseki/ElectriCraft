@@ -9,8 +9,9 @@
  ******************************************************************************/
 package Reika.ElectriCraft.Auxiliary.Interfaces;
 
-import Reika.ElectriCraft.Auxiliary.BatteryTracker;
 import net.minecraft.item.ItemStack;
+
+import Reika.ElectriCraft.Auxiliary.BatteryTracker;
 
 public interface BatteryTile {
 

@@ -24,6 +24,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.oredict.OreDictionary;
+
 import Reika.CondensedOres.API.CondensedOreAPI;
 import Reika.DragonAPI.ModList;
 import Reika.DragonAPI.Interfaces.Registry.OreEnum;

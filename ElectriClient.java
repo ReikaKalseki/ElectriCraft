@@ -11,6 +11,7 @@ package Reika.ElectriCraft;
 
 import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
+
 import Reika.DragonAPI.DragonOptions;
 import Reika.DragonAPI.Instantiable.Rendering.ItemSpriteSheetRenderer;
 import Reika.ElectriCraft.Auxiliary.ElectriRenderList;
@@ -18,6 +19,7 @@ import Reika.ElectriCraft.Base.ElectriTERenderer;
 import Reika.ElectriCraft.Registry.ElectriItems;
 import Reika.ElectriCraft.Registry.ElectriTiles;
 import Reika.ElectriCraft.Renders.BatteryRenderer;
+
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;

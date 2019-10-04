@@ -10,9 +10,9 @@
 package Reika.ElectriCraft.Auxiliary.Lua;
 
 import net.minecraft.tileentity.TileEntity;
+
 import Reika.DragonAPI.ModInteract.Lua.LuaMethod;
 import Reika.ElectriCraft.Base.WiringTile;
-import dan200.computercraft.api.lua.LuaException;
 
 public class LuaGetVoltage extends LuaMethod {
 
@@ -21,7 +21,7 @@ public class LuaGetVoltage extends LuaMethod {
 	}
 
 	@Override
-	public Object[] invoke(TileEntity te, Object[] args) throws LuaException, InterruptedException {
+	protected Object[] invoke(TileEntity te, Object[] args) throws LuaMethodException, InterruptedException {
 		return new Object[]{((WiringTile)te).getWireVoltage()};
 	}
 

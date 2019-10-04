@@ -15,10 +15,12 @@ import java.util.EnumSet;
 
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
+
 import Reika.DragonAPI.Auxiliary.Trackers.TickRegistry.TickHandler;
 import Reika.DragonAPI.Auxiliary.Trackers.TickRegistry.TickType;
 import Reika.ElectriCraft.Auxiliary.ElectriNetworkEvent.ElectriNetworkRepathEvent;
 import Reika.ElectriCraft.Auxiliary.ElectriNetworkEvent.ElectriNetworkTickEvent;
+
 import cpw.mods.fml.common.gameevent.TickEvent.Phase;
 
 public class ElectriNetworkManager implements TickHandler {

@@ -10,6 +10,7 @@
 package Reika.ElectriCraft.TileEntities;
 
 import net.minecraft.world.World;
+
 import Reika.ElectriCraft.Auxiliary.Interfaces.ToggledConnection;
 import Reika.ElectriCraft.Base.TileEntityWireComponent;
 import Reika.ElectriCraft.Registry.ElectriTiles;

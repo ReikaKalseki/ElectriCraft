@@ -14,6 +14,7 @@ import java.util.Collection;
 import java.util.Collections;
 
 import net.minecraftforge.common.util.ForgeDirection;
+
 import Reika.ElectriCraft.Base.WiringTile;
 
 public final class NetworkNode {

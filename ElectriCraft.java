@@ -1,8 +1,8 @@
 /*******************************************************************************
  * @author Reika Kalseki
- * 
+ *
  * Copyright 2017
- * 
+ *
  * All rights reserved.
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
@@ -19,7 +19,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.client.event.TextureStitchEvent;
-import thaumcraft.api.aspects.Aspect;
+
 import Reika.ChromatiCraft.API.AcceleratorBlacklist;
 import Reika.ChromatiCraft.API.AcceleratorBlacklist.BlacklistReason;
 import Reika.DragonAPI.DragonAPICore;
@@ -47,11 +47,11 @@ import Reika.DragonAPI.ModInteract.DeepInteract.FrameBlacklist.FrameUsageEvent;
 import Reika.DragonAPI.ModInteract.DeepInteract.ReikaThaumHelper;
 import Reika.DragonAPI.ModInteract.DeepInteract.SensitiveItemRegistry;
 import Reika.DragonAPI.ModInteract.DeepInteract.TimeTorchHelper;
+import Reika.DragonAPI.ModInteract.Lua.LuaMethod;
 import Reika.ElectriCraft.Auxiliary.ElectriBookTracker;
 import Reika.ElectriCraft.Auxiliary.ElectriDescriptions;
 import Reika.ElectriCraft.Auxiliary.ElectriStacks;
 import Reika.ElectriCraft.Auxiliary.ElectriTab;
-import Reika.ElectriCraft.Auxiliary.Lua.ElectricLuaMethods;
 import Reika.ElectriCraft.Base.NetworkTileEntity;
 import Reika.ElectriCraft.Registry.BatteryType;
 import Reika.ElectriCraft.Registry.ElectriBlocks;
@@ -63,6 +63,7 @@ import Reika.ElectriCraft.Registry.WireType;
 import Reika.ElectriCraft.World.ElectriOreGenerator;
 import Reika.RotaryCraft.RotaryCraft;
 import Reika.RotaryCraft.Registry.ConfigRegistry;
+
 import WayofTime.alchemicalWizardry.api.event.TeleposeEvent;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
@@ -79,6 +80,7 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import thaumcraft.api.aspects.Aspect;
 
 @Mod( modid = "ElectriCraft", name="ElectriCraft", version = "v@MAJOR_VERSION@@MINOR_VERSION@", certificateFingerprint = "@GET_FINGERPRINT@", dependencies="required-after:DragonAPI;required-after:RotaryCraft")
 
@@ -198,15 +200,15 @@ public class ElectriCraft extends DragonAPIMod {
 	@EventHandler
 	public void postload(FMLPostInitializationEvent evt) {
 		this.startTiming(LoadPhase.POSTLOAD);
-		if (ModList.CHROMATICRAFT.isLoaded()) {
-			for (int i = 0; i < ElectriTiles.TEList.length; i++) {
-				ElectriTiles m = ElectriTiles.TEList[i];
+		for (int i = 0; i < ElectriTiles.TEList.length; i++) {
+			ElectriTiles m = ElectriTiles.TEList[i];
+			if (ModList.CHROMATICRAFT.isLoaded()) {
 				AcceleratorBlacklist.addBlacklist(m.getTEClass(), m.getName(), BlacklistReason.EXPLOIT);
-				TimeTorchHelper.blacklistTileEntity(m.getTEClass());
 			}
+			TimeTorchHelper.blacklistTileEntity(m.getTEClass());
 		}
 
-		ReikaJavaLibrary.initClass(ElectricLuaMethods.class);
+		LuaMethod.registerMethods("Reika.ElectriCraft.Auxiliary.Lua");
 		ElectriRecipes.addPostLoadRecipes();
 
 		if (ModList.THAUMCRAFT.isLoaded()) {

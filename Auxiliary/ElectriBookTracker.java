@@ -10,6 +10,7 @@
 package Reika.ElectriCraft.Auxiliary;
 
 import net.minecraft.item.ItemStack;
+
 import Reika.ElectriCraft.Registry.ElectriItems;
 import Reika.RotaryCraft.Auxiliary.HandbookTracker;
 

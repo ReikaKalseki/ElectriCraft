@@ -10,8 +10,10 @@
 package Reika.ElectriCraft.Auxiliary;
 
 import net.minecraft.item.ItemStack;
+
 import Reika.DragonAPI.Instantiable.GUI.RegistryEnumCreativeTab;
 import Reika.ElectriCraft.Registry.ElectriTiles;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

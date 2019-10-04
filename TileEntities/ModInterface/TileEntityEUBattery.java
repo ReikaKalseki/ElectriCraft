@@ -1,46 +1,43 @@
 /*******************************************************************************
  * @author Reika Kalseki
- * 
+ *
  * Copyright 2017
- * 
+ *
  * All rights reserved.
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
  ******************************************************************************/
 package Reika.ElectriCraft.TileEntities.ModInterface;
 
-import ic2.api.energy.event.EnergyTileLoadEvent;
-import ic2.api.energy.event.EnergyTileUnloadEvent;
-import ic2.api.energy.tile.IEnergySink;
-import ic2.api.energy.tile.IEnergySource;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
+
 import Reika.DragonAPI.ModList;
 import Reika.DragonAPI.ASM.APIStripper.Strippable;
 import Reika.DragonAPI.ASM.DependentMethodStripper.ModDependent;
-import Reika.DragonAPI.Libraries.MathSci.ReikaMathLibrary;
 import Reika.DragonAPI.ModInteract.ItemHandlers.IC2Handler;
 import Reika.DragonAPI.ModInteract.Power.ReikaEUHelper;
-import Reika.ElectriCraft.Auxiliary.BatteryTracker;
-import Reika.ElectriCraft.Auxiliary.Interfaces.BatteryTile;
-import Reika.ElectriCraft.Base.ElectriTileEntity;
+import Reika.ElectriCraft.Base.BatteryTileBase;
 import Reika.ElectriCraft.Registry.ElectriItems;
 import Reika.ElectriCraft.Registry.ElectriTiles;
 
+import ic2.api.energy.event.EnergyTileLoadEvent;
+import ic2.api.energy.event.EnergyTileUnloadEvent;
+import ic2.api.energy.tile.IEnergySink;
+import ic2.api.energy.tile.IEnergySource;
+
 @Strippable(value={"ic2.api.energy.tile.IEnergySink", "ic2.api.energy.tile.IEnergySource"})
-public class TileEntityEUBattery extends ElectriTileEntity implements IEnergySink, IEnergySource, BatteryTile {
+public class TileEntityEUBattery extends BatteryTileBase implements IEnergySink, IEnergySource {
 
 	public static final double CAPACITY = 600e6; //MFSU is 40M, each tier is 10x in IC2
 	public static final double THROUGHPUT = 1048576;//65536*2; //MFSU is 2048, MFE is 512
 
 	private double energy;
-
-	private final BatteryTracker tracker = new BatteryTracker();
 
 	@Override
 	public String getDisplayEnergy() {
@@ -77,19 +74,6 @@ public class TileEntityEUBattery extends ElectriTileEntity implements IEnergySin
 	}
 
 	@Override
-	public void setEnergyFromNBT(ItemStack is) {
-		if (is.getItem() == ElectriItems.EUBATTERY.getItemInstance()) {
-			if (is.stackTagCompound != null)
-				energy = is.stackTagCompound.getLong("nrg");
-			else
-				energy = 0;
-		}
-		else {
-			energy = 0;
-		}
-	}
-
-	@Override
 	public int getEnergyColor() {
 		return 0xffff00;
 	}
@@ -111,12 +95,7 @@ public class TileEntityEUBattery extends ElectriTileEntity implements IEnergySin
 
 	@Override
 	public void updateEntity(World world, int x, int y, int z, int meta) {
-		tracker.update(this);
-	}
-
-	@Override
-	protected void animateWithTick(World world, int x, int y, int z) {
-
+		super.updateEntity(world, x, y, z, meta);
 	}
 
 	@Override
@@ -181,11 +160,6 @@ public class TileEntityEUBattery extends ElectriTileEntity implements IEnergySin
 	}
 
 	@Override
-	public BatteryTracker getTracker() {
-		return tracker;
-	}
-
-	@Override
 	public String getUnitName() {
 		return "EU";
 	}
@@ -196,8 +170,13 @@ public class TileEntityEUBattery extends ElectriTileEntity implements IEnergySin
 	}
 
 	@Override
-	public int getRedstoneOverride() {
-		return (int)(15D*ReikaMathLibrary.logbase(this.getStoredEnergy(), 2)/ReikaMathLibrary.logbase(this.getMaxEnergy(), 2));
+	protected Item getPlacerItem() {
+		return ElectriItems.EUBATTERY.getItemInstance();
+	}
+
+	@Override
+	protected void setEnergy(long val) {
+		energy = val;
 	}
 
 }
