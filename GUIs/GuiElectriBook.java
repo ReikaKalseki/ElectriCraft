@@ -1,8 +1,8 @@
 /*******************************************************************************
  * @author Reika Kalseki
- * 
+ *
  * Copyright 2017
- * 
+ *
  * All rights reserved.
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
@@ -266,6 +266,8 @@ public class GuiElectriBook extends GuiHandbook {
 	@Override
 	protected PageType getGuiLayout() {
 		ElectriBook h = (ElectriBook)this.getEntry();
+		if (this.isOnTOC())
+			return PageType.TOC;
 		if (h.isParent())
 			return PageType.PLAIN;
 		if (subpage == 1)
