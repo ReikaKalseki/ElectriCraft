@@ -12,7 +12,7 @@ package Reika.ElectriCraft.Auxiliary;
 import net.minecraft.util.EnumChatFormatting;
 
 import Reika.DragonAPI.Instantiable.Math.MovingAverage;
-import Reika.DragonAPI.Libraries.IO.ReikaFormatHelper;
+import Reika.DragonAPI.Libraries.MathSci.ReikaDateHelper;
 import Reika.ElectriCraft.Auxiliary.Interfaces.BatteryTile;
 
 
@@ -47,13 +47,13 @@ public class BatteryTracker {
 		double avg = energyFlow.getAverage();
 		if (avg < 0) {
 			double ticks = t.getStoredEnergy()/-avg;
-			return ReikaFormatHelper.getTickAsHMS(Math.round(ticks))+" until empty";
+			return ReikaDateHelper.getTickAsHMS(Math.round(ticks))+" until empty";
 		}
 		else if (avg > 0) {
 			double limit = t.getMaxEnergy();
 			double space = limit-t.getStoredEnergy();
 			double ticks = space/avg;
-			return ReikaFormatHelper.getTickAsHMS(Math.round(ticks))+" until full";
+			return ReikaDateHelper.getTickAsHMS(Math.round(ticks))+" until full";
 		}
 		else {
 			return "No net flow";
