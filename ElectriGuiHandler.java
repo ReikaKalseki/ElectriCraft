@@ -1,8 +1,8 @@
 /*******************************************************************************
  * @author Reika Kalseki
- * 
+ *
  * Copyright 2017
- * 
+ *
  * All rights reserved.
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
@@ -33,7 +33,7 @@ public class ElectriGuiHandler implements IGuiHandler {
 		if (te instanceof TileEntityRFCable) {
 			return new CoreContainer(player, te);
 		}
-		if (te instanceof TileEntityRFCable) {
+		if (te instanceof TileEntityTransformer) {
 			return new CoreContainer(player, te);
 		}
 		return null;

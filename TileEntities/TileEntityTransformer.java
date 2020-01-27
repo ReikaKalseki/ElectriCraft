@@ -1,8 +1,8 @@
 /*******************************************************************************
  * @author Reika Kalseki
- * 
+ *
  * Copyright 2017
- * 
+ *
  * All rights reserved.
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
@@ -22,7 +22,10 @@ import net.minecraftforge.fluids.IFluidHandler;
 import Reika.DragonAPI.Instantiable.HybridTank;
 import Reika.DragonAPI.Instantiable.StepTimer;
 import Reika.DragonAPI.Libraries.ReikaAABBHelper;
+import Reika.DragonAPI.Libraries.MathSci.ReikaEngLibrary;
 import Reika.DragonAPI.Libraries.MathSci.ReikaMathLibrary;
+import Reika.DragonAPI.Libraries.MathSci.ReikaThermoHelper;
+import Reika.DragonAPI.Libraries.World.ReikaBlockHelper;
 import Reika.DragonAPI.Libraries.World.ReikaWorldHelper;
 import Reika.ElectriCraft.Auxiliary.Interfaces.Overloadable;
 import Reika.ElectriCraft.Auxiliary.Interfaces.WireEmitter;
@@ -410,6 +413,16 @@ IFluidHandler, PipeConnector, Overloadable {
 	@Override
 	public int getMaxTemperature() {
 		return MAXTEMP;
+	}
+
+	@Override
+	public boolean allowHeatExtraction() {
+		return true;
+	}
+
+	@Override
+	public double heatEnergyPerDegree() {
+		return ReikaThermoHelper.STEEL_HEAT*ReikaBlockHelper.getBlockVolume(worldObj, xCoord, yCoord, zCoord)*ReikaEngLibrary.rhoiron;
 	}
 
 }
