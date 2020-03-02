@@ -1,8 +1,8 @@
 /*******************************************************************************
  * @author Reika Kalseki
- * 
+ *
  * Copyright 2017
- * 
+ *
  * All rights reserved.
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
@@ -32,6 +32,8 @@ import Reika.DragonAPI.Libraries.Registry.ReikaDyeHelper;
 import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
 import Reika.ElectriCraft.ElectriCraft;
 import Reika.ElectriCraft.Base.ElectriBlock;
+import Reika.ElectriCraft.Base.TileEntityResistorBase;
+import Reika.ElectriCraft.Base.TileEntityResistorBase.ColorBand;
 import Reika.ElectriCraft.Base.TileEntityWireComponent;
 import Reika.ElectriCraft.Registry.ElectriTiles;
 import Reika.ElectriCraft.TileEntities.TileEntityFuse;
@@ -145,8 +147,8 @@ public class BlockElectricMachine extends ElectriBlock implements IWailaDataProv
 		ItemRegistry ir = ItemRegistry.getEntry(is);
 		if (ir != null && ir.overridesRightClick(is))
 			return false;
-		if (e == ElectriTiles.RESISTOR && ReikaDyeHelper.isDyeItem(is)) {
-			TileEntityResistor te = (TileEntityResistor)world.getTileEntity(x, y, z);
+		if (e != null && e.isResistor() && ReikaDyeHelper.isDyeItem(is)) {
+			TileEntityResistorBase te = (TileEntityResistorBase)world.getTileEntity(x, y, z);
 			ForgeDirection dir = te.getFacing();
 			float inc = dir.offsetX != 0 ? a : c;
 			if (dir.offsetX > 0 || dir.offsetZ > 0)
@@ -154,13 +156,18 @@ public class BlockElectricMachine extends ElectriBlock implements IWailaDataProv
 			if (te.isFlipped && dir.offsetZ != 0) {
 				inc = 1-inc;
 			}
-			int band = 0;
-			if (ReikaMathLibrary.isValueInsideBoundsIncl(0.125, 0.25, inc))
-				band = 1;
-			else if (ReikaMathLibrary.isValueInsideBoundsIncl(0.3125, 0.4375, inc))
-				band = 2;
-			else if (ReikaMathLibrary.isValueInsideBoundsIncl(0.5, 0.625, inc))
-				band = 3;
+			double dl = 0.1875;
+			double l0 = 0.125;
+			double w = 0.125;
+			ColorBand[] bands = te.getColorBands();
+			int band = -1;
+			for (int i = 0; i < bands.length; i++) {
+				double d0 = dl*i;
+				if (ReikaMathLibrary.isValueInsideBoundsIncl(d0+l0, d0+l0+w, inc)) {
+					band = i+1;
+					break;
+				}
+			}
 			if (band > 0) {
 				if (te.setColor(ReikaDyeHelper.getColorFromItem(is), band)) {
 					if (!ep.capabilities.isCreativeMode)

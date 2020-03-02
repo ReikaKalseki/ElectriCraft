@@ -23,10 +23,9 @@ import Reika.RotaryCraft.Auxiliary.IORenderer;
 
 public class RenderResistor extends ElectriTERenderer
 {
-	private ModelResistor ResistorModel = new ModelResistor();
+	protected ModelResistorBase ResistorModel = new ModelResistor();
 
-	public void renderTileEntityResistorAt(TileEntityResistor tile, double par2, double par4, double par6, float par8)
-	{
+	public final void renderTileEntityResistorAt(TileEntityResistor tile, double par2, double par4, double par6, float par8) {
 		int var9;
 
 		if (!tile.isInWorld())
@@ -34,7 +33,7 @@ public class RenderResistor extends ElectriTERenderer
 		else
 			var9 = tile.getBlockMetadata();
 
-		ModelResistor var14;
+		ModelResistorBase var14;
 		var14 = ResistorModel;
 
 		this.setupGL(tile, par2, par4, par6);
@@ -68,8 +67,7 @@ public class RenderResistor extends ElectriTERenderer
 	}
 
 	@Override
-	public void renderTileEntityAt(TileEntity tile, double par2, double par4, double par6, float par8)
-	{
+	public final void renderTileEntityAt(TileEntity tile, double par2, double par4, double par6, float par8) {
 		if (this.doRenderModel((TileEntityResistor)tile))
 			this.renderTileEntityResistorAt((TileEntityResistor)tile, par2, par4, par6, par8);
 		if (((TileEntityResistor) tile).isInWorld() && MinecraftForgeClient.getRenderPass() == 1) {
@@ -78,7 +76,7 @@ public class RenderResistor extends ElectriTERenderer
 	}
 
 	@Override
-	public String getImageFileName(RenderFetcher te) {
+	public final String getImageFileName(RenderFetcher te) {
 		return "resistor.png";
 	}
 }

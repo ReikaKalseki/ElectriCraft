@@ -64,6 +64,14 @@
 			White = 9
 		</note>
 	</resistor>
+	<preciseresistor>
+		<desc>
+			The precision resistor is a slightly upgraded version of the basic resistor; it has three bands to choose digits instead of two.
+		</desc>
+		<note>
+			Same color values as basic resistors
+		</note>
+	</preciseresistor>
 	<battery>
 		<desc>
 			Batteries store electrical power, acting as a buffer or long-term storage. There are several tiers of batteries; each tier has more capacity and output power than the last. The output current, voltage, and power of a battery are constant. Batteries retain their charge when moved. They can take power in the sides, and will output it from their top when supplied with a redstone signal.

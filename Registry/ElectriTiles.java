@@ -1,8 +1,8 @@
 /*******************************************************************************
  * @author Reika Kalseki
- * 
+ *
  * Copyright 2017
- * 
+ *
  * All rights reserved.
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
@@ -27,6 +27,7 @@ import Reika.DragonAPI.Interfaces.Registry.TileEnum;
 import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
 import Reika.DragonAPI.ModRegistry.PowerTypes;
 import Reika.ElectriCraft.ElectriCraft;
+import Reika.ElectriCraft.Base.TileEntityResistorBase;
 import Reika.ElectriCraft.Base.TileEntityWireComponent;
 import Reika.ElectriCraft.Base.WiringTile;
 import Reika.ElectriCraft.Items.ItemWirePlacer;
@@ -35,6 +36,7 @@ import Reika.ElectriCraft.TileEntities.TileEntityFuse;
 import Reika.ElectriCraft.TileEntities.TileEntityGenerator;
 import Reika.ElectriCraft.TileEntities.TileEntityMeter;
 import Reika.ElectriCraft.TileEntities.TileEntityMotor;
+import Reika.ElectriCraft.TileEntities.TileEntityPreciseResistor;
 import Reika.ElectriCraft.TileEntities.TileEntityRelay;
 import Reika.ElectriCraft.TileEntities.TileEntityResistor;
 import Reika.ElectriCraft.TileEntities.TileEntityTransformer;
@@ -68,7 +70,8 @@ public enum ElectriTiles implements TileEnum {
 	EUCABLE("machine.eucable", 				ElectriBlocks.EUCABLE, 		TileEntityEUCable.class, 		0, "RenderCable"),
 	EUBATTERY("machine.eubattery", 			ElectriBlocks.EUBATTERY, 	TileEntityEUBattery.class, 		0, "RenderModBattery"),
 	FUSE("machine.fuse",					ElectriBlocks.MACHINE,		TileEntityFuse.class,			6, "RenderFuse"),
-	WIRELESSPAD("machine.wirelesspad",		ElectriBlocks.CHARGEPAD,	TileEntityWirelessCharger.class,0);
+	WIRELESSPAD("machine.wirelesspad",		ElectriBlocks.CHARGEPAD,	TileEntityWirelessCharger.class,0),
+	PRECISERESISTOR("machine.precresistor",	ElectriBlocks.MACHINE, 		TileEntityPreciseResistor.class, 7, "RenderPreciseResistor");
 
 	private String name;
 	private final Class teClass;
@@ -150,6 +153,10 @@ public enum ElectriTiles implements TileEnum {
 
 	public boolean isWiring() {
 		return this == WIRE || this == CABLE || this == EUCABLE;
+	}
+
+	public boolean isResistor() {
+		return TileEntityResistorBase.class.isAssignableFrom(teClass);
 	}
 
 	public static ElectriTiles getTE(IBlockAccess iba, int x, int y, int z) {
