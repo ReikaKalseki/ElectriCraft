@@ -1,8 +1,8 @@
 /*******************************************************************************
  * @author Reika Kalseki
- * 
+ *
  * Copyright 2017
- * 
+ *
  * All rights reserved.
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
@@ -117,6 +117,6 @@ public abstract class ElectriTileEntity extends TileEntityBase implements Render
 	@Override
 	@ModDependent(ModList.OPENCOMPUTERS)
 	public final Visibility getOCNetworkVisibility() {
-		return this.getMachine().isWiring() ? Visibility.Neighbors : Visibility.Network;
+		return this.getMachine().isWiring() ? Visibility.None : Visibility.Network;
 	}
 }

@@ -27,13 +27,13 @@ import Reika.DragonAPI.Libraries.IO.ReikaGuiAPI;
 import Reika.DragonAPI.Libraries.IO.ReikaTextureHelper;
 import Reika.DragonAPI.Libraries.Java.ReikaJavaLibrary;
 import Reika.ElectriCraft.Auxiliary.ElectriDescriptions;
+import Reika.ElectriCraft.Base.TileEntityResistorBase;
+import Reika.ElectriCraft.Base.TileEntityResistorBase.ColorBand;
 import Reika.ElectriCraft.Blocks.BlockChargePad;
 import Reika.ElectriCraft.Registry.BatteryType;
 import Reika.ElectriCraft.Registry.ElectriBook;
 import Reika.ElectriCraft.Registry.ElectriTiles;
 import Reika.ElectriCraft.Registry.WireType;
-import Reika.ElectriCraft.TileEntities.TileEntityResistor;
-import Reika.ElectriCraft.TileEntities.TileEntityResistor.ColorBand;
 import Reika.ElectriCraft.TileEntities.TileEntityWire;
 import Reika.ElectriCraft.TileEntities.TileEntityWirelessCharger.ChargerTiers;
 import Reika.RotaryCraft.Auxiliary.HandbookAuxData;
@@ -44,9 +44,7 @@ public class GuiElectriBook extends GuiHandbook {
 
 	private static final Random rand = new Random();
 
-	private ColorBand resistorB1 = ColorBand.BLACK;
-	private ColorBand resistorB2 = ColorBand.BLACK;
-	private ColorBand resistorB3 = ColorBand.BLACK;
+	private ColorBand[] resistorBands = {ColorBand.BLACK, ColorBand.BLACK, ColorBand.BLACK};
 
 	private int guiTick;
 
@@ -193,21 +191,19 @@ public class GuiElectriBook extends GuiHandbook {
 				GL11.glRotatef(renderq, 1, 0, 0);
 				GL11.glRotatef(r, 0, 1, 0);
 				GL11.glTranslated(a, b, c);
-				if (te instanceof TileEntityResistor) {
-					TileEntityResistor tr = (TileEntityResistor)te;
+				if (te instanceof TileEntityResistorBase) {
+					TileEntityResistorBase tr = (TileEntityResistorBase)te;
 					if (guiTick%100 == 0) {
-						this.recalcResistorColors();
+						this.recalcResistorColors(tr);
 					}
-					tr.setColor(resistorB1, 1);
-					tr.setColor(resistorB2, 2);
-					tr.setColor(resistorB3, 3);
+					for (int i = 0; i < resistorBands.length; i++)
+						tr.setColor(resistorBands[i], i+i);
 				}
 				TileEntityRendererDispatcher.instance.renderTileEntityAt(te, -0.5, 0, -0.5, 0);
-				if (te instanceof TileEntityResistor) {
-					TileEntityResistor tr = (TileEntityResistor)te;
-					tr.setColor(ColorBand.BLACK, 1);
-					tr.setColor(ColorBand.BLACK, 2);
-					tr.setColor(ColorBand.BLACK, 3);
+				if (te instanceof TileEntityResistorBase) {
+					TileEntityResistorBase tr = (TileEntityResistorBase)te;
+					for (int i = 0; i < resistorBands.length; i++)
+						tr.setColor(ColorBand.BLACK, i+i);
 				}
 				GL11.glTranslated(-a, -b, -c);
 				GL11.glRotatef(-r, 0, 1, 0);
@@ -240,10 +236,12 @@ public class GuiElectriBook extends GuiHandbook {
 		}
 	}
 
-	private void recalcResistorColors() {
-		resistorB1 = ColorBand.bandList[rand.nextInt(ColorBand.bandList.length)];
-		resistorB2 = ColorBand.bandList[rand.nextInt(ColorBand.bandList.length)];
-		resistorB3 = ColorBand.bandList[rand.nextInt(ColorBand.GRAY.ordinal())];
+	private void recalcResistorColors(TileEntityResistorBase tr) {
+		ColorBand[] raw = tr.getColorBands();
+		resistorBands = new ColorBand[raw.length];
+		for (int i = 0; i < resistorBands.length; i++)
+			resistorBands[i] = ColorBand.bandList[rand.nextInt(ColorBand.bandList.length)];
+		resistorBands[resistorBands.length-1] = ColorBand.bandList[rand.nextInt(ColorBand.GRAY.ordinal())];
 	}
 
 	@Override
