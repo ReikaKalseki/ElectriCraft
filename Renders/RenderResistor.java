@@ -17,15 +17,15 @@ import net.minecraftforge.client.MinecraftForgeClient;
 import Reika.DragonAPI.Interfaces.TileEntity.RenderFetcher;
 import Reika.DragonAPI.Libraries.Java.ReikaJavaLibrary;
 import Reika.ElectriCraft.Base.ElectriTERenderer;
+import Reika.ElectriCraft.Base.TileEntityResistorBase;
 import Reika.ElectriCraft.Base.TileEntityResistorBase.ColorBand;
-import Reika.ElectriCraft.TileEntities.TileEntityResistor;
 import Reika.RotaryCraft.Auxiliary.IORenderer;
 
 public class RenderResistor extends ElectriTERenderer
 {
 	protected ModelResistorBase ResistorModel = new ModelResistor();
 
-	public final void renderTileEntityResistorAt(TileEntityResistor tile, double par2, double par4, double par6, float par8) {
+	public final void renderTileEntityResistorAt(TileEntityResistorBase tile, double par2, double par4, double par6, float par8) {
 		int var9;
 
 		if (!tile.isInWorld())
@@ -68,9 +68,9 @@ public class RenderResistor extends ElectriTERenderer
 
 	@Override
 	public final void renderTileEntityAt(TileEntity tile, double par2, double par4, double par6, float par8) {
-		if (this.doRenderModel((TileEntityResistor)tile))
-			this.renderTileEntityResistorAt((TileEntityResistor)tile, par2, par4, par6, par8);
-		if (((TileEntityResistor) tile).isInWorld() && MinecraftForgeClient.getRenderPass() == 1) {
+		if (this.doRenderModel((TileEntityResistorBase)tile))
+			this.renderTileEntityResistorAt((TileEntityResistorBase)tile, par2, par4, par6, par8);
+		if (((TileEntityResistorBase) tile).isInWorld() && MinecraftForgeClient.getRenderPass() == 1) {
 			IORenderer.renderIO(tile, par2, par4, par6);
 		}
 	}

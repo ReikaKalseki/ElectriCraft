@@ -1,8 +1,8 @@
 /*******************************************************************************
  * @author Reika Kalseki
- * 
+ *
  * Copyright 2017
- * 
+ *
  * All rights reserved.
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
@@ -128,7 +128,9 @@ public class ItemElectriPlacer extends Item {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List) {
+		//ReikaJavaLibrary.pConsole("L="+ElectriTiles.TEList.length);
 		for (int i = 0; i < ElectriTiles.TEList.length; i++) {
+			//ReikaJavaLibrary.pConsole("i="+i);
 			ElectriTiles t = ElectriTiles.TEList[i];
 			if (!t.hasCustomItem() && t.isAvailableInCreativeInventory()) {
 				TileEntity te = t.createTEInstanceForRender();
@@ -140,7 +142,7 @@ public class ItemElectriPlacer extends Item {
 						is.stackTagCompound.setInteger("tier", k);
 						par3List.add(is);
 					}
-					return;
+					continue;
 				}
 				else if (t.hasNBTVariants()) {
 					ArrayList<NBTTagCompound> li = ((NBTMachine)te).getCreativeModeVariants();

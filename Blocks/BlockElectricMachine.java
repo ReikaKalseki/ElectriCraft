@@ -39,7 +39,6 @@ import Reika.ElectriCraft.Registry.ElectriTiles;
 import Reika.ElectriCraft.TileEntities.TileEntityFuse;
 import Reika.ElectriCraft.TileEntities.TileEntityMotor;
 import Reika.ElectriCraft.TileEntities.TileEntityRelay;
-import Reika.ElectriCraft.TileEntities.TileEntityResistor;
 import Reika.ElectriCraft.TileEntities.TileEntityTransformer;
 import Reika.RotaryCraft.Auxiliary.RotaryAux;
 import Reika.RotaryCraft.Auxiliary.Interfaces.NBTMachine;
@@ -221,8 +220,8 @@ public class BlockElectricMachine extends ElectriBlock implements IWailaDataProv
 		//if (/*LegacyWailaHelper.cacheAndReturn(acc)*/!tip.isEmpty())
 		//	return tip;
 		TileEntity te = acc.getTileEntity();
-		if (te instanceof TileEntityResistor) {
-			int limit = ((TileEntityResistor) te).getCurrentLimit();
+		if (te instanceof TileEntityResistorBase) {
+			int limit = ((TileEntityResistorBase) te).getCurrentLimit();
 			tip.add(String.format("Current Limit: %dA", limit));
 		}
 		if (te instanceof TileEntityFuse) {

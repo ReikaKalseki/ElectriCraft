@@ -193,17 +193,17 @@ public class GuiElectriBook extends GuiHandbook {
 				GL11.glTranslated(a, b, c);
 				if (te instanceof TileEntityResistorBase) {
 					TileEntityResistorBase tr = (TileEntityResistorBase)te;
-					if (guiTick%100 == 0) {
+					if (guiTick%100 == 0 || resistorBands.length != tr.getColorBands().length) {
 						this.recalcResistorColors(tr);
 					}
 					for (int i = 0; i < resistorBands.length; i++)
-						tr.setColor(resistorBands[i], i+i);
+						tr.setColor(resistorBands[i], i+1);
 				}
 				TileEntityRendererDispatcher.instance.renderTileEntityAt(te, -0.5, 0, -0.5, 0);
 				if (te instanceof TileEntityResistorBase) {
 					TileEntityResistorBase tr = (TileEntityResistorBase)te;
 					for (int i = 0; i < resistorBands.length; i++)
-						tr.setColor(ColorBand.BLACK, i+i);
+						tr.setColor(ColorBand.BLACK, i+1);
 				}
 				GL11.glTranslated(-a, -b, -c);
 				GL11.glRotatef(-r, 0, 1, 0);
