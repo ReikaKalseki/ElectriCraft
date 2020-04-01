@@ -1,14 +1,16 @@
 /*******************************************************************************
  * @author Reika Kalseki
- * 
+ *
  * Copyright 2017
- * 
+ *
  * All rights reserved.
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
  ******************************************************************************/
 package Reika.ElectriCraft.Auxiliary;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -78,8 +80,13 @@ public final class ElectriDescriptions {
 
 	private static boolean hasLocalizedFor(Language language) {
 		String lang = language.getLanguageCode();
-		Object o = ElectriCraft.class.getResourceAsStream("Resources/"+lang+"/categories.xml");
-		return o != null;
+		try (InputStream o = ElectriCraft.class.getResourceAsStream("Resources/"+lang+"/categories.xml")) {
+			return o != null;
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 
 	public static String getTOC() {
