@@ -38,12 +38,12 @@ import Reika.DragonAPI.Auxiliary.Trackers.TickRegistry;
 import Reika.DragonAPI.Base.DragonAPIMod;
 import Reika.DragonAPI.Base.DragonAPIMod.LoadProfiler.LoadPhase;
 import Reika.DragonAPI.Base.EnumOreBlock;
+import Reika.DragonAPI.Instantiable.Event.TileEntityMoveEvent;
 import Reika.DragonAPI.Instantiable.IO.ModLogger;
 import Reika.DragonAPI.Libraries.ReikaRegistryHelper;
 import Reika.DragonAPI.Libraries.IO.ReikaPacketHelper;
 import Reika.DragonAPI.Libraries.Java.ReikaJavaLibrary;
 import Reika.DragonAPI.ModInteract.ItemStackRepository;
-import Reika.DragonAPI.ModInteract.DeepInteract.FrameBlacklist.FrameUsageEvent;
 import Reika.DragonAPI.ModInteract.DeepInteract.ReikaThaumHelper;
 import Reika.DragonAPI.ModInteract.DeepInteract.SensitiveItemRegistry;
 import Reika.DragonAPI.ModInteract.DeepInteract.TimeTorchHelper;
@@ -229,7 +229,7 @@ public class ElectriCraft extends DragonAPIMod {
 	}
 
 	@SubscribeEvent
-	public void cancelFramez(FrameUsageEvent evt) {
+	public void cancelFramez(TileEntityMoveEvent evt) {
 		if (!this.isMovable(evt.tile)) {
 			evt.setCanceled(true);
 		}
