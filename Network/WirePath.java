@@ -1,8 +1,8 @@
 /*******************************************************************************
  * @author Reika Kalseki
- * 
+ *
  * Copyright 2017
- * 
+ *
  * All rights reserved.
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
@@ -48,6 +48,8 @@ public final class WirePath {
 		int r = 0;
 		for (WorldLocation loc : points) {
 			WiringTile te = (WiringTile)loc.getTileEntity();
+			if (te == null)
+				continue;
 			nodes.addLast(te);
 			dimensions.add(loc.dimensionID);
 			r += te.getResistance();

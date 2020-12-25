@@ -122,7 +122,7 @@ public class ElectriRecipes {
 		ElectriTiles.RESISTOR.addSizedOreCrafting(4, "SCS", "PCP", 'C', "dustCoal", 'S', ItemStacks.steelingot, 'P', ItemStacks.basepanel);
 		ElectriTiles.METER.addCrafting("SsS", "wCw", "SbS", 'S', ItemStacks.steelingot, 'w', WireType.SILVER.getCraftedProduct(), 'C', ItemStacks.pcb, 's', ItemStacks.screen, 'b', ItemStacks.basepanel);
 		ElectriTiles.TRANSFORMER.addCrafting("SSS", "I I", "SSS", 'S', ItemStacks.basepanel, 'I', ItemStacks.redgoldingot);
-		ElectriTiles.PRECISERESISTOR.addCrafting("aaa", "tRt", "PPP", 'a', ItemStacks.silumin, 't', ItemStacks.tungsteningot, 'R', ElectriTiles.RESISTOR.getCraftedProduct(), 'P', ItemStacks.basepanel);
+		ElectriTiles.PRECISERESISTOR.addCrafting("aaa", "tRt", "PPP", 'a', ItemStacks.silumin, 't', ItemStacks.springtungsten, 'R', ElectriTiles.RESISTOR.getCraftedProduct(), 'P', ItemStacks.basepanel);
 
 		ItemStack[] FUSE_INGOTS = {
 				ItemStacks.coaldust.copy(),
