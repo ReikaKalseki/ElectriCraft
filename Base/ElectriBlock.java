@@ -19,8 +19,8 @@ import net.minecraft.world.World;
 
 import Reika.DragonAPI.Interfaces.Block.MachineRegistryBlock;
 import Reika.DragonAPI.Interfaces.Registry.TileEnum;
-import Reika.DragonAPI.Libraries.IO.ReikaRenderHelper;
 import Reika.DragonAPI.Libraries.Java.ReikaJavaLibrary;
+import Reika.DragonAPI.Libraries.Rendering.ReikaRenderHelper;
 import Reika.ElectriCraft.ElectriCraft;
 import Reika.ElectriCraft.Registry.ElectriBlocks;
 import Reika.ElectriCraft.Registry.ElectriTiles;

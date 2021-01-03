@@ -23,9 +23,9 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-import Reika.DragonAPI.Libraries.IO.ReikaGuiAPI;
 import Reika.DragonAPI.Libraries.IO.ReikaTextureHelper;
 import Reika.DragonAPI.Libraries.Java.ReikaJavaLibrary;
+import Reika.DragonAPI.Libraries.Rendering.ReikaGuiAPI;
 import Reika.ElectriCraft.Auxiliary.ElectriDescriptions;
 import Reika.ElectriCraft.Base.TileEntityResistorBase;
 import Reika.ElectriCraft.Base.TileEntityResistorBase.ColorBand;

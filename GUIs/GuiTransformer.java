@@ -16,10 +16,10 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
 
 import Reika.DragonAPI.Base.CoreContainer;
-import Reika.DragonAPI.Libraries.IO.ReikaGuiAPI;
 import Reika.DragonAPI.Libraries.IO.ReikaPacketHelper;
 import Reika.DragonAPI.Libraries.IO.ReikaTextureHelper;
 import Reika.DragonAPI.Libraries.Java.ReikaJavaLibrary;
+import Reika.DragonAPI.Libraries.Rendering.ReikaGuiAPI;
 import Reika.ElectriCraft.ElectriCraft;
 import Reika.ElectriCraft.Registry.ElectriPackets;
 import Reika.ElectriCraft.TileEntities.TileEntityTransformer;
