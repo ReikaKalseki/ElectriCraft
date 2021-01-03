@@ -1,8 +1,8 @@
 /*******************************************************************************
  * @author Reika Kalseki
- * 
+ *
  * Copyright 2017
- * 
+ *
  * All rights reserved.
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
@@ -53,7 +53,7 @@ public class ElectriClient extends ElectriCommon
 		RenderingRegistry.registerBlockHandler(cableRender, cable);
 
 		batteryRender = RenderingRegistry.getNextAvailableRenderId();
-		battery = new BatteryRenderer();
+		battery = new BatteryRenderer(batteryRender);
 		RenderingRegistry.registerBlockHandler(batteryRender, battery);
 
 		if (DragonOptions.NORENDERS.getState()) {
