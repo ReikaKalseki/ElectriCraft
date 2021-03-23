@@ -1,8 +1,8 @@
 /*******************************************************************************
  * @author Reika Kalseki
- * 
+ *
  * Copyright 2017
- * 
+ *
  * All rights reserved.
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
@@ -25,11 +25,11 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class ElectriItemBase extends Item implements IndexedItemSprites {
 
-	private int index;
+	private final int texture;
 
 	public ElectriItemBase(int tex) {
 		super();
-		index = tex;
+		texture = tex;
 		this.setCreativeTab(ElectriCraft.tabElectri);
 		hasSubtypes = true;
 		this.setMaxDamage(0);
@@ -37,7 +37,7 @@ public class ElectriItemBase extends Item implements IndexedItemSprites {
 
 	@Override
 	public int getItemSpriteIndex(ItemStack is) {
-		return index+this.getTextureOffset(is);
+		return texture+this.getTextureOffset(is);
 	}
 
 	public int getTextureOffset(ItemStack is) {
