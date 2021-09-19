@@ -1,8 +1,8 @@
 /*******************************************************************************
  * @author Reika Kalseki
- * 
+ *
  * Copyright 2017
- * 
+ *
  * All rights reserved.
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
@@ -221,8 +221,10 @@ public class BlockWire extends ElectriBlock implements IWailaDataProvider {
 						int v = net.getPointVoltage(te);
 						EntityDischarge ed = new EntityDischarge(world, x+0.5, y+0.5, z+0.5, v, e.posX, e.posY, e.posZ);
 						world.spawnEntityInWorld(ed);
-						if (!(e instanceof EntityLivingBase) || !ReikaEntityHelper.isEntityWearingFullSuitOf((EntityLivingBase)e, ArmorMaterial.CHAIN))
+						if (!(e instanceof EntityLivingBase) || !ReikaEntityHelper.isEntityWearingFullSuitOf((EntityLivingBase)e, ArmorMaterial.CHAIN)) {
+							RotaryCraft.shock.lastMachine = te;
 							e.attackEntityFrom(RotaryCraft.shock, v > 10000 ? 20 : v > 1000 ? 10 : v > 100 ? 5 : v > 10 ? 1 : 0);
+						}
 						if (e instanceof EntityCreeper) {
 							world.createExplosion(e, e.posX, e.posY, e.posZ, 3F, true);
 							e.attackEntityFrom(DamageSource.magic, Integer.MAX_VALUE);

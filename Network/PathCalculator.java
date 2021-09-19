@@ -1,8 +1,8 @@
 /*******************************************************************************
  * @author Reika Kalseki
- * 
+ *
  * Copyright 2017
- * 
+ *
  * All rights reserved.
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
@@ -19,6 +19,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import Reika.ChromatiCraft.API.Interfaces.WorldRift;
+import Reika.DragonAPI.Exception.WorldSanityException;
 import Reika.DragonAPI.Instantiable.Data.Immutable.WorldLocation;
 import Reika.ElectriCraft.Auxiliary.Interfaces.WireEmitter;
 import Reika.ElectriCraft.Auxiliary.Interfaces.WireReceiver;
@@ -123,6 +124,8 @@ public class PathCalculator {
 		//ReikaJavaLibrary.pConsole(x+", "+y+", "+z, Side.SERVER);
 		li.addLast(new WorldLocation(world, x, y, z));
 		WiringTile te = (WiringTile)world.getTileEntity(x, y, z);
+		if (te == null)
+			throw new WorldSanityException("ElC pathfinding via "+this.debugPath(li)+" arrived at a null tile!");
 		//ReikaJavaLibrary.pConsole("<<"+li.size()+">>"+(x+0.5)+","+(y+0.5)+","+(z+0.5));
 		for (int i = 0; i < 6; i++) {
 			ForgeDirection dir = WireNetwork.dirs[i];
@@ -176,6 +179,24 @@ public class PathCalculator {
 		}
 		li.removeLast();
 		//ReikaJavaLibrary.pConsole(">>"+li.size()+"<<"+(x+0.5)+","+(y+0.5)+","+(z+0.5));
+	}
+
+	private String debugPath(LinkedList<WorldLocation> li) {
+		li.addFirst(new WorldLocation(start.getWorld(), start.getX(), start.getY(), start.getZ()));
+		StringBuilder sb = new StringBuilder();
+		sb.append("{");
+		for (int i = 0; i < li.size(); i++) {
+			WorldLocation loc = li.get(i);
+			sb.append("[");
+			sb.append(loc.getTileEntity());
+			sb.append(" @ ");
+			sb.append(loc.toString());
+			sb.append("]");
+			if (i < li.size()-1)
+				sb.append(" > ");
+		}
+		sb.append("}");
+		return sb.toString();
 	}
 
 	private boolean tileCanConnect(WiringTile tile) {
