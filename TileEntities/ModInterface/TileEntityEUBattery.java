@@ -34,7 +34,7 @@ import ic2.api.energy.tile.IEnergySource;
 @Strippable(value={"ic2.api.energy.tile.IEnergySink", "ic2.api.energy.tile.IEnergySource"})
 public class TileEntityEUBattery extends BatteryTileBase implements IEnergySink, IEnergySource {
 
-	public static final double CAPACITY = 600e6; //MFSU is 40M, each tier is 10x in IC2
+	public static final double CAPACITY = 9e9; //MFSU is 40M, each tier is 10x in IC2
 	public static final double THROUGHPUT = 1048576;//65536*2; //MFSU is 2048, MFE is 512
 
 	private double energy;

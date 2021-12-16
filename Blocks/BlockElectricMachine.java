@@ -146,6 +146,8 @@ public class BlockElectricMachine extends ElectriBlock implements IWailaDataProv
 		ItemRegistry ir = ItemRegistry.getEntry(is);
 		if (ir != null && ir.overridesRightClick(is))
 			return false;
+		if (RotaryAux.isHoldingScrewdriver(ep))
+			return false;
 		if (e != null && e.isResistor() && ReikaDyeHelper.isDyeItem(is)) {
 			TileEntityResistorBase te = (TileEntityResistorBase)world.getTileEntity(x, y, z);
 			ForgeDirection dir = te.getFacing();
