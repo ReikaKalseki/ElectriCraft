@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<categories>
+	<intro>
+		
+	</intro>
+	<convdesc>
+		这些机器用于产生电力,或将电力转化为其它能源.
+	</convdesc>
+	<transdesc>
+		这些设备可用于传输电力,或对电力进行操作.
+	</transdesc>
+	<storagedesc>
+		这些工具可用于储存电力.
+	</storagedesc>
+	<utildesc>
+		这些设备具有特殊用途.
+	</utildesc>
+	<moddesc>
+		这些设备可与其它的mod进行交互.
+	</moddesc>
+</categories>
