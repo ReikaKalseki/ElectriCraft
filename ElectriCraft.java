@@ -154,7 +154,7 @@ public class ElectriCraft extends DragonAPIMod {
 	public void load(FMLInitializationEvent event) {
 		this.startTiming(LoadPhase.LOAD);
 		proxy.registerRenderers();
-		RetroGenController.instance.addHybridGenerator(ElectriOreGenerator.instance, 0, ElectriOptions.RETROGEN.getState());
+		RetroGenController.instance.addHybridGenerator(ElectriOreGenerator.instance, 0);
 
 		ItemStackRepository.instance.registerClass(this, ElectriStacks.class);
 

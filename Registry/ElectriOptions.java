@@ -1,8 +1,8 @@
 /*******************************************************************************
  * @author Reika Kalseki
- * 
+ *
  * Copyright 2017
- * 
+ *
  * All rights reserved.
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
@@ -16,7 +16,7 @@ import Reika.ElectriCraft.ElectriCraft;
 
 public enum ElectriOptions implements IntegerConfig, BooleanConfig, UserSpecificConfig {
 
-	RETROGEN("Retrogenerate Ores", false),
+	//RETROGEN("Retrogenerate Ores", false),
 	DISCRETE("Ore Discretization", 1);
 
 	private String label;
