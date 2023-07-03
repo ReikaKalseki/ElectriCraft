@@ -24,10 +24,11 @@
 			The motor converts electric power back into shaft power using the inverse of the ratios seen in the generator. Like the generator, the motor is usually lossless; putting power into a generator and then directly into a motor yields the original torque and speed values. The one exception is that motors can only connect to a finite number of power sources; exceeding this wastes power and generates heat.
 		</desc>
 		<note>
-			Source limits:
+			Source limits (use 1 ingot to upgrade):
 			Default: 1
 			Inductive upgrade: 2
 			Tungsten upgrade: 4
+			Bedrock upgrade: 1000
 		</note>
 	</motor>
 	<wire>
