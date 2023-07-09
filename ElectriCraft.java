@@ -20,8 +20,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.client.event.TextureStitchEvent;
 
-import Reika.ChromatiCraft.API.AcceleratorBlacklist;
-import Reika.ChromatiCraft.API.AcceleratorBlacklist.BlacklistReason;
+import Reika.ChromatiCraft.API.AdjacencyUpgradeAPI.BlacklistReason;
+import Reika.ChromatiCraft.API.ChromatiAPI;
 import Reika.DragonAPI.DragonAPICore;
 import Reika.DragonAPI.DragonOptions;
 import Reika.DragonAPI.ModList;
@@ -134,7 +134,7 @@ public class ElectriCraft extends DragonAPIMod {
 		ReikaRegistryHelper.instantiateAndRegisterBlocks(instance, ElectriBlocks.blockList, blocks);
 		for (int i = 0; i < ElectriTiles.TEList.length; i++) {
 			GameRegistry.registerTileEntity(ElectriTiles.TEList[i].getTEClass(), "Electri"+ElectriTiles.TEList[i].getName());
-			ReikaJavaLibrary.initClass(ElectriTiles.TEList[i].getTEClass());
+			ReikaJavaLibrary.initClass(ElectriTiles.TEList[i].getTEClass(), true);
 		}
 	}
 
@@ -203,7 +203,19 @@ public class ElectriCraft extends DragonAPIMod {
 		for (int i = 0; i < ElectriTiles.TEList.length; i++) {
 			ElectriTiles m = ElectriTiles.TEList[i];
 			if (ModList.CHROMATICRAFT.isLoaded()) {
-				AcceleratorBlacklist.addBlacklist(m.getTEClass(), m.getName(), BlacklistReason.EXPLOIT);
+				if (m == ElectriTiles.WIRE) {
+					for (WireType mat : WireType.wireList) {
+						ChromatiAPI.getAPI().adjacency().addAcceleratorBlacklist(m.getTEClass(), m.getName(), mat.getCraftedProduct(), BlacklistReason.EXPLOIT);
+						ChromatiAPI.getAPI().adjacency().addAcceleratorBlacklist(m.getTEClass(), m.getName(), mat.getCraftedInsulatedProduct(), BlacklistReason.EXPLOIT);
+					}
+				}
+				else if (m == ElectriTiles.BATTERY) {
+					for (BatteryType mat : BatteryType.batteryList)
+						ChromatiAPI.getAPI().adjacency().addAcceleratorBlacklist(m.getTEClass(), m.getName(), mat.getCraftedProduct(), BlacklistReason.EXPLOIT);
+				}
+				else {
+					ChromatiAPI.getAPI().adjacency().addAcceleratorBlacklist(m.getTEClass(), m.getName(), m.getCraftedProduct(), BlacklistReason.EXPLOIT);
+				}
 			}
 			TimeTorchHelper.blacklistTileEntity(m.getTEClass());
 		}
