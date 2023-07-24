@@ -116,7 +116,7 @@ public class TileEntityBattery extends NetworkTileEntity implements WireEmitter,
 	}
 
 	@Override
-	public ElectriTiles getMachine() {
+	public ElectriTiles getTile() {
 		return ElectriTiles.BATTERY;
 	}
 

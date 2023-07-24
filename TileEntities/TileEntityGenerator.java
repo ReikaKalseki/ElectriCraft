@@ -143,7 +143,7 @@ public class TileEntityGenerator extends ElectricalEmitter implements Screwdrive
 	}
 
 	@Override
-	public ElectriTiles getMachine() {
+	public ElectriTiles getTile() {
 		return ElectriTiles.GENERATOR;
 	}
 

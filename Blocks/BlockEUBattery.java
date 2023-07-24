@@ -1,8 +1,8 @@
 /*******************************************************************************
  * @author Reika Kalseki
- * 
+ *
  * Copyright 2017
- * 
+ *
  * All rights reserved.
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
@@ -10,11 +10,11 @@
 package Reika.ElectriCraft.Blocks;
 
 import net.minecraft.block.material.Material;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import Reika.ElectriCraft.Base.BatteryBlock;
-import Reika.ElectriCraft.Registry.ElectriItems;
+import Reika.ElectriCraft.Base.ElectriTileEntity;
 import Reika.ElectriCraft.Registry.ElectriTiles;
 import Reika.ElectriCraft.TileEntities.ModInterface.TileEntityEUBattery;
 
@@ -25,7 +25,7 @@ public class BlockEUBattery extends BatteryBlock {
 	}
 
 	@Override
-	public TileEntity createTileEntity(World world, int meta) {
+	public ElectriTileEntity createTileEntity(World world, int meta) {
 		return new TileEntityEUBattery();
 	}
 
@@ -35,13 +35,13 @@ public class BlockEUBattery extends BatteryBlock {
 	}
 
 	@Override
-	public ElectriTiles getTile() {
+	public ElectriTiles getMapping(int meta) {
 		return ElectriTiles.EUBATTERY;
 	}
 
 	@Override
-	public ElectriItems getItem() {
-		return ElectriItems.EUBATTERY;
+	public ElectriTiles getMapping(IBlockAccess world, int x, int y, int z) {
+		return ElectriTiles.EUBATTERY;
 	}
 
 }

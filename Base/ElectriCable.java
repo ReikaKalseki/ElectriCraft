@@ -81,7 +81,7 @@ public abstract class ElectriCable extends ElectriTileEntity {
 			int dy = x+dir.offsetY;
 			int dz = x+dir.offsetZ;
 			ElectriTiles m = ElectriTiles.getTE(world, dx, dy, dz);
-			if (m == this.getMachine()) {
+			if (m == this.getTile()) {
 				ElectriCable te = (ElectriCable)world.getTileEntity(dx, dy, dz);
 				te.connections[dir.getOpposite().ordinal()] = false;
 				world.func_147479_m(dx, dy, dz);
@@ -96,7 +96,7 @@ public abstract class ElectriCable extends ElectriTileEntity {
 			int dy = x+dir.offsetY;
 			int dz = x+dir.offsetZ;
 			ElectriTiles m = ElectriTiles.getTE(world, dx, dy, dz);
-			if (m == this.getMachine()) {
+			if (m == this.getTile()) {
 				ElectriCable te = (ElectriCable)world.getTileEntity(dx, dy, dz);
 				te.connections[dir.getOpposite().ordinal()] = true;
 				world.func_147479_m(dx, dy, dz);
@@ -108,7 +108,7 @@ public abstract class ElectriCable extends ElectriTileEntity {
 		int x = xCoord+dir.offsetX;
 		int y = yCoord+dir.offsetY;
 		int z = zCoord+dir.offsetZ;
-		ElectriTiles m = this.getMachine();
+		ElectriTiles m = this.getTile();
 		ElectriTiles m2 = ElectriTiles.getTE(worldObj, x, y, z);
 		if (m == m2)
 			return true;

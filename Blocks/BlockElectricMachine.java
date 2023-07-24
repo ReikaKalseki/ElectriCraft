@@ -21,6 +21,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -32,6 +33,7 @@ import Reika.DragonAPI.Libraries.Registry.ReikaDyeHelper;
 import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
 import Reika.ElectriCraft.ElectriCraft;
 import Reika.ElectriCraft.Base.ElectriBlock;
+import Reika.ElectriCraft.Base.ElectriTileEntity;
 import Reika.ElectriCraft.Base.TileEntityResistorBase;
 import Reika.ElectriCraft.Base.TileEntityResistorBase.ColorBand;
 import Reika.ElectriCraft.Base.TileEntityWireComponent;
@@ -57,8 +59,8 @@ public class BlockElectricMachine extends ElectriBlock implements IWailaDataProv
 	}
 
 	@Override
-	public TileEntity createTileEntity(World world, int meta) {
-		return ElectriTiles.createTEFromIDAndMetadata(this, meta);
+	public ElectriTileEntity createTileEntity(World world, int meta) {
+		return (ElectriTileEntity)ElectriTiles.createTEFromIDAndMetadata(this, meta);
 	}
 
 	@Override
@@ -74,9 +76,18 @@ public class BlockElectricMachine extends ElectriBlock implements IWailaDataProv
 
 
 	@Override
-	public int damageDropped(int par1)
-	{
-		return ElectriTiles.getMachineFromIDandMetadata(this, par1).ordinal();
+	public int damageDropped(int par1) {
+		return this.getMapping(par1).ordinal();
+	}
+
+	@Override
+	public final ElectriTiles getMapping(IBlockAccess world, int x, int y, int z) {
+		return ElectriTiles.getTE(world, x, y, z);
+	}
+
+	@Override
+	public final ElectriTiles getMapping(int meta) {
+		return ElectriTiles.getMachineFromIDandMetadata(this, meta);
 	}
 
 	@Override

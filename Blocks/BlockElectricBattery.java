@@ -1,8 +1,8 @@
 /*******************************************************************************
  * @author Reika Kalseki
- * 
+ *
  * Copyright 2017
- * 
+ *
  * All rights reserved.
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
@@ -22,6 +22,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 import Reika.DragonAPI.ModList;
@@ -31,9 +32,11 @@ import Reika.DragonAPI.Base.TileEntityBase;
 import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
 import Reika.ElectriCraft.ElectriCraft;
 import Reika.ElectriCraft.Auxiliary.Interfaces.BatteryTile;
+import Reika.ElectriCraft.Base.ElectriTileEntity;
 import Reika.ElectriCraft.Base.NetworkBlock;
 import Reika.ElectriCraft.Registry.BatteryType;
 import Reika.ElectriCraft.Registry.ElectriItems;
+import Reika.ElectriCraft.Registry.ElectriTiles;
 import Reika.ElectriCraft.TileEntities.TileEntityBattery;
 
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -54,7 +57,7 @@ public class BlockElectricBattery extends NetworkBlock implements IWailaDataProv
 	}
 
 	@Override
-	public TileEntity createTileEntity(World world, int meta) {
+	public ElectriTileEntity createTileEntity(World world, int meta) {
 		return new TileEntityBattery();
 	}
 
@@ -183,6 +186,16 @@ public class BlockElectricBattery extends NetworkBlock implements IWailaDataProv
 	@Override
 	public int getRenderType() {
 		return ElectriCraft.proxy.batteryRender;
+	}
+
+	@Override
+	public ElectriTiles getMapping(int meta) {
+		return ElectriTiles.BATTERY;
+	}
+
+	@Override
+	public ElectriTiles getMapping(IBlockAccess world, int x, int y, int z) {
+		return ElectriTiles.BATTERY;
 	}
 
 }

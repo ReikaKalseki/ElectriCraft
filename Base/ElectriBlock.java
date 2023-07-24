@@ -1,8 +1,8 @@
 /*******************************************************************************
  * @author Reika Kalseki
- * 
+ *
  * Copyright 2017
- * 
+ *
  * All rights reserved.
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
@@ -14,21 +14,17 @@ import net.minecraft.client.particle.EffectRenderer;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-import Reika.DragonAPI.Interfaces.Block.MachineRegistryBlock;
-import Reika.DragonAPI.Interfaces.Registry.TileEnum;
 import Reika.DragonAPI.Libraries.Java.ReikaJavaLibrary;
 import Reika.DragonAPI.Libraries.Rendering.ReikaRenderHelper;
 import Reika.ElectriCraft.ElectriCraft;
 import Reika.ElectriCraft.Registry.ElectriBlocks;
-import Reika.ElectriCraft.Registry.ElectriTiles;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public abstract class ElectriBlock extends NetworkBlock implements MachineRegistryBlock {
+public abstract class ElectriBlock extends NetworkBlock {
 
 	public ElectriBlock(Material par2Material) {
 		super(par2Material);
@@ -82,11 +78,6 @@ public abstract class ElectriBlock extends NetworkBlock implements MachineRegist
 		if (this == ElectriBlocks.WIRE.getBlockInstance() || this == ElectriBlocks.CABLE.getBlockInstance())
 			return super.addHitEffects(world, tg, eff);
 		return ReikaRenderHelper.addModelledBlockParticles("/Reika/ElectriCraft/Textures/", world, tg, this, eff, ReikaJavaLibrary.makeListFrom(new double[]{0,0,1,1}), ElectriCraft.class);
-	}
-
-	@Override
-	public final TileEnum getMachine(IBlockAccess world, int x, int y, int z) {
-		return ElectriTiles.getTE(world, x, y, z);
 	}
 
 }

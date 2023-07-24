@@ -1,8 +1,8 @@
 /*******************************************************************************
  * @author Reika Kalseki
- * 
+ *
  * Copyright 2017
- * 
+ *
  * All rights reserved.
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
@@ -26,11 +26,10 @@ import net.minecraft.world.World;
 import Reika.DragonAPI.ModList;
 import Reika.DragonAPI.ASM.APIStripper.Strippable;
 import Reika.DragonAPI.ASM.DependentMethodStripper.ModDependent;
-import Reika.DragonAPI.Base.BlockTEBase;
+import Reika.DragonAPI.Base.BlockTileEnum;
 import Reika.DragonAPI.Base.TileEntityBase;
 import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
 import Reika.ElectriCraft.Auxiliary.Interfaces.BatteryTile;
-import Reika.ElectriCraft.Registry.ElectriItems;
 import Reika.ElectriCraft.Registry.ElectriTiles;
 
 import mcp.mobius.waila.api.IWailaConfigHandler;
@@ -39,7 +38,7 @@ import mcp.mobius.waila.api.IWailaDataProvider;
 
 
 @Strippable(value = {"mcp.mobius.waila.api.IWailaDataProvider"})
-public abstract class BatteryBlock extends BlockTEBase implements IWailaDataProvider {
+public abstract class BatteryBlock<B extends BatteryTileBase> extends BlockTileEnum<B, ElectriTiles> implements IWailaDataProvider {
 
 	private final IIcon[] bottomTex = new IIcon[1];
 	private final IIcon[] sideTex = new IIcon[1];
@@ -51,12 +50,8 @@ public abstract class BatteryBlock extends BlockTEBase implements IWailaDataProv
 		this.setResistance(10);
 	}
 
-	public abstract ElectriTiles getTile();
-	public abstract ElectriItems getItem();
-
 	@Override
-	public final boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z, boolean harv)
-	{
+	public final boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z, boolean harv) {
 		if (!player.capabilities.isCreativeMode && this.canHarvest(world, player, x, y, z))
 			this.harvestBlock(world, player, x, y, z, world.getBlockMetadata(x, y, z));
 		return world.setBlockToAir(x, y, z);
@@ -79,7 +74,8 @@ public abstract class BatteryBlock extends BlockTEBase implements IWailaDataProv
 		ArrayList li = new ArrayList();
 		BatteryTile te = (BatteryTile)world.getTileEntity(x, y, z);
 		long e = te.getStoredEnergy();
-		ItemStack is = this.getItem().getStackOfMetadata(meta);
+		ItemStack is = this.getMapping(world, x, y, z).getCraftedProduct();
+		is.setItemDamage(meta);
 		is.stackTagCompound = new NBTTagCompound();
 		is.stackTagCompound.setLong("nrg", e);
 		li.add(is);
@@ -91,17 +87,15 @@ public abstract class BatteryBlock extends BlockTEBase implements IWailaDataProv
 	{
 		BatteryTile te = (BatteryTile)world.getTileEntity(x, y, z);
 		int meta = world.getBlockMetadata(x, y, z);
-		ItemStack is = this.getItem().getStackOfMetadata(meta);
+		ItemStack is = this.getMapping(world, x, y, z).getCraftedProduct();
+		is.setItemDamage(meta);
 		return is;
 	}
 
 	@Override
-	public boolean hasTileEntity(int meta) {
+	public final boolean hasTileEntity(int meta) {
 		return true;
 	}
-
-	@Override
-	public abstract TileEntity createTileEntity(World world, int meta);
 
 	@Override
 	public final void registerBlockIcons(IIconRegister ico) {/*

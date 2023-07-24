@@ -30,6 +30,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -41,7 +42,9 @@ import Reika.DragonAPI.Libraries.Java.ReikaJavaLibrary;
 import Reika.DragonAPI.Libraries.Registry.ReikaItemHelper;
 import Reika.ElectriCraft.ElectriCraft;
 import Reika.ElectriCraft.Base.ElectriBlock;
+import Reika.ElectriCraft.Base.ElectriTileEntity;
 import Reika.ElectriCraft.Network.WireNetwork;
+import Reika.ElectriCraft.Registry.ElectriTiles;
 import Reika.ElectriCraft.Registry.WireType;
 import Reika.ElectriCraft.TileEntities.TileEntityWire;
 import Reika.RotaryCraft.RotaryCraft;
@@ -73,7 +76,7 @@ public class BlockWire extends ElectriBlock implements IWailaDataProvider {
 	}
 
 	@Override
-	public TileEntity createTileEntity(World world, int meta) {
+	public ElectriTileEntity createTileEntity(World world, int meta) {
 		return new TileEntityWire();
 	}
 
@@ -85,6 +88,16 @@ public class BlockWire extends ElectriBlock implements IWailaDataProvider {
 	@Override
 	public Item getItemDropped(int id, Random r, int fortune) {
 		return null;
+	}
+
+	@Override
+	public ElectriTiles getMapping(int meta) {
+		return ElectriTiles.WIRE;
+	}
+
+	@Override
+	public ElectriTiles getMapping(IBlockAccess world, int x, int y, int z) {
+		return ElectriTiles.WIRE;
 	}
 
 	@Override

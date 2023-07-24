@@ -55,7 +55,7 @@ public class TileEntityWire extends WiringTile implements Overloadable {
 	}
 
 	@Override
-	public ElectriTiles getMachine() {
+	public ElectriTiles getTile() {
 		return ElectriTiles.WIRE;
 	}
 
@@ -186,7 +186,7 @@ public class TileEntityWire extends WiringTile implements Overloadable {
 			int dy = x+dir.offsetY;
 			int dz = x+dir.offsetZ;
 			ElectriTiles m = ElectriTiles.getTE(world, dx, dy, dz);
-			if (m == this.getMachine()) {
+			if (m == this.getTile()) {
 				TileEntityWire te = (TileEntityWire)world.getTileEntity(dx, dy, dz);
 				te.connections[dir.getOpposite().ordinal()] = true;//te.isConnected(dir.getOpposite());
 				world.func_147479_m(dx, dy, dz);
@@ -198,7 +198,7 @@ public class TileEntityWire extends WiringTile implements Overloadable {
 		int x = xCoord+dir.offsetX;
 		int y = yCoord+dir.offsetY;
 		int z = zCoord+dir.offsetZ;
-		ElectriTiles m = this.getMachine();
+		ElectriTiles m = this.getTile();
 		ElectriTiles m2 = ElectriTiles.getTE(worldObj, x, y, z);
 		if (m == m2)
 			return true;//connectionCount < 3;

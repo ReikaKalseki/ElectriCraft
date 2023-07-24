@@ -100,7 +100,7 @@ public class TileEntityEUCable extends ElectriCable implements IEnergyConductor 
 	}
 
 	@Override
-	public ElectriTiles getMachine() {
+	public ElectriTiles getTile() {
 		return ElectriTiles.EUCABLE;
 	}
 

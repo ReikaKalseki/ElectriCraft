@@ -229,7 +229,7 @@ public class TileEntityMotor extends ElectricalReceiver implements Screwdriverab
 	}
 
 	@Override
-	public ElectriTiles getMachine() {
+	public ElectriTiles getTile() {
 		return ElectriTiles.MOTOR;
 	}
 

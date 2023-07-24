@@ -116,7 +116,7 @@ public class TileEntityRFCable extends ElectriCable implements IEnergyHandler, B
 	}
 
 	@Override
-	public ElectriTiles getMachine() {
+	public ElectriTiles getTile() {
 		return ElectriTiles.CABLE;
 	}
 

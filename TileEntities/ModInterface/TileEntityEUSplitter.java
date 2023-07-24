@@ -104,7 +104,7 @@ public class TileEntityEUSplitter extends ElectriTileEntity implements IEnergySo
 	}
 
 	@Override
-	public ElectriTiles getMachine() {
+	public ElectriTiles getTile() {
 		return ElectriTiles.EUSPLIT;
 	}
 

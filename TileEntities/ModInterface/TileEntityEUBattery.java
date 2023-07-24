@@ -89,7 +89,7 @@ public class TileEntityEUBattery extends BatteryTileBase implements IEnergySink,
 	}
 
 	@Override
-	public ElectriTiles getMachine() {
+	public ElectriTiles getTile() {
 		return ElectriTiles.EUBATTERY;
 	}
 

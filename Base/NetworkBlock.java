@@ -1,8 +1,8 @@
 /*******************************************************************************
  * @author Reika Kalseki
- * 
+ *
  * Copyright 2017
- * 
+ *
  * All rights reserved.
  * Distribution of the software in any form is only allowed with
  * explicit, prior permission from the owner.
@@ -13,9 +13,10 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.world.World;
 
-import Reika.DragonAPI.Base.BlockTEBase;
+import Reika.DragonAPI.Base.BlockTileEnum;
+import Reika.ElectriCraft.Registry.ElectriTiles;
 
-public abstract class NetworkBlock extends BlockTEBase {
+public abstract class NetworkBlock extends BlockTileEnum<ElectriTileEntity, ElectriTiles> {
 
 	public NetworkBlock(Material par2Material) {
 		super(par2Material);

@@ -11,14 +11,13 @@ package Reika.ElectriCraft.Base;
 
 import java.util.ArrayList;
 
-import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import Reika.DragonAPI.ModList;
 import Reika.DragonAPI.ASM.DependentMethodStripper.ModDependent;
-import Reika.DragonAPI.Base.TileEntityBase;
+import Reika.DragonAPI.Base.TileEntityRegistryBase;
 import Reika.DragonAPI.Interfaces.TextureFetcher;
 import Reika.DragonAPI.Interfaces.TileEntity.RenderFetcher;
 import Reika.ElectriCraft.Auxiliary.ElectriRenderList;
@@ -30,7 +29,7 @@ import Reika.RotaryCraft.API.Power.ShaftMachine;
 
 import li.cil.oc.api.network.Visibility;
 
-public abstract class ElectriTileEntity extends TileEntityBase implements RenderFetcher, Transducerable {
+public abstract class ElectriTileEntity extends TileEntityRegistryBase<ElectriTiles> implements RenderFetcher, Transducerable {
 
 	protected ForgeDirection[] dirs = ForgeDirection.values();
 
@@ -50,42 +49,22 @@ public abstract class ElectriTileEntity extends TileEntityBase implements Render
 		return false;
 	}
 
-	@Override
-	public Block getTileEntityBlockID() {
-		return ElectriTiles.TEList[this.getIndex()].getBlock();
-	}
-
-	public abstract ElectriTiles getMachine();
-
-	@Override
-	protected String getTEName() {
-		return ElectriTiles.TEList[this.getIndex()].getName();
-	}
-
-	public final int getIndex() {
-		return this.getMachine().ordinal();
-	}
+	public abstract ElectriTiles getTile();
 
 	public int getTextureState(ForgeDirection side) {
 		return 0;
 	}
 
 	@Override
-	protected void writeSyncTag(NBTTagCompound NBT)
-	{
+	protected void writeSyncTag(NBTTagCompound NBT) {
 		super.writeSyncTag(NBT);
 		NBT.setBoolean("flip", isFlipped);
 	}
 
 	@Override
-	protected void readSyncTag(NBTTagCompound NBT)
-	{
+	protected void readSyncTag(NBTTagCompound NBT) {
 		super.readSyncTag(NBT);
 		isFlipped = NBT.getBoolean("flip");
-	}
-
-	public boolean isThisTE(Block id, int meta) {
-		return id == this.getTileEntityBlockID() && meta == this.getIndex();
 	}
 
 	@Override
@@ -117,6 +96,6 @@ public abstract class ElectriTileEntity extends TileEntityBase implements Render
 	@Override
 	@ModDependent(ModList.OPENCOMPUTERS)
 	public final Visibility getOCNetworkVisibility() {
-		return this.getMachine().isWiring() ? Visibility.None : Visibility.Network;
+		return this.getTile().isWiring() ? Visibility.None : Visibility.Network;
 	}
 }

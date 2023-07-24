@@ -17,7 +17,7 @@ import Reika.ElectriCraft.ElectriCraft;
 public enum ElectriOptions implements IntegerConfig, BooleanConfig, UserSpecificConfig {
 
 	//RETROGEN("Retrogenerate Ores", false),
-	DISCRETE("Ore Discretization", 1);
+	DISCRETE("Ore Discretization", 1); //How much to "clump" the ore into larger but fewer veins. Largely useless now that CondensedOres exists.
 
 	private String label;
 	private boolean defaultState;

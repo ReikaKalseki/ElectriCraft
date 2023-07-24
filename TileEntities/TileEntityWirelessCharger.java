@@ -65,7 +65,7 @@ public class TileEntityWirelessCharger extends ElectriTileEntity implements IEne
 	}
 
 	@Override
-	public ElectriTiles getMachine() {
+	public ElectriTiles getTile() {
 		return ElectriTiles.WIRELESSPAD;
 	}
 

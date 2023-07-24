@@ -169,7 +169,7 @@ IFluidHandler, PipeConnector, Overloadable {
 	}
 
 	@Override
-	public ElectriTiles getMachine() {
+	public ElectriTiles getTile() {
 		return ElectriTiles.TRANSFORMER;
 	}
 

@@ -44,7 +44,7 @@ public class TileEntityRelay extends TileEntityWireComponent implements ToggledC
 	}
 
 	@Override
-	public ElectriTiles getMachine() {
+	public ElectriTiles getTile() {
 		return ElectriTiles.RELAY;
 	}
 

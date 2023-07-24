@@ -55,7 +55,7 @@ public class TileEntityRFBattery extends BatteryTileBase implements IEnergyHandl
 	}
 
 	@Override
-	public ElectriTiles getMachine() {
+	public ElectriTiles getTile() {
 		return ElectriTiles.RFBATTERY;
 	}
 

@@ -30,7 +30,7 @@ public class TileEntityResistor extends TileEntityResistorBase {
 	}
 
 	@Override
-	public ElectriTiles getMachine() {
+	public ElectriTiles getTile() {
 		return ElectriTiles.RESISTOR;
 	}
 

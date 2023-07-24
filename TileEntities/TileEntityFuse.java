@@ -61,7 +61,7 @@ public class TileEntityFuse extends TileEntityWireComponent implements WireFuse,
 	}
 
 	@Override
-	public ElectriTiles getMachine() {
+	public ElectriTiles getTile() {
 		return ElectriTiles.FUSE;
 	}
 

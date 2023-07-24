@@ -31,7 +31,7 @@ public class TileEntityMeter extends WiringTile {
 	}
 
 	@Override
-	public ElectriTiles getMachine() {
+	public ElectriTiles getTile() {
 		return ElectriTiles.METER;
 	}
 
